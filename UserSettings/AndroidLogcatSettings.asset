@@ -1,0 +1,209 @@
+{
+    "m_SelectedDeviceId": "5055ca1b",
+    "m_SelectedPackage": {
+        "deviceId": "5055ca1b",
+        "name": "com.DefaultCompany.Web3MobileTest",
+        "processId": 9687,
+        "exited": false
+    },
+    "m_SelectedPriority": 0,
+    "m_KnownPackagesForSerialization": [
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.mi.android.globallauncher",
+            "processId": 2295,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 24876,
+            "exited": true
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 2687,
+            "exited": true
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 28847,
+            "exited": true
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 30297,
+            "exited": true
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 13833,
+            "exited": true
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.vkontakte.android",
+            "processId": 15449,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 19645,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 21478,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 26145,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 7701,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 13996,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 20105,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 22002,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 26176,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 26978,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 6736,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 10229,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 12011,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 23492,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 26846,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 8783,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 8620,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 9687,
+            "exited": false
+        }
+    ],
+    "m_Tags": {
+        "m_Entries": [
+            {
+                "m_Name": "Filter by all listed tags",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "No Filter",
+                "m_Selected": true
+            },
+            {
+                "m_Name": "",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "Tag Control...",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "Unity",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "CRASH",
+                "m_Selected": false
+            }
+        ]
+    },
+    "m_MemoryViewerState": {
+        "MemoryWindowHeight": 300.0,
+        "MemoryWindowWidth": 170.0,
+        "MemoryTypeEnabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "MemoryGroup": 2,
+        "Behavior": 0
+    },
+    "m_Filter": "",
+    "m_FilterIsRegularExpression": false,
+    "m_SymbolPaths": []
+}
