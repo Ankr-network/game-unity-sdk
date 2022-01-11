@@ -19,7 +19,7 @@ public class CustomSceneManager : MonoBehaviour
     
     public void PrevScene()
     {
-        // move to next scene
+        // move to previous scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 }

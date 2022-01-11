@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "5055ca1b",
         "name": "com.DefaultCompany.Web3MobileTest",
-        "processId": 3765,
+        "processId": 9417,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -204,6 +204,18 @@
             "deviceId": "5055ca1b",
             "name": "com.DefaultCompany.Web3MobileTest",
             "processId": 3765,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 5833,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 9417,
             "exited": false
         }
     ],

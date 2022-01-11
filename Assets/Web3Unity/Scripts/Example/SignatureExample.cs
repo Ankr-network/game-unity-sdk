@@ -9,14 +9,13 @@ public class SignatureExample : MonoBehaviour
 	
 	private void Start()
 	{
-		Debug.Log("---------------------- Start ----------------------");
 		string provider_url = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
 		
 		web3 = new Web3(provider_url);
 		web3.Initialize();
 	}
 	
-	public async void Sign1()
+	public void Sign1()
 	{
 		Debug.Log($"Signature: {signature}");
 	}

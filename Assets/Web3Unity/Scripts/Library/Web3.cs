@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.Signer;
 using Nethereum.Web3;
-using UnityEngine;
 using WalletConnectSharp.NEthereum;
 using WalletConnectSharp.Unity;
 
@@ -23,9 +22,6 @@ namespace Web3Unity.Scripts.Library
         
         public void Initialize()
         {
-            // "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"
-            Debug.Log(WalletConnect.Instance);
-            Debug.Log(WalletConnect.Instance.Protocol);
             var wcProtocol = WalletConnect.Instance.Protocol;
             _client =
                 wcProtocol.CreateProvider(new Uri(_provider_url));
@@ -39,8 +35,6 @@ namespace Web3Unity.Scripts.Library
 
         public Task<string> Sign(string message)
         {
-            Debug.Log("-------------------------- Hey men --------------------------");
-            Debug.Log($"Address: {WalletConnect.ActiveSession.Accounts[0]}");
             return WalletConnect.ActiveSession.EthSign(WalletConnect.ActiveSession.Accounts[0], message);
         }
 
