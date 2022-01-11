@@ -13,7 +13,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{f0116f54-b7c4-d08a-2e0b-1376184a262a}</ProjectGuid>
+    <ProjectGuid>{799fdbea-1b78-ea81-5448-08d6c1ef35fb}</ProjectGuid>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -27,7 +27,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\Bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_2020_3_23;UNITY_2020_3;UNITY_2020;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;SCENE_TEMPLATE_MODULE;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_RUNTIME_PERMISSIONS;ENABLE_ENGINE_CODE_STRIPPING;ENABLE_ONSCREEN_KEYBOARD;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;ENABLE_VIDEO;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;UNITY_CAN_SHOW_SPLASH_SCREEN;UNITY_HAS_GOOGLEVR;UNITY_HAS_TANGO;ENABLE_SPATIALTRACKING;PLATFORM_EXTENDS_VULKAN_DEVICE;PLATFORM_HAS_MULTIPLE_SWAPCHAINS;UNITY_ANDROID_SUPPORTS_SHADOWFILES;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER;DEVELOPMENT_BUILD</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_2020_3_23;UNITY_2020_3;UNITY_2020;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;SCENE_TEMPLATE_MODULE;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_RUNTIME_PERMISSIONS;ENABLE_ENGINE_CODE_STRIPPING;ENABLE_ONSCREEN_KEYBOARD;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;ENABLE_VIDEO;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;UNITY_CAN_SHOW_SPLASH_SCREEN;UNITY_HAS_GOOGLEVR;UNITY_HAS_TANGO;ENABLE_SPATIALTRACKING;PLATFORM_EXTENDS_VULKAN_DEVICE;PLATFORM_HAS_MULTIPLE_SWAPCHAINS;UNITY_ANDROID_SUPPORTS_SHADOWFILES;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn></NoWarn>
@@ -350,115 +350,115 @@
       <HintPath>/Applications/Unity/Hub/Editor/2020.3.23f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Contracts">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Contracts.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.RPC">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.RPC.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.RPC.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Model">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Model.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Model.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/System.ValueTuple.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Besu">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Besu.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Besu.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.JsonRpc.RpcClient">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.JsonRpc.RpcClient.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.JsonRpc.RpcClient.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.BlockchainProcessing">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.BlockchainProcessing.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.BlockchainProcessing.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Parity">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Parity.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Parity.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/BouncyCastle.Crypto.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Signer">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Signer.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Signer.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Common">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/WalletConnectUnity/Packages/System.Drawing.Common/netstandard2.0/System.Drawing.Common.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/WalletConnectUnity/Packages/System.Drawing.Common/netstandard2.0/System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.StandardTokenEIP20">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.StandardTokenEIP20.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.StandardTokenEIP20.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.JsonRpc.Client">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.JsonRpc.Client.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.JsonRpc.Client.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Web3">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Web3.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Web3.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.JsonRpc.WebSocketClient">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.JsonRpc.WebSocketClient.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.JsonRpc.WebSocketClient.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/System.Reactive.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/System.Reactive.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.RLP">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.RLP.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.RLP.dll</HintPath>
     </Reference>
     <Reference Include="QRCoder.Unity">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/WalletConnectUnity/Packages/QRCoder.Unity.1.0.2/lib/net35/QRCoder.Unity.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/WalletConnectUnity/Packages/QRCoder.Unity.1.0.2/lib/net35/QRCoder.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Geth">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Geth.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Geth.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Unity">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Unity.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.JsonRpc.IpcClient">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.JsonRpc.IpcClient.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.JsonRpc.IpcClient.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Accounts">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Accounts.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Accounts.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Util">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Util.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Util.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.KeyStore">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.KeyStore.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.KeyStore.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.RPC.Reactive">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.RPC.Reactive.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.RPC.Reactive.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.HdWallet">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.HdWallet.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.HdWallet.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.ABI">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.ABI.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.ABI.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/System.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="NBitcoin">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/NBitcoin.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/NBitcoin.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/System.Buffers.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging.Core">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Common.Logging.Core.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Common.Logging.Core.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Quorum">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Quorum.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Quorum.dll</HintPath>
     </Reference>
     <Reference Include="QRCoder">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/WalletConnectUnity/Packages/QRCoder.1.3.4/lib/net35/QRCoder.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/WalletConnectUnity/Packages/QRCoder.1.3.4/lib/net35/QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="Nethereum.Hex">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Assets/Plugins/Netherium/Nethereum.Hex.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Assets/Plugins/Netherium/Nethereum.Hex.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>/Applications/Unity/Hub/Editor/2020.3.23f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -815,37 +815,37 @@
       <HintPath>/Applications/Unity/Hub/Editor/2020.3.23f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/netstandard.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.PlasticSCM.Editor">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.PlasticSCM.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Rider.Editor">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
-      <HintPath>/Users/kirill/RiderProjects/Web3MobileTest/Library/ScriptAssemblies/Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.PlasticSCM.Editor">
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.PlasticSCM.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Rider.Editor">
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>/Users/kirill/RiderProjects/mirage-unity-sdk/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup></ItemGroup>
