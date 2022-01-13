@@ -22,4 +22,9 @@ public class CustomSceneManager : MonoBehaviour
         // move to previous scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
+
+    public void LoadScene(string sceneName) {
+        // move to previous scene
+        SceneManager.LoadScene(sceneName);
+    }
 }
