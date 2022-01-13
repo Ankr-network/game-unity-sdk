@@ -22,7 +22,7 @@ namespace Web3Unity.Scripts.Library
         
         public void Initialize()
         {
-            var wcProtocol = WalletConnect.Instance.Protocol;
+            var wcProtocol = WalletConnect.Instance.Session;
             _client =
                 wcProtocol.CreateProvider(new Uri(_provider_url));
             _provider = new Nethereum.Web3.Web3(_client);
