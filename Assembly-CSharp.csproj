@@ -53,12 +53,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Web3Unity\Scripts\Example\CustomSceneManager.cs" />
+    <Compile Include="Assets\Web3Unity\UseCases\LinkingAccountWallet\AccountLinkingExample.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Example\ERC721Example.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Example\SignatureExample.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Library\Utils.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Library\Web3.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Library\Contract.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Example\ERC20Example.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Example\Utils\WebRequests.cs" />
     <Reference Include="UnityEngine">
       <HintPath>/Applications/Unity/Hub/Editor/2020.3.23f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

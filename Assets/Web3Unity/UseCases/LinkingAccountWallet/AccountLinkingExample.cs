@@ -1,6 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using Newtonsoft.Json;
+using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using Utility.Utils;
 using Web3Unity.Scripts.Library;
+
+public class RequestPayload
+{
+	public string message;
+	public string signature;
+}
+
+public class RequestAnswer
+{
+	public string Address;
+}
 
 public class AccountLinkingExample : MonoBehaviour
 {
@@ -10,6 +25,8 @@ public class AccountLinkingExample : MonoBehaviour
 	private Web3 web3;
     [SerializeField]
     private Text address;
+
+	private string url = "http://2.56.91.78:8080/account/verification/address";
 	
 	private void Start()
 	{
@@ -21,9 +38,11 @@ public class AccountLinkingExample : MonoBehaviour
 
 	public async void Sign()
 	{
-		Debug.Log(web3);
 		signature = await web3.Sign(message);
 		Debug.Log($"Signature: {signature}");
+
+		string address = await SendSignatue(signature);
+		Debug.Log($"Answer: {address}");
 
         ShowAdressinUI();
 	}
@@ -31,5 +50,21 @@ public class AccountLinkingExample : MonoBehaviour
 	public void ShowAdressinUI()
 	{
         address.text = signature;
+	}
+
+	private async Task<string> SendSignatue(string signature)
+	{
+		var requestPayload = new RequestPayload
+		{
+			message = message,
+			signature = signature
+		};
+		
+		string payload = JsonConvert.SerializeObject(requestPayload);
+		
+		UnityWebRequest webRequest = WebRequests.SendJSON(url, payload);
+		await webRequest.SendWebRequest();
+		RequestAnswer data = JsonConvert.DeserializeObject<RequestAnswer>(webRequest.downloadHandler.text);
+		return data.Address;
 	}
 }

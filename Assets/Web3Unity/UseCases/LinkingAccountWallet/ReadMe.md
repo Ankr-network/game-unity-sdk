@@ -1,10 +1,10 @@
-# Linking Account Wallet
+# Bind wallet with account
 
-This is an example for one of the use cases for this sdk : the linking of a crypto wallet to a player.
+This is an example for one of the use cases for this sdk : the linking of a crypto wallet to a player account.
 
-## 1. Signature
+### Steps
 
-To start this use case we need to call web3.Initialize method after login in metamask
+To start this use case we need to make instance of `Web3` class and call `Initialize` method after login in metamask
 
 ```c#
 string provider_url = "<ethereum node or infura url>";
@@ -14,19 +14,34 @@ web3.Initialize();
 ```
 ---
 
-Once Initialized you can then send a signature request. To do that, message and private key are needed. The message can be whatever you want, the key will be given via your 3rd party wallet.
+To prove ownership of crypto address player should sign arbitrary string with not zero length. We recommend using uuid strings.<br>
+3rd party wallet will provide sign functionality. To start this step call method `Sign`.
 
 ```c#
-string message = "Hi i am a message !"
+string message = "Hi I am a message !"
 string signature = await web3.Sign(message);
 ```
 
-web3.Sign(string) will return the result of the signature process. If the result is sucessfull it will return the User's address. 
-You can then save that adress in your database as a means of authentication.
+`Web3.Sign(string)` will return the the signature.
 
 ---
-To verify your user you can then use the code below to retrieve the address from the message and signature. If the address retrieved is the same as the one you had stored the verification is then successfull.
-```c#
-string address = web3.CheckSignature(message, signature);
-Debug.Log($"Address from signature: {address}");
+To continue that process you need to deploy [backend side](https://github.com/mirage-xyz/mirage-go-sdk). Please proceed through deploy steps in [readme](https://github.com/mirage-xyz/mirage-go-sdk/blob/main/README.md).
+To verify user you need to call rest api method POST `/account/verification/address` with payload
+
+```json
+{
+  "message": "Hi I am a message !", // your message
+  "signature":"0x..." // result of Web3.Sign()
+}
+```
+
+This method will get address of user from signature that you can write to database.
+
+```go
+...
+sigPublicKey := getAddrFromSign(input.Signature, data)
+address := string(sigPublicKey);
+// add address to a database
+...
+
 ```

@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "5055ca1b",
         "name": "com.DefaultCompany.Web3MobileTest",
-        "processId": 9417,
+        "processId": 19397,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -216,6 +216,90 @@
             "deviceId": "5055ca1b",
             "name": "com.DefaultCompany.Web3MobileTest",
             "processId": 9417,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 15608,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 16832,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 22039,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 23257,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 29063,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 32345,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 3278,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 7733,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 9609,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 10625,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 15849,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 17310,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 18596,
+            "exited": false
+        },
+        {
+            "deviceId": "5055ca1b",
+            "name": "com.DefaultCompany.Web3MobileTest",
+            "processId": 19397,
             "exited": false
         }
     ],
