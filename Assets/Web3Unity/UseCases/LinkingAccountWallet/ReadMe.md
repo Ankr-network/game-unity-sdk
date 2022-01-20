@@ -7,7 +7,7 @@ This is an example for one of the use cases for this sdk : the linking of a cryp
 To start this use case we need to make instance of `Web3` class and call `Initialize` method after login in metamask
 
 ```c#
-string provider_url = "<ethereum node or infura url>";
+string provider_url = "<ethereum node url>";
 		
 Web3 web3 = new Web3(provider_url);
 web3.Initialize();

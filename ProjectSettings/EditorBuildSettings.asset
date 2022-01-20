@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Web3Unity/UseCases/LinkingAccountWallet/MobileLinkingAccountWallet.unity
     guid: 70e8876719696c84bad52c86e1d4e49b
+  - enabled: 1
+    path: Assets/Web3Unity/UseCases/UpdateNFT/UpdateNftExample.unity
+    guid: dae69e8768644e0c82a60e9d3c974a37
   m_configObjects: {}

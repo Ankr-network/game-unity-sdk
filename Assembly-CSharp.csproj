@@ -61,6 +61,7 @@
     <Compile Include="Assets\Web3Unity\Scripts\Library\Contract.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Example\ERC20Example.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Example\Utils\WebRequests.cs" />
+    <Compile Include="Assets\Web3Unity\UseCases\UpdateNFT\UpdateNftExample.cs" />
     <Reference Include="UnityEngine">
       <HintPath>/Applications/Unity/Hub/Editor/2020.3.23f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

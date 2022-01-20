@@ -14,7 +14,7 @@ Demo:<br>
 
 To start work with plugin
 ```c#
-string provider_url = "<ethereum node or infura url>";
+string provider_url = "<ethereum node url>";
 		
 Web3 web3 = new Web3(provider_url);
 ```
