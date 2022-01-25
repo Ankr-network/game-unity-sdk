@@ -1,10 +1,11 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
-using Web3Unity.Scripts.Library;
+using Web3Unity.Core;
 
 public class ItemInfo
 {

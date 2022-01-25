@@ -2,7 +2,7 @@
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 using WalletConnectSharp.Unity;
-using Web3Unity.Scripts.Library;
+using Web3Unity.Core;
 
 public class ERC721Example : MonoBehaviour
 {

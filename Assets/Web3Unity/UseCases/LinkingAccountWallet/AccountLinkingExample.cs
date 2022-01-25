@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using Utility.Utils;
-using Web3Unity.Scripts.Library;
+using Web3Unity.Core;
 
 public class RequestPayload
 {
@@ -34,7 +35,7 @@ public class AccountLinkingExample : MonoBehaviour
 	
 	private void Start()
 	{
-		string provider_url = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
+		var provider_url = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
 		
 		web3 = new Web3(provider_url);
 		// Get the credential info from the 3rd party wallet
@@ -50,7 +51,7 @@ public class AccountLinkingExample : MonoBehaviour
 		signature = await web3.Sign(message);
 		Debug.Log($"Signature: {signature}");
 		
-		string address = await SendSignatue(signature);
+		var address = await SendSignatue(signature);
 		Debug.Log($"Answer: {address}");
 
         	ShowAdressinUI();
@@ -69,11 +70,11 @@ public class AccountLinkingExample : MonoBehaviour
 			signature = signature
 		};
 		
-		string payload = JsonConvert.SerializeObject(requestPayload);
+		var payload = JsonConvert.SerializeObject(requestPayload);
 		
-		UnityWebRequest webRequest = WebRequests.SendJSON(url, payload);
+		var webRequest = WebRequests.SendJSON(url, payload);
 		await webRequest.SendWebRequest();
-		RequestAnswer data = JsonConvert.DeserializeObject<RequestAnswer>(webRequest.downloadHandler.text);
+		var data = JsonConvert.DeserializeObject<RequestAnswer>(webRequest.downloadHandler.text);
 		return data.Address;
 	}
 }
