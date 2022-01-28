@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using WalletConnectSharp.Unity.Models;
 using Web3Unity.Scripts.Example;
 
-namespace Assets.Scripts.WalletConnectSharp.Unity.UI
+namespace Plugins.WalletConnectSharp.Unity
 {
     internal class SupportedWalletList
     {

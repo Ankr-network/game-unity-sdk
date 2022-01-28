@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using WalletConnectSharp.Core;
 using WalletConnectSharp.Unity;
 
-namespace Web3Unity.Scripts.Example
+namespace Web3Unity.Example
 {
 	public class ConnectionController : MonoBehaviour
 	{
