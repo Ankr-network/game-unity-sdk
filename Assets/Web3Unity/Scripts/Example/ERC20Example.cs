@@ -4,7 +4,8 @@ using Nethereum.Contracts;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 using WalletConnectSharp.Unity;
-using Web3Unity.Scripts.Library;
+using Web3Unity.Core;
+using Contract = Web3Unity.Core.Contract;
 
 [Function("balanceOf", "uint256")]
 public class BalanceOfMessage : FunctionMessage

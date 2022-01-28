@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Web3Unity.Scripts.Library;
+using Web3Unity.Core;
 
 public class SignatureExample : MonoBehaviour
 {
