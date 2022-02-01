@@ -6,7 +6,7 @@ using Nethereum.RPC.Eth.DTOs;
 
 namespace MirageSDK.Core.Infrastructure
 {
-	public interface IMirageContract
+	public interface IContract
 	{
 		public Task<string> CallMethod(string methodName, object[] arguments, string gas = null);
 		Task<Transaction> GetTransactionInfo(string receipt);

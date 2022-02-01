@@ -13,14 +13,14 @@ using WalletConnectSharp.Unity;
 
 namespace MirageSDK.Core.Implementation
 {
-	internal class MirageContract : IMirageContract
+	internal class Contract : IContract
 	{
 		private readonly string _abi;
 		private readonly string _address;
 		private readonly IWeb3 _web3;
 		private readonly IClient _client;
 
-		public MirageContract(IWeb3 web3, IClient client, string address, string abi)
+		public Contract(IWeb3 web3, IClient client, string address, string abi)
 		{
 			_web3 = web3;
 			_client = client;

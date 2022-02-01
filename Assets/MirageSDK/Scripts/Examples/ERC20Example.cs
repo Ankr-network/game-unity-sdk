@@ -11,7 +11,7 @@ namespace MirageSDK.Examples
 {
 	public class ERC20Example : MonoBehaviour
 	{
-		private IMirageContract _erc20MirageContract;
+		private IContract _erc20Contract;
 
 		private void Start()
 		{
@@ -21,15 +21,15 @@ namespace MirageSDK.Examples
 			const string providerURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
 
 			var mirageSDKWrapper = MirageSDKWrapper.GetInitializedInstance(providerURL);
-			_erc20MirageContract = mirageSDKWrapper.GetContract(contractAddress, abi);
+			_erc20Contract = mirageSDKWrapper.GetContract(contractAddress, abi);
 		}
 
 		public async void CallMint()
 		{
-			var receipt = await _erc20MirageContract.CallMethod("mint", Array.Empty<object>());
+			var receipt = await _erc20Contract.CallMethod("mint", Array.Empty<object>());
 			Debug.Log($"Receipt: {receipt}");
 
-			var trx = await _erc20MirageContract.GetTransactionInfo(receipt);
+			var trx = await _erc20Contract.GetTransactionInfo(receipt);
 
 			Debug.Log($"Nonce: {trx.Nonce}");
 		}
@@ -41,13 +41,13 @@ namespace MirageSDK.Examples
 			{
 				Owner = activeSessionAccount
 			};
-			var balance = await _erc20MirageContract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
+			var balance = await _erc20Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
 		}
 
 		public async void GetEvents()
 		{
-			var events = await _erc20MirageContract.GetAllChanges<TransferEventDTO>();
+			var events = await _erc20Contract.GetAllChanges<TransferEventDTO>();
 
 			foreach (var ev in events)
 			{

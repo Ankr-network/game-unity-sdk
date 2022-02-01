@@ -26,9 +26,9 @@ namespace MirageSDK.Core.Implementation
 			return new MirageSDKWrapper(providerURL);
 		}
 
-		public IMirageContract GetContract(string address, string abi)
+		public IContract GetContract(string address, string abi)
 		{
-			return new MirageContract(_provider, _client, address, abi);
+			return new Contract(_provider, _client, address, abi);
 		}
 
 		public Task<string> Sign(string message)

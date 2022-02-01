@@ -4,7 +4,7 @@ namespace MirageSDK.Core.Infrastructure
 {
 	public interface IMirageSDK
 	{
-		IMirageContract GetContract(string address, string abi);
+		IContract GetContract(string address, string abi);
 		Task<string> Sign(string message);
 		string CheckSignature(string message, string signature);
 	}

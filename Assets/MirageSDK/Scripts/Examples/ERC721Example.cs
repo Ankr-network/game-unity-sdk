@@ -11,7 +11,7 @@ namespace MirageSDK.Examples
 {
 	public class ERC721Example : MonoBehaviour
 	{
-		private IMirageContract _erc721MirageContract;
+		private IContract _erc721Contract;
 
 		private void Start()
 		{
@@ -20,15 +20,15 @@ namespace MirageSDK.Examples
 			const string providerURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
 		
 			var web3 = MirageSDKWrapper.GetInitializedInstance(providerURL);
-			_erc721MirageContract = web3.GetContract(contractAddress, abi);
+			_erc721Contract = web3.GetContract(contractAddress, abi);
 		}
 
 		public async void CallMint()
 		{
-			var receipt = await _erc721MirageContract.CallMethod("mint", Array.Empty<object>());
+			var receipt = await _erc721Contract.CallMethod("mint", Array.Empty<object>());
 			Debug.Log($"Receipt: {receipt}");
 
-			var trx = await _erc721MirageContract.GetTransactionInfo(receipt);
+			var trx = await _erc721Contract.GetTransactionInfo(receipt);
 		
 			Debug.Log($"Nonce: {trx.Nonce}");
 		}
@@ -39,13 +39,13 @@ namespace MirageSDK.Examples
 			{
 				Owner = WalletConnect.ActiveSession.Accounts[0]
 			};
-			var balance = await _erc721MirageContract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
+			var balance = await _erc721Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
 		}
 	
 		public async void GetEvents()
 		{
-			var events = await _erc721MirageContract.GetAllChanges<TransferEventDTO>();
+			var events = await _erc721Contract.GetAllChanges<TransferEventDTO>();
 
 			foreach (var ev in events)
 			{
