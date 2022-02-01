@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using WalletConnectSharp.Unity.Models;
-using Web3Unity.Scripts.Example;
+using MirageSDK.Scripts.Example;
 
 namespace Plugins.WalletConnectSharp.Unity
 {

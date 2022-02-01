@@ -71,3 +71,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 *.csproj
+ProjectSettings/EditorBuildSettings.asset
+UserSettings/EditorUserSettings.asset

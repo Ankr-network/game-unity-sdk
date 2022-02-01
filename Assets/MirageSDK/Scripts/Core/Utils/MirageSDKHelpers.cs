@@ -1,10 +1,17 @@
+using System.Numerics;
 using System.Text;
 using UnityEngine.Networking;
 
-namespace Utility.Utils
+namespace MirageSDK.Core.Utils
 {
-	public class WebRequests
+	public static class MirageSDKHelpers
 	{
+		public static string ConvertNumber(string value)
+		{
+			var bnValue = BigInteger.Parse(value);
+			return "0x" + bnValue.ToString("X");
+		}
+
 		public static UnityWebRequest SendJSON(string url, string json)
 		{
 			var requestU = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
@@ -16,7 +23,7 @@ namespace Utility.Utils
 			return requestU;
 		}
 
-		protected static byte[] GetBytes(string str)
+		private static byte[] GetBytes(string str)
 		{
 			var bytes = Encoding.UTF8.GetBytes(str);
 			return bytes;

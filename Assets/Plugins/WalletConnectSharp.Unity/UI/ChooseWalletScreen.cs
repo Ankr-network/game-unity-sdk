@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using Plugins.WalletConnectSharp.Unity;
 using UnityEngine;
 using UnityEngine.UI;
-using Web3Unity.Scripts.Example;
+using MirageSDK.Scripts.Example;
 
 namespace WalletConnectSharp.Unity.UI
 {

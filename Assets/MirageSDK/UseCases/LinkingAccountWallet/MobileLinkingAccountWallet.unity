@@ -376,8 +376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a07a67fc8ff4f4d8ced3507a45c1be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: Hahaha!
-  address: {fileID: 1908090614}
+  _message: Hahaha!
+  _address: {fileID: 1908090614}
 --- !u!1 &285040555
 GameObject:
   m_ObjectHideFlags: 0
