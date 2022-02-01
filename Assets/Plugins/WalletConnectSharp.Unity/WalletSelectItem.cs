@@ -1,6 +1,6 @@
 using System;
 
-namespace Web3Unity.Scripts.Example
+namespace MirageSDK.Scripts.Example
 {
 	[Serializable]
 	public class WalletSelectItem

@@ -1,9 +1,9 @@
-using Assets.Scripts.WalletConnectSharp.Unity.UI;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Plugins.WalletConnectSharp.Unity;
 using UnityEngine;
 using UnityEngine.UI;
-using Web3Unity.Scripts.Example;
+using MirageSDK.Scripts.Example;
 
 namespace WalletConnectSharp.Unity.UI
 {
