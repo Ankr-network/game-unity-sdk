@@ -2,7 +2,7 @@
 using MirageSDK.Core.Infrastructure;
 using UnityEngine;
 
-namespace MirageSDK.Examples
+namespace MirageSDK.Examples.SignatureExample
 {
 	public class SignatureExample : MonoBehaviour
 	{

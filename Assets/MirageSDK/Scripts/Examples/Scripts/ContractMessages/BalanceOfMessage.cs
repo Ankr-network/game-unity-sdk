@@ -7,6 +7,6 @@ namespace MirageSDK.Examples.ContractMessages
 	public class BalanceOfMessage : FunctionMessage
 	{
 		[Parameter("address", "_owner", 1)]
-		public virtual string Owner { get; set; }
+		public string Owner { get; set; }
 	}
 }
