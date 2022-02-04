@@ -73,3 +73,4 @@ crashlytics-build.properties
 *.csproj
 ProjectSettings/EditorBuildSettings.asset
 UserSettings/EditorUserSettings.asset
+*.sln
