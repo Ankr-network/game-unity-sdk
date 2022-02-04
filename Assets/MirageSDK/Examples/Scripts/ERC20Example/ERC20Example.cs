@@ -2,12 +2,13 @@
 using System.Numerics;
 using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
-using MirageSDK.Examples.ContractMessages;
-using MirageSDK.Examples.DTO;
+using MirageSDK.Examples.Scripts.ContractMessages;
+using MirageSDK.Examples.Scripts.DTO;
+using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 using WalletConnectSharp.Unity;
 
-namespace MirageSDK.Examples.ERC20Example
+namespace MirageSDK.Examples.Scripts.ERC20Example
 {
 	public class ERC20Example : MonoBehaviour
 	{
@@ -44,7 +45,14 @@ namespace MirageSDK.Examples.ERC20Example
 
 		public async void GetEvents()
 		{
-			var events = await _erc20Contract.GetAllChanges<TransferEventDTO>();
+			var filters = new EventFilterData
+			{
+				fromBlock = BlockParameter.CreateEarliest(),
+				toBlock = BlockParameter.CreateLatest(),
+				filterTopic1 = new object[] { "Transfer" }
+			};
+			var events = await _erc20Contract.GetAllChanges<TransferEventDTO>(filters);
+
 
 			foreach (var ev in events)
 			{

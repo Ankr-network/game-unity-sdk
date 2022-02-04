@@ -1,4 +1,4 @@
-namespace MirageSDK.Examples.ERC20Example
+namespace MirageSDK.Examples.Scripts.ERC20Example
 {
 	public class ERC20ContractInformation
 	{

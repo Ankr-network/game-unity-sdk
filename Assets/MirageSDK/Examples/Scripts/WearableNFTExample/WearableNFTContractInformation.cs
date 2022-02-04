@@ -1,4 +1,4 @@
-namespace MirageSDK.Examples.WearableNFTExample
+namespace MirageSDK.Examples.Scripts.WearableNFTExample
 {
 	public class WearableNFTContractInformation
 	{

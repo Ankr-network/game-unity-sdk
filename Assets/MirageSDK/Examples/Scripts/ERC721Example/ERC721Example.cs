@@ -2,12 +2,12 @@
 using System.Numerics;
 using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
-using MirageSDK.Examples.ContractMessages;
-using MirageSDK.Examples.DTO;
+using MirageSDK.Examples.Scripts.ContractMessages;
+using MirageSDK.Examples.Scripts.DTO;
 using UnityEngine;
 using WalletConnectSharp.Unity;
 
-namespace MirageSDK.Examples.ERC721Example
+namespace MirageSDK.Examples.Scripts.ERC721Example
 {
 	public class ERC721Example : MonoBehaviour
 	{

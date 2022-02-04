@@ -2,11 +2,11 @@ using System.Numerics;
 using Cysharp.Threading.Tasks;
 using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
-using MirageSDK.Examples.ContractMessages;
+using MirageSDK.Examples.Scripts.ContractMessages;
 using UnityEngine;
 using WalletConnectSharp.Unity;
 
-namespace MirageSDK.Examples.WearableNFTExample
+namespace MirageSDK.Examples.Scripts.WearableNFTExample
 {
 	/// <summary>
 	/// You need to have a minter role for this example to work.

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using WalletConnectSharp.Unity;
 
-namespace MirageSDK.Examples
+namespace MirageSDK.Examples.Scripts
 {
     public class CustomSceneManager : MonoBehaviour
     {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using WalletConnectSharp.Core;
 using WalletConnectSharp.Unity;
 
-namespace MirageSDK.Examples
+namespace MirageSDK.Examples.Scripts
 {
 	public class ConnectionController : MonoBehaviour
 	{

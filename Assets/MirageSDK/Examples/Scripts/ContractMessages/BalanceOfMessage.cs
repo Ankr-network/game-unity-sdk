@@ -1,7 +1,7 @@
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace MirageSDK.Examples.ContractMessages
+namespace MirageSDK.Examples.Scripts.ContractMessages
 {
 	[Function("balanceOf", "uint256")]
 	public class BalanceOfMessage : FunctionMessage

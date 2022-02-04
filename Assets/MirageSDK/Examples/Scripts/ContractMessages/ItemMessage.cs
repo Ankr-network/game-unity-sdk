@@ -1,7 +1,7 @@
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace MirageSDK.Examples.ContractMessages
+namespace MirageSDK.Examples.Scripts.ContractMessages
 {
 	[Function("getHat", "uint256")]
 	public class ItemMessage : FunctionMessage

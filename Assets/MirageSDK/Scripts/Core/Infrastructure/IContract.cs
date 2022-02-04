@@ -9,7 +9,7 @@ namespace MirageSDK.Core.Infrastructure
 {
 	public interface IContract
 	{
-		Task<string> CallMethod(string methodName, object[] arguments, string gas = null);
+		Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null);
 		Task<Transaction> GetTransactionInfo(string receipt);
 
 		Task<string> SendTransaction(
