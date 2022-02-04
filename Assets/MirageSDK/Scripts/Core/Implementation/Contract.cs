@@ -13,6 +13,15 @@ using WalletConnectSharp.Unity;
 
 namespace MirageSDK.Core.Implementation
 {
+	public class EventFilterData
+	{
+		public object[] filterTopic1;
+		public object[] filterTopic2;
+		public object[] filterTopic3;
+		public BlockParameter fromBlock;
+		public BlockParameter toBlock;
+	}
+
 	internal class Contract : IContract
 	{
 		private readonly string _abi;
@@ -35,13 +44,48 @@ namespace MirageSDK.Core.Implementation
 			return contract.QueryAsync<TFieldData, TReturnType>(requestData);
 		}
 
-		public Task<List<EventLog<TEvDto>>> GetAllChanges<TEvDto>() where TEvDto : IEventDTO, new()
+		public Task<List<EventLog<TEvDto>>> GetAllChanges<TEvDto>(EventFilterData evFilter)
+			where TEvDto : IEventDTO, new()
 		{
 			var eventHandler = _web3.Eth.GetEvent<TEvDto>(_address);
 
-			var filterAllTransferEventsForContract = eventHandler.CreateFilterInput();
+			var filters = ApplyFilters(eventHandler, evFilter);
 
-			return eventHandler.GetAllChangesAsync(filterAllTransferEventsForContract);
+			return eventHandler.GetAllChangesAsync(filters);
+		}
+
+		private NewFilterInput ApplyFilters<TEvDto>(Event<TEvDto> eventHandler, EventFilterData evFilter = null)
+			where TEvDto : IEventDTO, new()
+		{
+			NewFilterInput filters = null;
+			if (evFilter == null)
+			{
+				filters = eventHandler.CreateFilterInput();
+			}
+			else
+			{
+				if (evFilter.filterTopic1 != null && evFilter.filterTopic2 != null && evFilter.filterTopic3 != null)
+				{
+					filters = eventHandler.CreateFilterInput(evFilter.filterTopic1, evFilter.filterTopic2,
+						evFilter.filterTopic3, evFilter.fromBlock, evFilter.toBlock);
+				}
+				else if (evFilter.filterTopic1 != null && evFilter.filterTopic2 != null)
+				{
+					filters = eventHandler.CreateFilterInput(evFilter.filterTopic1, evFilter.filterTopic2,
+						evFilter.fromBlock, evFilter.toBlock);
+				}
+				else if (evFilter.filterTopic1 != null)
+				{
+					filters = eventHandler.CreateFilterInput(evFilter.filterTopic1, evFilter.fromBlock,
+						evFilter.toBlock);
+				}
+				else
+				{
+					filters = eventHandler.CreateFilterInput(evFilter.fromBlock, evFilter.toBlock);
+				}
+			}
+
+			return filters;
 		}
 
 		public Task<string> CallMethod(string methodName, object[] arguments, string gas = null)
@@ -61,7 +105,7 @@ namespace MirageSDK.Core.Implementation
 		}
 
 		public async Task<string> SendTransaction(
-			string to, 
+			string to,
 			string data = null,
 			string value = null,
 			string gas = null)
