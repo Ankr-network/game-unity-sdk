@@ -88,7 +88,7 @@ namespace MirageSDK.Core.Implementation
 			return filters;
 		}
 
-		public Task<string> CallMethod(string methodName, object[] arguments, string gas = null)
+		public Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null)
 		{
 			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
 			var raw = _web3.Eth.GetContract(_abi, _address)
