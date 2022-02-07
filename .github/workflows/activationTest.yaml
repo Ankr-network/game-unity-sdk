@@ -1,0 +1,14 @@
+﻿name: Test activation
+on:
+  workflow_dispatch: {}
+jobs:
+  activation:
+    name: Test license activation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Unity - Activate
+        uses: game-ci/unity-activate@v1.3
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
