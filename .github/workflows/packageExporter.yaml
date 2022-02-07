@@ -1,0 +1,35 @@
+﻿name: Export Package
+on: workflow_dispatch
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+  UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+
+jobs:
+  build:
+    name: Build UnityPackage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout repository
+      - uses: actions/cache@v2
+        name: Caching library
+        with:
+          path: Library
+          key: Library
+          restore-keys: |
+            Library-
+      # Build
+      - name: Build .unitypackage
+        uses: game-ci/unity-builder@v2
+        with:
+          unityVersion: 2020.3.16f1
+          buildMethod: PackageExporter.Export # Path to the export method containing the namespace.
+
+      # Upload
+      - name: Upload .unitypackage
+        uses: actions/upload-artifact@v2
+        with:
+          name: MirageSDK
+          path: Build/MirageSDK.unitypackage
