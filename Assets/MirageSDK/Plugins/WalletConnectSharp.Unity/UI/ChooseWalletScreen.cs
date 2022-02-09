@@ -5,6 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using MirageSDK.Scripts.Example;
 
+#if UNITY_IOS
+using System.Linq;
+#endif
+
 namespace WalletConnectSharp.Unity.UI
 {
     public class ChooseWalletScreen : MonoBehaviour

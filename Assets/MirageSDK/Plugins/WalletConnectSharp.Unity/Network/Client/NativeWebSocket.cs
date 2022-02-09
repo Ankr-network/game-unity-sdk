@@ -12,104 +12,11 @@ using System.Runtime.InteropServices;
 #endif
 using UnityEngine;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine.Events;
 
 namespace NativeWebSocket
 {
-    public class MainThreadUtil : MonoBehaviour
-    {
-        private long mainThreadId;
-        public static MainThreadUtil Instance { get; private set; }
-        public static SynchronizationContext synchronizationContext { get; private set; }
-
-        private Queue<UnityAction> actions = new Queue<UnityAction>();
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        public static void Setup()
-        {
-            Instance = new GameObject("MainThreadUtil")
-                .AddComponent<MainThreadUtil>();
-            synchronizationContext = SynchronizationContext.Current;
-        }
-
-        public static void Run(IEnumerator waitForUpdate)
-        {
-            synchronizationContext.Post(_ => Instance.StartCoroutine(
-                waitForUpdate), null);
-        }
-
-        public static void Run(UnityAction action)
-        {
-            if (Thread.CurrentThread.ManagedThreadId == Instance.mainThreadId)
-                action(); //If we trying to run this in the main thread, then we can just run it now
-            else
-                Instance.actions.Enqueue(action);
-        }
-
-        void Update()
-        {
-            while (actions.Count > 0)
-            {
-                var action = actions.Dequeue();
-
-                if (action != null)
-                {
-                    action();
-                }
-            }
-        }
-
-        void Awake()
-        {
-            gameObject.hideFlags = HideFlags.HideAndDontSave;
-            DontDestroyOnLoad(gameObject);
-            mainThreadId = Thread.CurrentThread.ManagedThreadId;
-        }
-    }
-
-    public class WaitForUpdate : CustomYieldInstruction
-    {
-        public override bool keepWaiting
-        {
-            get { return false; }
-        }
-
-        public MainThreadAwaiter GetAwaiter()
-        {
-            var awaiter = new MainThreadAwaiter();
-            MainThreadUtil.Run(CoroutineWrapper(this, awaiter));
-            return awaiter;
-        }
-
-        public class MainThreadAwaiter : INotifyCompletion
-        {
-            Action continuation;
-
-            public bool IsCompleted { get; set; }
-
-            public void GetResult()
-            {
-            }
-
-            public void Complete()
-            {
-                IsCompleted = true;
-                continuation?.Invoke();
-            }
-
-            void INotifyCompletion.OnCompleted(Action continuation)
-            {
-                this.continuation = continuation;
-            }
-        }
-
-        public static IEnumerator CoroutineWrapper(IEnumerator theWorker, MainThreadAwaiter awaiter)
-        {
-            yield return theWorker;
-            awaiter.Complete();
-        }
-    }
-
     public delegate void WebSocketOpenEventHandler();
 
     public delegate void WebSocketMessageEventHandler(byte[] data);
@@ -758,7 +665,7 @@ namespace NativeWebSocket
             }
             finally
             {
-                await new WaitForUpdate();
+                await UniTask.SwitchToMainThread();
                 OnClose?.Invoke(closeCode);
             }
         }
