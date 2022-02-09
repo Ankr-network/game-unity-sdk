@@ -1,0 +1,8 @@
+{
+  "name": "WalletConnectSharp",
+  "references": [
+    "UniTask",
+    "WalletConnectSharp.Core",
+    "endel.nativewebsocket"
+  ]
+}

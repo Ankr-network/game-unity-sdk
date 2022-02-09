@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
@@ -121,7 +122,7 @@ namespace WalletConnectSharp.Unity
 			}
 		}
 
-		public async Task<WCSessionData> Connect()
+		public async Task<WCSessionData> Connect(CancellationToken cancellationToken = default)
 		{
 			SavedSession savedSession = null;
 			if (PlayerPrefs.HasKey(SessionKey))
@@ -157,7 +158,7 @@ namespace WalletConnectSharp.Unity
 
 						SetupEvents();
 
-						return await CompleteConnect();
+						return await CompleteConnect(cancellationToken);
 					}
 					else
 					{
@@ -180,21 +181,21 @@ namespace WalletConnectSharp.Unity
 			}
 
 			//default will be set by library
-			ICipher ciper = null;
+			ICipher cipher = null;
 
 		#if UNITY_WEBGL
-            ciper = new WebGlAESCipher();
+            cipher = new WebGlAESCipher();
 		#endif
 
 			Session = savedSession != null
 				? new WalletConnectUnitySession(savedSession, this, _transport)
-				: new WalletConnectUnitySession(AppData, this, customBridgeUrl, _transport, ciper, chainId);
+				: new WalletConnectUnitySession(AppData, this, customBridgeUrl, _transport, cipher, chainId);
 
 			SetupDefaultWallet().Forget();
 
 			SetupEvents();
 
-			return await CompleteConnect();
+			return await CompleteConnect(cancellationToken);
 		}
 
 		private void SetupEvents()
@@ -231,7 +232,7 @@ namespace WalletConnectSharp.Unity
 			NewSessionConnected?.Invoke(e as WalletConnectUnitySession ?? Session);
 		}
 
-		private async Task<WCSessionData> CompleteConnect()
+		private async Task<WCSessionData> CompleteConnect(CancellationToken cancellationToken)
 		{
 			Debug.Log("Waiting for Wallet connection");
 

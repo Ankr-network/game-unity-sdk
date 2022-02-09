@@ -485,7 +485,7 @@ namespace WalletConnectSharp.Core
 
 			ReadyForUserPrompt = true;
 
-			//Debug.Log("[WalletConnect] Session Ready for Wallet");
+			Debug.Log("[WalletConnect] Session Ready for Wallet");
 
 			var response = await eventCompleted.Task;
 

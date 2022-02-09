@@ -1,6 +1,6 @@
 using System.Text;
 using System.Linq;
-using Nethereum.Util.Keccak;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace WalletConnectSharp.Core.Utils
 {

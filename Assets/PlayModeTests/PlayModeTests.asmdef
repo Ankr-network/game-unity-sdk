@@ -1,0 +1,11 @@
+{
+    "name": "PlayModeTests",
+    "references": [
+        "UniTask",
+        "WalletConnectSharp",
+        "WalletConnectSharp.Core"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}
