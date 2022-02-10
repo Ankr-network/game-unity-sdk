@@ -54,10 +54,9 @@ namespace MirageSDK.Core.Implementation
 			return eventHandler.GetAllChangesAsync(filters);
 		}
 
-		private NewFilterInput ApplyFilters<TEvDto>(Event<TEvDto> eventHandler, EventFilterData evFilter = null)
-			where TEvDto : IEventDTO, new()
+		private static NewFilterInput ApplyFilters(EventBase eventHandler, EventFilterData evFilter = null)
 		{
-			NewFilterInput filters = null;
+			NewFilterInput filters;
 			if (evFilter == null)
 			{
 				filters = eventHandler.CreateFilterInput();

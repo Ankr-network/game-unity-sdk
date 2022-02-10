@@ -23,7 +23,7 @@ namespace WalletConnectSharp.Unity
 	[RequireComponent(typeof(NativeWebSocketTransport))]
 	public class WalletConnect : BindableMonoBehavior
 	{
-		public const string SessionKey = "__WALLETCONNECT_SESSION__";
+		private const string SessionKey = "__WALLETCONNECT_SESSION__";
 
 		/// <summary>
 		/// FOR FUTURE USE - when using W.C. for iOS this list will limit the wallets
@@ -60,7 +60,7 @@ namespace WalletConnectSharp.Unity
 
 		public static WalletConnectUnitySession ActiveSession => Instance.Session;
 
-		public string ConnectURL => Protocol.URI;
+		public string ConnectURL => Session.URI;
 
 		public bool autoSaveAndResume = true;
 		public bool connectOnAwake = false;
@@ -82,15 +82,6 @@ namespace WalletConnectSharp.Unity
 		public WalletConnectEventWithSession ResumedSessionConnected;
 
 		public WalletConnectUnitySession Session { get; private set; }
-
-		[Obsolete("Use Session instead of Protocol")]
-		public WalletConnectUnitySession Protocol
-		{
-			get => Session;
-			private set => Session = value;
-		}
-
-		public bool Connected => Protocol.Connected;
 
 		[SerializeField] public ClientMeta AppData;
 
@@ -124,12 +115,7 @@ namespace WalletConnectSharp.Unity
 
 		public async Task<WCSessionData> Connect(CancellationToken cancellationToken = default)
 		{
-			SavedSession savedSession = null;
-			if (PlayerPrefs.HasKey(SessionKey))
-			{
-				var json = PlayerPrefs.GetString(SessionKey);
-				savedSession = JsonConvert.DeserializeObject<SavedSession>(json);
-			}
+			var savedSession = GetSavedSession();
 
 			if (string.IsNullOrWhiteSpace(customBridgeUrl))
 			{
@@ -180,22 +166,36 @@ namespace WalletConnectSharp.Unity
 				}
 			}
 
-			//default will be set by library
-			ICipher cipher = null;
-
 		#if UNITY_WEBGL
-            cipher = new WebGlAESCipher();
+            var cipher = new WebGlAESCipher();
+			InitializeUnitySession(savedSession, cipher);
+		#else
+			InitializeUnitySession(savedSession);
 		#endif
-
-			Session = savedSession != null
-				? new WalletConnectUnitySession(savedSession, this, _transport)
-				: new WalletConnectUnitySession(AppData, this, customBridgeUrl, _transport, cipher, chainId);
 
 			SetupDefaultWallet().Forget();
 
 			SetupEvents();
 
 			return await CompleteConnect(cancellationToken);
+		}
+
+		public static SavedSession GetSavedSession()
+		{
+			if (IsSessionSaved())
+			{
+				var json = PlayerPrefs.GetString(SessionKey);
+				return JsonConvert.DeserializeObject<SavedSession>(json);
+			}
+
+			return null;
+		}
+
+		public void InitializeUnitySession(SavedSession savedSession = null, ICipher cipher = null)
+		{
+			Session = savedSession != null
+				? new WalletConnectUnitySession(savedSession, this, _transport)
+				: new WalletConnectUnitySession(AppData, this, customBridgeUrl, _transport, cipher, chainId);
 		}
 
 		private void SetupEvents()
@@ -275,9 +275,9 @@ namespace WalletConnectSharp.Unity
 		{
 			DisconnectedEvent?.Invoke(ActiveSession);
 
-			if (autoSaveAndResume && PlayerPrefs.HasKey(SessionKey))
+			if (autoSaveAndResume && IsSessionSaved())
 			{
-				PlayerPrefs.DeleteKey(SessionKey);
+				ClearSession();
 			}
 
 			TeardownEvents();
@@ -286,6 +286,11 @@ namespace WalletConnectSharp.Unity
 			{
 				await Connect();
 			}
+		}
+
+		public static bool IsSessionSaved()
+		{
+			return PlayerPrefs.HasKey(SessionKey);
 		}
 
 		private async UniTask SetupDefaultWallet()
@@ -388,7 +393,7 @@ namespace WalletConnectSharp.Unity
 			{
 				await SaveOrDisconnect();
 			}
-			else if (PlayerPrefs.HasKey(SessionKey) && autoSaveAndResume)
+			else if (IsSessionSaved() && autoSaveAndResume)
 			{
 				await Connect();
 			}
@@ -403,9 +408,8 @@ namespace WalletConnectSharp.Unity
 
 			if (autoSaveAndResume)
 			{
-				var session = Session.SaveSession();
-				var json = JsonConvert.SerializeObject(session);
-				PlayerPrefs.SetString(SessionKey, json);
+				var sessionToSave = Session.GetSavedSession();
+				SaveSession(sessionToSave);
 
 				await Session.Transport.Close();
 			}
@@ -413,6 +417,12 @@ namespace WalletConnectSharp.Unity
 			{
 				await Session.Disconnect();
 			}
+		}
+
+		public static void SaveSession(SavedSession sessionToSave)
+		{
+			var json = JsonConvert.SerializeObject(sessionToSave);
+			PlayerPrefs.SetString(SessionKey, json);
 		}
 
 		public void OpenMobileWallet(AppEntry selectedWallet)
@@ -508,7 +518,7 @@ namespace WalletConnectSharp.Unity
 		#endif
 		}
 
-		public static void CLearSession()
+		public static void ClearSession()
 		{
 			PlayerPrefs.DeleteKey(SessionKey);
 		}

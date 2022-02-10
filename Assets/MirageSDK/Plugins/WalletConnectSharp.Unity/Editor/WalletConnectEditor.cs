@@ -14,7 +14,7 @@ public class WalletConnectEditor : Editor
 
         if (GUILayout.Button("Clear Session"))
         {
-            WalletConnect.CLearSession();
+            WalletConnect.ClearSession();
         }
     }
 }

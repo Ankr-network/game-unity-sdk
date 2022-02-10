@@ -580,7 +580,7 @@ namespace WalletConnectSharp.Core
 		/// Creates and returns a serializable class that holds all session data required to resume later
 		/// </summary>
 		/// <returns></returns>
-		public SavedSession SaveSession()
+		public SavedSession GetSavedSession()
 		{
 			if (!SessionConnected || Disconnected)
 			{
@@ -601,7 +601,7 @@ namespace WalletConnectSharp.Core
 		public void SaveSession(Stream stream, bool leaveStreamOpen = true)
 		{
 			//We'll save the current session as a GZIP compressed JSON blob
-			var data = SaveSession();
+			var data = GetSavedSession();
 
 			if (data == null)
 			{
