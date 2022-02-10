@@ -230,6 +230,11 @@ namespace WalletConnectSharp.Unity
 		private void SessionOnOnSessionCreated(object sender, WalletConnectSession e)
 		{
 			NewSessionConnected?.Invoke(e as WalletConnectUnitySession ?? Session);
+			Debug.Log("Session Created ");
+			
+			var sessionToSave = Session.GetSavedSession();
+			SaveSession(sessionToSave);
+			Debug.Log("Has Created SessionKey and saved it in PlayerPrefs :" + PlayerPrefs.HasKey(SessionKey));
 		}
 
 		private async Task<WCSessionData> CompleteConnect(CancellationToken cancellationToken)
