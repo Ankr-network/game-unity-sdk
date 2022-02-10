@@ -25,17 +25,15 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 		
 		private IContract _gameCharacterContract;
 		private IContract _gameItemContract;
-		private IMirageSDK _mirageSDKWrapper;
 
 		[SerializeField]
 		private Text _text;
 
 		private void Start()
 		{
-			_mirageSDKWrapper = MirageSDKWrapper.GetInitializedInstance(WearableNFTContractInformation.ProviderURL);
-			_gameCharacterContract = _mirageSDKWrapper.GetContract(WearableNFTContractInformation.GameCharacterContractAddress,
-				(JArray) WearableNFTContractInformation.GameCharacterABI);
-			_gameItemContract = _mirageSDKWrapper.GetContract(WearableNFTContractInformation.GameItemContractAddress,
+			var mirageSDKWrapper = MirageSDKWrapper.GetInitializedInstance(WearableNFTContractInformation.ProviderURL);
+			_gameCharacterContract = mirageSDKWrapper.GetContract(WearableNFTContractInformation.GameCharacterContractAddress, WearableNFTContractInformation.GameCharacterABI);
+			_gameItemContract = mirageSDKWrapper.GetContract(WearableNFTContractInformation.GameItemContractAddress,
 				WearableNFTContractInformation.GameItemABI);
 		}
 
