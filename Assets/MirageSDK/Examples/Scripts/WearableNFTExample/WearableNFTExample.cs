@@ -3,7 +3,9 @@ using Cysharp.Threading.Tasks;
 using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Examples.Scripts.ContractMessages;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using WalletConnectSharp.Unity;
 
 namespace MirageSDK.Examples.Scripts.WearableNFTExample
@@ -23,13 +25,17 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 		
 		private IContract _gameCharacterContract;
 		private IContract _gameItemContract;
+		private IMirageSDK _mirageSDKWrapper;
+
+		[SerializeField]
+		private Text _text;
 
 		private void Start()
 		{
-			var web3 = MirageSDKWrapper.GetInitializedInstance(WearableNFTContractInformation.ProviderURL);
-			_gameCharacterContract = web3.GetContract(WearableNFTContractInformation.GameCharacterContractAddress,
-				WearableNFTContractInformation.GameCharacterABI);
-			_gameItemContract = web3.GetContract(WearableNFTContractInformation.GameItemContractAddress,
+			_mirageSDKWrapper = MirageSDKWrapper.GetInitializedInstance(WearableNFTContractInformation.ProviderURL);
+			_gameCharacterContract = _mirageSDKWrapper.GetContract(WearableNFTContractInformation.GameCharacterContractAddress,
+				(JArray) WearableNFTContractInformation.GameCharacterABI);
+			_gameItemContract = _mirageSDKWrapper.GetContract(WearableNFTContractInformation.GameItemContractAddress,
 				WearableNFTContractInformation.GameItemABI);
 		}
 
@@ -44,7 +50,11 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			await ChangeHat(RedHatAddress);
 			await GetHat();
 		}
-
+		public async void MintNFTsCall()
+		{
+			//await MintItems();
+			await MintCharacter();
+		}
 		private async UniTask MintItems()
 		{
 			const string mintBatchMethodName = "mintBatch";
@@ -65,6 +75,7 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
 				new object[] { itemsToMint, itemsAmounts });
 			Debug.Log($"Game Items Minted. Receipts : {receipt}");
+			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
 		}
 
 		private async UniTask MintCharacter()
@@ -73,8 +84,13 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 
 			var transactionHash = await _gameCharacterContract.CallMethod(safeMintMethodName);
 			Debug.Log($"Game Character Minted. Hash : {transactionHash}");
+			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
 		}
-
+		public async void GameItemSetApprovalCall()
+		{
+			await GameItemSetApproval();
+		}
+		
 		private async UniTask GameItemSetApproval()
 		{
 			const string setApprovalMethodName = "setApprovalForAll";
@@ -86,6 +102,13 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			});
 			
 			Debug.Log($"Game Character approved. Hash : {transactionHash}");
+			UpdateUILogs($"Game Character approved. Hash : {transactionHash}");
+			
+		}
+		
+		public async void GetBalanceCall()
+		{
+			await GetBalance();
 		}
 
 		private async UniTask<BigInteger> GetBalance()
@@ -97,9 +120,13 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			};
 			var balance = await _gameCharacterContract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
+			UpdateUILogs($"Balance: {balance}");
 			return balance;
 		}
-
+		public async void GetTokenInfoCall()
+		{
+			await GetTokenInfo();
+		}
 		private async UniTask GetTokenInfo()
 		{
 			const string tokenOfOwnerByIndex = "tokenOfOwnerByIndex";
@@ -107,8 +134,16 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			var token = await _gameCharacterContract.CallMethod(tokenOfOwnerByIndex, new object[] { tokenBalance - 1 });
 			
 			Debug.Log($"Minted Token token : {token}");
+			UpdateUILogs($"Minted Token token : {token}");
 		}
-
+		public async void ChangeRedHatCall()
+		{
+			await ChangeHat(RedHatAddress);
+		}
+		public async void ChangeBlueHatCall()
+		{
+			await ChangeHat(BlueHatAddress);
+		}
 		private async UniTask ChangeHat(string hatAddress)
 		{
 			const string changeHatMethodName = "changeHat";
@@ -119,8 +154,12 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			}, TransactionGasLimit);
 
 			Debug.Log($"Hat Changed. Hash : {transactionHash}");
+			UpdateUILogs($"Hat Changed. Hash : {transactionHash}");
 		}
-		
+		public async void GetHatCall()
+		{
+			await GetHat();
+		}
 		private async UniTask<BigInteger> GetHat()
 		{
 			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
@@ -130,7 +169,13 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			};
 			var hatId = await _gameCharacterContract.GetData<ItemMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Hat Id: {hatId}");
+			UpdateUILogs($"Hat Id: {hatId}");
 			return hatId;
+		}
+
+		private void UpdateUILogs(string log)
+		{
+			_text.text = log;
 		}
 	}
 }
