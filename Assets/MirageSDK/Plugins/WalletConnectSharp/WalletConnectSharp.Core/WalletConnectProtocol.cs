@@ -45,7 +45,7 @@ namespace WalletConnectSharp.Core
 
 		public bool Connecting { get; protected set; }
 
-		public bool TransportConnected => Transport is { Connected: true } && Transport.URL == _bridgeUrl;
+		public bool TransportConnected => Transport is { Connected: true } && Transport?.URL == _bridgeUrl;
 
 		public ITransport Transport { get; private set; }
 

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.XR;
 
 namespace WalletConnectSharp.Core.Models
 {
@@ -112,12 +110,17 @@ namespace WalletConnectSharp.Core.Models
 			}
 		}
 
-		public static bool operator ==(SavedSession session, SavedSession other)
+		public static bool operator ==(SavedSession session1, SavedSession session2)
 		{
-			var isStatNull = ReferenceEquals(session, null);
-			var isOtherNull = ReferenceEquals(other, null);
+			var isFirstNull = ReferenceEquals(session1, null);
+			var isSecondNull = ReferenceEquals(session2, null);
 
-			return !isOtherNull && !isStatNull && session.Equals(other);
+			return isFirstNull switch
+			{
+				true when isSecondNull => true,
+				false when !isSecondNull => session1.Equals(session2),
+				_ => false
+			};
 		}
 
 		public static bool operator !=(SavedSession session, SavedSession other)

@@ -401,6 +401,11 @@ namespace WalletConnectSharp.Unity
 
 		private async Task SaveOrDisconnect()
 		{
+			if (Session == null)
+			{
+				return;
+			}
+			
 			if (!Session.Connected)
 			{
 				return;

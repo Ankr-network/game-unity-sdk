@@ -57,6 +57,39 @@ namespace Tests
 		}
 
 		[Test]
+		public void SavedSession_IsEqualsToNull()
+		{
+			var session1 = GetTestSession();
+			
+			Assert.AreNotEqual(session1, null);
+		}
+
+		[Test]
+		public void SavedSession_IsSessionNotSameToNull()
+		{
+			var session1 = GetTestSession();
+			
+			Assert.AreNotSame(session1, null);
+		}
+		
+		[Test]
+		public void SavedSession_IsSessionsSame()
+		{
+			var session1 = GetTestSession();
+			
+			Assert.AreSame(session1, session1);
+		}
+		
+		[Test]
+		public void SavedSession_IsSessionsSameByValue()
+		{
+			var session1 = GetTestSession();
+			var session2 = GetTestSession();
+			
+			Assert.That(session1 == session2);
+		}
+
+		[Test]
 		public void SavedSession_TestValueEquality()
 		{
 			var session1 = GetTestSession();

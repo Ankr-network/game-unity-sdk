@@ -38,6 +38,25 @@ namespace PlayModeTests
 			Object.DestroyImmediate(walletConnect.gameObject);
 		}
 
+		[Test]
+		public void WalletConnect_DefaultSessionIsUnInitialized()
+		{
+			var walletConnect = CreateWalletConnectObject();
+			Assert.IsNull(walletConnect.Session);
+		}
+
+		[Test]
+		public void WalletConnect_SessionConnection()
+		{
+			var walletConnect = CreateWalletConnectObject();
+			walletConnect.InitializeUnitySession();
+			Assert.IsNotNull(walletConnect.Session);
+			Assert.IsFalse(walletConnect.Session.Connected);
+			Assert.IsFalse(walletConnect.Session.Connecting);
+			Assert.IsFalse(walletConnect.Session.Disconnected);
+			Assert.IsFalse(walletConnect.Session.SessionUsed);
+		}
+
 		private static WalletConnect CreateWalletConnectObject()
 		{
 			var walletConnectObject = new GameObject("WalletConnect");
