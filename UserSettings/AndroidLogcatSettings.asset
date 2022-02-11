@@ -2,8 +2,8 @@
     "m_SelectedDeviceId": "768547ad",
     "m_SelectedPackage": {
         "deviceId": "768547ad",
-        "name": "com.DefaultCompany.Web3MobileTest",
-        "processId": 29423,
+        "name": "com.Ankr.MirageSDK",
+        "processId": 31042,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -131,30 +131,6 @@
         {
             "deviceId": "768547ad",
             "name": "com.DefaultCompany.Web3MobileTest",
-            "processId": 24081,
-            "exited": true
-        },
-        {
-            "deviceId": "768547ad",
-            "name": "com.DefaultCompany.Web3MobileTest",
-            "processId": 30349,
-            "exited": true
-        },
-        {
-            "deviceId": "768547ad",
-            "name": "com.DefaultCompany.Web3MobileTest",
-            "processId": 32008,
-            "exited": true
-        },
-        {
-            "deviceId": "768547ad",
-            "name": "com.DefaultCompany.Web3MobileTest",
-            "processId": 2358,
-            "exited": true
-        },
-        {
-            "deviceId": "768547ad",
-            "name": "com.DefaultCompany.Web3MobileTest",
             "processId": 24958,
             "exited": true
         },
@@ -162,6 +138,36 @@
             "deviceId": "768547ad",
             "name": "com.DefaultCompany.Web3MobileTest",
             "processId": 29423,
+            "exited": true
+        },
+        {
+            "deviceId": "768547ad",
+            "name": "com.Ankr.MirageSDK",
+            "processId": 8805,
+            "exited": true
+        },
+        {
+            "deviceId": "768547ad",
+            "name": "com.Ankr.MirageSDK",
+            "processId": 23427,
+            "exited": true
+        },
+        {
+            "deviceId": "768547ad",
+            "name": "com.Ankr.MirageSDK",
+            "processId": 28052,
+            "exited": true
+        },
+        {
+            "deviceId": "768547ad",
+            "name": "com.Ankr.MirageSDK",
+            "processId": 29233,
+            "exited": false
+        },
+        {
+            "deviceId": "768547ad",
+            "name": "com.Ankr.MirageSDK",
+            "processId": 31042,
             "exited": false
         }
     ],
