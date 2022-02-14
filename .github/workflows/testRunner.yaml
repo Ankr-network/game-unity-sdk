@@ -1,8 +1,11 @@
 ﻿name: Run Tests
 on:
-  workflow_dispatch: {}
+  pull_request_review:
+    types: [submitted]
+
 jobs:
   testAllModes:
+    if: github.event.review.state == 'approved'
     name: Run Tests
     runs-on: ubuntu-latest
     strategy:

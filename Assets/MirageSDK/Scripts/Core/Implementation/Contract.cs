@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MirageSDK.Core.Data;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Core.Utils;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
-using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Web3;
@@ -13,94 +13,50 @@ using WalletConnectSharp.Unity;
 
 namespace MirageSDK.Core.Implementation
 {
-	public class EventFilterData
-	{
-		public object[] filterTopic1;
-		public object[] filterTopic2;
-		public object[] filterTopic3;
-		public BlockParameter fromBlock;
-		public BlockParameter toBlock;
-	}
-
 	internal class Contract : IContract
 	{
-		private readonly string _abi;
-		private readonly string _address;
-		private readonly IWeb3 _web3;
-		private readonly IClient _client;
+		private readonly string _contractABI;
+		private readonly string _contractAddress;
+		private readonly IWeb3 _web3Provider;
 
-		public Contract(IWeb3 web3, IClient client, string address, string abi)
+		internal Contract(IWeb3 web3Provider, string contractAddress, string contractABI)
 		{
-			_web3 = web3;
-			_client = client;
-			_abi = abi;
-			_address = address;
+			_web3Provider = web3Provider;
+			_contractABI = contractABI;
+			_contractAddress = contractAddress;
 		}
 
 		public Task<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)
 			where TFieldData : FunctionMessage, new()
 		{
-			var contract = _web3.Eth.GetContractHandler(_address);
+			var contract = _web3Provider.Eth.GetContractHandler(_contractAddress);
 			return contract.QueryAsync<TFieldData, TReturnType>(requestData);
 		}
 
 		public Task<List<EventLog<TEvDto>>> GetAllChanges<TEvDto>(EventFilterData evFilter)
 			where TEvDto : IEventDTO, new()
 		{
-			var eventHandler = _web3.Eth.GetEvent<TEvDto>(_address);
+			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_contractAddress);
 
-			var filters = ApplyFilters(eventHandler, evFilter);
+			var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
 
 			return eventHandler.GetAllChangesAsync(filters);
-		}
-
-		private static NewFilterInput ApplyFilters(EventBase eventHandler, EventFilterData evFilter = null)
-		{
-			NewFilterInput filters;
-			if (evFilter == null)
-			{
-				filters = eventHandler.CreateFilterInput();
-			}
-			else
-			{
-				if (evFilter.filterTopic1 != null && evFilter.filterTopic2 != null && evFilter.filterTopic3 != null)
-				{
-					filters = eventHandler.CreateFilterInput(evFilter.filterTopic1, evFilter.filterTopic2,
-						evFilter.filterTopic3, evFilter.fromBlock, evFilter.toBlock);
-				}
-				else if (evFilter.filterTopic1 != null && evFilter.filterTopic2 != null)
-				{
-					filters = eventHandler.CreateFilterInput(evFilter.filterTopic1, evFilter.filterTopic2,
-						evFilter.fromBlock, evFilter.toBlock);
-				}
-				else if (evFilter.filterTopic1 != null)
-				{
-					filters = eventHandler.CreateFilterInput(evFilter.filterTopic1, evFilter.fromBlock,
-						evFilter.toBlock);
-				}
-				else
-				{
-					filters = eventHandler.CreateFilterInput(evFilter.fromBlock, evFilter.toBlock);
-				}
-			}
-
-			return filters;
 		}
 
 		public Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null)
 		{
 			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
-			var raw = _web3.Eth.GetContract(_abi, _address)
+			var raw = _web3Provider.Eth.GetContract(_contractABI, _contractAddress)
 				.GetFunction(methodName)
 				.CreateTransactionInput(activeSessionAccount, arguments);
 
-			return SendTransaction(_address, raw.Data, null, gas);
+			return SendTransaction(_contractAddress, raw.Data, null, gas);
 		}
 
-		public Task<Transaction> GetTransactionInfo(string receipt)
+		public Task<Transaction> GetTransactionInfo(string transactionReceipt)
 		{
-			var src = new EthGetTransactionByHash(_client);
-			return src.SendRequestAsync(receipt);
+			var src = new EthGetTransactionByHash(_web3Provider.Client);
+			return src.SendRequestAsync(transactionReceipt);
 		}
 
 		public async Task<string> SendTransaction(
@@ -111,7 +67,7 @@ namespace MirageSDK.Core.Implementation
 		{
 			var address = WalletConnect.ActiveSession.Accounts[0];
 
-			var transaction = new TransactionData
+			var transactionData = new TransactionData
 			{
 				from = address,
 				to = to
@@ -119,25 +75,20 @@ namespace MirageSDK.Core.Implementation
 
 			if (data != null)
 			{
-				transaction.data = data;
+				transactionData.data = data;
 			}
 
 			if (value != null)
 			{
-				transaction.value = MirageSDKHelpers.ConvertNumber(value);
+				transactionData.value = MirageSDKHelpers.StringToBigInteger(value);
 			}
 
 			if (gas != null)
 			{
-				transaction.gas = MirageSDKHelpers.ConvertNumber(gas);
+				transactionData.gas = MirageSDKHelpers.StringToBigInteger(gas);
 			}
 
-			return await SendTransaction(transaction);
-		}
-
-		private static async Task<string> SendTransaction(TransactionData data)
-		{
-			return await WalletConnect.ActiveSession.EthSendTransaction(data);
+			return await transactionData.SendTransaction();
 		}
 	}
 }

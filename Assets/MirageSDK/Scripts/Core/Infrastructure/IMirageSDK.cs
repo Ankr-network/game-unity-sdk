@@ -1,11 +1,6 @@
-using System.Threading.Tasks;
-
 namespace MirageSDK.Core.Infrastructure
 {
-	public interface IMirageSDK
+	public interface IMirageSDK : IContractProvider, ISignatureProvider
 	{
-		IContract GetContract(string address, string abi);
-		Task<string> Sign(string message);
-		string CheckSignature(string message, string signature);
 	}
 }
