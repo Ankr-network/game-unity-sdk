@@ -12,8 +12,6 @@ namespace MirageSDK.Examples.Scripts.SignatureExample
 	
 		private void Start()
 		{
-			const string providerURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
-		
 			_mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance();
 		}
 	

@@ -18,12 +18,11 @@ namespace MirageSDK.Examples.Scripts.ERC20Example
 
 		private void Start()
 		{
-			var mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance();
+			var mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance(ERC20ContractInformation.ProviderURL);
 			_erc20Contract =
 				mirageSDKWrapper.GetContract(
 					ERC20ContractInformation.ContractAddress,
-					ERC20ContractInformation.ABI,
-					ERC20ContractInformation.ProviderURL);
+					ERC20ContractInformation.ABI);
 		}
 
 		public async void CallMint()
