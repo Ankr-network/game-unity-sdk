@@ -6,7 +6,7 @@ namespace MirageSDK.Core.Utils
 {
 	public static class MirageSDKHelpers
 	{
-		public static string ConvertNumber(string value)
+		public static string StringToBigInteger(string value)
 		{
 			var bnValue = BigInteger.Parse(value);
 			return "0x" + bnValue.ToString("X");

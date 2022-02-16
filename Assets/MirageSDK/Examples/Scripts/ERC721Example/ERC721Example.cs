@@ -16,9 +16,11 @@ namespace MirageSDK.Examples.Scripts.ERC721Example
 
 		private void Start()
 		{
-			var mirageSDKWrapper = MirageSDKWrapper.GetInitializedInstance(ERC721ContractInformation.ProviderURL);
+			var mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance(ERC721ContractInformation.ProviderURL);
 			_erc721Contract =
-				mirageSDKWrapper.GetContract(ERC721ContractInformation.ContractAddress, ERC721ContractInformation.ABI);
+				mirageSDKWrapper.GetContract(
+					ERC721ContractInformation.ContractAddress,
+					ERC721ContractInformation.ABI);
 		}
 
 		public async void CallMint()

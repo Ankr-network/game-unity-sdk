@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using MirageSDK.Core.Data;
 using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Examples.Scripts.ContractMessages;
@@ -17,9 +18,11 @@ namespace MirageSDK.Examples.Scripts.ERC20Example
 
 		private void Start()
 		{
-			var mirageSDKWrapper = MirageSDKWrapper.GetInitializedInstance(ERC20ContractInformation.ProviderURL);
+			var mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance(ERC20ContractInformation.ProviderURL);
 			_erc20Contract =
-				mirageSDKWrapper.GetContract(ERC20ContractInformation.ContractAddress, ERC20ContractInformation.ABI);
+				mirageSDKWrapper.GetContract(
+					ERC20ContractInformation.ContractAddress,
+					ERC20ContractInformation.ABI);
 		}
 
 		public async void CallMint()
