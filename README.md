@@ -39,7 +39,7 @@ Returns string with transaction hash.
 string receipt = await contract.CallMethod("methodName", new object[0]);
 ```
 ---
-*Task<Transaction> GetTransactionInfo(string receipt)*<br>
+* Task<Transaction> GetTransactionInfo(string receipt)*<br>
 Use for get transaction details like status, nonce and etc.
 Returns transaction, which is a Nethereum DataContract containing all the needed information about transaction. 
 
@@ -47,7 +47,7 @@ Returns transaction, which is a Nethereum DataContract containing all the needed
 Transaction trx = await contract.GetTransactionInfo(receipt);
 ```
 ---
-*Task<TReturnType> GetData<FieldData, ReturnType>(FieldData requestData = null)*<br>
+* Task<TReturnType> GetData<FieldData, ReturnType>(FieldData requestData = null)*<br>
 To get data from mappings and call contract methods that no need of mining use this method.
 
 You need to prepare DTO class based on the arguments of a contract method.
@@ -77,7 +77,7 @@ BalanceOfMessage balanceOfMessage = new BalanceOfMessage()
 BigInteger balance = await contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 ```
 ---
-*Task<List<EventLog<TEvDto>>> GetAllChanges<EvDTO>(EventFilterData evFilter = null)*<br>
+* Task<List<EventLog<TEvDto>>> GetAllChanges<EvDTO>(EventFilterData evFilter = null)*<br>
 Use it to get events from a contract.
 
 You need to prepare DTO class based on the fields of an event.
@@ -114,7 +114,7 @@ foreach (var ev in events)
 }
 ```
 It is also possible to send a transaction configured by yourself.
-*Task<string> SendTransaction(string to, string data = null, string value = null, string gas = null)*<br>
+* Task<string> SendTransaction(string to, string data = null, string value = null, string gas = null)*<br>
 This method is used under the hood of our SDK when you use CallMethod function.
 
 For full examples please see [ERC20 token example](https://github.com/Ankr-network/unity-web3/blob/main/Assets/MirageSDK/Examples/Scripts/ERC20Example/ERC20Example.cs) and [ERC721 token example](https://github.com/Ankr-network/unity-web3/blob/main/Assets/MirageSDK/Examples/Scripts/ERC721Example/ERC721Example.cs)
