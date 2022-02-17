@@ -23,10 +23,7 @@ To work with contracts you need to get a IContract instance from our SDKWrapper,
 string abi = "...";
 string contract_address = "0x...";
 
-IContract contract =
-	mirageSDKWrapper.GetContract(
-		contract_address,
-		abi);
+IContract contract = mirageSDKWrapper.GetContract(contract_address, abi);
 ```
 
 **IContract interface**
@@ -127,8 +124,4 @@ Contracts for this plugin are stored under `Examples` folder. Mint functions hav
 
 Default web3 interactions are created using Nethereum package, the network and public RPC should be configured before using this plugin.
 
-All contract interactions are described in `IContract`interface (events receiving, transaction hashes receiving, getting view data, sending and signing transactions)
-	
-## 4. Troubleshooting
-Please pay attention that this plugin works only on Api Compatibility Level .NET 4.x
-To setup that go to File > Build Settings > Player settings > Player > Api Compatibility Level and select .NET 4.x
+All contract interactions are described in `IContract` interface (events receiving, transaction hashes receiving, getting view data, sending and signing transactions)
