@@ -37,7 +37,7 @@ namespace WalletConnectSharp.Core.Network
 
 		public static string[] AllBridges
 		{
-			get { return _bridgeCache ??= Enumerable.Empty<string>().Append(MainBridge).Concat(Bridges).ToArray(); }
+			get { return _bridgeCache = _bridgeCache ?? Enumerable.Empty<string>().Append(MainBridge).Concat(Bridges).ToArray(); }
 		}
 
 		public static string ChooseRandomBridge(string[] possibleBridges = null)

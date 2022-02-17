@@ -22,7 +22,7 @@ public static class PackageExporter
 	{
 		// Ensure export path.
 		var dir = new FileInfo(exportPath).Directory;
-		if (dir is { Exists: false })
+		if (dir?.Exists == false)
 		{
 			dir.Create();
 		}

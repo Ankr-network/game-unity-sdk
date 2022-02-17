@@ -25,7 +25,7 @@ namespace WalletConnectSharp.Unity.Network
 		private List<string> subscribedTopics = new List<string>();
 		private Queue<NetworkMessage> _queuedMessages = new Queue<NetworkMessage>();
 
-		public bool Connected => client is { State: WebSocketState.Open } && opened;
+		public bool Connected => client?.State == WebSocketState.Open && opened;
 
 		public void AttachEventDelegator(EventDelegator eventDelegator)
 		{
@@ -207,7 +207,7 @@ namespace WalletConnectSharp.Unity.Network
 		private void Update()
 		{
 		#if !UNITY_WEBGL || UNITY_EDITOR
-			if (client is { State: WebSocketState.Open })
+			if (client?.State == WebSocketState.Open)
 			{
 				client.DispatchMessageQueue();
 			}

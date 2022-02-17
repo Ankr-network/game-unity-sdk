@@ -59,7 +59,7 @@ namespace MirageSDK.Core.Implementation
 			return src.SendRequestAsync(transactionReceipt);
 		}
 
-		public async Task<string> SendTransaction(
+		public Task<string> SendTransaction(
 			string to,
 			string data = null,
 			string value = null,
@@ -88,7 +88,7 @@ namespace MirageSDK.Core.Implementation
 				transactionData.gas = MirageSDKHelpers.StringToBigInteger(gas);
 			}
 
-			return await transactionData.SendTransaction();
+			return transactionData.SendTransaction();
 		}
 	}
 }

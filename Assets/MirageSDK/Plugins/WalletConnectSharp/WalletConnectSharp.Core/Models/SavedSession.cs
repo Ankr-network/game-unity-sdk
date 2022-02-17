@@ -115,12 +115,15 @@ namespace WalletConnectSharp.Core.Models
 			var isFirstNull = ReferenceEquals(session1, null);
 			var isSecondNull = ReferenceEquals(session2, null);
 
-			return isFirstNull switch
+			switch (isFirstNull)
 			{
-				true when isSecondNull => true,
-				false when !isSecondNull => session1.Equals(session2),
-				_ => false
-			};
+				case true when isSecondNull:
+					return true;
+				case false when !isSecondNull:
+					return session1.Equals(session2);
+				default:
+					return false;
+			}
 		}
 
 		public static bool operator !=(SavedSession session, SavedSession other)

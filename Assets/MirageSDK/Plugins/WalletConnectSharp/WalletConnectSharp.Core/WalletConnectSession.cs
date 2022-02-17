@@ -498,7 +498,7 @@ namespace WalletConnectSharp.Core
 		{
 			var response = jsonresponse.Response.result;
 
-			if (response is { approved: true })
+			if (response?.approved == true)
 			{
 				HandleSessionUpdate(response);
 			}
