@@ -45,7 +45,7 @@ namespace WalletConnectSharp.Core
 
 		public bool Connecting { get; protected set; }
 
-		public bool TransportConnected => Transport is { Connected: true } && Transport?.URL == _bridgeUrl;
+		public bool TransportConnected => Transport?.Connected == true && Transport?.URL == _bridgeUrl;
 
 		public ITransport Transport { get; private set; }
 
@@ -87,12 +87,12 @@ namespace WalletConnectSharp.Core
 			//TODO Do we need this for resuming?
 			//_handshakeTopic = topicGuid.ToString();
 
-			transport ??= TransportFactory.Instance.BuildDefaultTransport(eventDelegator);
+			transport = transport ?? TransportFactory.Instance.BuildDefaultTransport(eventDelegator);
 
 			_bridgeUrl = savedSession.BridgeURL;
 			Transport = transport;
 
-			cipher ??= new AESCipher();
+			cipher = cipher ?? new AESCipher();
 
 			Cipher = cipher;
 
@@ -126,15 +126,15 @@ namespace WalletConnectSharp.Core
 			EventDelegator eventDelegator = null
 		)
 		{
-			eventDelegator ??= new EventDelegator();
+			eventDelegator = eventDelegator ?? new EventDelegator();
 
 			Events = eventDelegator;
 
-			transport ??= TransportFactory.Instance.BuildDefaultTransport(eventDelegator);
+			transport = transport ?? TransportFactory.Instance.BuildDefaultTransport(eventDelegator);
 
 			Transport = transport;
 
-			cipher ??= new AESCipher();
+			cipher = cipher ?? new AESCipher();
 
 			Cipher = cipher;
 		}
@@ -214,7 +214,7 @@ namespace WalletConnectSharp.Core
 			var response = JsonConvert.DeserializeObject<JsonRpcResponse>(json);
 
 			var wasResponse = false;
-			if (response is { Event: { } })
+			if (response?.Event != null)
 			{
 				wasResponse = Events.Trigger(response.Event, json);
 			}
@@ -226,7 +226,7 @@ namespace WalletConnectSharp.Core
 
 			var request = JsonConvert.DeserializeObject<JsonRpcRequest>(json);
 
-			if (request is { Method: { } })
+			if (request?.Method != null)
 			{
 				Events.Trigger(request.Method, json);
 			}

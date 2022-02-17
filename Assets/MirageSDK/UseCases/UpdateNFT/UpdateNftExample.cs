@@ -64,7 +64,8 @@ namespace MirageSDK.UseCases.UpdateNFT
 		{
 			var request = UnityWebRequest.Get(URL + $"hero/{tokenId}");
 			var webRequest = await request.SendWebRequest();
-			if (webRequest.result == UnityWebRequest.Result.Success)
+			
+			if (!webRequest.isHttpError && !webRequest.isNetworkError)
 			{
 				var data = JsonConvert.DeserializeObject<ItemInfo>(webRequest.downloadHandler.text);
 				return data;
