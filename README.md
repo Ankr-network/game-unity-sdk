@@ -6,53 +6,48 @@ Demo:<br>
 
 ## 1. Install SDK
 
-1) Download ankr_web3.unitypackage from [latest release](https://github.com/Ankr-network/unity-web3/releases).
+1) Download  mirageSDK.unitypackage from [latest release](https://github.com/Ankr-network/unity-web3/releases).
 2) Drag and drop it to the Assets folder.
 3) Import all 
 
 ## 2. Getting started
 
-To start work with plugin
+To start work with plugin you need to acquire our SDK wrapper instance through one of .GetSDkInstance methods.
 ```c#
-string provider_url = "<ethereum node url>";
-		
-Web3 web3 = new Web3(provider_url);
+var mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance(ERC20ContractInformation.ProviderURL);
 ```
 
-You need to call initialize method after login in metamask
-
-```c#
-web3.Initialize();
-```
-
-To get contract call GetContract
+To work with contracts you need to get a IContract instance from our SDKWrapper, for that call GetContract(...)
 
 ```c#
 string abi = "...";
 string contract_address = "0x...";
 
-Contract contract = web3.GetContract(contract_address, abi);
+IContract contract =
+	mirageSDKWrapper.GetContract(
+		contract_address,
+		abi);
 ```
 
-**Contract methods**
+**IContract interface**
 
-*CallMethod(string methodName, object[] arguments, string gas = null)*<br>
+* Task<string> CallMethod(string methodName, object[] arguments, string gas = null)*<br>
 Use for call methods of a contract deployed to blockchain.
 Returns string with transaction hash.
 
 ```c#
-string receipt = await contract.CallMethod("mint", new object[0]);
+string receipt = await contract.CallMethod("methodName", new object[0]);
 ```
 ---
-*GetTransactionInfo(string receipt)*<br>
+*Task<Transaction> GetTransactionInfo(string receipt)*<br>
 Use for get transaction details like status, nonce and etc.
-Returns transaction details
+Returns transaction, which is a Nethereum DataContract containing all the needed information about transaction. 
 
 ```c#
 Transaction trx = await contract.GetTransactionInfo(receipt);
 ```
 ---
-*GetData<FieldData, ReturnType>(FieldData requestData = null)*<br>
+*Task<TReturnType> GetData<FieldData, ReturnType>(FieldData requestData = null)*<br>
 To get data from mappings and call contract methods that no need of mining use this method.
 
 You need to prepare DTO class based on the arguments of a contract method.
@@ -82,8 +77,8 @@ BalanceOfMessage balanceOfMessage = new BalanceOfMessage()
 BigInteger balance = await contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 ```
 ---
-*GetAllChanges<EvDTO>()*<br>
-Use for get events from a contract.
+*Task<List<EventLog<TEvDto>>> GetAllChanges<EvDTO>(EventFilterData evFilter = null)*<br>
+Use it to get events from a contract.
 
 You need to prepare DTO class based on the fields of an event.
 
@@ -118,18 +113,21 @@ foreach (var ev in events)
 	Debug.Log(ev.Event.Value);
 }
 ```
+It is also possible to send a transaction configured by yourself.
+*Task<string> SendTransaction(string to, string data = null, string value = null, string gas = null)*<br>
+This method is used under the hood of our SDK when you use CallMethod function.
 
-For full examples please see [ERC20 token example](https://github.com/Ankr-network/unity-web3/blob/main/Assets/Web3Unity/Scripts/Example/ERC20Example.cs) and [ERC721 token example](https://github.com/Ankr-network/unity-web3/blob/main/Assets/Web3Unity/Scripts/Example/ERC721Example.cs)
+For full examples please see [ERC20 token example](https://github.com/Ankr-network/unity-web3/blob/main/Assets/MirageSDK/Examples/Scripts/ERC20Example/ERC20Example.cs) and [ERC721 token example](https://github.com/Ankr-network/unity-web3/blob/main/Assets/MirageSDK/Examples/Scripts/ERC721Example/ERC721Example.cs)
 
 ## 3. Contracts interaction
 
 In this plugin there are examples for ERC20 and ERC721 contracts integration, however, it can be easily expanded for any other types of contracts.
 
-Contracts for this plugin are stored under `ExampleContracts` folder. Mint functions have no rights, so anyone can test this plugin. These contracts shouldn't be used in production.
+Contracts for this plugin are stored under `Examples` folder. Mint functions have no rights, so anyone can test this plugin. These contracts shouldn't be used in production.
 
 Default web3 interactions are created using Nethereum package, the network and public RPC should be configured before using this plugin.
 
-All contract interactions are stored under the `Contract.cs` file (events receiving, transaction hashes receiving, getting view data, sending and signing transactions)
+All contract interactions are described in `IContract`interface (events receiving, transaction hashes receiving, getting view data, sending and signing transactions)
 	
 ## 4. Troubleshooting
 Please pay attention that this plugin works only on Api Compatibility Level .NET 4.x
