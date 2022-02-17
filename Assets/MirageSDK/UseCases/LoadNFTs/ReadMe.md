@@ -31,3 +31,5 @@ If you need to get the ID of a specific NFT you can use the tokenOfOwnerByIndex
     function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256 tokenId);
 
 ```
+
+Once you have checked that the authenticated wallet has an NFT you can then give access to it for the user. You can for exemple let him use Hero X if he has the Hero X NFT.
