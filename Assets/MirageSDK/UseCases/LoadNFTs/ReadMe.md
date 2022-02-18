@@ -1,9 +1,9 @@
 # Update NFT
 
-This is an example for one of the use cases for this sdk : Checking if someone owns an NFTs. This use case is usefull when you want to know if someone has specifix NFTs to then let him use it ingame. 
+This is an example for one of the use cases for this sdk : <br/>Checking if someone owns an NFTs. This use case is usefull when you want to know if someone has specific NFTs to then let him use them ingame. 
 
 ### How To
-To start this Use Case we will first need to initializethe SDKWrapper and store the contracts that we will use here inside some private variables. For this example i will reuse the GameCharacterContract used in the WearableNFTExample Use Case.
+To start this Use Case we will first need to initialize the SDKWrapper and store the contracts that we will use here inside some private variables. For this example we will reuse the GameCharacterContract used in the WearableNFTExample Use Case.
 
 ```c#
             var mirageSDKWrapper = MirageSDKWrapper.GetInitializedInstance(WearableNFTContractInformation.ProviderURL);
