@@ -31,11 +31,11 @@ namespace WalletConnectSharp.NEthereum.Client
             else
                 rpcRequestMessage = new RpcRequestMessage(_id, message.Method, rawParameters);
             
-            TaskCompletionSource<RpcResponseMessage> eventCompleted = new TaskCompletionSource<RpcResponseMessage>(TaskCreationOptions.None);
+            var eventCompleted = new TaskCompletionSource<RpcResponseMessage>(TaskCreationOptions.None);
             
             Provider.Events.ListenForGenericResponse<RpcResponseMessage>(rpcRequestMessage.Id, (sender, args) =>
             {
-                eventCompleted.SetResult(args.Response);
+                eventCompleted.TrySetResult(args.Response);
             });
             
             await Provider.SendRequest(rpcRequestMessage);

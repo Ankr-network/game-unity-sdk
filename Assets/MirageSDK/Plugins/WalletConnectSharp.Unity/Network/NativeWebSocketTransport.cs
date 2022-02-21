@@ -304,6 +304,14 @@ namespace WalletConnectSharp.Unity.Network
 		public void ClearSubscriptions()
 		{
 			Debug.Log("[WebSocket] Subs Cleared");
+			if (_eventDelegator != null)
+			{
+				foreach (var subscribedTopic in subscribedTopics)
+				{
+					_eventDelegator.UnsubscribeProvider(subscribedTopic);
+				}
+			}
+
 			subscribedTopics.Clear();
 			_queuedMessages.Clear();
 		}

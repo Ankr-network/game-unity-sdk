@@ -417,11 +417,11 @@ namespace WalletConnectSharp.Core
 				var response = @event.Response;
 				if (response.IsError)
 				{
-					eventCompleted.SetException(new IOException(response.Error.Message));
+					eventCompleted.TrySetException(new IOException(response.Error.Message));
 				}
 				else
 				{
-					eventCompleted.SetResult(@event.Response);
+					eventCompleted.TrySetResult(@event.Response);
 				}
 			});
 
@@ -459,13 +459,15 @@ namespace WalletConnectSharp.Core
 
 			//Listen for wc_sessionUpdate requests
 			Events.ListenFor("wc_sessionUpdate",
-				(object sender, GenericEvent<WCSessionUpdate> @event) =>
-					HandleSessionUpdate(@event.Response.parameters[0]));
+				(object sender, GenericEvent<WCSessionUpdate> @event) => HandleSessionUpdate(@event.Response.parameters[0]));
 
 			//Listen for the "connect" event triggered by 'HandleSessionResponse' above
 			//This will have the type WCSessionData
 			Events.ListenFor<WCSessionData>("connect",
-				(sender, @event) => { eventCompleted.TrySetResult(@event.Response); });
+				(sender, @event) =>
+				{
+					eventCompleted.TrySetResult(@event.Response);
+				});
 
 			//Listen for the "session_failed" event triggered by 'HandleSessionResponse' above
 			//This will have the type failure reason
