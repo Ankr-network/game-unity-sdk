@@ -11,7 +11,7 @@ using WalletConnectSharp.Unity;
 namespace MirageSDK.Examples.Scripts.WearableNFTExample
 {
 	/// <summary>
-	/// You need to have a minter role for this example to work.
+	///     You need to have a minter role for this example to work.
 	/// </summary>
 	public class WearableNFTExample : MonoBehaviour
 	{
@@ -23,10 +23,10 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 		private const string RedGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000002";
 		private const string WhiteGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000003";
 
+		[SerializeField] private TMP_Text _text;
+
 		private IContract _gameCharacterContract;
 		private IContract _gameItemContract;
-
-		[SerializeField] private TMP_Text _text;
 
 		private void Start()
 		{
@@ -50,50 +50,6 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			await GetHat();
 		}
 
-		#region Button Calls
-
-		public async void MintItemsCall()
-		{
-			await MintItems();
-		}
-
-		public async void MintCharacterCall()
-		{
-			await MintCharacter();
-		}
-
-		public async void GetBalanceCall()
-		{
-			await GetBalance();
-		}
-
-		public async void GameItemSetApprovalCall()
-		{
-			await GameItemSetApproval();
-		}
-
-		public async void GetTokenIdCall()
-		{
-			await GetTokenId();
-		}
-
-		public async void ChangeRedHatCall()
-		{
-			await ChangeHat(RedHatAddress);
-		}
-
-		public async void ChangeBlueHatCall()
-		{
-			await ChangeHat(BlueHatAddress);
-		}
-
-		public async void GetHatCall()
-		{
-			await GetHat();
-		}
-
-		#endregion
-
 
 		private async UniTask MintItems()
 		{
@@ -105,7 +61,7 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 				BlueShoesAddress,
 				WhiteShoesAddress,
 				RedGlassesAddress,
-				WhiteGlassesAddress,
+				WhiteGlassesAddress
 			};
 			var itemsAmounts = new[]
 			{
@@ -172,11 +128,9 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 
 				return tokenId;
 			}
-			else
-			{
-				UpdateUILogs("You dont own any of these tokens.");
-				return -1;
-			}
+
+			UpdateUILogs("You dont own any of these tokens.");
+			return -1;
 		}
 
 		private async UniTask ChangeHat(string hatAddress)
@@ -210,5 +164,49 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			_text.text += "\n" + log;
 			Debug.Log(log);
 		}
+
+		#region Button Calls
+
+		public async void MintItemsCall()
+		{
+			await MintItems();
+		}
+
+		public async void MintCharacterCall()
+		{
+			await MintCharacter();
+		}
+
+		public async void GetBalanceCall()
+		{
+			await GetBalance();
+		}
+
+		public async void GameItemSetApprovalCall()
+		{
+			await GameItemSetApproval();
+		}
+
+		public async void GetTokenIdCall()
+		{
+			await GetTokenId();
+		}
+
+		public async void ChangeRedHatCall()
+		{
+			await ChangeHat(RedHatAddress);
+		}
+
+		public async void ChangeBlueHatCall()
+		{
+			await ChangeHat(BlueHatAddress);
+		}
+
+		public async void GetHatCall()
+		{
+			await GetHat();
+		}
+
+		#endregion
 	}
 }
