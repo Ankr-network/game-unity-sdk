@@ -50,10 +50,10 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			await GetHat();
 		}
 
-
 		private async UniTask MintItems()
 		{
 			const string mintBatchMethodName = "mintBatch";
+			const string mintBatchToAddress = "0x510c522ebCC6Eb376839E0CFf5D57bb2F422EB8b";
 			var itemsToMint = new[]
 			{
 				BlueHatAddress,
@@ -67,9 +67,10 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			{
 				1, 2, 3, 4, 5, 6
 			};
+			var data = new byte[] { };
 
 			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
-				new object[] {"0x510c522ebCC6Eb376839E0CFf5D57bb2F422EB8b", itemsToMint, itemsAmounts, new byte[] { }});
+				new object[] {mintBatchToAddress, itemsToMint, itemsAmounts, data});
 
 			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
 		}
@@ -164,8 +165,8 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			_text.text += "\n" + log;
 			Debug.Log(log);
 		}
-
-		#region Button Calls
+		
+	#region Button Calls
 
 		public async void MintItemsCall()
 		{
@@ -207,6 +208,7 @@ namespace MirageSDK.Examples.Scripts.WearableNFTExample
 			await GetHat();
 		}
 
-		#endregion
+	#endregion
+	
 	}
 }
