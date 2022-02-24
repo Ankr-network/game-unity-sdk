@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿﻿﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using MirageSDK.Core.Data;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Core.Utils;
@@ -45,12 +46,70 @@ namespace MirageSDK.Core.Implementation
 
 		public Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null)
 		{
-			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
-			var raw = _web3Provider.Eth.GetContract(_contractABI, _contractAddress)
-				.GetFunction(methodName)
-				.CreateTransactionInput(activeSessionAccount, arguments);
+			var transactionInput = CreateTransactionInput(methodName, arguments);
+			return SendTransaction(_contractAddress, transactionInput.Data, gas: gas);
+		}
+		
+		public EventController Web3SendMethod(string methodName, object[] arguments, EventController evController = null, string gas = null)
+		{
+			if (evController != null)
+			{
+				evController = new EventController();
+			}
 
-			return SendTransaction(_contractAddress, raw.Data, null, gas);
+			var transactionInput = CreateTransactionInput(methodName, arguments);
+		
+			evController.InvokeSendingEvent(transactionInput);
+				
+			Task<string> sendTransactionTask = SendTransaction(_contractAddress, transactionInput.Data, gas: gas);
+			
+			evController.InvokeSentEvent(transactionInput);
+									
+			sendTransactionTask.ContinueWith(task =>
+			{
+				if (!task.IsFaulted)
+				{
+					var transactionHash = task.Result;
+					evController.SetTransactionHash(transactionHash);
+					LoadReceipt(transactionHash, evController);
+				}
+				else
+				{
+					evController.SetError(task.Exception);
+				}
+			});
+
+			return evController;
+		}
+	
+		private void LoadReceipt(string transactionHash, EventController evController)
+		{		
+			var getReceiptTask = GetTransactionReceipt(transactionHash);
+			getReceiptTask.ContinueWith(task =>
+			{
+				if (!task.IsFaulted)
+				{
+					var receipt = task.Result;
+					evController.SetReceipt(receipt);
+				}
+				else
+				{
+					evController.SetError(task.Exception);
+				}
+			});
+		}
+		
+		public TransactionInput CreateTransactionInput(string methodName, object[] arguments)
+		{
+			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
+			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
+			var callFunction = contract.GetFunction(methodName);
+			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);
+		}
+
+		public Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+		{
+			return _web3Provider.TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash);
 		}
 
 		public Task<Transaction> GetTransactionInfo(string transactionReceipt)

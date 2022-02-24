@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿﻿using System;
 using System.Numerics;
 using MirageSDK.Core.Data;
 using MirageSDK.Core.Implementation;
@@ -33,6 +33,43 @@ namespace MirageSDK.Examples.Scripts.ERC20Example
 			var trx = await _erc20Contract.GetTransactionInfo(receipt);
 
 			Debug.Log($"Nonce: {trx.Nonce}");
+		}
+		
+		public void SendMint()
+		{
+			var evController = new EventController();
+			evController.OnSending += HandleSending;
+			evController.OnSent += HandleSent;
+			evController.OnTransactionHash += HandleTransactionHash;
+			evController.OnReceipt += HandleReceipt;
+			evController.OnError += HandleError;
+			
+			_erc20Contract.Web3SendMethod("mint", new object[0], evController);
+		}
+		
+		public void HandleSent(object sender, TransactionInput transaction)
+		{
+			Debug.Log($"Transaction sent");
+		}
+		
+		public void HandleSending(object sender, TransactionInput transaction)
+		{
+			Debug.Log($"Transaction is sending");
+		}
+
+		public void HandleTransactionHash(object sender, string transactionHash)
+		{
+			Debug.Log($"transactionHash: {transactionHash}");
+		}
+
+		public void HandleReceipt(object sender, TransactionReceipt receipt)
+		{
+			Debug.Log("Receipt: " + receipt.Status);
+		}
+		
+		public void HandleError(object sender, Exception err)
+		{
+			Debug.Log("Error: " + err.Message);
 		}
 
 		public async void GetBalance()
