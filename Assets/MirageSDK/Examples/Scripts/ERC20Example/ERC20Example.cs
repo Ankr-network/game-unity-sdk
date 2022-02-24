@@ -1,4 +1,4 @@
-﻿﻿﻿using System;
+﻿using System;
 using System.Numerics;
 using MirageSDK.Core.Data;
 using MirageSDK.Core.Implementation;
