@@ -48,11 +48,11 @@ namespace MirageSDK.UseCases.LoadNFTs
 
 		private async UniTask<string> GetTokenMetaData(BigInteger tokenID)
 		{
-			var getTokenURI = new GetTokenURI
+			var tokenUriMessage = new TokenURIMessage
 			{
 				TokenId = tokenID.ToString()
 			};
-			var tokenMetaData = await _gameCharacterContract.GetData<GetTokenURI, string>(getTokenURI);
+			var tokenMetaData = await _gameCharacterContract.GetData<TokenURIMessage, string>(tokenUriMessage);
 
 			UpdateUILogs($"Token MetaData: {tokenMetaData}");
 
