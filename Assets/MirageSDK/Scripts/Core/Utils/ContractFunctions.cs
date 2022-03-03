@@ -1,15 +1,14 @@
 using System.Numerics;
 using Cysharp.Threading.Tasks;
 using MirageSDK.Core.Infrastructure;
-using MirageSDK.Examples.Scripts.ContractMessages;
-using MirageSDK.Examples.Scripts.ContractMessages.GameCharacterContract;
+using MirageSDK.Examples.Scripts.ContractMessages.ERC721;
 
 namespace MirageSDK.Core.Utils
 {
 	/// <summary>
 	///     Class <c>ContractFunctions</c> Contains functions usable by all ERC721 standard contracts.
 	/// </summary>
-	public class ContractFunctions
+	public static class ContractFunctions
 	{
 		#region ERC721 Standard
 
@@ -19,15 +18,14 @@ namespace MirageSDK.Core.Utils
 		///     Returns the number of tokens in
 		///     <paramref name="owner" />'s account.
 		/// </summary>
-		private async UniTask<BigInteger> BalanceOf(string owner, IContract contract)
+		public static UniTask<BigInteger> BalanceOf(string owner, IContract contract)
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
 				Owner = owner
 			};
-			var balance = await contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 
-			return balance;
+			return contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage).AsUniTask();
 		}
 
 		/// <summary>
@@ -36,29 +34,27 @@ namespace MirageSDK.Core.Utils
 		///     Requirement:<br />
 		///     -"<paramref name="tokenId" />" must exist
 		/// </summary>
-		private async UniTask<string> OwnerOf(string tokenId, IContract contract)
+		public static UniTask<string> OwnerOf(string tokenId, IContract contract)
 		{
 			var ownerOfMessage = new OwnerOfMessage
 			{
 				TokenId = tokenId
 			};
-			var owner = await contract.GetData<OwnerOfMessage, string>(ownerOfMessage);
 
-			return owner;
+			return contract.GetData<OwnerOfMessage, string>(ownerOfMessage).AsUniTask();
 		}
 
 		//IERC721 Metadata
 		/// <summary>Returns the token "<paramref name="tokenId" />"'s collection name.</summary>
-		private async UniTask<string> Name(IContract contract)
+		public static UniTask<string> Name(IContract contract)
 		{
 			var nameMessage = new NameMessage();
-			var tokenName = await contract.GetData<NameMessage, string>(nameMessage);
 
-			return tokenName;
+			return contract.GetData<NameMessage, string>(nameMessage).AsUniTask();
 		}
 
 		/// <summary>Returns the token "<paramref name="tokenId" />"'s collection symbol.</summary>
-		private async UniTask<string> Symbol(string tokenID, IContract contract)
+		public static async UniTask<string> Symbol(string tokenID, IContract contract)
 		{
 			var symbolMessage = new SymbolMessage();
 			var tokenSymbol = await contract.GetData<SymbolMessage, string>(symbolMessage);
@@ -67,57 +63,53 @@ namespace MirageSDK.Core.Utils
 		}
 
 		/// <summary>Returns the Uniform Resource Identifier (URI) for "<paramref name="tokenId" />" token.</summary>
-		private async UniTask<string> TokenURI(string tokenID, IContract contract)
+		public static UniTask<string> TokenURI(string tokenID, IContract contract)
 		{
 			var tokenURIMessage = new TokenURIMessage
 			{
 				TokenId = tokenID
 			};
-			var tokenURI = await contract.GetData<TokenURIMessage, string>(tokenURIMessage);
 
-			return tokenURI;
+			return contract.GetData<TokenURIMessage, string>(tokenURIMessage).AsUniTask();
 		}
 
 		// ERC-721 Non-Fungible Token Standard, optional enumeration extension
 		// See https://eips.ethereum.org/EIPS/eip-721
 		/// <summary>Returns the total amount of tokens stored by the contract.</summary>
-		private async UniTask<BigInteger> TotalSupply(IContract contract)
+		public static UniTask<BigInteger> TotalSupply(IContract contract)
 		{
 			var totalSupplyMessage = new TotalSupplyMessage();
-			var totalSupply = await contract.GetData<TotalSupplyMessage, BigInteger>(totalSupplyMessage);
 
-			return totalSupply;
+			return contract.GetData<TotalSupplyMessage, BigInteger>(totalSupplyMessage).AsUniTask();
 		}
 
 		/// <summary>
 		///     Returns a token ID owned by "<paramref name="owner" />"  at a given "<paramref name="index" />" of its token list.
 		///     Use along with <see cref="BalanceOf" /> to enumerate all of "<paramref name="owner" />"'s tokens.
 		/// </summary>
-		private async UniTask<BigInteger> TokenOfOwnerByIndex(string owner, BigInteger index, IContract contract)
+		public static UniTask<BigInteger> TokenOfOwnerByIndex(string owner, BigInteger index, IContract contract)
 		{
 			var tokenOfOwnerByIndexMessage = new TokenOfOwnerByIndexMessage
 			{
 				Owner = owner,
 				Index = index
 			};
-			var tokenId = await contract.GetData<TokenOfOwnerByIndexMessage, BigInteger>(tokenOfOwnerByIndexMessage);
 
-			return tokenId;
+			return contract.GetData<TokenOfOwnerByIndexMessage, BigInteger>(tokenOfOwnerByIndexMessage).AsUniTask();
 		}
 
 		/// <summary>
 		///     Returns a token ID at a given "<paramref name="index" />" of all the tokens stored by the contract.
 		///     Use along with <see cref="TotalSupply" /> to enumerate all tokens.
 		/// </summary>
-		private async UniTask<BigInteger> TokenByIndex(BigInteger index, IContract contract)
+		public static UniTask<BigInteger> TokenByIndex(BigInteger index, IContract contract)
 		{
 			var tokenByIndexMessage = new TokenByIndexMessage
 			{
 				Index = index
 			};
-			var tokenId = await contract.GetData<TokenByIndexMessage, BigInteger>(tokenByIndexMessage);
 
-			return tokenId;
+			return contract.GetData<TokenByIndexMessage, BigInteger>(tokenByIndexMessage).AsUniTask();
 		}
 
 		#endregion
@@ -138,32 +130,33 @@ namespace MirageSDK.Core.Utils
 		///     which is called upon a safe transfer.
 		/// </summary>
 		/// <returns>The transaction hash in a string format</returns>
-		private async UniTask<string> SafeTransferFrom(string from, string to, BigInteger tokenId, IContract contract)
+		public static UniTask<string> SafeTransferFrom(string from, string to, BigInteger tokenId,
+			IContract contract)
 		{
 			const string safeTransferFromMethodName = "safeTransferFrom";
-			var transactionHash = await contract.CallMethod(safeTransferFromMethodName, new object[]
+
+			return contract.CallMethod(safeTransferFromMethodName, new object[]
 			{
 				from,
 				to,
 				tokenId
-			});
-
-			return transactionHash;
+			}).AsUniTask();
+			;
 		}
 
-		private async UniTask<string> SafeTransferFrom(string from, string to, BigInteger tokenId, byte data,
+		public static UniTask<string> SafeTransferFrom(string from, string to, BigInteger tokenId, byte data,
 			IContract contract)
 		{
 			const string safeTransferFromMethodName = "safeTransferFrom";
-			var transactionHash = await contract.CallMethod(safeTransferFromMethodName, new object[]
+
+			return contract.CallMethod(safeTransferFromMethodName, new object[]
 			{
 				from,
 				to,
 				tokenId,
 				data
-			});
-
-			return transactionHash;
+			}).AsUniTask();
+			;
 		}
 
 		/// <summary>
@@ -177,17 +170,17 @@ namespace MirageSDK.Core.Utils
 		///     <see cref="Approve" /> or <see cref="SetApprovalForAll" />.
 		/// </summary>
 		/// <returns>The transaction hash in a string format</returns>
-		private async UniTask<string> TransferFrom(string from, string to, BigInteger tokenId, IContract contract)
+		public static UniTask<string> TransferFrom(string from, string to, BigInteger tokenId, IContract contract)
 		{
 			const string transferFromMethodName = "transferFrom";
-			var transactionHash = await contract.CallMethod(transferFromMethodName, new object[]
+
+			return contract.CallMethod(transferFromMethodName, new object[]
 			{
 				from,
 				to,
 				tokenId
-			});
-
-			return transactionHash;
+			}).AsUniTask();
+			;
 		}
 
 		/// <summary>
@@ -199,16 +192,16 @@ namespace MirageSDK.Core.Utils
 		///     - "<paramref name="tokenId" />" must exist.<br />
 		/// </summary>
 		/// <returns>The transaction hash in a string format</returns>
-		private async UniTask<string> Approve(string to, string tokenId, IContract contract)
+		public static UniTask<string> Approve(string to, string tokenId, IContract contract)
 		{
 			const string approveMethodName = "approve";
-			var transactionHash = await contract.CallMethod(approveMethodName, new object[]
+
+			return contract.CallMethod(approveMethodName, new object[]
 			{
 				to,
 				tokenId
-			});
-
-			return transactionHash;
+			}).AsUniTask();
+			;
 		}
 
 		/// <summary>
@@ -217,15 +210,14 @@ namespace MirageSDK.Core.Utils
 		///     - `tokenId` must exist.
 		/// </summary>
 		/// <returns>The Operator's address in a string format</returns>
-		private async UniTask<string> GetApproved(string tokenId, IContract contract)
+		public static UniTask<string> GetApproved(string tokenId, IContract contract)
 		{
 			const string getApprovedMethodName = "getApproved";
-			var theOperator = await contract.CallMethod(getApprovedMethodName, new object[]
+
+			return contract.CallMethod(getApprovedMethodName, new object[]
 			{
 				tokenId
-			});
-
-			return theOperator;
+			}).AsUniTask();
 		}
 
 		/// <summary>
@@ -236,16 +228,15 @@ namespace MirageSDK.Core.Utils
 		///     - The "<paramref name="callOperator" />"  cannot be the caller.
 		/// </summary>
 		/// <returns>The transaction hash in a string format</returns>
-		private async UniTask<string> SetApprovalForAll(string callOperator, bool approved, IContract contract)
+		public static UniTask<string> SetApprovalForAll(string callOperator, bool approved, IContract contract)
 		{
 			const string setApprovalForAllMethodName = "setApprovalForAll";
-			var transactionHash = await contract.CallMethod(setApprovalForAllMethodName, new object[]
+
+			return contract.CallMethod(setApprovalForAllMethodName, new object[]
 			{
 				callOperator,
 				approved
-			});
-
-			return transactionHash;
+			}).AsUniTask();
 		}
 
 		#endregion

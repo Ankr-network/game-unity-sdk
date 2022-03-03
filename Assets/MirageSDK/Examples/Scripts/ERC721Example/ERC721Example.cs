@@ -3,6 +3,7 @@ using System.Numerics;
 using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Examples.Scripts.ContractMessages;
+using MirageSDK.Examples.Scripts.ContractMessages.ERC721;
 using MirageSDK.Examples.Scripts.DTO;
 using UnityEngine;
 using WalletConnectSharp.Unity;

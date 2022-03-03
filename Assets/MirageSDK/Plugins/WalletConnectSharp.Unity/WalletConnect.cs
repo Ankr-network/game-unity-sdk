@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -18,6 +17,10 @@ using WalletConnectSharp.Unity.Models;
 using WalletConnectSharp.Unity.Network;
 using WalletConnectSharp.Unity.Utils;
 
+#if UNITY_IOS
+using System.Net;
+#endif
+
 namespace WalletConnectSharp.Unity
 {
 	[RequireComponent(typeof(NativeWebSocketTransport))]
@@ -26,17 +29,13 @@ namespace WalletConnectSharp.Unity
 		private const string SessionKey = "__WALLETCONNECT_SESSION__";
 
 		/// <summary>
-		/// FOR FUTURE USE - when using W.C. for iOS this list will limit the wallets
-		/// displayed to the user.
+		///     FOR FUTURE USE - when using W.C. for iOS this list will limit the wallets
+		///     displayed to the user.
 		/// </summary>
 		public List<string> AllowedWalletIds;
 
-		public Dictionary<string, AppEntry> SupportedWallets { get; private set; }
-
-		public AppEntry SelectedWallet { get; set; }
-
 		public Wallets DefaultWallet;
-
+		
 		[Serializable]
 		public class WalletConnectEventNoSession : UnityEvent
 		{
@@ -52,18 +51,8 @@ namespace WalletConnectSharp.Unity
 		{
 		}
 
-		public event EventHandler ConnectionStarted;
-
-		[BindComponent] private NativeWebSocketTransport _transport;
-
-		public static WalletConnect Instance { get; private set; }
-
-		public static WalletConnectUnitySession ActiveSession => Instance.Session;
-
-		public string ConnectURL => Session.URI;
-
 		public bool autoSaveAndResume = true;
-		public bool connectOnAwake = false;
+		public bool connectOnAwake;
 		public bool connectOnStart = true;
 		public bool createNewSessionOnSessionDisconnect = true;
 		public int connectSessionRetryCount = 3;
@@ -81,9 +70,22 @@ namespace WalletConnectSharp.Unity
 		public WalletConnectEventWithSession NewSessionConnected;
 		public WalletConnectEventWithSession ResumedSessionConnected;
 
-		public WalletConnectUnitySession Session { get; private set; }
-
 		[SerializeField] public ClientMeta AppData;
+
+		[BindComponent] private NativeWebSocketTransport _transport;
+		private bool isConnected = false;
+
+		public Dictionary<string, AppEntry> SupportedWallets { get; private set; }
+
+		public AppEntry SelectedWallet { get; set; }
+
+		public static WalletConnect Instance { get; private set; }
+
+		public static WalletConnectUnitySession ActiveSession => Instance.Session;
+
+		public string ConnectURL => Session.URI;
+
+		public WalletConnectUnitySession Session { get; private set; }
 
 		protected override async void Awake()
 		{
@@ -112,6 +114,30 @@ namespace WalletConnectSharp.Unity
 				await Connect();
 			}
 		}
+
+		private async void OnDestroy()
+		{
+			await SaveOrDisconnect();
+		}
+
+		private async void OnApplicationPause(bool pauseStatus)
+		{
+			if (pauseStatus)
+			{
+				await SaveOrDisconnect();
+			}
+			else if (IsSessionSaved() && autoSaveAndResume)
+			{
+				await Connect();
+			}
+		}
+
+		private async void OnApplicationQuit()
+		{
+			await SaveOrDisconnect();
+		}
+
+		public event EventHandler ConnectionStarted;
 
 		public async Task<WCSessionData> Connect(CancellationToken cancellationToken = default)
 		{
@@ -211,8 +237,14 @@ namespace WalletConnectSharp.Unity
 
 		#if UNITY_ANDROID || UNITY_IOS
 			//Whenever we send a request to the Wallet, we want to open the Wallet app
-			Session.OnSend += (sender, session) => OpenMobileWallet();
+			Session.OnSend -= SessionOnSendEvent;
+			Session.OnSend += SessionOnSendEvent;
 		#endif
+		}
+
+		private void SessionOnSendEvent(object sender, WalletConnectSession e)
+		{
+			OpenMobileWallet();
 		}
 
 		private void TeardownEvents()
@@ -316,7 +348,7 @@ namespace WalletConnectSharp.Unity
 
 		private IEnumerator DownloadImagesFor(string id, string[] sizes = null)
 		{
-			sizes = sizes ?? new[] { "sm", "md", "lg" };
+			sizes = sizes ?? new[] {"sm", "md", "lg"};
 
 			var data = SupportedWallets[id];
 
@@ -334,7 +366,7 @@ namespace WalletConnectSharp.Unity
 					}
 					else
 					{
-						var texture = ((DownloadHandlerTexture)imageRequest.downloadHandler).texture;
+						var texture = ((DownloadHandlerTexture) imageRequest.downloadHandler).texture;
 						var sprite = Sprite.Create(texture,
 							new Rect(0.0f, 0.0f, texture.width, texture.height),
 							new Vector2(0.5f, 0.5f), 100.0f);
@@ -360,7 +392,7 @@ namespace WalletConnectSharp.Unity
 		public async UniTask FetchWalletList(bool downloadImages = true)
 		{
 			using (var webRequest =
-				UnityWebRequest.Get("https://registry.walletconnect.org/data/wallets.json"))
+			       UnityWebRequest.Get("https://registry.walletconnect.org/data/wallets.json"))
 			{
 				// Request and wait for the desired page.
 				await webRequest.SendWebRequest();
@@ -383,28 +415,6 @@ namespace WalletConnectSharp.Unity
 						}
 					}
 				}
-			}
-		}
-
-		private async void OnDestroy()
-		{
-			await SaveOrDisconnect();
-		}
-
-		private async void OnApplicationQuit()
-		{
-			await SaveOrDisconnect();
-		}
-
-		private async void OnApplicationPause(bool pauseStatus)
-		{
-			if (pauseStatus)
-			{
-				await SaveOrDisconnect();
-			}
-			else if (IsSessionSaved() && autoSaveAndResume)
-			{
-				await Connect();
 			}
 		}
 
