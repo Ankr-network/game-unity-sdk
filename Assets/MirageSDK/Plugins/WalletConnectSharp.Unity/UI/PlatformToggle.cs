@@ -1,24 +1,27 @@
 using UnityEngine;
 
-public class PlatformToggle : MonoBehaviour
+namespace MirageSDK.Plugins.WalletConnectSharp.Unity.UI
 {
-    public bool activeOnDesktop;
-    public bool activeOnAndroid;
-    public bool activeOniOS;
+	public class PlatformToggle : MonoBehaviour
+	{
+		public bool _activeOnDesktop;
+		public bool _activeOnAndroid;
+		public bool _activeOniOS;
 
-    void Start()
-    {
-        MakeActive();
-    }
+		private void Start()
+		{
+			MakeActive();
+		}
 
-    public void MakeActive()
-    {
-#if UNITY_ANDROID
-        gameObject.SetActive(activeOnAndroid);
-#elif UNITY_IOS
-        gameObject.SetActive(activeOniOS);
-#else
-        gameObject.SetActive(activeOnDesktop);
-#endif
-    }
+		private void MakeActive()
+		{
+		#if UNITY_ANDROID
+			gameObject.SetActive(_activeOnAndroid);
+		#elif UNITY_IOS
+        gameObject.SetActive(_activeOniOS);
+		#else
+        gameObject.SetActive(_activeOnDesktop);
+		#endif
+		}
+	}
 }

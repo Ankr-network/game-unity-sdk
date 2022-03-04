@@ -1,8 +1,7 @@
-using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace MirageSDK.Examples.Scripts.ContractMessages.ERC1155
+namespace MirageSDK.Examples.ContractMessages.ERC1155
 {
 	[Function("balanceOf", "uint256")]
 	public class BalanceOfMessage : FunctionMessage

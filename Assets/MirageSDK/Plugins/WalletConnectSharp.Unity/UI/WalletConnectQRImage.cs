@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using MirageSDK.Plugins.WalletConnectSharp.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 using WalletConnectSharp.Unity;

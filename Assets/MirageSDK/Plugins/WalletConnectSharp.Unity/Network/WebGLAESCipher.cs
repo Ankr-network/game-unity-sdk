@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using WalletConnectSharp.Core.Models;
-using WalletConnectSharp.Core.Network;
-using WalletConnectSharp.Core.Utils;
+using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
+using MirageSDK.Plugins.WalletConnectSharp.Core.Network;
+using MirageSDK.Plugins.WalletConnectSharp.Core.Utils;
 
 namespace WalletConnectSharp.Unity.Network
 {

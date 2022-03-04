@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MirageSDK.Core.Infrastructure;
+using MirageSDK.Plugins.WalletConnectSharp.Unity;
 using Nethereum.Signer;
 using Nethereum.Web3;
 using WalletConnectSharp.NEthereum;

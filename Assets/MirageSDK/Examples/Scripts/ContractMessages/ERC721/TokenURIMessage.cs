@@ -1,7 +1,7 @@
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace MirageSDK.Examples.Scripts.ContractMessages.ERC721
+namespace MirageSDK.Examples.ContractMessages.ERC721
 {
 	[Function("tokenURI", "string")]
 	public class TokenURIMessage : FunctionMessage

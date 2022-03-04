@@ -1,7 +1,7 @@
 using System.Numerics;
 using Cysharp.Threading.Tasks;
 using MirageSDK.Core.Infrastructure;
-using MirageSDK.Examples.Scripts.ContractMessages.ERC721;
+using MirageSDK.Examples.ContractMessages.ERC721;
 
 namespace MirageSDK.Core.Utils
 {

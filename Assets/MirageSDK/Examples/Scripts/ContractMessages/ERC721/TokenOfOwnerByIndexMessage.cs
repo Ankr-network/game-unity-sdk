@@ -2,7 +2,7 @@ using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace MirageSDK.Examples.Scripts.ContractMessages.ERC721
+namespace MirageSDK.Examples.ContractMessages.ERC721
 {
 	[Function("tokenOfOwnerByIndex", "uint256")]
 	public class TokenOfOwnerByIndexMessage : FunctionMessage

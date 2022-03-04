@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using MirageSDK.Plugins.WalletConnectSharp.Unity;
 using UnityEngine;
 using UnityEngine.Events;
 using WalletConnectSharp.Unity.Utils;

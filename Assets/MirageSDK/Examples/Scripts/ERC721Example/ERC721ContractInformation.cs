@@ -1,5 +1,5 @@
 
-namespace MirageSDK.Examples.Scripts.ERC721Example
+namespace MirageSDK.Examples.ERC721Example
 {
 	public static class ERC721ContractInformation
 	{
