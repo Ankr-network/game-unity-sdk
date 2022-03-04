@@ -1391,8 +1391,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 333705141}
-        m_TargetAssemblyTypeName: CustomSceneManager, Assembly-CSharp
+      - m_Target: {fileID: 588941423}
+        m_TargetAssemblyTypeName: MirageSDK.Examples.CustomSceneManager, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 5
         m_Arguments:
