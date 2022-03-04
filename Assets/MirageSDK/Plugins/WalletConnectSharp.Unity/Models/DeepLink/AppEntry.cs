@@ -1,6 +1,10 @@
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
+using WalletConnectSharp.Unity.Models;
 
-namespace WalletConnectSharp.Unity.Models
+namespace MirageSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink
 {
     public class AppEntry
     {
@@ -13,8 +17,49 @@ namespace WalletConnectSharp.Unity.Models
         public MobileAppData desktop;
         public AppMetadata metadata;
 
-        public Sprite largeIcon;
-        public Sprite medimumIcon;
-        public Sprite smallIcon;
+        public Sprite LargeIcon;
+        public Sprite MediumIcon;
+        public Sprite SmallIcon;
+
+        public async UniTask DownloadImages(string[] sizes = null)
+        {
+            sizes = sizes ?? new[] { "sm", "md", "lg" };
+
+            foreach (var size in sizes)
+            {
+                var url = "https://registry.walletconnect.org/logo/" + size + "/" + id + ".jpeg";
+
+                using (var imageRequest = UnityWebRequestTexture.GetTexture(url))
+                {
+                    await imageRequest.SendWebRequest();
+
+                    if (imageRequest.isHttpError || imageRequest.isNetworkError)
+                    {
+                        Debug.Log("Error Getting Wallet Icon: " + imageRequest.error);
+                    }
+                    else
+                    {
+                        var texture = ((DownloadHandlerTexture)imageRequest.downloadHandler).texture;
+                        var sprite = Sprite.Create(texture,
+                            new Rect(0.0f, 0.0f, texture.width, texture.height),
+                            new Vector2(0.5f, 0.5f), 100.0f);
+
+                        switch (size)
+                        {
+                            case "sm":
+                                SmallIcon = sprite;
+                                break;
+                            case "md":
+                                MediumIcon = sprite;
+                                break;
+                            case "lg":
+                                LargeIcon = sprite;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

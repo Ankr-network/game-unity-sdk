@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using WalletConnectSharp.Core.Models;
 using Object = UnityEngine.Object;
 
 namespace WalletConnectSharp.Unity.Utils

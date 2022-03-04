@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
+using MirageSDK.Plugins.WalletConnectSharp.Unity;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using WalletConnectSharp.Core.Models;
 using WalletConnectSharp.Unity;
 using WalletConnectSharp.Unity.Network;
 using Object = UnityEngine.Object;
@@ -62,14 +63,14 @@ namespace PlayModeTests
 			var walletConnectObject = new GameObject("WalletConnect");
 			var walletConnect = walletConnectObject.AddComponent<WalletConnect>();
 			walletConnectObject.AddComponent<NativeWebSocketTransport>();
-			walletConnect.connectOnStart = false;
-			walletConnect.connectOnAwake = false;
+			walletConnect.ConnectOnStart = false;
+			walletConnect.ConnectOnAwake = false;
 			walletConnect.AppData = new ClientMeta
 			{
-				Description = "Wallet",
-				URL = "https://www.ankr.com/",
-				Icons = new[] { "https://www.ankr.com/static/favicon/apple-touch-icon.png" },
-				Name = "Wallet"
+				_description = "Wallet",
+				_url = "https://www.ankr.com/",
+				_icons = new[] { "https://www.ankr.com/static/favicon/apple-touch-icon.png" },
+				_name = "Wallet"
 			};
 			
 			return walletConnect;

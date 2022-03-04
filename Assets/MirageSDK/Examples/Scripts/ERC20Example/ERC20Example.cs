@@ -3,14 +3,13 @@ using System.Numerics;
 using MirageSDK.Core.Data;
 using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
-using MirageSDK.Examples.Scripts.ContractMessages;
-using MirageSDK.Examples.Scripts.ContractMessages.ERC721;
-using MirageSDK.Examples.Scripts.DTO;
+using MirageSDK.Examples.ContractMessages.ERC721;
+using MirageSDK.Examples.DTO;
+using MirageSDK.Plugins.WalletConnectSharp.Unity;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
-using WalletConnectSharp.Unity;
 
-namespace MirageSDK.Examples.Scripts.ERC20Example
+namespace MirageSDK.Examples.ERC20Example
 {
 	public class ERC20Example : MonoBehaviour
 	{

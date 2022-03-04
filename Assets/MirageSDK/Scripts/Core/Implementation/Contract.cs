@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using MirageSDK.Core.Data;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Core.Utils;
+using MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum;
+using MirageSDK.Plugins.WalletConnectSharp.Unity;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Web3;
-using WalletConnectSharp.Core.Models.Ethereum;
 using WalletConnectSharp.Unity;
 
 namespace MirageSDK.Core.Implementation
@@ -51,7 +52,7 @@ namespace MirageSDK.Core.Implementation
 		
 		public EventController Web3SendMethod(string methodName, object[] arguments, EventController evController = null, string gas = null)
 		{
-			if (evController != null)
+			if (evController == null)
 			{
 				evController = new EventController();
 			}
@@ -60,7 +61,7 @@ namespace MirageSDK.Core.Implementation
 		
 			evController.InvokeSendingEvent(transactionInput);
 				
-			Task<string> sendTransactionTask = SendTransaction(_contractAddress, transactionInput.Data, gas: gas);
+			var sendTransactionTask = SendTransaction(_contractAddress, transactionInput.Data, gas: gas);
 			
 			evController.InvokeSentEvent(transactionInput);
 									

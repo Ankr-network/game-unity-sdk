@@ -2,7 +2,7 @@
 using MirageSDK.Core.Infrastructure;
 using UnityEngine;
 
-namespace MirageSDK.Examples.Scripts.SignatureExample
+namespace MirageSDK.Examples.SignatureExample
 {
 	public class SignatureExample : MonoBehaviour
 	{
@@ -14,15 +14,9 @@ namespace MirageSDK.Examples.Scripts.SignatureExample
 		{
 			_mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance();
 		}
-	
-		public void Sign1()
-		{
-			Debug.Log($"Signature: {_signature}");
-		}
 
 		public async void Sign()
 		{
-			Debug.Log(_mirageSDKWrapper);
 			_signature = await _mirageSDKWrapper.Sign(Message);
 			Debug.Log($"Signature: {_signature}");
 		}

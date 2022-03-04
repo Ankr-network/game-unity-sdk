@@ -1,7 +1,7 @@
 using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
-namespace MirageSDK.Examples.Scripts.DTO
+namespace MirageSDK.Examples.DTO
 {
 	[Event("Transfer")]
 	public class TransferEventDTO : IEventDTO

@@ -1,7 +1,7 @@
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace MirageSDK.Examples.Scripts.ContractMessages.GameCharacterContract
+namespace MirageSDK.Examples.ContractMessages.GameCharacterContract
 {
 	[Function("getShoes", "uint256")]
 	public class GetShoesMessage : FunctionMessage

@@ -1,23 +1,43 @@
+using System;
 using Cysharp.Threading.Tasks;
+using MirageSDK.Plugins.WalletConnectSharp.Core;
+using MirageSDK.Plugins.WalletConnectSharp.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using WalletConnectSharp.Core;
-using WalletConnectSharp.Unity;
 
-namespace MirageSDK.Examples.Scripts
+namespace MirageSDK.Examples
 {
 	public class ConnectionController : MonoBehaviour
 	{
 		private const string LoginText = "Login";
 		private const string ConnectingText = "Connecting...";
-		
+
 		[SerializeField] private TMP_Text _connectionText;
 		[SerializeField] private Button _loginButton;
+		[SerializeField] private GameObject _sceneChooser;
 
 		private void OnEnable()
 		{
 			TrySubscribeToWalletEvents().Forget();
+		}
+
+		private void OnDisable()
+		{
+			UnsubscribeFromTransportEvents();
+		}
+
+		private void UpdateSceneState()
+		{
+			var walletConnectUnitySession = WalletConnect.ActiveSession;
+			if (walletConnectUnitySession == null)
+			{
+				return;
+			}
+
+			var activeSessionConnected = walletConnectUnitySession.Connected;
+			_sceneChooser.SetActive(activeSessionConnected);
+			_loginButton.gameObject.SetActive(!activeSessionConnected);
 		}
 
 		private async UniTaskVoid TrySubscribeToWalletEvents()
@@ -26,18 +46,18 @@ namespace MirageSDK.Examples.Scripts
 			{
 				await UniTask.WaitWhile(() => WalletConnect.Instance == null);
 			}
+			
+			_loginButton.onClick.AddListener(WalletConnect.Instance.OpenDeepLink);
+
+			WalletConnect.Instance.ConnectedEvent.AddListener(UpdateSceneState);
+			UpdateSceneState();
 
 			SubscribeOnTransportEvents();
-			
+
 			if (WalletConnect.ActiveSession != null)
 			{
 				UpdateLoginButtonState(this, WalletConnect.ActiveSession);
 			}
-		}
-
-		private void OnDisable()
-		{
-			UnsubscribeFromTransportEvents();
 		}
 
 		private void SubscribeOnTransportEvents()
@@ -54,15 +74,17 @@ namespace MirageSDK.Examples.Scripts
 
 		private void UnsubscribeFromTransportEvents()
 		{
+			_loginButton.onClick.RemoveAllListeners();
+
 			if (WalletConnect.ActiveSession == null)
 			{
 				return;
 			}
 
+			WalletConnect.Instance.ConnectedEvent.RemoveListener(UpdateSceneState);
 			WalletConnect.ActiveSession.OnTransportConnect -= UpdateLoginButtonState;
 			WalletConnect.ActiveSession.OnTransportDisconnect -= UpdateLoginButtonState;
 			WalletConnect.ActiveSession.OnTransportOpen -= UpdateLoginButtonState;
-			WalletConnect.ActiveSession.OnTransportConnect -= UpdateLoginButtonState;
 		}
 
 		private void UpdateLoginButtonState(object sender, WalletConnectProtocol e)
