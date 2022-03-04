@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MirageSDK.Core.Infrastructure;
 using Nethereum.Signer;
 using Nethereum.Web3;
+using UnityEngine;
 using WalletConnectSharp.NEthereum;
 using WalletConnectSharp.Unity;
 
@@ -127,6 +128,28 @@ namespace MirageSDK.Core.Implementation
 			var client = wcProtocol.CreateProvider(new Uri(providerURI));
 			var web3Provider = new Web3(client);
 			return web3Provider;
+		}
+
+		public void AddAndSwitchNetwork(NetworkName networkName)
+		{
+			switch (networkName)
+			{
+				case NetworkName.Ethereum:
+					break;
+				case NetworkName.EthereumRinkebyTestNet:
+					break;
+				case NetworkName.BinanceSmartChain:
+					AddAndSwitchCustomNetwork("https://change-network-mirage.surge.sh?network=bsc");
+					break;
+				case NetworkName.BinanceSmartChainTestNet:
+					AddAndSwitchCustomNetwork("https://change-network-mirage.surge.sh?network=bsc_test");
+					break;
+			}
+		}
+		
+		public void AddAndSwitchCustomNetwork(string url)
+		{
+			Application.OpenURL(url);
 		}
 	}
 }
