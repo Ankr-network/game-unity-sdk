@@ -25,12 +25,12 @@ namespace MirageSDK.Examples.UseCases.AddSwitchNetwork
 			_bscTestButton.onClick.RemoveListener(OpenAddSwitchBscTestnet);
 		}
 
-		public void OpenAddSwitchBsc()
+		private void OpenAddSwitchBsc()
 		{
 			MirageSDKWrapper.GetSDKInstance().AddAndSwitchNetwork(NetworkNameEnum.BinanceSmartChain);
 		}
 
-		public void OpenAddSwitchBscTestnet()
+		private void OpenAddSwitchBscTestnet()
 		{
 			MirageSDKWrapper.GetSDKInstance().AddAndSwitchNetwork(NetworkNameEnum.BinanceSmartChainTestNet);
 		}
