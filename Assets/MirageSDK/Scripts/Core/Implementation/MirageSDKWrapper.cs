@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MirageSDK.Core.Infrastructure;
+using MirageSDK.Core.Utils;
 using MirageSDK.Plugins.WalletConnectSharp.Unity;
 using Nethereum.Signer;
 using Nethereum.Web3;
@@ -12,8 +13,6 @@ namespace MirageSDK.Core.Implementation
 {
 	public class MirageSDKWrapper : IMirageSDK
 	{
-		private const string BscURL = "https://change-network-mirage.surge.sh?network=bsc";
-		private const string BscTestURL = "https://change-network-mirage.surge.sh?network=bsc_test";
 		private readonly string _providerURI;
 		private readonly Dictionary<string, Web3> _web3Providers = new Dictionary<string, Web3>();
 
@@ -26,6 +25,46 @@ namespace MirageSDK.Core.Implementation
 			_providerURI = providerURI;
 		}
 
+		/// <summary>
+		///     Use this if you do not need to work with contracts or you want to use many web3 providers
+		/// </summary>
+		public static IMirageSDK GetSDKInstance()
+		{
+			return new MirageSDKWrapper();
+		}
+
+		/// <summary>
+		///     Use this if you want to work with contracts from a single web3 provider.
+		/// </summary>
+		/// <param name="providerURI"></param>
+		/// <returns></returns>
+		public static IMirageSDK GetSDKInstance(string providerURI)
+		{
+			return new MirageSDKWrapper(providerURI);
+		}
+		
+		public void AddAndSwitchNetwork(NetworkNameEnum networkNameEnum)
+		{
+			switch (networkNameEnum)
+			{
+				case NetworkNameEnum.Ethereum:
+					break;
+				case NetworkNameEnum.EthereumRinkebyTestNet:
+					break;
+				case NetworkNameEnum.BinanceSmartChain:
+					AddAndSwitchCustomNetwork(MirageSDKHelpers.GetURLFromNetworkNameEnum(NetworkNameEnum.BinanceSmartChain));
+					break;
+				case NetworkNameEnum.BinanceSmartChainTestNet:
+					AddAndSwitchCustomNetwork(MirageSDKHelpers.GetURLFromNetworkNameEnum(NetworkNameEnum.BinanceSmartChainTestNet));
+					break;
+			}
+		}
+
+		public void AddAndSwitchCustomNetwork(string url)
+		{
+			Application.OpenURL(url);
+		}
+		
 		/// <summary>
 		///     Creates a contract handler to work with web3 using provided contract address and contract ABI
 		/// </summary>
@@ -92,46 +131,6 @@ namespace MirageSDK.Core.Implementation
 		{
 			var signer = new EthereumMessageSigner();
 			return signer.EncodeUTF8AndEcRecover(messageToCheck, signature);
-		}
-
-		public void AddAndSwitchNetwork(NetworkNameEnum networkNameEnum)
-		{
-			switch (networkNameEnum)
-			{
-				case NetworkNameEnum.Ethereum:
-					break;
-				case NetworkNameEnum.EthereumRinkebyTestNet:
-					break;
-				case NetworkNameEnum.BinanceSmartChain:
-					AddAndSwitchCustomNetwork(BscURL);
-					break;
-				case NetworkNameEnum.BinanceSmartChainTestNet:
-					AddAndSwitchCustomNetwork(BscTestURL);
-					break;
-			}
-		}
-
-		public void AddAndSwitchCustomNetwork(string url)
-		{
-			Application.OpenURL(url);
-		}
-
-		/// <summary>
-		///     Use this if you do not need to work with contracts or you want to use many web3 providers
-		/// </summary>
-		public static IMirageSDK GetSDKInstance()
-		{
-			return new MirageSDKWrapper();
-		}
-
-		/// <summary>
-		///     Use this if you want to work with contracts from a single web3 provider.
-		/// </summary>
-		/// <param name="providerURI"></param>
-		/// <returns></returns>
-		public static IMirageSDK GetSDKInstance(string providerURI)
-		{
-			return new MirageSDKWrapper(providerURI);
 		}
 
 		private Web3 GetOrCreateWeb3Provider(string providerURI)
