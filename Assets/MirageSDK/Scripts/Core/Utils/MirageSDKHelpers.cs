@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Text;
+using MirageSDK.Core.Infrastructure;
 using UnityEngine.Networking;
 
 namespace MirageSDK.Core.Utils
@@ -28,5 +29,26 @@ namespace MirageSDK.Core.Utils
 			var bytes = Encoding.UTF8.GetBytes(str);
 			return bytes;
 		}
+
+		public static string GetURLFromNetworkNameEnum(NetworkNameEnum networkNameEnum)
+		{
+			string url = "";
+			
+			switch (networkNameEnum)
+			{
+				case NetworkNameEnum.Ethereum:
+					break;
+				case NetworkNameEnum.EthereumRinkebyTestNet:
+					break;
+				case  NetworkNameEnum.BinanceSmartChain:
+					url = "https://metamask.app.link/dapp/change-network-mirage.surge.sh?network=bsc";
+					break;
+				case  NetworkNameEnum.BinanceSmartChainTestNet:
+					url = "https://metamask.app.link/dapp/change-network-mirage.surge.sh?network=bsc_test";
+					break;
+			}
+
+			return url;
+		} 
 	}
 }

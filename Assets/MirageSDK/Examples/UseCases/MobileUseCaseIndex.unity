@@ -1321,7 +1321,7 @@ GameObject:
   - component: {fileID: 1475172800}
   - component: {fileID: 1475172799}
   m_Layer: 5
-  m_Name: Add-SwitchNetworkExample
+  m_Name: AddSwitchNetworkExample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1400,7 +1400,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Add-SwitchNetworkExample
+          m_StringArgument: AddSwitchNetworkExample
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1475172800
