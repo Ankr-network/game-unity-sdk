@@ -88,7 +88,7 @@ namespace MirageSDK.Examples.WearableNFTExample
 		//Cant be called by the operator
 		private async UniTask GameItemSetApproval()
 		{
-			var transactionHash = await ContractFunctions.SetApprovalForAll(
+			var transactionHash = await ERC721ContractFunctions.SetApprovalForAll(
 				WearableNFTContractInformation.GameCharacterContractAddress,
 				true, _gameItemContract);
 
@@ -98,7 +98,7 @@ namespace MirageSDK.Examples.WearableNFTExample
 		private async UniTask<BigInteger> GetCharacterBalance()
 		{
 			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
-			var balance = await ContractFunctions.BalanceOf(activeSessionAccount, _gameCharacterContract);
+			var balance = await ERC721ContractFunctions.BalanceOf(activeSessionAccount, _gameCharacterContract);
 
 			UpdateUILogs($"Number of NFTs Owned: {balance}");
 			return balance;
@@ -127,7 +127,7 @@ namespace MirageSDK.Examples.WearableNFTExample
 			if (tokenBalance > 0)
 			{
 				var tokenId =
-					await ContractFunctions.TokenOfOwnerByIndex(activeSessionAccount, 0, _gameCharacterContract);
+					await ERC721ContractFunctions.TokenOfOwnerByIndex(activeSessionAccount, 0, _gameCharacterContract);
 
 				UpdateUILogs($"GameCharacter tokenId  : {tokenId}");
 
