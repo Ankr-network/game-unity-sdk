@@ -41,10 +41,10 @@ namespace MirageSDK.Core.Utils
 				case NetworkNameEnum.EthereumRinkebyTestNet:
 					break;
 				case  NetworkNameEnum.BinanceSmartChain:
-					url = "https://change-network-mirage.surge.sh?network=bsc";
+					url = "https://metamask.app.link/dapp/change-network-mirage.surge.sh?network=bsc";
 					break;
 				case  NetworkNameEnum.BinanceSmartChainTestNet:
-					url = "https://change-network-mirage.surge.sh?network=bsc_test";
+					url = "https://metamask.app.link/dapp/change-network-mirage.surge.sh?network=bsc_test";
 					break;
 			}
 
