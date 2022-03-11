@@ -1,11 +1,10 @@
 using System.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Core;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Events;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Network;
-using MirageSDK.Plugins.WalletConnectSharp.Unity;
+using MirageSDK.WalletConnectSharp.Core;
+using MirageSDK.WalletConnectSharp.Core.Events;
+using MirageSDK.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Core.Network;
 
-namespace WalletConnectSharp.Unity
+namespace MirageSDK.WalletConnectSharp.Unity
 {
 	public class WalletConnectUnitySession : WalletConnectSession
 	{

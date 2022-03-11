@@ -1,7 +1,7 @@
 using System;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Events;
+using MirageSDK.WalletConnectSharp.Core.Events;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Network
+namespace MirageSDK.WalletConnectSharp.Core.Network
 {
     public class TransportFactory
     {

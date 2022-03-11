@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Network
+namespace MirageSDK.WalletConnectSharp.Core.Network
 {
 	public static class DefaultBridge
 	{

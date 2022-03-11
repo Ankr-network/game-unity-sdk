@@ -1,13 +1,12 @@
 using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
-using MirageSDK.Plugins.WalletConnectSharp.Unity;
+using MirageSDK.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Unity;
+using MirageSDK.WalletConnectSharp.Unity.Network;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using WalletConnectSharp.Unity;
-using WalletConnectSharp.Unity.Network;
 using Object = UnityEngine.Object;
 
 namespace PlayModeTests

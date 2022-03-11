@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using MirageSDK.Core.Implementation;
-using MirageSDK.Core.Infrastructure;
 using MirageSDK.Core.Utils;
 using Newtonsoft.Json;
 using TMPro;
@@ -32,7 +30,7 @@ namespace MirageSDK.Examples.UseCases.LinkingAccountWallet
 
 		// Message to be signed, which should be provided by the server
 		[SerializeField] private string _message = "Hahaha!";
-
+    
 		[SerializeField] private TMP_Text _address;
 
 		private IMirageSDK _mirageSDKWrapper;
@@ -47,10 +45,10 @@ namespace MirageSDK.Examples.UseCases.LinkingAccountWallet
 		// function to sign the message
 		// step 1: sign the message with 3rd party wallet
 		// step 2: send the message and sign to the server 
-		// step 3: server return binded address 
+		// step 3: server return bound address 
 		public async void Sign()
 		{
-			_signature = await _mirageSDKWrapper.Sign(_message);
+			_signature = await MirageSignatureHelper.Sign(_message);
 			Debug.Log($"Signature: {_signature}");
 			_address.text = _signature;
 			var address = await SendSignature(_signature);
@@ -74,9 +72,9 @@ namespace MirageSDK.Examples.UseCases.LinkingAccountWallet
 
 			var payload = JsonConvert.SerializeObject(requestPayload);
 
-			var webRequest = MirageSDKHelpers.SendJSON(URL, payload);
-			await webRequest.SendWebRequest();
-			var data = JsonConvert.DeserializeObject<RequestAnswer>(webRequest.downloadHandler.text);
+			var result = await MirageSDKHelper.GetUnityWebRequestFromJSON(URL, payload)
+				.SendWebRequest();
+			var data = JsonConvert.DeserializeObject<RequestAnswer>(result.downloadHandler.text);
 			return data.Address;
 		}
 	}

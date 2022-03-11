@@ -5,7 +5,7 @@ using Nethereum.RPC.Eth.DTOs;
 
 namespace MirageSDK.Core.Utils
 {
-	public class EventFilterHelper
+	public static class EventFilterHelper
 	{
 		public static NewFilterInput CreateEventFilters(EventBase eventHandler, EventFilterData evFilter = null)
 		{

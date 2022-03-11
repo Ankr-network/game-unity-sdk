@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Core;
+using MirageSDK.WalletConnectSharp.Core;
 using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.RpcMessages;
 
-namespace WalletConnectSharp.NEthereum.Client
+namespace MirageSDK.WalletConnectSharp.NEthereum.Client
 {
     public class WalletConnectClient : ClientBase
     {

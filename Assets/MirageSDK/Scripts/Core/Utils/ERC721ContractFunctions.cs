@@ -8,7 +8,7 @@ namespace MirageSDK.Core.Utils
 	/// <summary>
 	///     Class <c>ContractFunctions</c> Contains functions usable by all ERC721 standard contracts.
 	/// </summary>
-	public static class ContractFunctions
+	public static class ERC721ContractFunctions
 	{
 		#region ERC721 Standard
 

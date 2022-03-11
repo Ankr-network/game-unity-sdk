@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Unity.UI
+namespace MirageSDK.WalletConnectSharp.Unity.UI
 {
 	public class PlatformToggle : MonoBehaviour
 	{

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Models
+namespace MirageSDK.WalletConnectSharp.Core.Models
 {
 	public class SavedSession
 	{

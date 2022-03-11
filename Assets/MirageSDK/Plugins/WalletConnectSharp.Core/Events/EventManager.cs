@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Events
+namespace MirageSDK.WalletConnectSharp.Core.Events
 {
 	public class EventManager<T, TEventArgs> : IEventProvider where TEventArgs : IEvent<T>, new()
 	{

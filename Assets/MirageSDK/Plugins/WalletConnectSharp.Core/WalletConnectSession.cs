@@ -6,17 +6,17 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Events;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Events.Model;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum.Types;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Network;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Utils;
+using MirageSDK.WalletConnectSharp.Core.Events;
+using MirageSDK.WalletConnectSharp.Core.Events.Model;
+using MirageSDK.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Core.Models.Ethereum;
+using MirageSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
+using MirageSDK.WalletConnectSharp.Core.Network;
+using MirageSDK.WalletConnectSharp.Core.Utils;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core
+namespace MirageSDK.WalletConnectSharp.Core
 {
 	public class WalletConnectSession : WalletConnectProtocol
 	{
@@ -358,11 +358,8 @@ namespace MirageSDK.Plugins.WalletConnectSharp.Core
 		public async Task<string> EthSendTransaction(params TransactionData[] transaction)
 		{
 			EnsureNotDisconnected();
-
 			var request = new EthSendTransaction(transaction);
-
 			var response = await Send<EthSendTransaction, EthResponse>(request);
-
 			return response.Result;
 		}
 

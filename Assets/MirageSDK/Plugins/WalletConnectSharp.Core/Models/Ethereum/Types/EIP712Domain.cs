@@ -1,4 +1,4 @@
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum.Types
+namespace MirageSDK.WalletConnectSharp.Core.Models.Ethereum.Types
 {
     public class EIP712Domain
     {

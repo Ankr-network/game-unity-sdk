@@ -1,9 +1,7 @@
 using System;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
-using MirageSDK.Plugins.WalletConnectSharp.Unity;
-using MirageSDK.Plugins.WalletConnectSharp.Unity.Utils;
+using MirageSDK.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Unity.Utils;
 using NUnit.Framework;
-using WalletConnectSharp.Unity;
 
 namespace Tests
 {

@@ -1,4 +1,4 @@
-namespace WalletConnectSharp.Unity.Models
+namespace MirageSDK.WalletConnectSharp.Unity.Models.DeepLink
 {
     public enum Wallets
     {

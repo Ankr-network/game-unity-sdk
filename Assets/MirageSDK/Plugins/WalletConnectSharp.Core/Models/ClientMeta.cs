@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Models
+namespace MirageSDK.WalletConnectSharp.Core.Models
 {
 	[Serializable]
 	public class ClientMeta

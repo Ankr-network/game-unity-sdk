@@ -1,8 +1,8 @@
 using System.Text;
 using System.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Core.Models;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Network
+namespace MirageSDK.WalletConnectSharp.Core.Network
 {
     public interface ICipher
     {   

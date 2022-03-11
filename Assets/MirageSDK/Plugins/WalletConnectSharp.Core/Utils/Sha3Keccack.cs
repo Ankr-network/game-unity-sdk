@@ -2,7 +2,7 @@ using System.Linq;
 using System.Text;
 using Org.BouncyCastle.Crypto.Digests;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Utils
+namespace MirageSDK.WalletConnectSharp.Core.Utils
 {
     public class Sha3Keccack
     {

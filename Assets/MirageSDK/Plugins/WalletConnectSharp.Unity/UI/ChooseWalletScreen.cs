@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Unity.Utils;
+using MirageSDK.WalletConnectSharp.Unity.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Unity.UI
+namespace MirageSDK.WalletConnectSharp.Unity.UI
 {
 	public class ChooseWalletScreen : MonoBehaviour
 	{

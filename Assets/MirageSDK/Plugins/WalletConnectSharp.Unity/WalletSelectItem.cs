@@ -1,6 +1,6 @@
 using System;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Unity
+namespace MirageSDK.WalletConnectSharp.Unity
 {
 	[Serializable]
 	public class WalletSelectItem

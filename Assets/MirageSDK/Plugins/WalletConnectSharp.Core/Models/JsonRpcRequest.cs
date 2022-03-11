@@ -1,7 +1,7 @@
-using MirageSDK.Plugins.WalletConnectSharp.Core.Utils;
+using MirageSDK.WalletConnectSharp.Core.Utils;
 using Newtonsoft.Json;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Models
+namespace MirageSDK.WalletConnectSharp.Core.Models
 {
     public class JsonRpcRequest : IEventSource
     {

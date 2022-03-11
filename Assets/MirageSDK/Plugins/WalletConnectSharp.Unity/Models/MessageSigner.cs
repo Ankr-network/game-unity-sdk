@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Unity;
+using MirageSDK.WalletConnectSharp.Unity.Utils;
 using UnityEngine;
 using UnityEngine.Events;
-using WalletConnectSharp.Unity.Utils;
 
-namespace WalletConnectSharp.Unity.Models
+namespace MirageSDK.WalletConnectSharp.Unity.Models
 {
 	public class MessageSigner : MonoBehaviour
 	{
