@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace WalletConnectSharp.Unity.Models
+namespace MirageSDK.WalletConnectSharp.Unity.Models
 {
     public class NFTTokenData
     {

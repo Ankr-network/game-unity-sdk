@@ -1,7 +1,7 @@
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum.Types;
+using MirageSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
 using Newtonsoft.Json;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum
+namespace MirageSDK.WalletConnectSharp.Core.Models.Ethereum
 {
     public sealed class EthSignTypedData<T> : JsonRpcRequest
     {

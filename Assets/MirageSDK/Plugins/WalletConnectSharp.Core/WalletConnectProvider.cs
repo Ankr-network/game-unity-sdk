@@ -1,107 +1,104 @@
 using System;
 using System.Net;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Events;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Network;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Utils;
+using MirageSDK.WalletConnectSharp.Core.Events;
+using MirageSDK.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Core.Network;
+using MirageSDK.WalletConnectSharp.Core.Utils;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core
+namespace MirageSDK.WalletConnectSharp.Core
 {
-    public class WalletConnectProvider : WalletConnectProtocol
-    {
-        private string _handshakeTopic;
-        
-        private long _handshakeId;
-        
-        public event EventHandler<WalletConnectProtocol> OnProviderConnect;
+	public class WalletConnectProvider : WalletConnectProtocol
+	{
+		private string _handshakeTopic;
 
-        public int? NetworkId { get; private set; }
-        
-        public string[] Accounts { get; private set; }
+		private long _handshakeId;
 
-        public int ChainId { get; private set; }
+		public event EventHandler<WalletConnectProtocol> OnProviderConnect;
 
-        public ClientMeta ClientMetadata { get; set; }
-        
-        private string clientId = "";
+		public int? NetworkId { get; private set; }
 
-        public string URI
-        {
-            get;
-            private set;
-        }
-        
-        public WalletConnectProvider(SavedSession savedSession, ITransport transport = null, ICipher cipher = null, EventDelegator eventDelegator = null) : base(savedSession, transport, cipher, eventDelegator)
-        {
-            this.ClientMetadata = savedSession.DappMeta;
-            this.WalletMetadata = savedSession.WalletMeta;
-            this.ChainId = savedSession.ChainID;
-            
-            clientId = savedSession.ClientID;
-            
-            this.Accounts = savedSession.Accounts;
-                        
-            this.NetworkId = savedSession.NetworkID;
-        }
+		public string[] Accounts { get; private set; }
 
-        public WalletConnectProvider(string url, ITransport transport = null, ICipher cipher = null, int chainId = 1, EventDelegator eventDelegator = null) : base(transport, cipher, eventDelegator)
-        {
-            this.ChainId = chainId;
-            this.URI = url;
-            
-            this.ParseUrl();
-        }
+		public int ChainId { get; private set; }
 
-        private void ParseUrl()
-        {
-            /*
-             *  var topicEncode = WebUtility.UrlEncode(_handshakeTopic);
-                var versionEncode = WebUtility.UrlEncode(Version);
-                var bridgeUrlEncode = WebUtility.UrlEncode(_bridgeUrl);
-                var keyEncoded = WebUtility.UrlEncode(_key);
+		public ClientMeta ClientMetadata { get; set; }
 
-                return "wc:" + topicEncode + "@" + versionEncode + "?bridge=" + bridgeUrlEncode + "&key=" + keyEncoded;
-             */
+		private string clientId = "";
 
-            if (!this.URI.StartsWith("wc"))
-                return;
-            
-            //TODO Figure out a better way to parse this
-            
-            // topicEncode + "@" + versionEncode + "?bridge=" + bridgeUrlEncode + "&key=" + keyEncoded
-            var data = this.URI.Split(':')[0];
-            
-            _handshakeTopic = WebUtility.UrlDecode(data.Split('@')[0]);
-            
-            // versionEncode + "?bridge=" + bridgeUrlEncode + "&key=" + keyEncoded
-            data = data.Split('@')[1];
+		public string URI { get; private set; }
 
-            Version = WebUtility.UrlDecode(data.Split('?')[0]);
+		public WalletConnectProvider(SavedSession savedSession, ITransport transport = null, ICipher cipher = null,
+			EventDelegator eventDelegator = null) : base(savedSession, transport, cipher, eventDelegator)
+		{
+			ClientMetadata = savedSession.DappMeta;
+			WalletMetadata = savedSession.WalletMeta;
+			ChainId = savedSession.ChainID;
 
-            //bridge=" + bridgeUrlEncode + "&key=" + keyEncoded
-            data = data.Split('?')[1];
-            
-            
+			clientId = savedSession.ClientID;
 
-            var parameters = data.Split('&');
+			Accounts = savedSession.Accounts;
 
-            foreach (var parm in parameters)
-            {
-                var parts = parm.Split('=');
-                var name = parts[0];
-                var value = parts[1];
+			NetworkId = savedSession.NetworkID;
+		}
 
-                switch (name.ToLower())
-                {
-                    case "bridge":
-                        base.BridgeUrl = WebUtility.UrlDecode(value);
-                        break;
-                    case "key":
-                        base.Key = WebUtility.UrlDecode(value);
-                        base.KeyRaw = base.Key.FromHex();
-                        break;
-                }
-            }
-        }
-    }
+		public WalletConnectProvider(string url, ITransport transport = null, ICipher cipher = null, int chainId = 1,
+			EventDelegator eventDelegator = null) : base(transport, cipher, eventDelegator)
+		{
+			ChainId = chainId;
+			URI = url;
+
+			ParseUrl();
+		}
+
+		private void ParseUrl()
+		{
+			/*
+			 *  var topicEncode = WebUtility.UrlEncode(_handshakeTopic);
+			    var versionEncode = WebUtility.UrlEncode(Version);
+			    var bridgeUrlEncode = WebUtility.UrlEncode(_bridgeUrl);
+			    var keyEncoded = WebUtility.UrlEncode(_key);
+
+			    return "wc:" + topicEncode + "@" + versionEncode + "?bridge=" + bridgeUrlEncode + "&key=" + keyEncoded;
+			 */
+
+			if (!URI.StartsWith("wc"))
+				return;
+
+			//TODO Figure out a better way to parse this
+
+			// topicEncode + "@" + versionEncode + "?bridge=" + bridgeUrlEncode + "&key=" + keyEncoded
+			var data = URI.Split(':')[0];
+
+			_handshakeTopic = WebUtility.UrlDecode(data.Split('@')[0]);
+
+			// versionEncode + "?bridge=" + bridgeUrlEncode + "&key=" + keyEncoded
+			data = data.Split('@')[1];
+
+			Version = WebUtility.UrlDecode(data.Split('?')[0]);
+
+			//bridge=" + bridgeUrlEncode + "&key=" + keyEncoded
+			data = data.Split('?')[1];
+
+
+			var parameters = data.Split('&');
+
+			foreach (var param in parameters)
+			{
+				var parts = param.Split('=');
+				var name = parts[0];
+				var value = parts[1];
+
+				switch (name.ToLower())
+				{
+					case "bridge":
+						BridgeUrl = WebUtility.UrlDecode(value);
+						break;
+					case "key":
+						Key = WebUtility.UrlDecode(value);
+						KeyRaw = Key.FromHex();
+						break;
+				}
+			}
+		}
+	}
 }

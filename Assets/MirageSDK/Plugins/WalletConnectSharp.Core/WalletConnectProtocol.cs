@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Events;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models;
-using MirageSDK.Plugins.WalletConnectSharp.Core.Network;
+using MirageSDK.WalletConnectSharp.Core.Events;
+using MirageSDK.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Core.Network;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core
+namespace MirageSDK.WalletConnectSharp.Core
 {
 	public class WalletConnectProtocol : IDisposable
 	{

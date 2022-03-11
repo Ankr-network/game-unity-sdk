@@ -1,4 +1,4 @@
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Models
+namespace MirageSDK.WalletConnectSharp.Core.Models
 {
     public class EncryptedPayload
     {

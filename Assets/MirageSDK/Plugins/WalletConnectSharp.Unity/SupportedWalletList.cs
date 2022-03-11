@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MirageSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
+using MirageSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using Newtonsoft.Json;
-using WalletConnectSharp.Unity.Models;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Unity
+namespace MirageSDK.WalletConnectSharp.Unity
 {
 	internal class SupportedWalletList
 	{

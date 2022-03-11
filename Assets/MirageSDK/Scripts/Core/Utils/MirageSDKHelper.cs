@@ -1,11 +1,12 @@
 using System.Numerics;
 using System.Text;
+using MirageSDK.Core.Data;
 using MirageSDK.Core.Infrastructure;
 using UnityEngine.Networking;
 
 namespace MirageSDK.Core.Utils
 {
-	public static class MirageSDKHelpers
+	public static class MirageSDKHelper
 	{
 		public static string StringToBigInteger(string value)
 		{
@@ -13,15 +14,15 @@ namespace MirageSDK.Core.Utils
 			return "0x" + bnValue.ToString("X");
 		}
 
-		public static UnityWebRequest SendJSON(string url, string json)
+		public static UnityWebRequest GetUnityWebRequestFromJSON(string url, string json)
 		{
-			var requestU = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
+			var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
 			var bytes = GetBytes(json);
 			var uH = new UploadHandlerRaw(bytes);
-			requestU.uploadHandler = uH;
-			requestU.SetRequestHeader("Content-Type", "application/json");
-			requestU.downloadHandler = new DownloadHandlerBuffer();
-			return requestU;
+			request.uploadHandler = uH;
+			request.SetRequestHeader("Content-Type", "application/json");
+			request.downloadHandler = new DownloadHandlerBuffer();
+			return request;
 		}
 
 		private static byte[] GetBytes(string str)
@@ -30,20 +31,20 @@ namespace MirageSDK.Core.Utils
 			return bytes;
 		}
 
-		public static string GetURLFromNetworkNameEnum(NetworkNameEnum networkNameEnum)
+		public static string GetURLFromNetworkNameEnum(NetworkName networkName)
 		{
 			string url = "";
 			
-			switch (networkNameEnum)
+			switch (networkName)
 			{
-				case NetworkNameEnum.Ethereum:
+				case NetworkName.Ethereum:
 					break;
-				case NetworkNameEnum.EthereumRinkebyTestNet:
+				case NetworkName.EthereumRinkebyTestNet:
 					break;
-				case  NetworkNameEnum.BinanceSmartChain:
+				case  NetworkName.BinanceSmartChain:
 					url = "https://metamask.app.link/dapp/change-network-mirage.surge.sh?network=bsc";
 					break;
-				case  NetworkNameEnum.BinanceSmartChainTestNet:
+				case  NetworkName.BinanceSmartChainTestNet:
 					url = "https://metamask.app.link/dapp/change-network-mirage.surge.sh?network=bsc_test";
 					break;
 			}

@@ -39,7 +39,7 @@ namespace MirageSDK.UseCases.UpdateNFT
 		private IMirageSDK _mirageSDKWrapper;
 
 		// backend for get nft details and signature
-		private const string URL = "http://2.56.91.78:8080/";
+		private const string URL = "http://root@eth-01.dccn.ankr.com:8080/";
 
 		private void Start()
 		{

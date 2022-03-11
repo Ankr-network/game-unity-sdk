@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Events
+namespace MirageSDK.WalletConnectSharp.Core.Events
 {
     public class EventHandlerMap<TEventArgs>
     {

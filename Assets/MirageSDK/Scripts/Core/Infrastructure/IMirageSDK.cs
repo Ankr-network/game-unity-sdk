@@ -1,8 +1,10 @@
+using MirageSDK.Core.Implementation;
+
 namespace MirageSDK.Core.Infrastructure
 {
-	public interface IMirageSDK : IContractProvider, ISignatureProvider
+	public interface IMirageSDK
 	{
-		void AddAndSwitchNetwork(NetworkNameEnum networkEnum);
-		void AddAndSwitchCustomNetwork(string url);
+		EthHandler Eth { get; }
+		IContract GetContract(string contractAddress, string contractABI);
 	}
 }

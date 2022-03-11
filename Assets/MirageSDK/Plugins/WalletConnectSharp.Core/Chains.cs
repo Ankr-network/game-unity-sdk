@@ -1,6 +1,6 @@
-using MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum;
+using MirageSDK.WalletConnectSharp.Core.Models.Ethereum;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core
+namespace MirageSDK.WalletConnectSharp.Core
 {
     public static class Chains
     {

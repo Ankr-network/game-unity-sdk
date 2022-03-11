@@ -5,7 +5,7 @@ using MirageSDK.Core.Infrastructure;
 using MirageSDK.Examples.ContractMessages.ERC721;
 using MirageSDK.Examples.ContractMessages.GameCharacterContract;
 using MirageSDK.Examples.WearableNFTExample;
-using MirageSDK.Plugins.WalletConnectSharp.Unity;
+using MirageSDK.WalletConnectSharp.Unity;
 using TMPro;
 using UnityEngine;
 

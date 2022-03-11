@@ -1,6 +1,6 @@
 using System;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Utils
+namespace MirageSDK.WalletConnectSharp.Core.Utils
 {
     public class RpcPayloadId
     {

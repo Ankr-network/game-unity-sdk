@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Utils
+namespace MirageSDK.WalletConnectSharp.Core.Utils
 {
     public static class HexByteConvertorExtensions
     {

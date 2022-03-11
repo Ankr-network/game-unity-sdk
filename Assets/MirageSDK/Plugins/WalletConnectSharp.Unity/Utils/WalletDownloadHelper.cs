@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using MirageSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
+using MirageSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Unity.Utils
+namespace MirageSDK.WalletConnectSharp.Unity.Utils
 {
 	public static class WalletDownloadHelper
 	{

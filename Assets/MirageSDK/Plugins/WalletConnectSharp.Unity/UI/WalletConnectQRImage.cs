@@ -1,49 +1,48 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using MirageSDK.Plugins.WalletConnectSharp.Unity;
-using UnityEngine;
-using UnityEngine.UI;
-using WalletConnectSharp.Unity;
-using WalletConnectSharp.Unity.Utils;
+using MirageSDK.WalletConnectSharp.Unity.Utils;
 using QRCoder;
 using QRCoder.Unity;
+using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
-public class WalletConnectQRImage : BindableMonoBehavior
+namespace MirageSDK.WalletConnectSharp.Unity.UI
 {
-    public WalletConnect walletConnect;
-    
-    [BindComponent]
-    private Image _image;
-    
-    // Start is called before the first frame update
-    void OnEnable()
+    [RequireComponent(typeof(Image))]
+    public class WalletConnectQRImage : BindableMonoBehavior
     {
-        if (walletConnect == null)
+        public WalletConnect walletConnect;
+    
+        [BindComponent]
+        private Image _image;
+    
+        // Start is called before the first frame update
+        void OnEnable()
         {
-            Debug.LogError("WalletConnectQRImage: No WalletConnect object given, QRImage will be disabled");
-            enabled = false;
-            return;
+            if (walletConnect == null)
+            {
+                Debug.LogError("WalletConnectQRImage: No WalletConnect object given, QRImage will be disabled");
+                enabled = false;
+                return;
+            }
+        
+            walletConnect.ConnectionStarted += UpdateQRCode;
         }
-        
-        walletConnect.ConnectionStarted += UpdateQRCode;
-    }
 
-    private void UpdateQRCode(object sender, EventArgs e)
-    {
-        var url = walletConnect.Session.URI;
+        private void UpdateQRCode(object sender, EventArgs e)
+        {
+            var url = walletConnect.Session.URI;
         
-        Debug.Log(url);
+            Debug.Log(url);
         
-        QRCodeGenerator qrGenerator = new QRCodeGenerator();
-        QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
-        UnityQRCode qrCode = new UnityQRCode(qrCodeData);
-        Texture2D qrCodeAsTexture2D = qrCode.GetGraphic(20);
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+            UnityQRCode qrCode = new UnityQRCode(qrCodeData);
+            Texture2D qrCodeAsTexture2D = qrCode.GetGraphic(20);
 
-        var qrCodeSprite = Sprite.Create(qrCodeAsTexture2D, new Rect(0, 0, qrCodeAsTexture2D.width, qrCodeAsTexture2D.height),
-            new Vector2(0.5f, 0.5f), 100f);
+            var qrCodeSprite = Sprite.Create(qrCodeAsTexture2D, new Rect(0, 0, qrCodeAsTexture2D.width, qrCodeAsTexture2D.height),
+                new Vector2(0.5f, 0.5f), 100f);
 
-        _image.sprite = qrCodeSprite;
+            _image.sprite = qrCodeSprite;
+        }
     }
 }

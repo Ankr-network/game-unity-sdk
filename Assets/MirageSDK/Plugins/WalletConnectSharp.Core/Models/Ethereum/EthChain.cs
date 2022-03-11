@@ -1,4 +1,4 @@
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum
+namespace MirageSDK.WalletConnectSharp.Core.Models.Ethereum
 {
     public class EthChain
     {

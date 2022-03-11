@@ -5,7 +5,7 @@ using MirageSDK.Core.Infrastructure;
 using MirageSDK.Core.Utils;
 using MirageSDK.Examples.ContractMessages.ERC1155;
 using MirageSDK.Examples.ContractMessages.GameCharacterContract;
-using MirageSDK.Plugins.WalletConnectSharp.Unity;
+using MirageSDK.WalletConnectSharp.Unity;
 using TMPro;
 using UnityEngine;
 

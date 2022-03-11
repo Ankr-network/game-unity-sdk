@@ -1,6 +1,6 @@
-namespace MirageSDK.Core.Infrastructure
+namespace MirageSDK.Core.Data
 {
-	public enum NetworkNameEnum
+	public enum NetworkName
 	{
 		Ethereum,
 		EthereumRinkebyTestNet,

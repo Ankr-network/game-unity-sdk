@@ -66,16 +66,12 @@ namespace NativeWebSocket
     {
         public static WebSocketCloseCode ParseCloseCodeEnum(int closeCode)
         {
-
-            if (WebSocketCloseCode.IsDefined(typeof(WebSocketCloseCode), closeCode))
+            if (Enum.IsDefined(typeof(WebSocketCloseCode), closeCode))
             {
                 return (WebSocketCloseCode) closeCode;
             }
-            else
-            {
-                return WebSocketCloseCode.Undefined;
-            }
 
+            return WebSocketCloseCode.Undefined;
         }
 
         public static WebSocketException GetErrorMessageFromCode(int errorCode, Exception inner)

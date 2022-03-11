@@ -1,5 +1,6 @@
-using MirageSDK.Core.Implementation;
+using MirageSDK.Core.Data;
 using MirageSDK.Core.Infrastructure;
+using MirageSDK.Core.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,14 +26,14 @@ namespace MirageSDK.Examples.UseCases.AddSwitchNetwork
 			_bscTestButton.onClick.RemoveListener(OpenAddSwitchBscTestnet);
 		}
 
-		private void OpenAddSwitchBsc()
+		private static void OpenAddSwitchBsc()
 		{
-			MirageSDKWrapper.GetSDKInstance().AddAndSwitchNetwork(NetworkNameEnum.BinanceSmartChain);
+			MirageNetworkHelper.AddAndSwitchNetwork(NetworkName.BinanceSmartChain);
 		}
 
-		private void OpenAddSwitchBscTestnet()
+		private static void OpenAddSwitchBscTestnet()
 		{
-			MirageSDKWrapper.GetSDKInstance().AddAndSwitchNetwork(NetworkNameEnum.BinanceSmartChainTestNet);
+			MirageNetworkHelper.AddAndSwitchNetwork(NetworkName.BinanceSmartChainTestNet);
 		}
 	}
 }

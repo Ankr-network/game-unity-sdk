@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Core.Models.Ethereum.Types
+namespace MirageSDK.WalletConnectSharp.Core.Models.Ethereum.Types
 {
     public class EvmTypedData<T>
     {

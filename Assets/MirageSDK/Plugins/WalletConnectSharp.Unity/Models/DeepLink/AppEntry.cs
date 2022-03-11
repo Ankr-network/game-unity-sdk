@@ -1,10 +1,8 @@
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
-using WalletConnectSharp.Unity.Models;
 
-namespace MirageSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink
+namespace MirageSDK.WalletConnectSharp.Unity.Models.DeepLink
 {
     public class AppEntry
     {
