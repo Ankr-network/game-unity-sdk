@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MirageSDK.Core.Utils;
 using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 // This example is to demonstrate how to bind the wallet into user account. 
 namespace MirageSDK.Examples.UseCases.LinkingAccountWallet
@@ -23,16 +23,24 @@ namespace MirageSDK.Examples.UseCases.LinkingAccountWallet
 		{
 			public string Address;
 		}
-
-		// Message to be signed, which should be provided by the server
-		[SerializeField] private string _message = "Hahaha!";
-		[SerializeField] private Text _address;
-
-		private string _signature;
-
+		
 		// A backend server to verify the ownership of this address using message and signature signed by 3rd party wallet
 		// an example can be found at https://github.com/mirage-xyz/mirage-go-demo/blob/main/main.go#L96
 		private const string URL = "http://root@eth-01.dccn.ankr.com:8080/account/verification/address";
+
+		// Message to be signed, which should be provided by the server
+		[SerializeField] private string _message = "Hahaha!";
+    
+		[SerializeField] private TMP_Text _address;
+
+		private IMirageSDK _mirageSDKWrapper;
+
+		private string _signature;
+
+		private void Start()
+		{
+			_mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance();
+		}
 
 		// function to sign the message
 		// step 1: sign the message with 3rd party wallet
@@ -42,7 +50,7 @@ namespace MirageSDK.Examples.UseCases.LinkingAccountWallet
 		{
 			_signature = await MirageSignatureHelper.Sign(_message);
 			Debug.Log($"Signature: {_signature}");
-
+			_address.text = _signature;
 			var address = await SendSignature(_signature);
 			Debug.Log($"Answer: {address}");
 
