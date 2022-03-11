@@ -30,18 +30,11 @@ namespace MirageSDK.Examples.UseCases.LinkingAccountWallet
 
 		// Message to be signed, which should be provided by the server
 		[SerializeField] private string _message = "Hahaha!";
-    
+
 		[SerializeField] private TMP_Text _address;
 
-		private IMirageSDK _mirageSDKWrapper;
-
 		private string _signature;
-
-		private void Start()
-		{
-			_mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance();
-		}
-
+		
 		// function to sign the message
 		// step 1: sign the message with 3rd party wallet
 		// step 2: send the message and sign to the server 
