@@ -8,6 +8,7 @@ using MirageSDK.Core.Utils;
 using MirageSDK.WalletConnectSharp.Unity;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
+using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 
@@ -107,6 +108,19 @@ namespace MirageSDK.Core.Implementation
 			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
 			var callFunction = contract.GetFunction(methodName);
 			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);
+		}
+		
+		
+		public Task<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
+			string gasPrice = null, string nonce = null)
+		{
+			var transactionInput = CreateTransactionInput(methodName, arguments);
+
+			transactionInput.Gas = gas != null ? new HexBigInteger(gas) : null;
+			transactionInput.GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null;
+			transactionInput.Nonce = nonce != null ? new HexBigInteger(nonce) : null;
+			
+			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput);
 		}
 	}
 }
