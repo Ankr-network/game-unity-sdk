@@ -4,6 +4,7 @@ using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Events;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
+using Nethereum.Hex.HexTypes;
 
 namespace AnkrSDK.Core.Infrastructure
 {
@@ -20,5 +21,8 @@ namespace AnkrSDK.Core.Infrastructure
 
 		Task<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)
 			where TFieldData : FunctionMessage, new();
+
+		Task<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
+			string gasPrice = null, string nonce = null);
 	}
 }

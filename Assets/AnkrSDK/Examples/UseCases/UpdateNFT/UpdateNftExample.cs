@@ -60,6 +60,13 @@ namespace AnkrSDK.UseCases.UpdateNFT
 			Debug.Log($"Receipt: {receipt}");
 		}
 
+		public async void EstimateGas()
+		{
+			var info = await RequestPreparedParams(0);
+			var gasEstimation = await _contract.EstimateGas("updateTokenWithSignedMessage", new object[] {info});
+			Debug.Log("Gas estimation = "+gasEstimation);
+		}
+
 		private async Task<ItemInfo> RequestPreparedParams(int tokenId)
 		{
 			var request = UnityWebRequest.Get(URL + $"hero/{tokenId}");
