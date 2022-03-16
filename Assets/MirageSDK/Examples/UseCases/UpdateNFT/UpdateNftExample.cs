@@ -55,12 +55,9 @@ namespace MirageSDK.UseCases.UpdateNFT
 			// 1) Request nft parameters and signature for parameters
 			var info = await RequestPreparedParams(0);
 			// 2) Call method that check signature and update nft
-//			var receipt = await _contract.CallMethod("updateTokenWithSignedMessage", new object[] { info });
-//
-//			Debug.Log($"Receipt: {receipt}");
-			
-			var gasEstimation = await _contract.EstimateGas("updateTokenWithSignedMessage", new object[] {info});
-			Debug.Log("Gas estimation = "+gasEstimation);
+			var receipt = await _contract.CallMethod("updateTokenWithSignedMessage", new object[] { info });
+
+			Debug.Log($"Receipt: {receipt}");
 		}
 
 		public async void EstimateGas()
