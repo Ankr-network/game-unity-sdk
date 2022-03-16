@@ -1,6 +1,6 @@
 using System;
-using MirageSDK.WalletConnectSharp.Core.Models;
-using MirageSDK.WalletConnectSharp.Unity.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using NUnit.Framework;
 
 namespace Tests
