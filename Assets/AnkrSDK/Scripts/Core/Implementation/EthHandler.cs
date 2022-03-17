@@ -21,7 +21,7 @@ namespace AnkrSDK.Core.Implementation
 				}
 				else
 				{
-					throw new Exception("Application didn't link with wallet");
+					throw new Exception("Application is not linked to wallet");
 				}
 			}
 		}
