@@ -39,7 +39,7 @@ namespace AnkrSDK.Examples.ERC721Example
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = WalletConnect.ActiveSession.Accounts[0]
+				Owner = _eth.DefaultAccount
 			};
 			var balance = await _erc721Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
