@@ -28,6 +28,7 @@ namespace AnkrSDK.Examples.WearableNFTExample
 
 		private IContract _gameCharacterContract;
 		private IContract _gameItemContract;
+		private string _activeSessionAccount;
 
 		private void Start()
 		{
@@ -37,6 +38,7 @@ namespace AnkrSDK.Examples.WearableNFTExample
 				WearableNFTContractInformation.GameCharacterABI);
 			_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
 				WearableNFTContractInformation.GameItemABI);
+			_activeSessionAccount = ankrSDK.Eth.DefaultAccount;
 		}
 
 		public async void RunExample()
@@ -97,8 +99,7 @@ namespace AnkrSDK.Examples.WearableNFTExample
 
 		private async UniTask<BigInteger> GetCharacterBalance()
 		{
-			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
-			var balance = await ERC721ContractFunctions.BalanceOf(activeSessionAccount, _gameCharacterContract);
+			var balance = await ERC721ContractFunctions.BalanceOf(_activeSessionAccount, _gameCharacterContract);
 
 			UpdateUILogs($"Number of NFTs Owned: {balance}");
 			return balance;
@@ -106,10 +107,9 @@ namespace AnkrSDK.Examples.WearableNFTExample
 
 		private async UniTask<BigInteger> GetBalanceERC1155(IContract contract, string id)
 		{
-			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Account = activeSessionAccount,
+				Account = _activeSessionAccount,
 				Id = id
 			};
 			var balance =
@@ -121,13 +121,12 @@ namespace AnkrSDK.Examples.WearableNFTExample
 
 		private async UniTask<BigInteger> GetCharacterTokenId()
 		{
-			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
 			var tokenBalance = await GetCharacterBalance();
 
 			if (tokenBalance > 0)
 			{
 				var tokenId =
-					await ERC721ContractFunctions.TokenOfOwnerByIndex(activeSessionAccount, 0, _gameCharacterContract);
+					await ERC721ContractFunctions.TokenOfOwnerByIndex(_activeSessionAccount, 0, _gameCharacterContract);
 
 				UpdateUILogs($"GameCharacter tokenId  : {tokenId}");
 

@@ -77,10 +77,9 @@ namespace AnkrSDK.Examples.ERC20Example
 
 		public async void GetBalance()
 		{
-			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = activeSessionAccount
+				Owner = _eth.DefaultAccount
 			};
 			var balance = await _erc20Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");

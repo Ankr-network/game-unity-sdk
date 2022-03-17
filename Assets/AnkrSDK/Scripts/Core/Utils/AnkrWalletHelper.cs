@@ -7,6 +7,7 @@ namespace AnkrSDK.Core.Utils
 	public static class AnkrWalletHelper
 	{
 		public static Task<string> SendTransaction(
+			string from,
 			string to,
 			string data = null,
 			string value = null,
@@ -15,11 +16,9 @@ namespace AnkrSDK.Core.Utils
 			string nonce = null
 		)
 		{
-			var address = WalletConnect.ActiveSession.Accounts[0];
-
 			var transactionData = new TransactionData
 			{
-				from = address,
+				from = from,
 				to = to,
 				data = data,
 				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,

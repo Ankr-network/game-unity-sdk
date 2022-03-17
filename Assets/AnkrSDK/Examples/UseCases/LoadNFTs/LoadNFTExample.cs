@@ -4,7 +4,6 @@ using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.ContractMessages.ERC721;
 using AnkrSDK.Examples.ContractMessages.GameCharacterContract;
 using AnkrSDK.Examples.WearableNFTExample;
-using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -16,6 +15,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		[SerializeField] private TMP_Text _text;
 
 		private IContract _gameCharacterContract;
+		private string _activeSessionAccount;
 
 		private void Start()
 		{
@@ -23,6 +23,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			_gameCharacterContract = ankrSDKWrapper.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress,
 				WearableNFTContractInformation.GameCharacterABI);
+			_activeSessionAccount = ankrSDKWrapper.Eth.DefaultAccount;
 		}
 
 		public async void CallGetTokenData()
@@ -61,14 +62,13 @@ namespace AnkrSDK.UseCases.LoadNFTs
 
 		private async UniTask<BigInteger> GetFirstTokenId()
 		{
-			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
 			var tokenBalance = await GetBalanceOf();
 
 			if (tokenBalance != 0)
 			{
 				var tokenOfOwnerByIndexMessage = new TokenOfOwnerByIndexMessage
 				{
-					Owner = activeSessionAccount, Index = tokenBalance - 1
+					Owner = _activeSessionAccount, Index = tokenBalance - 1
 				};
 				var tokenId =
 					await _gameCharacterContract.GetData<TokenOfOwnerByIndexMessage, BigInteger>(
@@ -112,10 +112,9 @@ namespace AnkrSDK.UseCases.LoadNFTs
 
 		private async UniTask<BigInteger> GetBalanceOf()
 		{
-			var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = activeSessionAccount
+				Owner = _activeSessionAccount
 			};
 			var balance = await _gameCharacterContract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 
