@@ -9,13 +9,26 @@ namespace AnkrSDK.Core.Implementation
 	public class AnkrSDKWrapper : IAnkrSDK
 	{
 		private readonly IWeb3 _web3Provider;
+		private readonly EthHandler _eth;
 
-		public EthHandler Eth { get; }
+		public EthHandler Eth
+		{
+			get
+			{
+				if (_eth != null)
+				{
+					return _eth;
+				}
+
+				throw new InvalidOperationException(
+					$"Trying to use {nameof(EthHandler)} before initialization completed. Use GetSDKInstance First");
+			}
+		}
 
 		private AnkrSDKWrapper(string providerURI)
 		{
 			_web3Provider = CreateWeb3Provider(providerURI);
-			Eth = new EthHandler(_web3Provider);
+			_eth = new EthHandler(_web3Provider);
 		}
 
 		/// <summary>
@@ -27,7 +40,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			return new AnkrSDKWrapper(providerURI);
 		}
-		
+
 		/// <summary>
 		/// Creates a contract using provided web3 instance.
 		/// </summary>
@@ -41,13 +54,7 @@ namespace AnkrSDK.Core.Implementation
 
 		private static IWeb3 CreateWeb3Provider(string providerURI)
 		{
-			if (WalletConnect.Instance == null || WalletConnect.Instance.Session == null)
-			{
-				throw new ArgumentNullException(nameof(WalletConnect.Instance),
-					"WalletConnect should be initialized before creating web3Provider");
-			}
-
-			var wcProtocol = WalletConnect.Instance.Session;
+			var wcProtocol = WalletConnect.ActiveSession;
 			var client = wcProtocol.CreateProvider(new Uri(providerURI));
 			var web3Provider = new Web3(client);
 			return web3Provider;

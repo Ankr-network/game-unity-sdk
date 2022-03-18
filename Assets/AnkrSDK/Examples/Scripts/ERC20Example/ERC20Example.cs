@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Numerics;
 using AnkrSDK.Core.Data;
+using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.ContractMessages.ERC721;
 using AnkrSDK.Examples.DTO;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Nethereum.RPC.Eth.DTOs;
@@ -50,27 +50,27 @@ namespace AnkrSDK.Examples.ERC20Example
 			_erc20Contract.Web3SendMethod("mint", Array.Empty<object>(), evController);
 		}
 		
-		public void HandleSent(object sender, TransactionInput transaction)
+		public static void HandleSent(object sender, TransactionInput transaction)
 		{
 			Debug.Log($"Transaction sent");
 		}
 		
-		public void HandleSending(object sender, TransactionInput transaction)
+		public static void HandleSending(object sender, TransactionInput transaction)
 		{
 			Debug.Log($"Transaction is sending");
 		}
 
-		public void HandleTransactionHash(object sender, string transactionHash)
+		public static void HandleTransactionHash(object sender, string transactionHash)
 		{
 			Debug.Log($"transactionHash: {transactionHash}");
 		}
 
-		public void HandleReceipt(object sender, TransactionReceipt receipt)
+		public static void HandleReceipt(object sender, TransactionReceipt receipt)
 		{
 			Debug.Log("Receipt: " + receipt.Status);
 		}
 		
-		public void HandleError(object sender, Exception err)
+		public static void HandleError(object sender, Exception err)
 		{
 			Debug.Log("Error: " + err.Message);
 		}
@@ -79,7 +79,7 @@ namespace AnkrSDK.Examples.ERC20Example
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = _eth.DefaultAccount
+				Owner = EthHandler.DefaultAccount
 			};
 			var balance = await _erc20Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");

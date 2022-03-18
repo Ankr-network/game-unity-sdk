@@ -1,6 +1,6 @@
 using System.Numerics;
+using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.ContractMessages.ERC721;
 using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.Core.Utils
@@ -18,7 +18,7 @@ namespace AnkrSDK.Core.Utils
 		///     Returns the number of tokens in
 		///     <paramref name="owner" />'s account.
 		/// </summary>
-		public static UniTask<BigInteger> BalanceOf(string owner, IContract contract)
+		public static UniTask<BigInteger> BalanceOf(this IContract contract, string owner)
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
@@ -34,7 +34,7 @@ namespace AnkrSDK.Core.Utils
 		///     Requirement:<br />
 		///     -"<paramref name="tokenId" />" must exist
 		/// </summary>
-		public static UniTask<string> OwnerOf(string tokenId, IContract contract)
+		public static UniTask<string> OwnerOf(this IContract contract, string tokenId)
 		{
 			var ownerOfMessage = new OwnerOfMessage
 			{
@@ -46,7 +46,7 @@ namespace AnkrSDK.Core.Utils
 
 		//IERC721 Metadata
 		/// <summary>Returns the token "<paramref name="tokenId" />"'s collection name.</summary>
-		public static UniTask<string> Name(IContract contract)
+		public static UniTask<string> Name(this IContract contract)
 		{
 			var nameMessage = new NameMessage();
 
@@ -54,7 +54,7 @@ namespace AnkrSDK.Core.Utils
 		}
 
 		/// <summary>Returns the token "<paramref name="tokenId" />"'s collection symbol.</summary>
-		public static async UniTask<string> Symbol(string tokenID, IContract contract)
+		public static async UniTask<string> Symbol(this IContract contract, string tokenID)
 		{
 			var symbolMessage = new SymbolMessage();
 			var tokenSymbol = await contract.GetData<SymbolMessage, string>(symbolMessage);
@@ -63,7 +63,7 @@ namespace AnkrSDK.Core.Utils
 		}
 
 		/// <summary>Returns the Uniform Resource Identifier (URI) for "<paramref name="tokenId" />" token.</summary>
-		public static UniTask<string> TokenURI(string tokenID, IContract contract)
+		public static UniTask<string> TokenURI(this IContract contract, string tokenID)
 		{
 			var tokenURIMessage = new TokenURIMessage
 			{
@@ -76,7 +76,7 @@ namespace AnkrSDK.Core.Utils
 		// ERC-721 Non-Fungible Token Standard, optional enumeration extension
 		// See https://eips.ethereum.org/EIPS/eip-721
 		/// <summary>Returns the total amount of tokens stored by the contract.</summary>
-		public static UniTask<BigInteger> TotalSupply(IContract contract)
+		public static UniTask<BigInteger> TotalSupply(this IContract contract)
 		{
 			var totalSupplyMessage = new TotalSupplyMessage();
 
@@ -87,7 +87,7 @@ namespace AnkrSDK.Core.Utils
 		///     Returns a token ID owned by "<paramref name="owner" />"  at a given "<paramref name="index" />" of its token list.
 		///     Use along with <see cref="BalanceOf" /> to enumerate all of "<paramref name="owner" />"'s tokens.
 		/// </summary>
-		public static UniTask<BigInteger> TokenOfOwnerByIndex(string owner, BigInteger index, IContract contract)
+		public static UniTask<BigInteger> TokenOfOwnerByIndex(this IContract contract, string owner, BigInteger index)
 		{
 			var tokenOfOwnerByIndexMessage = new TokenOfOwnerByIndexMessage
 			{
@@ -102,7 +102,7 @@ namespace AnkrSDK.Core.Utils
 		///     Returns a token ID at a given "<paramref name="index" />" of all the tokens stored by the contract.
 		///     Use along with <see cref="TotalSupply" /> to enumerate all tokens.
 		/// </summary>
-		public static UniTask<BigInteger> TokenByIndex(BigInteger index, IContract contract)
+		public static UniTask<BigInteger> TokenByIndex(this IContract contract, BigInteger index)
 		{
 			var tokenByIndexMessage = new TokenByIndexMessage
 			{
@@ -130,33 +130,31 @@ namespace AnkrSDK.Core.Utils
 		///     which is called upon a safe transfer.
 		/// </summary>
 		/// <returns>The transaction hash in a string format</returns>
-		public static UniTask<string> SafeTransferFrom(string from, string to, BigInteger tokenId,
-			IContract contract)
+		public static UniTask<string> SafeTransferFrom(this IContract contract, string from, string to,
+			BigInteger tokenId)
 		{
 			const string safeTransferFromMethodName = "safeTransferFrom";
 
-			return contract.CallMethod(safeTransferFromMethodName, new object[]
+			return contract.CallContractMethod(safeTransferFromMethodName, new object[]
 			{
 				from,
 				to,
 				tokenId
-			}).AsUniTask();
-			;
+			});
 		}
 
-		public static UniTask<string> SafeTransferFrom(string from, string to, BigInteger tokenId, byte data,
-			IContract contract)
+		public static UniTask<string> SafeTransferFrom(this IContract contract, string from, string to,
+			BigInteger tokenId, byte data)
 		{
 			const string safeTransferFromMethodName = "safeTransferFrom";
 
-			return contract.CallMethod(safeTransferFromMethodName, new object[]
+			return contract.CallContractMethod(safeTransferFromMethodName, new object[]
 			{
 				from,
 				to,
 				tokenId,
 				data
-			}).AsUniTask();
-			;
+			});
 		}
 
 		/// <summary>
@@ -170,17 +168,16 @@ namespace AnkrSDK.Core.Utils
 		///     <see cref="Approve" /> or <see cref="SetApprovalForAll" />.
 		/// </summary>
 		/// <returns>The transaction hash in a string format</returns>
-		public static UniTask<string> TransferFrom(string from, string to, BigInteger tokenId, IContract contract)
+		public static UniTask<string> TransferFrom(this IContract contract, string from, string to, BigInteger tokenId)
 		{
 			const string transferFromMethodName = "transferFrom";
 
-			return contract.CallMethod(transferFromMethodName, new object[]
+			return contract.CallContractMethod(transferFromMethodName, new object[]
 			{
 				from,
 				to,
 				tokenId
-			}).AsUniTask();
-			;
+			});
 		}
 
 		/// <summary>
@@ -192,16 +189,15 @@ namespace AnkrSDK.Core.Utils
 		///     - "<paramref name="tokenId" />" must exist.<br />
 		/// </summary>
 		/// <returns>The transaction hash in a string format</returns>
-		public static UniTask<string> Approve(string to, string tokenId, IContract contract)
+		public static UniTask<string> Approve(this IContract contract, string to, string tokenId)
 		{
 			const string approveMethodName = "approve";
 
-			return contract.CallMethod(approveMethodName, new object[]
+			return contract.CallContractMethod(approveMethodName, new object[]
 			{
 				to,
 				tokenId
-			}).AsUniTask();
-			;
+			});
 		}
 
 		/// <summary>
@@ -210,14 +206,14 @@ namespace AnkrSDK.Core.Utils
 		///     - `tokenId` must exist.
 		/// </summary>
 		/// <returns>The Operator's address in a string format</returns>
-		public static UniTask<string> GetApproved(string tokenId, IContract contract)
+		public static UniTask<string> GetApproved(this IContract contract, string tokenId)
 		{
 			const string getApprovedMethodName = "getApproved";
 
-			return contract.CallMethod(getApprovedMethodName, new object[]
+			return contract.CallContractMethod(getApprovedMethodName, new object[]
 			{
 				tokenId
-			}).AsUniTask();
+			});
 		}
 
 		/// <summary>
@@ -228,19 +224,25 @@ namespace AnkrSDK.Core.Utils
 		///     - The "<paramref name="callOperator" />"  cannot be the caller.
 		/// </summary>
 		/// <returns>The transaction hash in a string format</returns>
-		public static UniTask<string> SetApprovalForAll(string callOperator, bool approved, IContract contract)
+		public static UniTask<string> SetApprovalForAll(this IContract contract, string callOperator, bool approved)
 		{
 			const string setApprovalForAllMethodName = "setApprovalForAll";
 
-			return contract.CallMethod(setApprovalForAllMethodName, new object[]
+			return contract.CallContractMethod(setApprovalForAllMethodName, new object[]
 			{
 				callOperator,
 				approved
-			}).AsUniTask();
+			});
 		}
 
 		#endregion
 
 		#endregion
+
+		private static UniTask<string> CallContractMethod(this IContract contract, string methodName,
+			object[] arguments)
+		{
+			return contract.CallMethod(methodName, arguments).AsUniTask();
+		}
 	}
 }

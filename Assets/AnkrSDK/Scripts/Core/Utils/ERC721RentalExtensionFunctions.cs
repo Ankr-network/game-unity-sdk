@@ -1,6 +1,6 @@
 using System.Numerics;
+using AnkrSDK.Core.Data.ContractMessages.ERC721.RentableExtension;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.ContractMessages.ERC721.RentableExtension;
 using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.Core.Utils
@@ -15,7 +15,7 @@ namespace AnkrSDK.Core.Utils
 		/// <summary>
 		///     Get the actual owner of the rented token "<paramref name="tokenId" />".
 		/// </summary>
-		public static UniTask<string> PrincipalOwner(string tokenId, IContract contract)
+		public static UniTask<string> PrincipalOwner(this IContract contract, string tokenId)
 		{
 			var principalOwnerMessage = new PrincipalOwnerMessage
 			{
@@ -28,7 +28,7 @@ namespace AnkrSDK.Core.Utils
 		/// <summary>
 		///     Get whether or not the token "<paramref name="tokenId" />" is rented.
 		/// </summary>
-		public static UniTask<bool> IsRented(string tokenId, IContract contract)
+		public static UniTask<bool> IsRented(this IContract contract, string tokenId)
 		{
 			var isRentedMessage = new IsRentedMessage
 			{
@@ -45,7 +45,8 @@ namespace AnkrSDK.Core.Utils
 		/// <summary>
 		///     Rent a token to another address "<paramref name="renter" />" as an operator for the caller.
 		/// </summary>
-		public static UniTask<string> RentOut(string renter, string tokenId, BigInteger expiresAt, IContract contract)
+		public static UniTask<string> RentOut(this IContract contract, string renter, string tokenId,
+			BigInteger expiresAt)
 		{
 			const string rentOutMethodName = "rentOut";
 
@@ -60,7 +61,7 @@ namespace AnkrSDK.Core.Utils
 		/// <summary>
 		///     Renter can run this anytime but owner can run after the expired time.
 		/// </summary>
-		public static UniTask<string> FinishRenting(string tokenId, IContract contract)
+		public static UniTask<string> FinishRenting(this IContract contract, string tokenId)
 		{
 			const string finishRentingMethodName = "finishRenting";
 

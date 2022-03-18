@@ -22,7 +22,19 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 	{
 		public static WalletConnect Instance { get; private set; }
 
-		public static WalletConnectUnitySession ActiveSession => Instance.Session;
+		public static WalletConnectUnitySession ActiveSession
+		{
+			get
+			{
+				if (Instance == null || Instance.Session == null)
+				{
+					throw new ArgumentNullException(nameof(Instance),
+						"WalletConnect should be initialized before creating web3Provider");
+				}
+				
+				return Instance.Session;
+			}
+		}
 
 		[Serializable]
 		public class WalletConnectEventNoSession : UnityEvent

@@ -51,7 +51,14 @@ namespace AnkrSDK.Core.Implementation
 			string gasPrice = null, string nonce = null)
 		{
 			var transactionInput = CreateTransactionInput(methodName, arguments);
-			return AnkrWalletHelper.SendTransaction(_ethHandler.DefaultAccount, _contractAddress, transactionInput.Data, gas: gas);
+			return AnkrWalletHelper.SendTransaction(
+				EthHandler.DefaultAccount,
+				_contractAddress,
+				transactionInput.Data,
+				gas: gas,
+				gasPrice: gasPrice,
+				nonce: nonce
+			);
 		}
 
 		public async Task Web3SendMethod(string methodName, object[] arguments,
@@ -66,8 +73,14 @@ namespace AnkrSDK.Core.Implementation
 
 			evController.InvokeSendingEvent(transactionInput);
 
-			var sendTransactionTask =
-				AnkrWalletHelper.SendTransaction(_ethHandler.DefaultAccount, _contractAddress, transactionInput.Data, gas: gas);
+			var sendTransactionTask = AnkrWalletHelper.SendTransaction(
+				EthHandler.DefaultAccount,
+				_contractAddress,
+				transactionInput.Data,
+				gas: gas,
+				gasPrice: gasPrice,
+				nonce: nonce
+			);
 
 			evController.InvokeSentEvent(transactionInput);
 
@@ -85,12 +98,24 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 
+		public Task<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
+			string gasPrice = null, string nonce = null)
+		{
+			var transactionInput = CreateTransactionInput(methodName, arguments);
+
+			transactionInput.Gas = gas != null ? new HexBigInteger(gas) : null;
+			transactionInput.GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null;
+			transactionInput.Nonce = nonce != null ? new HexBigInteger(nonce) : null;
+
+			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput);
+		}
+
 		private async UniTask LoadReceipt(string transactionHash, EventController evController)
 		{
 			var task = _ethHandler.GetTransactionReceipt(transactionHash);
 
 			await task;
-			
+
 			if (!task.IsFaulted)
 			{
 				var receipt = task.Result;
@@ -104,23 +129,10 @@ namespace AnkrSDK.Core.Implementation
 
 		private TransactionInput CreateTransactionInput(string methodName, object[] arguments)
 		{
-			var activeSessionAccount = _ethHandler.DefaultAccount;
+			var activeSessionAccount = EthHandler.DefaultAccount;
 			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
 			var callFunction = contract.GetFunction(methodName);
 			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);
-		}
-		
-		
-		public Task<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
-			string gasPrice = null, string nonce = null)
-		{
-			var transactionInput = CreateTransactionInput(methodName, arguments);
-
-			transactionInput.Gas = gas != null ? new HexBigInteger(gas) : null;
-			transactionInput.GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null;
-			transactionInput.Nonce = nonce != null ? new HexBigInteger(nonce) : null;
-			
-			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput);
 		}
 	}
 }

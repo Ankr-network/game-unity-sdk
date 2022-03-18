@@ -1,8 +1,7 @@
-using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace AnkrSDK.Examples.ContractMessages.ERC721.RentableExtension
+namespace AnkrSDK.Core.Data.ContractMessages.ERC721.RentableExtension
 {
 	[Function("isRented", "bool")]
 	public class IsRentedMessage : FunctionMessage

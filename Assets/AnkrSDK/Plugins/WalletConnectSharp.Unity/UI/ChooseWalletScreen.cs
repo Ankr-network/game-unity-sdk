@@ -23,7 +23,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.UI
 
 		private async UniTask BuildWalletButtons()
 		{
-			var supportedWallets = await WalletDownloadHelper.FetchWalletList();
+			var supportedWallets = await WalletDownloadHelper.FetchWalletList(true);
 
 			foreach (var walletId in supportedWallets.Keys)
 			{
