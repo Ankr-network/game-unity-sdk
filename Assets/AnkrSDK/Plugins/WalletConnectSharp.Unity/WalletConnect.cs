@@ -72,7 +72,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private AppEntry SelectedWallet { get; set; }
 
-		private string ConnectURL => Session.URI;
+		public string ConnectURL => Session.URI;
 
 		public WalletConnectUnitySession Session { get; private set; }
 
