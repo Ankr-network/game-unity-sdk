@@ -1,6 +1,5 @@
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using Newtonsoft.Json;
-using UnityEditor;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Utils
@@ -31,7 +30,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 			PlayerPrefs.SetString(SessionKey, json);
 		}
 
-		[MenuItem("AnkrSDK/Clear Session")]
 		public static void ClearSession()
 		{
 			PlayerPrefs.DeleteKey(SessionKey);
