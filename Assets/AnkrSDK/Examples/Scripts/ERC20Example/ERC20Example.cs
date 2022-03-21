@@ -6,7 +6,6 @@ using AnkrSDK.Core.Events;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
-using AnkrSDK.WalletConnectSharp.Unity;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
