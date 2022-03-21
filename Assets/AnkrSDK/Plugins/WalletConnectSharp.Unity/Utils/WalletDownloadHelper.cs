@@ -9,7 +9,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 {
 	public static class WalletDownloadHelper
 	{
-		public static async UniTask<Dictionary<string, AppEntry>> FetchWalletList(bool downloadImages = true)
+		public static async UniTask<Dictionary<string, AppEntry>> FetchWalletList(bool downloadImages)
 		{
 			using (var webRequest =
 				UnityWebRequest.Get("https://registry.walletconnect.org/data/wallets.json"))

@@ -1,7 +1,7 @@
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace AnkrSDK.Examples.ContractMessages.ERC721
+namespace AnkrSDK.Core.Data.ContractMessages.ERC721
 {
 	[Function("balanceOf", "uint256")]
 	public class BalanceOfMessage : FunctionMessage

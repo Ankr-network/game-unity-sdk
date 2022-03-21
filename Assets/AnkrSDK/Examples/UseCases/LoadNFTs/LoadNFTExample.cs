@@ -1,8 +1,8 @@
 using System.Numerics;
+using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.ContractMessages.ERC721;
-using AnkrSDK.Examples.ContractMessages.GameCharacterContract;
+using AnkrSDK.Examples.GameCharacterContract;
 using AnkrSDK.Examples.WearableNFTExample;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -23,7 +23,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			_gameCharacterContract = ankrSDKWrapper.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress,
 				WearableNFTContractInformation.GameCharacterABI);
-			_activeSessionAccount = ankrSDKWrapper.Eth.DefaultAccount;
+			_activeSessionAccount = EthHandler.DefaultAccount;
 		}
 
 		public async void CallGetTokenData()

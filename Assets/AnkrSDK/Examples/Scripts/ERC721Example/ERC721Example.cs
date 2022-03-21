@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Numerics;
+using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.ContractMessages.ERC721;
 using AnkrSDK.Examples.DTO;
 using AnkrSDK.WalletConnectSharp.Unity;
 using UnityEngine;
@@ -39,7 +39,7 @@ namespace AnkrSDK.Examples.ERC721Example
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = _eth.DefaultAccount
+				Owner = EthHandler.DefaultAccount
 			};
 			var balance = await _erc721Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");

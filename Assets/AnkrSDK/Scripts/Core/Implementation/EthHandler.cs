@@ -11,7 +11,7 @@ namespace AnkrSDK.Core.Implementation
 	{
 		private readonly IWeb3 _web3Provider;
 
-		public string DefaultAccount
+		public static string DefaultAccount
 		{
 			get
 			{
@@ -19,10 +19,8 @@ namespace AnkrSDK.Core.Implementation
 				{
 					return WalletConnect.ActiveSession.Accounts[0];
 				}
-				else
-				{
-					throw new Exception("Application is not linked to wallet");
-				}
+
+				throw new Exception("Application is not linked to wallet");
 			}
 		}
 		

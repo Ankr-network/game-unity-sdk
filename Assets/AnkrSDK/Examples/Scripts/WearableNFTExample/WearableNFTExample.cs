@@ -1,10 +1,9 @@
 using System.Numerics;
+using AnkrSDK.Core.Data.ContractMessages.ERC1155;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
-using AnkrSDK.Examples.ContractMessages.ERC1155;
-using AnkrSDK.Examples.ContractMessages.GameCharacterContract;
-using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.Examples.GameCharacterContract;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -38,7 +37,7 @@ namespace AnkrSDK.Examples.WearableNFTExample
 				WearableNFTContractInformation.GameCharacterABI);
 			_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
 				WearableNFTContractInformation.GameItemABI);
-			_activeSessionAccount = ankrSDK.Eth.DefaultAccount;
+			_activeSessionAccount = EthHandler.DefaultAccount;
 		}
 
 		public async void RunExample()
@@ -90,16 +89,16 @@ namespace AnkrSDK.Examples.WearableNFTExample
 		//Cant be called by the operator
 		private async UniTask GameItemSetApproval()
 		{
-			var transactionHash = await ERC721ContractFunctions.SetApprovalForAll(
+			var transactionHash = await _gameItemContract.SetApprovalForAll(
 				WearableNFTContractInformation.GameCharacterContractAddress,
-				true, _gameItemContract);
+				true);
 
 			UpdateUILogs($"Game Items approved. Hash : {transactionHash}");
 		}
 
 		private async UniTask<BigInteger> GetCharacterBalance()
 		{
-			var balance = await ERC721ContractFunctions.BalanceOf(_activeSessionAccount, _gameCharacterContract);
+			var balance = await _gameCharacterContract.BalanceOf(_activeSessionAccount);
 
 			UpdateUILogs($"Number of NFTs Owned: {balance}");
 			return balance;
@@ -126,7 +125,7 @@ namespace AnkrSDK.Examples.WearableNFTExample
 			if (tokenBalance > 0)
 			{
 				var tokenId =
-					await ERC721ContractFunctions.TokenOfOwnerByIndex(_activeSessionAccount, 0, _gameCharacterContract);
+					await _gameCharacterContract.TokenOfOwnerByIndex(_activeSessionAccount, 0);
 
 				UpdateUILogs($"GameCharacter tokenId  : {tokenId}");
 
