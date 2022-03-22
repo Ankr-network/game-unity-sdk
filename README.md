@@ -1,127 +1,194 @@
-# Plugin for unity for creation 
 
-This plugin integrates with metamask on android and iOS.<br>
-Demo:<br>
-[![Demo](https://img.youtube.com/vi/y9ceLv43kCI/0.jpg)](https://www.youtube.com/watch?v=y9ceLv43kCI)
+<h3 align="center">Unity SDK</h3>
 
-## 1. Install SDK
+  <p align="center">
+The Ankr Unity SDK provides an easy way to interact with Web3 and to work with contracts deployed on the blockchain. As a plugin it easily integrates with MetaMask on Android and iOS.
+    <br />
+    <a href="https://github.com/Ankr-network/game-unity-demo">View Demo</a>
+  </p>
+</div>
 
-1) Download  mirageSDK.unitypackage from [latest release](https://github.com/Ankr-network/unity-web3/releases).
-2) Drag and drop it to the Assets folder.
-3) Import all 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#install-sdk">Install SDK</a>
+    </li>
+	<li>
+      <a href="#what's-in-the-sdk">What's in the SDK</a>
+    </li>
+    <li><a href="#getting-started">Getting Started</a></li>
+	<ul>
+        <li><a href="#prequisites">Prerequisites</a></li>
+        <li><a href="#use-cases">Use Cases</a></li>
+	</ul>
+    <li>
+      <a href="#01-connect-web3-wallet">Connect Web3 Wallet</a></li>
+	  <a href="#02-perform-updates-to-nfts">Perform Updates to NFTs</a>
+      <ul>
+        <li><a href="#signing-transactions">Signing Transactions</a></li>
+        <li><a href="#sending-transactions">Sending Transactions</a></li>
+        <li><a href="#getdata-method">GetData Method</a></li>
+        <li><a href="#callmethod">CallMethod</a></li>
+      </ul>    
+    <li><a href="#current-erc-proposals">Current ERC Proposals</a></li>
+	<li><a href="#view-full-examples">View Full Examples</a></li>
+  </ol>
+</details>
 
-## 2. Getting started
 
-To start work with plugin you need to acquire our SDK wrapper instance through one of .GetSDkInstance methods.
+<!-- Installation -->
+
+##  🏗 Install SDK
+
+1. Download `AnkrSDK.unitypackage` from the latest release.
+
+2. In your project, locate the 'Assets' folder. Move `AnkrSDK.unitypackage` into this folder.
+
+3. 'Import all' to have access to all SDK capabilities.
+
+## 👀 What's in the SDK
+
+The SDK is designed to make it super easy to get started with Game development by enabling connection and interaction across different blockchains. 
+
+ * Contains a huge range of classes, plugins and example scripts for a variety of use cases. 
+
+* Nethereum libraries provide support for web requests using RPC over Http. 
+
+* Ankr RPC network infrastructure provides fast and easy connection to multiple chains. 
+
+
+## Getting started
+
+### 🧰 Prerequisites
+
+1. Smart Contracts must already be deployed on the blockchain. You have the Smart Contract addresses and ABI
+
+###  📌 Use Cases
+
+This help content focuses on the following use cases. 
+
+1. Connecting to a Web3 Wallet (MetaMask) and Authenticating a user
+
+2. Performing Updates to NFTs by interacting with the blockchain and calling smart functions.
+
+
+<!-- 
+1. Examples Scripts, 
+*  The *Scripts* folder contains a wide range of useful scripts for initializing sessions, creating and managing Game NFTs and Scenes and authenticating sessions via a Web3 Wallet e.g. Metamask. 
+`ContractMessage` scripts for retrieving information for and managing NFTs  e.g. Game Characters on the blockchain.  ERC-721 and ERC-1155 
+`DTO` scripts for handling TransferObject events and accessing logs.
+`ERC-20`folder contains example script for minting new NFTs e.g. characters
+`ERC-721` folder contains example scripts for managing ownership of NFTs.
+`WearableNFTExample` folder contains example scripts for minting and managing NFT character apparel e.g. hats. 
+`ConnectionController` and `CustomSceneManager` ensure ongoing authentication via MetaMask and displaying game scenes. 
+to allow smart contract interfacing with the for building NFTs to the Blockchain.  scripts to ERC721 and ERC1155 scriptsScripts that can be used  -->
+
+## 👝 01 Connect Web3 Wallet
+
+Connecting to an Ethereum i.e. MetaMask wallet provides a link between a wallet address and a user's game account.
+
+1. Create an instance of a `AnkrSDKWrapper` class via `AnkrSDKWrapper.GetSDKInstance(...)` method after successful login in metamask
+
 ```c#
-var mirageSDKWrapper = MirageSDKWrapper.GetSDKInstance(ERC20ContractInformation.ProviderURL);
+string provider_url = "<ethereum node url>";
+		
+Web3 web3 = new Web3(provider_url);
+web3.Initialize();
 ```
 
-To work with contracts you need to get a IContract instance from our SDKWrapper, for that call GetContract(...)
+2. Login via MetaMask is required to authenticate the user.
+
+- Call the `AnkrSignatureHelper.Sign` to trigger Signing via MetaMask. 
 
 ```c#
-string abi = "...";
-string contract_address = "0x...";
-
-IContract contract = mirageSDKWrapper.GetContract(contract_address, abi);
+string message = "Hi I am a message !"
+string signature = await AnkrSignatureHelper.Sign(message);
 ```
 
-**IContract interface**
+- `AnkrSignatureHelper.Sign(string)` returns the signature.
 
-* Task<string> CallMethod(string methodName, object[] arguments, string gas = null)*<br>
-Use for call methods of a contract deployed to blockchain.
-Returns string with transaction hash.
+3. Verify the user account and address as follows:
+
+string CheckSignature(string messageToCheck, string signature);
+
+
+Inside `AnkrSDK/Examples/UseCases/LinkingAccountWallet`is an example script demonstrating how to link a crypto wallet (MetaMask) to a player account.
+
+## 🚀 02 Perform Updates to NFTs
+
+Making updates to the NFT e.g. adding a red hat to a character requires signing and sending a transaction.
+
+### Signing Transactions
+
+All updates are transactions that must be signed via a prompt from MetaMask.
+
+### Sending Transactions
+
+There are two ways to make update transactions. 
+Using the **GetData** method and the **CallMethod**
+
+#### GetData Method
+
+Use the `GetData` method to retrieve information from the blockchain. (READ functions do NOT require mining.). Other non-standard `Get` functions are also available
+
+These methods require
+
+* Contract Address
+* ABI
+
+The following extract is an example usage of the **GetData** method to retrive information about an NFT:
 
 ```c#
-string receipt = await contract.CallMethod("methodName", new object[0]);
-```
----
-* Task<Transaction> GetTransactionInfo(string receipt)*<br>
-Use for get transaction details like status, nonce and etc.
-Returns transaction, which is a Nethereum DataContract containing all the needed information about transaction. 
-
-```c#
-Transaction trx = await contract.GetTransactionInfo(receipt);
-```
----
-* Task<TReturnType> GetData<FieldData, ReturnType>(FieldData requestData = null)*<br>
-To get data from mappings and call contract methods that no need of mining use this method.
-
-You need to prepare DTO class based on the arguments of a contract method.
-
-Contract method:
-```sol
-function balanceOf(address owner) public view virtual override returns (uint256)
-```
-
-DTO:
-```c#
-[Function("balanceOf", "uint256")]
-public class BalanceOfMessage : FunctionMessage
+private async UniTask<BigInteger> GetHat(BigInteger tokenID)
 {
-	[Parameter("address", "_owner", 1)]
-	public virtual string Owner { get; set; }
+	var getHatMessage = new GetHatMessage
+	{
+		CharacterId = tokenID.ToString()
+	};
+	var hatId = await _gameCharacterContract.GetData<GetHatMessage, BigInteger>(getHatMessage);
+
+	UpdateUILogs($"Hat Id: {hatId}");
+
+	return hatId;
 }
 ```
 
-Returns ReturnType<br>
-Example:
+
+#### CallMethod
+
+Use the `CallMethod` to write new information to the blockchain. These methods utilize gas. 
+
+The following extract is an example of how a `CallMethod` is used to update an NFT: 
+
 ```c#
-BalanceOfMessage balanceOfMessage = new BalanceOfMessage()
+public async void UpdateNFT()
 {
-	Owner = WalletConnect.ActiveSession.Accounts[0]
-};
-BigInteger balance = await contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
-```
----
-* Task<List<EventLog<TEvDto>>> GetAllChanges<EvDTO>(EventFilterData evFilter = null)*<br>
-Use it to get events from a contract.
+	// 1) Request nft parameters and signature for parameters
+	var info = await RequestPreparedParams(0);
+	// 2) Call method that check signature and update nft
+	var receipt = await _contract.CallMethod("updateTokenWithSignedMessage", new object[] { info });
 
-You need to prepare DTO class based on the fields of an event.
-
-Event:
-```sol
-event Transfer(address indexed from, address indexed to, uint256 value);
-```
-
-DTO:
-```c#
-[Event("Transfer")]
-public class TransferEventDTO : IEventDTO
-{
-	[Parameter("address", "_from", 1, true)]
-	public string From { get; set; }
-
-	[Parameter("address", "_to", 2, true)]
-	public string To { get; set; }
-
-	[Parameter("uint256", "_value", 3, false)]
-	public BigInteger Value { get; set; }
+	Debug.Log($"Receipt: {receipt}");
 }
 ```
 
-Returns list of events
 
-```c#
-var events = await contract.GetAllChanges<TransferEventDTO>();
 
-foreach (var ev in events)
-{
-	Debug.Log(ev.Event.Value);
-}
-```
-It is also possible to send a transaction configured by yourself.
-* Task<string> SendTransaction(string to, string data = null, string value = null, string gas = null)*<br>
-This method is used under the hood of our SDK when you use CallMethod function.
+## 🗒 Current ERC Proposals
 
-For full examples please see [ERC20 token example](https://github.com/Ankr-network/unity-web3/blob/main/Assets/MirageSDK/Examples/Scripts/ERC20Example/ERC20Example.cs) and [ERC721 token example](https://github.com/Ankr-network/unity-web3/blob/main/Assets/MirageSDK/Examples/Scripts/ERC721Example/ERC721Example.cs)
+We have two ERC proposals.  
+[ERC-4884  Rentable NFT Standard](https://github.com/Ankr-network/game-smart-contract-example/blob/master/ERC/rentable-nft.md)
+[ERC-4911  Composability Extension For ERC-721 Standard](https://github.com/Ankr-network/game-smart-contract-example/blob/master/ERC/composable-nft.md)
 
-## 3. Contracts interaction
 
-In this plugin there are examples for ERC20 and ERC721 contracts integration, however, it can be easily expanded for any other types of contracts.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Contracts for this plugin are stored under `Examples` folder. Mint functions have no rights, so anyone can test this plugin. These contracts shouldn't be used in production.
 
-Default web3 interactions are created using Nethereum package, the network and public RPC should be configured before using this plugin.
+## View Full Examples
 
-All contract interactions are described in `IContract` interface (events receiving, transaction hashes receiving, getting view data, sending and signing transactions)
+For full examples:
+
+View 
+[ERC20 token example](https://github.com/Ankr-network/game-unity-sdk/blob/master/Assets/AnkrSDK/Examples/Scripts/ERC20Example/ERC20Example.cs) and[ERC721 token example](https://github.com/Ankr-network/game-unity-sdk/blob/master/Assets/AnkrSDK/Examples/Scripts/ERC721Example/ERC721Example.cs)
