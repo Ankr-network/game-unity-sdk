@@ -94,8 +94,7 @@ Connecting to an Ethereum i.e. MetaMask wallet provides a link between a wallet 
 ```c#
 string provider_url = "<ethereum node url>";
 		
-Web3 web3 = new Web3(provider_url);
-web3.Initialize();
+var ankrSdk = AnkrSDKWrapper.GetSDKInstance(provider_url);
 ```
 
 2. Login via MetaMask is required to authenticate the user.
