@@ -6,7 +6,7 @@ namespace AnkrSDK.Core.Utils
 {
 	public static class AnkrWalletHelper
 	{
-		public static Task<string> SendTransaction(
+		public static Task<EthResponse> SendTransaction(
 			string from,
 			string to,
 			string data = null,
@@ -27,12 +27,9 @@ namespace AnkrSDK.Core.Utils
 				nonce = nonce
 			};
 
-			return SendTransaction(transactionData);
-		}
+			var request = new EthSendTransaction(transactionData);
 
-		private static Task<string> SendTransaction(TransactionData data)
-		{
-			return WalletConnect.ActiveSession.EthSendTransaction(data);
+			return WalletConnect.ActiveSession.Send<EthSendTransaction, EthResponse>(request);
 		}
 	}
 }

@@ -2,7 +2,6 @@
 using System.Numerics;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
-using AnkrSDK.Core.Events;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
@@ -36,42 +35,12 @@ namespace AnkrSDK.Examples.ERC20Example
 
 			Debug.Log($"Nonce: {trx.Nonce}");
 		}
-		
+
 		public void SendMint()
 		{
-			var evController = new EventController();
-			evController.OnSending += HandleSending;
-			evController.OnSent += HandleSent;
-			evController.OnTransactionHash += HandleTransactionHash;
-			evController.OnReceipt += HandleReceipt;
-			evController.OnError += HandleError;
-			
+			var evController = new LoggerEventHandler();
+
 			_erc20Contract.Web3SendMethod("mint", Array.Empty<object>(), evController);
-		}
-		
-		public static void HandleSent(object sender, TransactionInput transaction)
-		{
-			Debug.Log($"Transaction sent");
-		}
-		
-		public static void HandleSending(object sender, TransactionInput transaction)
-		{
-			Debug.Log($"Transaction is sending");
-		}
-
-		public static void HandleTransactionHash(object sender, string transactionHash)
-		{
-			Debug.Log($"transactionHash: {transactionHash}");
-		}
-
-		public static void HandleReceipt(object sender, TransactionReceipt receipt)
-		{
-			Debug.Log("Receipt: " + receipt.Status);
-		}
-		
-		public static void HandleError(object sender, Exception err)
-		{
-			Debug.Log("Error: " + err.Message);
 		}
 
 		public async void GetBalance()
@@ -93,7 +62,6 @@ namespace AnkrSDK.Examples.ERC20Example
 				filterTopic1 = new object[] { "Transfer" }
 			};
 			var events = await _erc20Contract.GetAllChanges<TransferEventDTO>(filters);
-
 
 			foreach (var ev in events)
 			{
