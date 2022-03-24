@@ -6,6 +6,8 @@ using AnkrSDK.Core.Events;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
+using AnkrSDK.WalletConnectSharp.Unity;
+using Nethereum.Contracts;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
@@ -17,7 +19,7 @@ namespace AnkrSDK.Examples.ERC20Example
 		private IContract _erc20Contract;
 		private EthHandler _eth;
 
-		private void Start()
+		private async void Start()
 		{
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.ProviderURL);
 			_erc20Contract =
@@ -25,6 +27,16 @@ namespace AnkrSDK.Examples.ERC20Example
 					ERC20ContractInformation.ContractAddress,
 					ERC20ContractInformation.ABI);
 			_eth = ankrSDK.Eth;
+			
+			var filters = new EventFilterData
+			{
+				fromBlock = BlockParameter.CreateEarliest(),
+				toBlock = BlockParameter.CreateLatest(),
+				filterTopic1 = new object[] { "Transfer" }
+			};
+			await _erc20Contract.SubscribeEvents<TransferEventDTO>(filters);
+//			await _erc20Contract.GetLogs_Observable_Subscription();
+//			await _erc20Contract.GetLogs_Observable_Subscription1<TransferEventDTO>(filters);
 		}
 
 		public async void CallMint()
@@ -51,12 +63,12 @@ namespace AnkrSDK.Examples.ERC20Example
 		
 		public static void HandleSent(object sender, TransactionInput transaction)
 		{
-			Debug.Log($"Transaction sent");
+			Debug.Log("Transaction sent");
 		}
 		
 		public static void HandleSending(object sender, TransactionInput transaction)
 		{
-			Debug.Log($"Transaction is sending");
+			Debug.Log("Transaction is sending");
 		}
 
 		public static void HandleTransactionHash(object sender, string transactionHash)

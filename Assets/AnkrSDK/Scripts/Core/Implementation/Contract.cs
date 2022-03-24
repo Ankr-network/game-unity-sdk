@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Events;
@@ -9,8 +10,10 @@ using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
+using Nethereum.JsonRpc.WebSocketStreamingClient;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
+using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
@@ -97,6 +100,97 @@ namespace AnkrSDK.Core.Implementation
 				evController.InvokeErrorReceived(sendTransactionTask.Exception);
 			}
 		}
+		
+		public async Task SubscribeEvents<TEvDto>(EventFilterData evFilter)
+			where TEvDto : IEventDTO, new()
+		{
+			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_ethHandler.DefaultAccount);
+			var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
+			
+			using (var client = new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
+			{
+				var obj = new Observer<object>();
+
+				var subscription = new EthLogsObservableSubscription(client);
+
+				subscription.GetSubscriptionDataResponsesAsObservable().
+					Subscribe(obj);
+				
+				await client.StartAsync();
+				subscription.GetSubscribeResponseAsObservable().Subscribe(obj);
+				await subscription.SubscribeAsync(filters);
+				
+				await Task.Delay(TimeSpan.FromMinutes(5));
+
+				await subscription.UnsubscribeAsync();
+			}
+		}
+		
+		public async Task GetLogs_Observable_Subscription()
+		{
+			var obj = new Observer<object>();
+			using(var client = new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
+			{ 
+				// create the subscription
+				// nothing will happen just yet though
+				var subscription = new EthLogsObservableSubscription(client);
+
+				// attach our handler for each log
+				subscription.GetSubscriptionDataResponsesAsObservable().Subscribe(obj);
+
+				// create the web socket connection
+				await client.StartAsync();
+
+				// begin receiving subscription data
+				// data will be received on another thread
+				await subscription.SubscribeAsync();
+
+				// allow to run for a minute
+				await Task.Delay(TimeSpan.FromMinutes(1));
+
+				// unsubscribe
+				await subscription.UnsubscribeAsync();
+
+				// allow some time to unsubscribe
+				await Task.Delay(TimeSpan.FromSeconds(5));
+			}
+		}
+		
+		public async Task GetLogs_Observable_Subscription1<TEvDto>(EventFilterData evFilter) where TEvDto : IEventDTO, new()
+		{
+			var obj = new Observer<object>();
+			using(var client = new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
+			{ 
+				var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_ethHandler.DefaultAccount);
+
+				var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
+				
+				// create the subscription
+				// nothing will happen just yet though
+				var subscription = new EthLogsObservableSubscription(client);
+
+				// attach our handler for each log
+				subscription.GetSubscriptionDataResponsesAsObservable().Subscribe(obj);
+
+				// create the web socket connection
+				await client.StartAsync();
+
+				// begin receiving subscription data
+				// data will be received on another thread
+				subscription.GetSubscribeResponseAsObservable().Subscribe(obj);
+				
+				await subscription.SubscribeAsync(filters);
+
+				// allow to run for a minute
+				await Task.Delay(TimeSpan.FromMinutes(3));
+
+				// unsubscribe
+				await subscription.UnsubscribeAsync();
+
+				// allow some time to unsubscribe
+				await Task.Delay(TimeSpan.FromSeconds(5));
+			}
+		}
 
 		public Task<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null)
@@ -133,6 +227,34 @@ namespace AnkrSDK.Core.Implementation
 			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
 			var callFunction = contract.GetFunction(methodName);
 			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);
+		}
+	}
+
+	public class Observer<T> : IObserver<T>
+	{
+		public void OnNext(T value)
+		{
+			Debug.Log("<--------------- Event is gotten --------------->");
+//			try
+//			{
+//				EventLog<T> decoded = Event<T>.DecodeEvent(value);
+//				func(decoded);
+//			}
+//			catch (Exception ex)
+//			{
+//				Console.WriteLine(@"Log Address: " + log.Address + @" is not a standard transfer log:", ex.Message);
+//			}
+		}
+
+		public void OnError(Exception error)
+		{
+			Debug.Log("<--------------- !!! Error !!! --------------->");
+			Debug.Log(error.Message);
+		}
+
+		public void OnCompleted()
+		{
+			Debug.Log("<--------------- OnCompleted --------------->");
 		}
 	}
 }
