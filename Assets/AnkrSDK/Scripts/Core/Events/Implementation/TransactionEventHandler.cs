@@ -6,11 +6,11 @@ namespace AnkrSDK.Core.Events.Implementation
 {
 	public abstract class TransactionEventHandler : ITransactionEventHandler
 	{
-		public virtual void EventSendBegin(TransactionInput transactionInput)
+		public virtual void TransactionSendBegin(TransactionInput transactionInput)
 		{
 		}
 
-		public virtual void EventSendEnd(TransactionInput transactionInput)
+		public virtual void TransactionSendEnd(TransactionInput transactionInput)
 		{
 		}
 

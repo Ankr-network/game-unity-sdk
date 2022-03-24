@@ -5,8 +5,8 @@ namespace AnkrSDK.Core.Events.Infrastructure
 {
 	public interface ITransactionEventHandler
 	{
-		void EventSendBegin(TransactionInput transactionInput);
-		void EventSendEnd(TransactionInput transactionInput);
+		void TransactionSendBegin(TransactionInput transactionInput);
+		void TransactionSendEnd(TransactionInput transactionInput);
 		void TransactionHashReceived(string transactionHash);
 		void ErrorReceived(Exception exception);
 		void ReceiptReceived(TransactionReceipt receipt);

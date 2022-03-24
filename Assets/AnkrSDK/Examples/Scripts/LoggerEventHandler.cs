@@ -7,12 +7,12 @@ namespace AnkrSDK.Examples
 {
 	public class LoggerEventHandler : ITransactionEventHandler
 	{
-		public void EventSendBegin(TransactionInput transactionInput)
+		public void TransactionSendBegin(TransactionInput transactionInput)
 		{
 			Debug.Log("Transaction is sending");
 		}
 
-		public void EventSendEnd(TransactionInput transactionInput)
+		public void TransactionSendEnd(TransactionInput transactionInput)
 		{
 			Debug.Log("Transaction sent");
 		}

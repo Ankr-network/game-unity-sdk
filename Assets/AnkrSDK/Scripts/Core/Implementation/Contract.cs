@@ -68,7 +68,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var transactionInput = CreateTransactionInput(methodName, arguments);
 
-			evController?.EventSendBegin(transactionInput);
+			evController?.TransactionSendBegin(transactionInput);
 
 			var sendTransactionTask = AnkrWalletHelper.SendTransaction(
 				EthHandler.DefaultAccount,
@@ -79,7 +79,7 @@ namespace AnkrSDK.Core.Implementation
 				nonce: nonce
 			);
 
-			evController?.EventSendEnd(transactionInput);
+			evController?.TransactionSendEnd(transactionInput);
 
 			try
 			{
