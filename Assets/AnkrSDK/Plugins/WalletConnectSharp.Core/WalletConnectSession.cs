@@ -445,7 +445,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			var sessionCompletionSource = new TaskCompletionSource<WCSessionData>(TaskCreationOptions.None);
 
-
 			SubscribeOnConnectMessage(sessionCompletionSource);
 
 			SubscribeOnFailedMessage(sessionCompletionSource);

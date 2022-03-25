@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Examples;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Newtonsoft.Json;
@@ -55,9 +56,9 @@ namespace AnkrSDK.UseCases.UpdateNFT
 			// 1) Request nft parameters and signature for parameters
 			var info = await RequestPreparedParams(0);
 			// 2) Call method that check signature and update nft
-			var receipt = await _contract.CallMethod("updateTokenWithSignedMessage", new object[] { info });
-
-			Debug.Log($"Receipt: {receipt}");
+			
+			var evController = new LoggerEventHandler();
+			await _contract.Web3SendMethod("updateTokenWithSignedMessage", new object[] { info }, evController);
 		}
 
 		public async void EstimateGas()
