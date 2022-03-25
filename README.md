@@ -173,6 +173,21 @@ public async void UpdateNFT()
 }
 ```
 
+#### Handle transaction events
+
+There is a `ITransactionEventHandler` argument which provides an access to keypoints of transaction flow. <br>
+
+Implement `ITransactionEventHanlder` and pass the instance as an argument to be able to intercept those events. <br>
+There are pre-crafted implementations: <br>
+Allows you to subscribe to events <br>
+```c#
+public class TransactionEventDelegator : ITransactionEventHandler
+```
+Base class for you to implement <br>
+```c#
+public class TransactionEventHanlder : ITransactionEventHandler
+```
+
 
 
 ## 🗒 Current ERC Proposals
