@@ -269,7 +269,7 @@ namespace AnkrSDK.Core.Utils
 		#endregion
 
 		#endregion
-		
+
 		private static UniTask<string> CallContractMethod(this IContract contract, string methodName,
 			object[] arguments)
 		{
