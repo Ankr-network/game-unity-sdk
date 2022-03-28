@@ -2,12 +2,10 @@
 using System.Numerics;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
-using AnkrSDK.Core.Events;
+using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
-using AnkrSDK.WalletConnectSharp.Unity;
-using Nethereum.Contracts;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
@@ -50,11 +48,11 @@ namespace AnkrSDK.Examples.ERC20Example
 		
 		public void SendMint()
 		{
-			var evController = new EventController();
-			evController.OnSending += HandleSending;
-			evController.OnSent += HandleSent;
-			evController.OnTransactionHash += HandleTransactionHash;
-			evController.OnReceipt += HandleReceipt;
+			var evController = new TransactionEventDelegator();
+			evController.OnTransactionSendBegin += HandleSending;
+			evController.OnTransactionSendEnd += HandleSent;
+			evController.OnTransactionHashReceived += HandleTransactionHash;
+			evController.OnReceiptReceived += HandleReceipt;
 			evController.OnError += HandleError;
 			
 			_erc20Contract.Web3SendMethod("mint", Array.Empty<object>(), evController);
@@ -69,20 +67,20 @@ namespace AnkrSDK.Examples.ERC20Example
 		{
 			Debug.Log("Transaction is sending");
 		}
-
-		public static void HandleTransactionHash(object sender, string transactionHash)
+		
+		public void HandleTransactionHash(object sender, string transactionHash)
 		{
-			Debug.Log($"transactionHash: {transactionHash}");
+			Debug.Log($"TsransactionHash: {transactionHash}");
 		}
 
-		public static void HandleReceipt(object sender, TransactionReceipt receipt)
+		public void HandleError(object sender, Exception exception)
+		{
+			Debug.LogError("Error: " + exception.Message);
+		}
+
+		public void HandleReceipt(object sender, TransactionReceipt receipt)
 		{
 			Debug.Log("Receipt: " + receipt.Status);
-		}
-		
-		public static void HandleError(object sender, Exception err)
-		{
-			Debug.Log("Error: " + err.Message);
 		}
 
 		public async void GetBalance()
@@ -103,7 +101,6 @@ namespace AnkrSDK.Examples.ERC20Example
 				toBlock = BlockParameter.CreateLatest(),
 			};
 			var events = await _erc20Contract.GetAllChanges<TransferEventDTO>(filters);
-
 
 			foreach (var ev in events)
 			{

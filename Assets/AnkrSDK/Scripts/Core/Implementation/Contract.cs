@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Data;
-using AnkrSDK.Core.Events;
+using AnkrSDK.Core.Events.Infrastructure;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
-using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
@@ -51,11 +50,11 @@ namespace AnkrSDK.Core.Implementation
 			return eventHandler.GetAllChangesAsync(filters);
 		}
 
-		public Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null,
+		public async Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
 			var transactionInput = CreateTransactionInput(methodName, arguments);
-			return AnkrWalletHelper.SendTransaction(
+			var sendTransaction = await AnkrWalletHelper.SendTransaction(
 				EthHandler.DefaultAccount,
 				_contractAddress,
 				transactionInput.Data,
@@ -63,19 +62,16 @@ namespace AnkrSDK.Core.Implementation
 				gasPrice: gasPrice,
 				nonce: nonce
 			);
+
+			return sendTransaction.Result;
 		}
 
 		public async Task Web3SendMethod(string methodName, object[] arguments,
-			EventController evController = null, string gas = null, string gasPrice = null, string nonce = null)
+			ITransactionEventHandler evController = null, string gas = null, string gasPrice = null, string nonce = null)
 		{
-			if (evController == null)
-			{
-				evController = new EventController();
-			}
-
 			var transactionInput = CreateTransactionInput(methodName, arguments);
 
-			evController.InvokeSendingEvent(transactionInput);
+			evController?.TransactionSendBegin(transactionInput);
 
 			var sendTransactionTask = AnkrWalletHelper.SendTransaction(
 				EthHandler.DefaultAccount,
@@ -86,19 +82,26 @@ namespace AnkrSDK.Core.Implementation
 				nonce: nonce
 			);
 
-			evController.InvokeSentEvent(transactionInput);
+			evController?.TransactionSendEnd(transactionInput);
 
-			await sendTransactionTask;
-
-			if (!sendTransactionTask.IsFaulted)
+			try
 			{
-				var transactionHash = sendTransactionTask.Result;
-				evController.InvokeTransactionHashReceived(transactionHash);
-				await LoadReceipt(transactionHash, evController);
+				var response = await sendTransactionTask;
+
+				if (!sendTransactionTask.IsFaulted)
+				{
+					var transactionHash = response.Result;
+					evController?.TransactionHashReceived(transactionHash);
+					await LoadReceipt(transactionHash, evController);
+				}
+				else
+				{
+					evController?.ErrorReceived(sendTransactionTask.Exception);
+				}
 			}
-			else
+			catch (Exception exception)
 			{
-				evController.InvokeErrorReceived(sendTransactionTask.Exception);
+				evController?.ErrorReceived(exception);
 			}
 		}
 		
@@ -205,7 +208,7 @@ namespace AnkrSDK.Core.Implementation
 			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput);
 		}
 
-		private async UniTask LoadReceipt(string transactionHash, EventController evController)
+		private async UniTask LoadReceipt(string transactionHash, ITransactionEventHandler evController)
 		{
 			var task = _ethHandler.GetTransactionReceipt(transactionHash);
 
@@ -214,11 +217,11 @@ namespace AnkrSDK.Core.Implementation
 			if (!task.IsFaulted)
 			{
 				var receipt = task.Result;
-				evController.InvokeReceiptReceived(receipt);
+				evController?.ReceiptReceived(receipt);
 			}
 			else
 			{
-				evController.InvokeErrorReceived(task.Exception);
+				evController?.ErrorReceived(task.Exception);
 			}
 		}
 

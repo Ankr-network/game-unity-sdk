@@ -85,6 +85,7 @@ namespace AnkrSDK.Core.Utils
 
 		/// <summary>
 		///     Returns a token ID owned by "<paramref name="owner" />"  at a given "<paramref name="index" />" of its token list.
+		///     <br />
 		///     Use along with <see cref="BalanceOf" /> to enumerate all of "<paramref name="owner" />"'s tokens.
 		/// </summary>
 		public static UniTask<BigInteger> TokenOfOwnerByIndex(this IContract contract, string owner, BigInteger index)
@@ -99,7 +100,7 @@ namespace AnkrSDK.Core.Utils
 		}
 
 		/// <summary>
-		///     Returns a token ID at a given "<paramref name="index" />" of all the tokens stored by the contract.
+		///     Returns a token ID at a given "<paramref name="index" />" of all the tokens stored by the contract.<br />
 		///     Use along with <see cref="TotalSupply" /> to enumerate all tokens.
 		/// </summary>
 		public static UniTask<BigInteger> TokenByIndex(this IContract contract, BigInteger index)
@@ -110,6 +111,36 @@ namespace AnkrSDK.Core.Utils
 			};
 
 			return contract.GetData<TokenByIndexMessage, BigInteger>(tokenByIndexMessage).AsUniTask();
+		}
+
+		/// <summary>
+		///     Returns if the `operator` is allowed to manage all of the assets of `owner`.<br />
+		///     See <see cref="SetApprovalForAll" />
+		/// </summary>
+		public static UniTask<bool> IsApprovedForAll(string owner, string theOperator, IContract contract)
+		{
+			var isApprovedForAllMessage = new IsApprovedForAllMessage
+			{
+				Owner = owner,
+				Operator = theOperator
+			};
+
+			return contract.GetData<IsApprovedForAllMessage, bool>(isApprovedForAllMessage).AsUniTask();
+		}
+
+		/// <summary>
+		///     Returns the account approved for <paramref name="tokenId" /> token.<br />
+		///     Requirement:<br />
+		///     -"<paramref name="tokenId" />" must exist
+		/// </summary>
+		public static UniTask<bool> GetApproved(string tokenId, IContract contract)
+		{
+			var getApprovedMessage = new GetApprovedMessage
+			{
+				TokenID = tokenId
+			};
+
+			return contract.GetData<GetApprovedMessage, bool>(getApprovedMessage).AsUniTask();
 		}
 
 		#endregion
