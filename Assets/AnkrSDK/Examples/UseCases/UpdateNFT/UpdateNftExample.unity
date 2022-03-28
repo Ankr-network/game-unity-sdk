@@ -208,7 +208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 284607243}
         m_TargetAssemblyTypeName: AnkrSDK.Examples.ERC20Example.ERC20Example, Assembly-CSharp
-        m_MethodName: GetEvents
+        m_MethodName: CallMint
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

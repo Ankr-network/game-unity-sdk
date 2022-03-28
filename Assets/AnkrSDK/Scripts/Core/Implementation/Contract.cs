@@ -13,6 +13,7 @@ using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.WebSocketStreamingClient;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
@@ -104,7 +105,7 @@ namespace AnkrSDK.Core.Implementation
 		public async Task SubscribeEvents<TEvDto>(EventFilterData evFilter)
 			where TEvDto : IEventDTO, new()
 		{
-			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_ethHandler.DefaultAccount);
+			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(EthHandler.DefaultAccount);
 			var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
 			
 			using (var client = new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
@@ -161,7 +162,7 @@ namespace AnkrSDK.Core.Implementation
 			var obj = new Observer<object>();
 			using(var client = new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
 			{ 
-				var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_ethHandler.DefaultAccount);
+				var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(EthHandler.DefaultAccount);
 
 				var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
 				
@@ -235,6 +236,7 @@ namespace AnkrSDK.Core.Implementation
 		public void OnNext(T value)
 		{
 			Debug.Log("<--------------- Event is gotten --------------->");
+			Debug.Log(JsonConvert.SerializeObject(value));
 //			try
 //			{
 //				EventLog<T> decoded = Event<T>.DecodeEvent(value);

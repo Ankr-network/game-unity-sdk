@@ -32,7 +32,6 @@ namespace AnkrSDK.Examples.ERC20Example
 			{
 				fromBlock = BlockParameter.CreateEarliest(),
 				toBlock = BlockParameter.CreateLatest(),
-				filterTopic1 = new object[] { "Transfer" }
 			};
 			await _erc20Contract.SubscribeEvents<TransferEventDTO>(filters);
 //			await _erc20Contract.GetLogs_Observable_Subscription();
@@ -102,7 +101,6 @@ namespace AnkrSDK.Examples.ERC20Example
 			{
 				fromBlock = BlockParameter.CreateEarliest(),
 				toBlock = BlockParameter.CreateLatest(),
-				filterTopic1 = new object[] { "Transfer" }
 			};
 			var events = await _erc20Contract.GetAllChanges<TransferEventDTO>(filters);
 
