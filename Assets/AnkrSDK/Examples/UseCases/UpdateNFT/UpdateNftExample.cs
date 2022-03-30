@@ -40,7 +40,7 @@ namespace AnkrSDK.UseCases.UpdateNFT
 		private IAnkrSDK _ankrSDKWrapper;
 
 		// backend for get nft details and signature
-		private const string URL = "http://root@eth-01.dccn.ankr.com:8080/";
+		private const string URL = "http://eth-01.dccn.ankr.com:8080/";
 
 		private void Start()
 		{

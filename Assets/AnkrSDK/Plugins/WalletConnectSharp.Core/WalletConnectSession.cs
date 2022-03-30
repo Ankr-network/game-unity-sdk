@@ -238,6 +238,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				else
 				{
 					throw new IOException("Transport Connection failed", e);
+					throw new IOException("Transport Connection failed", e);
 				}
 
 				throw new IOException("Session Connection failed", e);
