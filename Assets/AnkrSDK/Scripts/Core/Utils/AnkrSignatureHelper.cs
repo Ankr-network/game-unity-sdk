@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AnkrSDK.Core.Implementation;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Nethereum.Signer;
 
@@ -13,7 +14,7 @@ namespace AnkrSDK.Core.Utils
 		/// <returns>Signed message</returns>
 		public static Task<string> Sign(string messageToSign)
 		{
-			return WalletConnect.ActiveSession.EthSign(WalletConnect.ActiveSession.Accounts[0], messageToSign);
+			return WalletConnect.ActiveSession.EthSign(EthHandler.DefaultAccount, messageToSign);
 		}
 
 		/// <summary>

@@ -118,6 +118,7 @@ namespace AnkrSDK.Examples
 
 		private void UpdateLoginButtonState(object sender, WalletConnectProtocol e)
 		{
+			UpdateSceneState();
 			_connectionText.text = e.TransportConnected ? LoginText : ConnectingText;
 			_loginButton.interactable = e.TransportConnected;
 		}

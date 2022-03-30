@@ -28,8 +28,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			{
 				if (Instance == null || Instance.Session == null)
 				{
-					throw new ArgumentNullException(nameof(Instance),
-						"WalletConnect should be initialized before creating web3Provider");
+					return null;
 				}
 				
 				return Instance.Session;

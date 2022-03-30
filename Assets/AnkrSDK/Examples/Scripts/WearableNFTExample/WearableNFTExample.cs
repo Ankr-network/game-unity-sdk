@@ -72,7 +72,7 @@ namespace AnkrSDK.Examples.WearableNFTExample
 			var data = new byte[] { };
 
 			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
-				new object[] {mintBatchToAddress, itemsToMint, itemsAmounts, data});
+				new object[] { mintBatchToAddress, itemsToMint, itemsAmounts, data });
 
 			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
 		}
