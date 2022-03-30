@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.DTO;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.JsonRpc.WebSocketStreamingClient;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
@@ -16,6 +20,7 @@ namespace AnkrSDK.Examples.ERC20Example
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
 		private EthHandler _eth;
+		private EventSubscriber _eventSubscriber;
 
 		private async void Start()
 		{
@@ -28,12 +33,16 @@ namespace AnkrSDK.Examples.ERC20Example
 			
 			var filters = new EventFilterData
 			{
-				fromBlock = BlockParameter.CreateEarliest(),
-				toBlock = BlockParameter.CreateLatest(),
+				fromBlock = BlockParameter.CreateLatest(),
+				toBlock = BlockParameter.CreateLatest()
 			};
-			await _erc20Contract.SubscribeEvents<TransferEventDTO>(filters);
+//			await _erc20Contract.SubscribeEvents<TransferEventDTO>(filters);
 //			await _erc20Contract.GetLogs_Observable_Subscription();
 //			await _erc20Contract.GetLogs_Observable_Subscription1<TransferEventDTO>(filters);
+			await _erc20Contract.GetLogs_Observable_Subscription1<TransferEventDTO>(filters);
+			
+//			_eventSubscriber = new EventSubscriber();
+//			await _eventSubscriber.StartAsync();
 		}
 
 		public async void CallMint()
@@ -46,7 +55,7 @@ namespace AnkrSDK.Examples.ERC20Example
 			Debug.Log($"Nonce: {trx.Nonce}");
 		}
 		
-		public void SendMint()
+		public async void SendMint()
 		{
 			var evController = new TransactionEventDelegator();
 			evController.OnTransactionSendBegin += HandleSending;
@@ -56,6 +65,10 @@ namespace AnkrSDK.Examples.ERC20Example
 			evController.OnError += HandleError;
 			
 			_erc20Contract.Web3SendMethod("mint", Array.Empty<object>(), evController);
+			
+//			Debug.Log("------ Message sending ------");
+//			await _eventSubscriber.StartConnect();
+//			Debug.Log("------ Message sent ------");
 		}
 		
 		public static void HandleSent(object sender, TransactionInput transaction)

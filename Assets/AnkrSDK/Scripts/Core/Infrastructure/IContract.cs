@@ -25,11 +25,6 @@ namespace AnkrSDK.Core.Infrastructure
 		Task<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null);
 
-		Task SubscribeEvents<TEvDto>(EventFilterData evFilter)
-			where TEvDto : IEventDTO, new();
-
-		Task GetLogs_Observable_Subscription();
-
 		Task GetLogs_Observable_Subscription1<TEvDto>(EventFilterData evFilter) where TEvDto : IEventDTO, new();
 	}
 }

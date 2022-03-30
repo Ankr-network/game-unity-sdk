@@ -3,8 +3,10 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace AnkrSDK.Examples.DTO
 {
+	public partial class TransferEventDTO : TransferEventDTOBase { }
+	
 	[Event("Transfer")]
-	public class TransferEventDTO : IEventDTO
+	public class TransferEventDTOBase : IEventDTO
 	{
 		[Parameter("address", "_from", 1, true)]
 		public string From { get; set; }

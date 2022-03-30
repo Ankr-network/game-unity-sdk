@@ -23,11 +23,6 @@ namespace Nethereum.JsonRpc.WebSocketStreamingClient
 
         public Task SubscribeAsync(object id = null)
         {
-            var request = BuildRequest(new NewFilterInput(), id);
-            Debug.Log("////////////////  Request  ////////////////");
-            Debug.Log($"Id = {request.Id}");
-            Debug.Log($"Method = {request.Method}");
-            Debug.Log($"RawParameters = {request.RawParameters}");
             return base.SubscribeAsync(BuildRequest(new NewFilterInput(), id));
         }
 

@@ -490,6 +490,7 @@ namespace NativeWebSocket
 
         public Task SendText(string message)
         {
+            Debug.Log($"----> {message}");
             var encoded = Encoding.UTF8.GetBytes(message);
 
             // m_Socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
@@ -601,6 +602,7 @@ namespace NativeWebSocket
 
             foreach (byte[] bytes in messageListCopy)
             {
+                Debug.Log($"<---- {Encoding.UTF8.GetString(bytes)}");
                 OnMessage?.Invoke(bytes);
             }
         }
