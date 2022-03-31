@@ -13,7 +13,6 @@ namespace AnkrSDK.UseCases
 			SetButtonLinks();
 		}
 
-
 		private void SetButtonsActive(bool isActive)
 		{
 			foreach (var useCaseUI in _useCaseUIs)
