@@ -5,10 +5,13 @@ namespace AnkrSDK.UseCases
 {
 	public class UseCaseUI : MonoBehaviour
 	{
-		public Button _selectButton;
+		[SerializeField]
+		private Button _selectButton;
 
-		public Button _backButton;
+		[SerializeField]
+		private Button _backButton;
 
-		public GameObject _useCase;
+		[SerializeField]
+		private GameObject _useCase;
 	}
 }
