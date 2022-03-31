@@ -18,7 +18,7 @@ namespace AnkrSDK.UseCases
 		{
 			foreach (var useCaseUI in _useCaseUIs)
 			{
-				useCaseUI._selectButton.gameObject.SetActive(isActive);
+				useCaseUI.GetSelectButton().gameObject.SetActive(isActive);
 			}
 		}
 
@@ -26,21 +26,21 @@ namespace AnkrSDK.UseCases
 		{
 			foreach (var useCaseUI in _useCaseUIs)
 			{
-				useCaseUI._selectButton.onClick.AddListener(() => OnSelectButtonClicked(useCaseUI));
-				useCaseUI._backButton.onClick.AddListener(() => OnBackButtonClicked(useCaseUI));
+				useCaseUI.GetSelectButton().onClick.AddListener(() => OnSelectButtonClicked(useCaseUI));
+				useCaseUI.GetBackButton().onClick.AddListener(() => OnBackButtonClicked(useCaseUI));
 			}
 		}
 
 		private void OnBackButtonClicked(UseCaseUI useCaseUI)
 		{
 			SetButtonsActive(true);
-			useCaseUI._useCase.SetActive(false);
+			useCaseUI.GetUseCase().SetActive(false);
 		}
 
 		private void OnSelectButtonClicked(UseCaseUI useCaseUI)
 		{
 			SetButtonsActive(false);
-			useCaseUI._useCase.SetActive(true);
+			useCaseUI.GetUseCase().SetActive(true);
 		}
 	}
 }
