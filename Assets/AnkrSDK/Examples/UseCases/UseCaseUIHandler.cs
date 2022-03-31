@@ -1,43 +1,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UseCaseUIHandler : MonoBehaviour
+namespace AnkrSDK.UseCases
 {
-	[SerializeField]
-	private List<UseCaseUI> _useCaseUIs;
-
-	private void Awake()
+	public class UseCaseUIHandler : MonoBehaviour
 	{
-		SetButtonLinks();
-	}
+		[SerializeField]
+		private List<UseCaseUI> _useCaseUIs;
 
-
-	private void SetButtonsActive(bool isActive)
-	{
-		foreach (var useCaseUI in _useCaseUIs)
+		private void Awake()
 		{
-			useCaseUI._selectButton.gameObject.SetActive(isActive);
+			SetButtonLinks();
 		}
-	}
 
-	private void SetButtonLinks()
-	{
-		foreach (var useCaseUI in _useCaseUIs)
+
+		private void SetButtonsActive(bool isActive)
 		{
-			useCaseUI._selectButton.onClick.AddListener(() => OnSelectButtonClicked(useCaseUI));
-			useCaseUI._backButton.onClick.AddListener(() => OnBackButtonClicked(useCaseUI));
+			foreach (var useCaseUI in _useCaseUIs)
+			{
+				useCaseUI._selectButton.gameObject.SetActive(isActive);
+			}
 		}
-	}
 
-	private void OnBackButtonClicked(UseCaseUI useCaseUI)
-	{
-		SetButtonsActive(true);
-		useCaseUI._useCase.SetActive(false);
-	}
+		private void SetButtonLinks()
+		{
+			foreach (var useCaseUI in _useCaseUIs)
+			{
+				useCaseUI._selectButton.onClick.AddListener(() => OnSelectButtonClicked(useCaseUI));
+				useCaseUI._backButton.onClick.AddListener(() => OnBackButtonClicked(useCaseUI));
+			}
+		}
 
-	private void OnSelectButtonClicked(UseCaseUI useCaseUI)
-	{
-		SetButtonsActive(false);
-		useCaseUI._useCase.SetActive(true);
+		private void OnBackButtonClicked(UseCaseUI useCaseUI)
+		{
+			SetButtonsActive(true);
+			useCaseUI._useCase.SetActive(false);
+		}
+
+		private void OnSelectButtonClicked(UseCaseUI useCaseUI)
+		{
+			SetButtonsActive(false);
+			useCaseUI._useCase.SetActive(true);
+		}
 	}
 }
