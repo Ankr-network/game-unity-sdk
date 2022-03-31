@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,11 @@ namespace AnkrSDK.UseCases
 		private void Awake()
 		{
 			SetButtonLinks();
+		}
+
+		private void OnDestroy()
+		{
+			UnsubscribeButtonLinks();
 		}
 
 		private void SetButtonsActive(bool isActive)
@@ -27,6 +33,15 @@ namespace AnkrSDK.UseCases
 			{
 				useCaseUI.GetSelectButton().onClick.AddListener(() => OnSelectButtonClicked(useCaseUI));
 				useCaseUI.GetBackButton().onClick.AddListener(() => OnBackButtonClicked(useCaseUI));
+			}
+		}
+		
+		private void UnsubscribeButtonLinks()
+		{
+			foreach (var useCaseUI in _useCaseUIs)
+			{
+				useCaseUI.GetSelectButton().onClick.RemoveAllListeners();
+				useCaseUI.GetBackButton().onClick.RemoveAllListeners();
 			}
 		}
 
