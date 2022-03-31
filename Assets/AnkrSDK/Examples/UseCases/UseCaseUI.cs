@@ -13,5 +13,20 @@ namespace AnkrSDK.UseCases
 
 		[SerializeField]
 		private GameObject _useCase;
+
+		public Button GetSelectButton()
+		{
+			return _selectButton;
+		}
+		
+		public Button GetBackButton()
+		{
+			return _backButton;
+		}
+		
+		public GameObject GetUseCase()
+		{
+			return _useCase;
+		}
 	}
 }
