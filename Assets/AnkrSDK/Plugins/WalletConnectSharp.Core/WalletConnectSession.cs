@@ -60,7 +60,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			}
 		}
 
-		public WalletConnectSession(SavedSession savedSession, ITransport transport = null, ICipher cipher = null,
+		protected WalletConnectSession(SavedSession savedSession, ITransport transport = null, ICipher cipher = null,
 			EventDelegator eventDelegator = null) : base(savedSession, transport, cipher, eventDelegator)
 		{
 			DappMetadata = savedSession.DappMeta;
@@ -79,7 +79,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			SessionConnected = true;
 		}
 
-		public WalletConnectSession(ClientMeta clientMeta, string bridgeUrl = null, ITransport transport = null,
+		protected WalletConnectSession(ClientMeta clientMeta, string bridgeUrl = null, ITransport transport = null,
 			ICipher cipher = null, int chainId = 1, EventDelegator eventDelegator = null) : base(transport, cipher,
 			eventDelegator)
 		{
@@ -191,6 +191,10 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				{
 					await SetupTransport();
 				}
+				else
+				{
+					Debug.Log("Transport already connected. No need to setup");
+				}
 
 				ReadyForUserPrompt = false;
 				await SubscribeAndListenToTopic(_clientId);
@@ -278,11 +282,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			HandleSessionDisconnect(disconnectMessage);
 		}
 
-		public override async Task Disconnect()
+		public override Task Disconnect()
 		{
-			EnsureNotDisconnected();
-
-			await DisconnectSession();
+			return DisconnectSession();
 		}
 
 		public async Task<string> EthSign(string address, string message)
@@ -590,65 +592,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			return new SavedSession(_clientId, _handshakeId, BridgeUrl, Key, KeyRaw, PeerId, NetworkId, Accounts,
 				ChainId, DappMetadata, WalletMetadata);
-		}
-
-		/// <summary>
-		/// Save the current session to a Stream. This function will write a GZIP Compressed JSON blob
-		/// of the contents of SaveSession()
-		/// </summary>
-		/// <param name="stream">The stream to write to</param>
-		/// <param name="leaveStreamOpen">Whether to leave the stream open</param>
-		/// <exception cref="IOException">If there is currently no session active, or if writing to the stream fails</exception>
-		public void SaveSession(Stream stream, bool leaveStreamOpen = true)
-		{
-			//We'll save the current session as a GZIP compressed JSON blob
-			var data = GetSavedSession();
-
-			if (data == null)
-			{
-				throw new IOException("No session is active to save");
-			}
-
-			var json = JsonConvert.SerializeObject(data);
-
-			var encodedJson = Encoding.UTF8.GetBytes(json);
-
-			using (var gZipStream = new GZipStream(stream, CompressionMode.Compress, leaveStreamOpen))
-			{
-				var sizeEncoded = BitConverter.GetBytes(encodedJson.Length);
-
-				gZipStream.Write(sizeEncoded, 0, sizeEncoded.Length);
-				gZipStream.Write(encodedJson, 0, encodedJson.Length);
-			}
-		}
-
-		/// <summary>
-		/// Reads a GZIP Compressed JSON blob of a SavedSession object from a given Stream. This is the reverse of
-		/// SaveSession(Stream)
-		/// </summary>
-		/// <param name="stream">The stream to write to</param>
-		/// <param name="leaveStreamOpen">Whether to leave the stream open</param>
-		/// <exception cref="IOException">If reading from the stream fails</exception>
-		/// <returns>A SavedSession object</returns>
-		public static SavedSession ReadSession(Stream stream, bool leaveStreamOpen = true)
-		{
-			string json;
-			using (var gZipStream = new GZipStream(stream, CompressionMode.Decompress, leaveStreamOpen))
-			{
-				var sizeEncoded = new byte[4];
-
-				gZipStream.Read(sizeEncoded, 0, 4);
-
-				var size = BitConverter.ToInt32(sizeEncoded, 0);
-
-				var jsonEncoded = new byte[size];
-
-				gZipStream.Read(jsonEncoded, 0, size);
-
-				json = Encoding.UTF8.GetString(jsonEncoded);
-			}
-
-			return JsonConvert.DeserializeObject<SavedSession>(json);
 		}
 	}
 }

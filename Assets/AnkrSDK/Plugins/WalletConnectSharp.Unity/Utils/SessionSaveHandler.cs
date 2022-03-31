@@ -27,11 +27,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 		public static void SaveSession(SavedSession sessionToSave)
 		{
 			var json = JsonConvert.SerializeObject(sessionToSave);
+			Debug.Log($"[SessionSaveHandler] Session Saved {json}");
 			PlayerPrefs.SetString(SessionKey, json);
 		}
 
 		public static void ClearSession()
 		{
+			Debug.Log("[SessionSaveHandler] Session Key Cleared");
 			PlayerPrefs.DeleteKey(SessionKey);
 		}
 	}
