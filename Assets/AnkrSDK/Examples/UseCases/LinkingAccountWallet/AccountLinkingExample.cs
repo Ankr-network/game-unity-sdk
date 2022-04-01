@@ -10,7 +10,7 @@ using UnityEngine.UI;
 // This example is to demonstrate how to bind the wallet into user account. 
 namespace AnkrSDK.Examples.UseCases.LinkingAccountWallet
 {
-	public class AccountLinkingExample : MonoBehaviour
+	public class AccountLinkingExample : UseCase
 	{
 		[Serializable]
 		private class RequestPayload
@@ -82,6 +82,11 @@ namespace AnkrSDK.Examples.UseCases.LinkingAccountWallet
 				.SendWebRequest();
 			var data = JsonConvert.DeserializeObject<RequestAnswer>(result.downloadHandler.text);
 			return data.Address;
+		}
+
+		public override void ActivateUseCase(bool activate)
+		{
+			gameObject.SetActive(activate);
 		}
 	}
 }

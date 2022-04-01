@@ -13,13 +13,13 @@ namespace AnkrSDK.UseCases
 		private Button _backButton;
 
 		[SerializeField]
-		private GameObject _useCase;
+		private UseCase _useCase;
 
 		public Button SelectButton => _selectButton;
 
 		public Button BackButton => _backButton;
 
-		public GameObject UseCase => _useCase;
+		public UseCase UseCase => _useCase;
 		
 		public event Action<bool> OnButtonClickedEvent;
 
@@ -49,13 +49,13 @@ namespace AnkrSDK.UseCases
 		{
 			OnButtonClickedEvent?.Invoke(true);
 
-			UseCase.SetActive(false);
+			UseCase.ActivateUseCase(false);
 		}
 
 		private void OnSelectButtonClicked()
 		{
 			OnButtonClickedEvent?.Invoke(false);
-			UseCase.SetActive(true);
+			UseCase.ActivateUseCase(true);
 		}
 	}
 }

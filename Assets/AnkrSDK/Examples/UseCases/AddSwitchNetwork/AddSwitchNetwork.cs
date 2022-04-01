@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace AnkrSDK.Examples.UseCases.AddSwitchNetwork
 {
-	public class AddSwitchNetwork : MonoBehaviour
+	public class AddSwitchNetwork : UseCase
 	{
 		[SerializeField]
 		private Button _bscButton;
@@ -34,6 +34,11 @@ namespace AnkrSDK.Examples.UseCases.AddSwitchNetwork
 		private static void OpenAddSwitchBscTestnet()
 		{
 			AnkrNetworkHelper.AddAndSwitchNetwork(NetworkName.BinanceSmartChainTestNet);
+		}
+
+		public override void ActivateUseCase(bool activate)
+		{
+			gameObject.SetActive(activate);
 		}
 	}
 }

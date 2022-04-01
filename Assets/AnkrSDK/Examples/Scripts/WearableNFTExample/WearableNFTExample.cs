@@ -13,7 +13,7 @@ namespace AnkrSDK.Examples.WearableNFTExample
 	/// <summary>
 	///     You need to have a minter role for this example to work.
 	/// </summary>
-	public class WearableNFTExample : MonoBehaviour
+	public class WearableNFTExample : UseCase
 	{
 		private const string TransactionGasLimit = "1000000";
 		private const string BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001";
@@ -236,5 +236,10 @@ namespace AnkrSDK.Examples.WearableNFTExample
 		}
 
 		#endregion
+
+		public override void ActivateUseCase(bool activate)
+		{
+			gameObject.SetActive(activate);
+		}
 	}
 }

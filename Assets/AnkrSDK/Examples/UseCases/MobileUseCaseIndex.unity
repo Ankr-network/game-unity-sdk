@@ -258,6 +258,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &389684298 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2420678504461264619, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+  m_PrefabInstance: {fileID: 4422986056825473511}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &408389329 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5728877452433020744, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
+  m_PrefabInstance: {fileID: 2857082619985022818}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b97839c5f444b779fcf6e99e3e08178, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,6 +837,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1541891672 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8451401929995731106, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+  m_PrefabInstance: {fileID: 4422986056825473511}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7979198d467ffb141bc64f6d5237e5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1669978141
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,6 +969,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669978141}
   m_CullTransparentMesh: 0
+--- !u!114 &1909809241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4625375134807431011, guid: 8368d21c182af5949a533a84eac524e7, type: 3}
+  m_PrefabInstance: {fileID: 84224008797117270}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4f406c9aa4fd234b84d7df8e1969f7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1935196077 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6245551465882110048, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
+  m_PrefabInstance: {fileID: 7667150405305432021}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1fe5820e9464ce58a2bd51e892b30e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1973273856 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2420678504538838784, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+  m_PrefabInstance: {fileID: 4422986056825473511}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2135204843 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6552054402963782277, guid: 2726c15012c748242879c26390034d17, type: 3}
+  m_PrefabInstance: {fileID: 9104545602100211866}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88a07a67fc8ff4f4d8ced3507a45c1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &84224008797117270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1035,6 +1112,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8204170137558247230, guid: 8368d21c182af5949a533a84eac524e7, type: 3}
+      propertyPath: _useCase
+      value: 
+      objectReference: {fileID: 1909809241}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8368d21c182af5949a533a84eac524e7, type: 3}
 --- !u!224 &84224008797117271 stripped
@@ -1144,6 +1225,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6143206494044693627, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
+      propertyPath: _useCase
+      value: 
+      objectReference: {fileID: 408389329}
     - target: {fileID: 6143206494044693629, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
       propertyPath: m_Name
       value: UseCase-WearableNFT
@@ -1185,6 +1270,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8286684085969758380, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: _useCase
+      value: 
+      objectReference: {fileID: 1541891672}
     - target: {fileID: 8286684085969758381, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1269,6 +1358,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8451401929995731106, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: _LoadNFTDataButton
+      value: 
+      objectReference: {fileID: 389684298}
+    - target: {fileID: 8451401929995731106, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: _loadNFTDataButton
+      value: 
+      objectReference: {fileID: 389684298}
+    - target: {fileID: 8451401929995731106, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: _LoadNFTMetaDataButton
+      value: 
+      objectReference: {fileID: 1973273856}
+    - target: {fileID: 8451401929995731106, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: _loadNFTMetaDataButton
+      value: 
+      objectReference: {fileID: 1973273856}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
 --- !u!224 &4422986056825473512 stripped
@@ -1294,6 +1399,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 588941422}
     m_Modifications:
+    - target: {fileID: 2312622775736458200, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
+      propertyPath: _useCase
+      value: 
+      objectReference: {fileID: 1935196077}
     - target: {fileID: 2312622775736458201, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1423,6 +1532,10 @@ PrefabInstance:
       propertyPath: _signLinkinMessageButton
       value: 
       objectReference: {fileID: 591839775}
+    - target: {fileID: 7299830043460413592, guid: 2726c15012c748242879c26390034d17, type: 3}
+      propertyPath: _useCase
+      value: 
+      objectReference: {fileID: 2135204843}
     - target: {fileID: 7299830043460413593, guid: 2726c15012c748242879c26390034d17, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
