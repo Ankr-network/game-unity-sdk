@@ -120,19 +120,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4396883361501322592}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AccountLinkingExample, Assembly-CSharp
-        m_MethodName: Sign
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &4396883362111999655
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _message: Hahaha!
   _address: {fileID: 4794884950297149572}
+  _signLinkinMessageButton: {fileID: 4396883361501322623}
 --- !u!1 &4794884950297149570
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,7 +603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectButton: {fileID: 7299830044521457812}
   _backButton: {fileID: 8836087978281953345}
-  _useCase: {fileID: 4396883362125622590}
+  _useCase: {fileID: 6552054402963782277}
 --- !u!1 &7299830044521457814
 GameObject:
   m_ObjectHideFlags: 0

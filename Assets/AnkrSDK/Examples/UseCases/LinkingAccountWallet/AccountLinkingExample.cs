@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // This example is to demonstrate how to bind the wallet into user account. 
-namespace AnkrSDK.Examples.UseCases.LinkingAccountWallet
+namespace AnkrSDK.UseCases.LinkingAccountWallet
 {
 	public class AccountLinkingExample : UseCase
 	{

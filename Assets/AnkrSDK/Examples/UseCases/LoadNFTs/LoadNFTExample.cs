@@ -2,12 +2,12 @@ using System.Numerics;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.GameCharacterContract;
 using AnkrSDK.Examples.WearableNFTExample;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace AnkrSDK.UseCases.LoadNFTs
@@ -17,9 +17,9 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		[SerializeField] private TMP_Text _text;
 		[SerializeField] private Button _loadNFTDataButton;
 		[SerializeField] private Button _loadNFTMetaDataButton;
+		private string _activeSessionAccount;
 
 		private IContract _gameCharacterContract;
-		private string _activeSessionAccount;
 
 		private void Awake()
 		{
@@ -32,7 +32,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			_loadNFTDataButton.onClick.RemoveListener(CallGetTokenData);
 			_loadNFTMetaDataButton.onClick.RemoveListener(CallGetTokenMetaData);
 		}
-		
+
 		private void StartUseCaseExample()
 		{
 			var ankrSDKWrapper = AnkrSDKWrapper.GetSDKInstance(WearableNFTContractInformation.ProviderURL);
@@ -62,25 +62,25 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		private async UniTask GetTokenData()
 		{
 			var tokenId = await GetFirstTokenId();
-			
+
 			if (tokenId != 0)
 			{
-				UpdateUILogs("NFTCharacter id:"+tokenId);
-				
+				UpdateUILogs("NFTCharacter id:" + tokenId);
+
 				var hatID = await GetHat(tokenId);
 				if (hatID > 0)
 				{
-					UpdateUILogs("Has Hat id:"+hatID);
+					UpdateUILogs("Has Hat id:" + hatID);
 				}
 				else
 				{
 					UpdateUILogs("Doesnt Have Hat");
 				}
-				
+
 				var shoesID = await GetShoes(tokenId);
 				if (shoesID > 0)
 				{
-					UpdateUILogs("Has Shoes id:"+shoesID);
+					UpdateUILogs("Has Shoes id:" + shoesID);
 				}
 				else
 				{
@@ -97,7 +97,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			};
 			var tokenMetaData = await _gameCharacterContract.GetData<TokenURIMessage, string>(tokenUriMessage);
 
-			UpdateUILogs($"Token id:"+tokenID+" MetaData: {tokenMetaData}");
+			UpdateUILogs("Token id:" + tokenID + " MetaData: {tokenMetaData}");
 
 			return tokenMetaData;
 		}
@@ -106,22 +106,14 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		{
 			var tokenBalance = await GetBalanceOf();
 
-			if (tokenBalance != 0)
+			if (tokenBalance > 0)
 			{
-				var tokenOfOwnerByIndexMessage = new TokenOfOwnerByIndexMessage
-				{
-					Owner = _activeSessionAccount, Index = tokenBalance - 1
-				};
-				var tokenId =
-					await _gameCharacterContract.GetData<TokenOfOwnerByIndexMessage, BigInteger>(
-						tokenOfOwnerByIndexMessage);
+				var tokenId = await _gameCharacterContract.TokenOfOwnerByIndex(_activeSessionAccount, 0);
 
 				return tokenId;
 			}
-			else
-			{
-				return 0;
-			}
+
+			return 0;
 		}
 
 		private async UniTask<BigInteger> GetHat(BigInteger tokenID)

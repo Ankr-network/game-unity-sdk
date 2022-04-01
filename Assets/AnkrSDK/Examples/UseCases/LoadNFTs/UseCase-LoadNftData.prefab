@@ -933,6 +933,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 2420678504206059969}
+  _loadNFTDataButton: {fileID: 2420678504461264619}
+  _loadNFTMetaDataButton: {fileID: 2420678504538838784}
 --- !u!1 &2420678505058552524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1310,7 +1312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectButton: {fileID: 4422986055693149095}
   _backButton: {fileID: 5845304675535668700}
-  _useCase: {fileID: 2420678504916293666}
+  _useCase: {fileID: 8451401929995731106}
 --- !u!1001 &5968608828659535435
 PrefabInstance:
   m_ObjectHideFlags: 0
