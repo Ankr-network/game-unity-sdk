@@ -35,10 +35,5 @@ namespace AnkrSDK.Examples.UseCases.AddSwitchNetwork
 		{
 			AnkrNetworkHelper.AddAndSwitchNetwork(NetworkName.BinanceSmartChainTestNet);
 		}
-
-		public override void ActivateUseCase(bool activate)
-		{
-			gameObject.SetActive(activate);
-		}
 	}
 }

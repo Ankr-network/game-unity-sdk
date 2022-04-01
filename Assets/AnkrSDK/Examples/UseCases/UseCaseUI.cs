@@ -48,14 +48,13 @@ namespace AnkrSDK.UseCases
 		private void OnBackButtonClicked()
 		{
 			OnButtonClickedEvent?.Invoke(true);
-
-			UseCase.ActivateUseCase(false);
+			UseCase.DeActivateUseCase();
 		}
 
 		private void OnSelectButtonClicked()
 		{
 			OnButtonClickedEvent?.Invoke(false);
-			UseCase.ActivateUseCase(true);
+			UseCase.ActivateUseCase();
 		}
 	}
 }

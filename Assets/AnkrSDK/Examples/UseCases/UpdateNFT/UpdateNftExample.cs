@@ -82,10 +82,5 @@ namespace AnkrSDK.UseCases.UpdateNFT
 			Debug.LogError($"Error during requesting NFT Params. {request.error}");
 			return null;
 		}
-
-		public override void ActivateUseCase(bool activate)
-		{
-			gameObject.SetActive(activate);
-		}
 	}
 }

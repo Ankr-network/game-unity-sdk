@@ -236,10 +236,5 @@ namespace AnkrSDK.Examples.WearableNFTExample
 		}
 
 		#endregion
-
-		public override void ActivateUseCase(bool activate)
-		{
-			gameObject.SetActive(activate);
-		}
 	}
 }

@@ -4,5 +4,13 @@ using UnityEngine;
 
 public abstract class UseCase : MonoBehaviour
 {
-	public abstract void ActivateUseCase(bool activate);
+	public virtual void ActivateUseCase()
+	{
+		gameObject.SetActive(true);
+	}
+	
+	public void DeActivateUseCase()
+	{
+		gameObject.SetActive(false);
+	}
 }

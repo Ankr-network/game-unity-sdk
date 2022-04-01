@@ -83,10 +83,5 @@ namespace AnkrSDK.Examples.UseCases.LinkingAccountWallet
 			var data = JsonConvert.DeserializeObject<RequestAnswer>(result.downloadHandler.text);
 			return data.Address;
 		}
-
-		public override void ActivateUseCase(bool activate)
-		{
-			gameObject.SetActive(activate);
-		}
 	}
 }

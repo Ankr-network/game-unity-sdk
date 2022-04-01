@@ -20,7 +20,6 @@ namespace AnkrSDK.UseCases.LoadNFTs
 
 		private IContract _gameCharacterContract;
 		private string _activeSessionAccount;
-		private bool _isStarted = false;
 
 		private void Awake()
 		{
@@ -43,15 +42,10 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			_activeSessionAccount = EthHandler.DefaultAccount;
 		}
 
-		public override void ActivateUseCase(bool activate)
+		public override void ActivateUseCase()
 		{
-			if (!_isStarted)
-			{
-				_isStarted = true;
-				StartUseCaseExample();
-			}
-			
-			gameObject.SetActive(activate);
+			base.ActivateUseCase();
+			StartUseCaseExample();
 		}
 
 		private async void CallGetTokenData()
