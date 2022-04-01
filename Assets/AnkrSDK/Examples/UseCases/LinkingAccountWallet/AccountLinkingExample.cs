@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 // This example is to demonstrate how to bind the wallet into user account. 
 namespace AnkrSDK.Examples.UseCases.LinkingAccountWallet
@@ -32,14 +33,26 @@ namespace AnkrSDK.Examples.UseCases.LinkingAccountWallet
 		[SerializeField] private string _message = "Hahaha!";
 
 		[SerializeField] private TMP_Text _address;
+		
+		[SerializeField] private Button _signLinkinMessageButton;
 
 		private string _signature;
+		
+		private void Awake()
+		{
+			_signLinkinMessageButton.onClick.AddListener(Sign);
+		}
+
+		private void OnDestroy()
+		{
+			_signLinkinMessageButton.onClick.RemoveListener(Sign);
+		}
 		
 		// function to sign the message
 		// step 1: sign the message with 3rd party wallet
 		// step 2: send the message and sign to the server 
 		// step 3: server return bound address 
-		public async void Sign()
+		private async void Sign()
 		{
 			_signature = await AnkrSignatureHelper.Sign(_message);
 			Debug.Log($"Signature: {_signature}");

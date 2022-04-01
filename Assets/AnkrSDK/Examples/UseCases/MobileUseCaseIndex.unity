@@ -413,6 +413,17 @@ MonoBehaviour:
   - {fileID: 4422986056825473513}
   - {fileID: 7667150405305432023}
   - {fileID: 2857082619985022820}
+--- !u!114 &591839775 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4396883361501322623, guid: 2726c15012c748242879c26390034d17, type: 3}
+  m_PrefabInstance: {fileID: 9104545602100211866}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &685207021
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &743187877
 RectTransform:
   m_ObjectHideFlags: 0
@@ -936,6 +947,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UseCase-AddSwitchNetwork
       objectReference: {fileID: 0}
+    - target: {fileID: 8204170137558247224, guid: 8368d21c182af5949a533a84eac524e7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8204170137558247225, guid: 8368d21c182af5949a533a84eac524e7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1133,6 +1148,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UseCase-WearableNFT
       objectReference: {fileID: 0}
+    - target: {fileID: 6143206494044693629, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
 --- !u!224 &2857082619985022819 stripped
@@ -1161,6 +1180,10 @@ PrefabInstance:
     - target: {fileID: 8286684085969758354, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
       propertyPath: m_Name
       value: UseCase-LoadNftData
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286684085969758354, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286684085969758381, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
       propertyPath: m_Pivot.x
@@ -1359,6 +1382,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UseCase-UpdateNFT
       objectReference: {fileID: 0}
+    - target: {fileID: 2312622775736458202, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
 --- !u!224 &7667150405305432022 stripped
@@ -1384,6 +1411,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 588941422}
     m_Modifications:
+    - target: {fileID: 4396883361501322623, guid: 2726c15012c748242879c26390034d17, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396883362125622590, guid: 2726c15012c748242879c26390034d17, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552054402963782277, guid: 2726c15012c748242879c26390034d17, type: 3}
+      propertyPath: _signLinkinMessageButton
+      value: 
+      objectReference: {fileID: 591839775}
     - target: {fileID: 7299830043460413593, guid: 2726c15012c748242879c26390034d17, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1471,6 +1510,10 @@ PrefabInstance:
     - target: {fileID: 7299830043460413594, guid: 2726c15012c748242879c26390034d17, type: 3}
       propertyPath: m_Name
       value: UseCase-LinkingWallet
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299830043460413594, guid: 2726c15012c748242879c26390034d17, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2726c15012c748242879c26390034d17, type: 3}
