@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,12 +11,28 @@ namespace AnkrSDK.UseCases
 
 		private void Awake()
 		{
-			SetButtonLinks();
+			SubscribeToEvents();
 		}
 
 		private void OnDestroy()
 		{
-			UnsubscribeButtonLinks();
+			UnsubscribeToEvents();
+		}
+		
+		private void SubscribeToEvents()
+		{
+			foreach (var useCaseUI in _useCaseUIs)
+			{
+				useCaseUI.OnButtonClickedEvent += SetButtonsActive;
+			}
+		}
+		
+		private void UnsubscribeToEvents()
+		{
+			foreach (var useCaseUI in _useCaseUIs)
+			{
+				useCaseUI.OnButtonClickedEvent -= SetButtonsActive;
+			}
 		}
 
 		private void SetButtonsActive(bool isActive)
@@ -24,36 +41,6 @@ namespace AnkrSDK.UseCases
 			{
 				useCaseUI.SelectButton.gameObject.SetActive(isActive);
 			}
-		}
-
-		private void SetButtonLinks()
-		{
-			foreach (var useCaseUI in _useCaseUIs)
-			{
-				useCaseUI.SelectButton.onClick.AddListener(() => OnSelectButtonClicked(useCaseUI));
-				useCaseUI.BackButton.onClick.AddListener(() => OnBackButtonClicked(useCaseUI));
-			}
-		}
-		
-		private void UnsubscribeButtonLinks()
-		{
-			foreach (var useCaseUI in _useCaseUIs)
-			{
-				useCaseUI.SelectButton.onClick.RemoveAllListeners();
-				useCaseUI.BackButton.onClick.RemoveAllListeners();
-			}
-		}
-
-		private void OnBackButtonClicked(UseCaseUI useCaseUI)
-		{
-			SetButtonsActive(true);
-			useCaseUI.UseCase.SetActive(false);
-		}
-
-		private void OnSelectButtonClicked(UseCaseUI useCaseUI)
-		{
-			SetButtonsActive(false);
-			useCaseUI.UseCase.SetActive(true);
 		}
 	}
 }
