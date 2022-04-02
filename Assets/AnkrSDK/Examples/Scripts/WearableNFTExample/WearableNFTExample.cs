@@ -4,16 +4,16 @@ using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.GameCharacterContract;
+using AnkrSDK.Examples.WearableNFTExample;
+using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace AnkrSDK.Examples.WearableNFTExample
+namespace AnkrSDK.WearableNFTExample
 {
-	/// <summary>
-	///     You need to have a minter role for this example to work.
-	/// </summary>
-	public class WearableNFTExample : MonoBehaviour
+	public class WearableNFTExample : UseCase
 	{
 		private const string TransactionGasLimit = "1000000";
 		private const string BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001";
@@ -25,12 +25,57 @@ namespace AnkrSDK.Examples.WearableNFTExample
 
 		[SerializeField] private TMP_Text _text;
 
-		private IContract _gameCharacterContract;
-		private IContract _gameItemContract;
+		[SerializeField] private Button _mintItemsButton;
+		[SerializeField] private Button _mintCharacterButton;
+		[SerializeField] private Button _getItemSetApprovalButton;
+		[SerializeField] private Button _getCharacterBalanceButton;
+		[SerializeField] private Button _getCharacterIDButton;
+		[SerializeField] private Button _changeHatBlueButton;
+		[SerializeField] private Button _changeHatRedButton;
+		[SerializeField] private Button _getHatButton;
 		private string _activeSessionAccount;
 
-		private void Start()
+		private IContract _gameCharacterContract;
+		private IContract _gameItemContract;
+
+		private void Awake()
 		{
+			SubscribeButtonLinks();
+		}
+
+		private void OnDestroy()
+		{
+			UnsubscribeButtonLinks();
+		}
+
+		private void SubscribeButtonLinks()
+		{
+			_mintItemsButton.onClick.AddListener(MintItemsCall);
+			_mintCharacterButton.onClick.AddListener(MintCharacterCall);
+			_getItemSetApprovalButton.onClick.AddListener(GameItemSetApprovalCall);
+			_getCharacterBalanceButton.onClick.AddListener(GetCharacterBalanceCall);
+			_getCharacterIDButton.onClick.AddListener(GetCharacterIdCall);
+			_changeHatBlueButton.onClick.AddListener(ChangeBlueHatCall);
+			_changeHatRedButton.onClick.AddListener(ChangeRedHatCall);
+			_getHatButton.onClick.AddListener(GetHatCall);
+		}
+
+		private void UnsubscribeButtonLinks()
+		{
+			_mintItemsButton.onClick.RemoveListener(MintItemsCall);
+			_mintCharacterButton.onClick.RemoveListener(MintCharacterCall);
+			_getItemSetApprovalButton.onClick.RemoveListener(GameItemSetApprovalCall);
+			_getCharacterBalanceButton.onClick.RemoveListener(GetCharacterBalanceCall);
+			_getCharacterIDButton.onClick.RemoveListener(GetCharacterIdCall);
+			_changeHatBlueButton.onClick.RemoveListener(ChangeBlueHatCall);
+			_changeHatRedButton.onClick.RemoveListener(ChangeRedHatCall);
+			_getHatButton.onClick.RemoveListener(GetHatCall);
+		}
+
+		public override void ActivateUseCase()
+		{
+			base.ActivateUseCase();
+
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(WearableNFTContractInformation.ProviderURL);
 			_gameCharacterContract = ankrSDK.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress,
@@ -38,18 +83,6 @@ namespace AnkrSDK.Examples.WearableNFTExample
 			_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
 				WearableNFTContractInformation.GameItemABI);
 			_activeSessionAccount = EthHandler.DefaultAccount;
-		}
-
-		public async void RunExample()
-		{
-			await MintItems();
-			await MintCharacter();
-			await GameItemSetApproval();
-			await GetCharacterTokenId();
-			await ChangeHat(BlueHatAddress);
-			await GetHat();
-			await ChangeHat(RedHatAddress);
-			await GetHat();
 		}
 
 		private async UniTask MintItems()
@@ -81,7 +114,8 @@ namespace AnkrSDK.Examples.WearableNFTExample
 		{
 			const string safeMintMethodName = "safeMint";
 
-			var transactionHash = await _gameCharacterContract.CallMethod(safeMintMethodName);
+			var transactionHash =
+				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] {_activeSessionAccount});
 
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
 		}
@@ -195,42 +229,42 @@ namespace AnkrSDK.Examples.WearableNFTExample
 
 		#region Button Calls
 
-		public async void MintItemsCall()
+		private async void MintItemsCall()
 		{
 			await MintItems();
 		}
 
-		public async void MintCharacterCall()
+		private async void MintCharacterCall()
 		{
 			await MintCharacter();
 		}
 
-		public async void GetBalanceCall()
+		private async void GetCharacterBalanceCall()
 		{
 			await GetCharacterBalance();
 		}
 
-		public async void GameItemSetApprovalCall()
+		private async void GameItemSetApprovalCall()
 		{
 			await GameItemSetApproval();
 		}
 
-		public async void GetTokenIdCall()
+		private async void GetCharacterIdCall()
 		{
 			await GetCharacterTokenId();
 		}
 
-		public async void ChangeRedHatCall()
+		private async void ChangeRedHatCall()
 		{
 			await ChangeHat(RedHatAddress);
 		}
 
-		public async void ChangeBlueHatCall()
+		private async void ChangeBlueHatCall()
 		{
 			await ChangeHat(BlueHatAddress);
 		}
 
-		public async void GetHatCall()
+		private async void GetHatCall()
 		{
 			await GetHat();
 		}

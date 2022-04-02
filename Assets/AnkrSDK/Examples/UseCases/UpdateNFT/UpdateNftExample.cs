@@ -9,10 +9,11 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace AnkrSDK.UseCases.UpdateNFT
 {
-	public class UpdateNftExample : MonoBehaviour
+	public class UpdateNftExample : UseCase
 	{
 		[Serializable]
 		private class ItemInfo
@@ -30,6 +31,8 @@ namespace AnkrSDK.UseCases.UpdateNFT
 
 			[Parameter("bytes", "signature", 6)] public byte[] signature { get; set; }
 		}
+		
+		[SerializeField] private Button _updateNFTButton;
 
 		private const string ContractAddress = "0x159D0A933137f3EC155f43834BDFCd534A8bfd61";
 
@@ -40,17 +43,28 @@ namespace AnkrSDK.UseCases.UpdateNFT
 		private IAnkrSDK _ankrSDKWrapper;
 
 		// backend for get nft details and signature
-		private const string URL = "http://root@eth-01.dccn.ankr.com:8080/";
+		private const string URL = "http://eth-01.dccn.ankr.com:8080/";
+		// ethereum node provider
+		const string ProviderURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
 
-		private void Start()
+		private void Awake()
 		{
-			// ethereum node provider
-			const string providerURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
-
-			_ankrSDKWrapper = AnkrSDKWrapper.GetSDKInstance(providerURL);
-			_contract = _ankrSDKWrapper.GetContract(ContractAddress, ABI);
+			_updateNFTButton.onClick.AddListener(UpdateNFT);
 		}
 
+		private void OnDestroy()
+		{
+			_updateNFTButton.onClick.RemoveListener(UpdateNFT);
+		}
+
+		public override void ActivateUseCase()
+		{
+			base.ActivateUseCase();
+			
+			_ankrSDKWrapper = AnkrSDKWrapper.GetSDKInstance(ProviderURL);
+			_contract = _ankrSDKWrapper.GetContract(ContractAddress, ABI);
+		}
+		
 		public async void UpdateNFT()
 		{
 			// 1) Request nft parameters and signature for parameters

@@ -1,12 +1,11 @@
-using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AnkrSDK.Examples.UseCases.AddSwitchNetwork
+namespace AnkrSDK.UseCases.AddSwitchNetwork
 {
-	public class AddSwitchNetwork : MonoBehaviour
+	public class AddSwitchNetwork : UseCase
 	{
 		[SerializeField]
 		private Button _bscButton;

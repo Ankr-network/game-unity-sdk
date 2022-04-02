@@ -2,22 +2,38 @@ using System.Numerics;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.GameCharacterContract;
 using AnkrSDK.Examples.WearableNFTExample;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AnkrSDK.UseCases.LoadNFTs
 {
-	public class LoadNFTExample : MonoBehaviour
+	public class LoadNFTExample : UseCase
 	{
 		[SerializeField] private TMP_Text _text;
-
-		private IContract _gameCharacterContract;
+		[SerializeField] private Button _loadNFTDataButton;
+		[SerializeField] private Button _loadNFTMetaDataButton;
 		private string _activeSessionAccount;
 
-		private void Start()
+		private IContract _gameCharacterContract;
+
+		private void Awake()
+		{
+			_loadNFTDataButton.onClick.AddListener(CallGetTokenData);
+			_loadNFTMetaDataButton.onClick.AddListener(CallGetTokenMetaData);
+		}
+
+		private void OnDestroy()
+		{
+			_loadNFTDataButton.onClick.RemoveListener(CallGetTokenData);
+			_loadNFTMetaDataButton.onClick.RemoveListener(CallGetTokenMetaData);
+		}
+
+		private void StartUseCaseExample()
 		{
 			var ankrSDKWrapper = AnkrSDKWrapper.GetSDKInstance(WearableNFTContractInformation.ProviderURL);
 			_gameCharacterContract = ankrSDKWrapper.GetContract(
@@ -26,12 +42,18 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			_activeSessionAccount = EthHandler.DefaultAccount;
 		}
 
-		public async void CallGetTokenData()
+		public override void ActivateUseCase()
+		{
+			base.ActivateUseCase();
+			StartUseCaseExample();
+		}
+
+		private async void CallGetTokenData()
 		{
 			await GetTokenData();
 		}
 
-		public async void CallGetTokenMetaData()
+		private async void CallGetTokenMetaData()
 		{
 			var tokenId = await GetFirstTokenId();
 			await GetTokenMetaData(tokenId);
@@ -40,10 +62,30 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		private async UniTask GetTokenData()
 		{
 			var tokenId = await GetFirstTokenId();
+
 			if (tokenId != 0)
 			{
+				UpdateUILogs("NFTCharacter id:" + tokenId);
+
 				var hatID = await GetHat(tokenId);
+				if (hatID > 0)
+				{
+					UpdateUILogs("Has Hat id:" + hatID);
+				}
+				else
+				{
+					UpdateUILogs("Doesnt Have Hat");
+				}
+
 				var shoesID = await GetShoes(tokenId);
+				if (shoesID > 0)
+				{
+					UpdateUILogs("Has Shoes id:" + shoesID);
+				}
+				else
+				{
+					UpdateUILogs("Doesnt Have Shoes");
+				}
 			}
 		}
 
@@ -55,7 +97,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			};
 			var tokenMetaData = await _gameCharacterContract.GetData<TokenURIMessage, string>(tokenUriMessage);
 
-			UpdateUILogs($"Token MetaData: {tokenMetaData}");
+			UpdateUILogs("Token id:" + tokenID + " MetaData: {tokenMetaData}");
 
 			return tokenMetaData;
 		}
@@ -64,24 +106,14 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		{
 			var tokenBalance = await GetBalanceOf();
 
-			if (tokenBalance != 0)
+			if (tokenBalance > 0)
 			{
-				var tokenOfOwnerByIndexMessage = new TokenOfOwnerByIndexMessage
-				{
-					Owner = _activeSessionAccount, Index = tokenBalance - 1
-				};
-				var tokenId =
-					await _gameCharacterContract.GetData<TokenOfOwnerByIndexMessage, BigInteger>(
-						tokenOfOwnerByIndexMessage);
+				var tokenId = await _gameCharacterContract.TokenOfOwnerByIndex(_activeSessionAccount, 0);
 
-				UpdateUILogs($"First Token ID : {tokenId}");
 				return tokenId;
 			}
-			else
-			{
-				UpdateUILogs("No NFT of this type in the wallet");
-				return 0;
-			}
+
+			return 0;
 		}
 
 		private async UniTask<BigInteger> GetHat(BigInteger tokenID)
@@ -91,8 +123,6 @@ namespace AnkrSDK.UseCases.LoadNFTs
 				CharacterId = tokenID.ToString()
 			};
 			var hatId = await _gameCharacterContract.GetData<GetHatMessage, BigInteger>(getHatMessage);
-
-			UpdateUILogs($"Hat Id: {hatId}");
 
 			return hatId;
 		}
@@ -105,8 +135,6 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			};
 			var shoesID = await _gameCharacterContract.GetData<GetShoesMessage, BigInteger>(getShoesMessage);
 
-			UpdateUILogs($"Shoes Id: {shoesID}");
-
 			return shoesID;
 		}
 
@@ -118,7 +146,6 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			};
 			var balance = await _gameCharacterContract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 
-			UpdateUILogs($"Number of Character NFTs Owned: {balance}");
 			return balance;
 		}
 

@@ -1,11 +1,12 @@
 using AnkrSDK.Core.OpenSea;
 using AnkrSDK.Examples.WearableNFTExample;
+using AnkrSDK.UseCases;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace AnkrSDK
 {
-	public class OpenSeaController : MonoBehaviour
+	public class OpenSeaController : UseCase
 	{
 		[SerializeField] private Button _button;
 
