@@ -439,8 +439,9 @@ namespace NativeWebSocket
 
                 await m_Socket.ConnectAsync(uri, m_CancellationToken);
                 OnOpen?.Invoke();
-
+                Debug.Log("<<----- Start listening ----->>");
                 await Receive();
+                Debug.Log("<<----- Opening received ----->>");
             }
             catch (Exception ex)
             {
@@ -490,7 +491,6 @@ namespace NativeWebSocket
 
         public Task SendText(string message)
         {
-            Debug.Log($"----> {message}");
             var encoded = Encoding.UTF8.GetBytes(message);
 
             // m_Socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
@@ -602,7 +602,6 @@ namespace NativeWebSocket
 
             foreach (byte[] bytes in messageListCopy)
             {
-                Debug.Log($"<---- {Encoding.UTF8.GetString(bytes)}");
                 OnMessage?.Invoke(bytes);
             }
         }
@@ -611,14 +610,12 @@ namespace NativeWebSocket
         {
             WebSocketCloseCode closeCode = WebSocketCloseCode.Abnormal;
             await new WaitForBackgroundThread();
-
             ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[8192]);
             try
             {
                 while (m_Socket.State == System.Net.WebSockets.WebSocketState.Open)
                 {
                     WebSocketReceiveResult result = null;
-
                     using (var ms = new MemoryStream())
                     {
                         do
@@ -626,9 +623,7 @@ namespace NativeWebSocket
                             result = await m_Socket.ReceiveAsync(buffer, m_CancellationToken);
                             ms.Write(buffer.Array, buffer.Offset, result.Count);
                         } while (!result.EndOfMessage);
-
                         ms.Seek(0, SeekOrigin.Begin);
-
                         if (result.MessageType == WebSocketMessageType.Text)
                         {
                             m_MessageListMutex.WaitOne();

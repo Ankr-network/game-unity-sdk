@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client.RpcMessages;
+using UnityEngine;
 
 
 namespace Nethereum.JsonRpc.Client.Streaming
@@ -128,7 +129,6 @@ namespace Nethereum.JsonRpc.Client.Streaming
                             HandleSubscribeResponse(result);
                         }
                     }
-
                     if (!string.IsNullOrEmpty(UnsubscribeRequestId) && rpcStreamingResponse.Id.ToString() == UnsubscribeRequestId)
                     {
                         if (rpcStreamingResponse.HasError)

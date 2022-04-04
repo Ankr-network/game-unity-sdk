@@ -290,7 +290,6 @@ namespace Nethereum.JsonRpc.WebSocketStreamingClient
                             {
                                 var serializer = JsonSerializer.Create(JsonSerializerSettings);
                                 var message = serializer.Deserialize<RpcStreamingResponseMessage>(reader);
-                                Debug.Log("HandleIncomingMessagesAsync <-- " + JsonConvert.SerializeObject(message));
                                 HandleResponse(message);
                                 logger.LogResponse(message);
 
@@ -316,7 +315,6 @@ namespace Nethereum.JsonRpc.WebSocketStreamingClient
             {
                 await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
                 var rpcRequestJson = JsonConvert.SerializeObject(request, JsonSerializerSettings);
-                Debug.Log("SendRequestAsync --> " + rpcRequestJson);
                 var requestBytes = new ArraySegment<byte>(Encoding.UTF8.GetBytes(rpcRequestJson));
                 logger.LogRequest(rpcRequestJson);
                 timeoutCancellationTokenSource = new CancellationTokenSource();

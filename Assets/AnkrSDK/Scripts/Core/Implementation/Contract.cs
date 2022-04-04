@@ -5,6 +5,7 @@ using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Events.Infrastructure;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
+using AnkrSDK.Examples.DTO;
 using Common.Logging;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
@@ -109,8 +110,16 @@ namespace AnkrSDK.Core.Implementation
 		
 		public async Task GetLogs_Observable_Subscription1<TEvDto>(EventFilterData evFilter) where TEvDto : IEventDTO, new()
 		{
-			var subscribeObserver = new SubscribeObserver<object>();
-			var realtimeEventObserver = new RealtimeEventObserver<object>();
+			var subscribeObserver = new SubscriptionObserver<string>();
+			var realtimeEventObserver = new SubscriptionObserver<FilterLog>();
+			realtimeEventObserver.OnEvent = (sender, log) =>
+			{
+				var decoded = Event<TransferEventDTO>.DecodeEvent(log);
+				Debug.Log("-------------------------");
+				Debug.Log("From = " + decoded.Event.From);
+				Debug.Log("To = " + decoded.Event.To);
+				Debug.Log("Value = " + decoded.Event.Value);
+			};
 			using(var client = new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
 			{ 
 				var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(EthHandler.DefaultAccount);
@@ -118,20 +127,21 @@ namespace AnkrSDK.Core.Implementation
 				var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
 				filters.FromBlock = null;
 				filters.ToBlock = null;
+				filters.Address = null;
 				
 				// create the subscription
 				// nothing will happen just yet though
 				var subscription = new EthLogsObservableSubscription(client);
 
 				// attach our handler for each log
-				subscription.GetSubscriptionDataResponsesAsObservable().Subscribe(realtimeEventObserver);
+				subscription.SetSubscriptionDataResponsesAsObservable(realtimeEventObserver);
 
 				// create the web socket connection
 				await client.StartAsync();
 
 				// begin receiving subscription data
 				// data will be received on another thread
-				subscription.GetSubscribeResponseAsObservable().Subscribe(subscribeObserver);
+				subscription.SetSubscribeResponseAsObservable(subscribeObserver);
 				
 				await subscription.SubscribeAsync(filters);
 
@@ -183,40 +193,20 @@ namespace AnkrSDK.Core.Implementation
 			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);
 		}
 	}
-
-	public class SubscribeObserver<T> : IObserver<T>
-	{
-		public void OnNext(T value)
-		{
-			Debug.Log("<--------------- Subscribe event is gotten --------------->");
-			Debug.Log(JsonConvert.SerializeObject(value));
-		}
-
-		public void OnError(Exception error)
-		{
-			Debug.Log("<--------------- !!! Subscribe Error !!! --------------->");
-			throw error;
-			Debug.Log(error.Message);
-		}
-
-		public void OnCompleted()
-		{
-			Debug.Log("<--------------- Subscribe OnCompleted --------------->");
-		}
-	}
 	
-	public class RealtimeEventObserver<T> : IObserver<T>
+	public class SubscriptionObserver<T> : IObserver<T>
 	{
+		public EventHandler<T> OnEvent;
+		public EventHandler<Exception> OnErrorHandler;
+		
 		public void OnNext(T value)
 		{
-			Debug.Log("<--------------- RealtimeEvent is gotten --------------->");
-			Debug.Log(JsonConvert.SerializeObject(value));
+			OnEvent?.Invoke(this, value);
 		}
 
 		public void OnError(Exception error)
 		{
-			Debug.Log("<--------------- !!! RealtimeEvent Error !!! --------------->");
-			Debug.Log(error.Message);
+			OnErrorHandler?.Invoke(this, error);
 		}
 
 		public void OnCompleted()

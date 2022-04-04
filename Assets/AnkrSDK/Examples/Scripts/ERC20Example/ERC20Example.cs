@@ -40,10 +40,17 @@ namespace AnkrSDK.Examples.ERC20Example
 //			await _erc20Contract.GetLogs_Observable_Subscription();
 //			await _erc20Contract.GetLogs_Observable_Subscription1<TransferEventDTO>(filters);
 			await _erc20Contract.GetLogs_Observable_Subscription1<TransferEventDTO>(filters);
-			
+//			GetLogs_Observable_Subscription1();
+
 //			_eventSubscriber = new EventSubscriber();
+//			await _eventSubscriber.Connect();
 //			await _eventSubscriber.StartAsync();
 		}
+
+//		private void Update()
+//		{
+//			_eventSubscriber.Update();
+//		}
 
 		public async void CallMint()
 		{

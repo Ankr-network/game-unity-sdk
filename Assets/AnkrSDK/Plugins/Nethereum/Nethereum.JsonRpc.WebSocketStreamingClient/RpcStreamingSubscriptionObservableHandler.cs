@@ -1,37 +1,37 @@
-﻿using Nethereum.JsonRpc.Client;
-using System;
-using Cysharp.Threading.Tasks.Internal;
+﻿using System;
+using System.Reactive.Subjects;
+using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.Streaming;
 
-namespace Nethereum.JsonRpc.WebSocketStreamingClient
+namespace Nethereum.RPC.Reactive.RpcStreaming
 {
 
     public class RpcStreamingSubscriptionObservableHandler<TSubscriptionDataResponse> : RpcStreamingSubscriptionHandler<TSubscriptionDataResponse>
     {
-        protected AsyncSubject<string> SubscribeResponseSubject { get; set; }
-        protected AsyncSubject<bool> UnsubscribeResponseSubject { get; set; }
-        protected AsyncSubject<TSubscriptionDataResponse> SubscriptionDataResponseSubject { get; set; }
+        protected Subject<string> SubscribeResponseSubject { get; set; }
+        protected Subject<bool> UnsubscribeResponseSubject { get; set; }
+        protected Subject<TSubscriptionDataResponse> SubscriptionDataResponseSubject { get; set; }
         
         protected RpcStreamingSubscriptionObservableHandler(IStreamingClient streamingClient, IUnsubscribeSubscriptionRpcRequestBuilder unsubscribeSubscriptionRpcRequestBuilder):base(streamingClient, unsubscribeSubscriptionRpcRequestBuilder)
         {
-            SubscribeResponseSubject = new AsyncSubject<string>();
-            UnsubscribeResponseSubject = new AsyncSubject<bool>();
-            SubscriptionDataResponseSubject = new AsyncSubject<TSubscriptionDataResponse>();
+            SubscribeResponseSubject = new Subject<string>();
+            UnsubscribeResponseSubject = new Subject<bool>();
+            SubscriptionDataResponseSubject = new Subject<TSubscriptionDataResponse>();
         }
 
-        public IObservable<string> GetSubscribeResponseAsObservable()
+        public IDisposable SetSubscribeResponseAsObservable(IObserver<string> observer)
         {
-            return SubscribeResponseSubject;
+            return SubscribeResponseSubject.Subscribe(observer);
         }
 
-        public IObservable<TSubscriptionDataResponse> GetSubscriptionDataResponsesAsObservable()
+        public IDisposable SetSubscriptionDataResponsesAsObservable(IObserver<TSubscriptionDataResponse> observer)
         {
-            return SubscriptionDataResponseSubject;
+            return SubscriptionDataResponseSubject.Subscribe(observer);
         }
 
-        public IObservable<bool> GetUnsubscribeResponseAsObservable()
+        public IDisposable GetUnsubscribeResponseAsObservable(IObserver<bool> observer)
         {
-            return UnsubscribeResponseSubject;
+            return UnsubscribeResponseSubject.Subscribe(observer);
         }
 
         protected override void HandleSubscribeResponseError(RpcResponseException exception)

@@ -3,7 +3,7 @@ using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.Streaming;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Subscriptions;
-using UnityEngine;
+using Nethereum.RPC.Reactive.RpcStreaming;
 
 namespace Nethereum.JsonRpc.WebSocketStreamingClient
 {

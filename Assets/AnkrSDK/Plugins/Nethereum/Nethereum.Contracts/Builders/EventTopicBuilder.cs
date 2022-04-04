@@ -118,21 +118,13 @@ namespace Nethereum.Contracts
             if (values == null) return null;
             var encoded = new object[values.Length];
             var parameter = _eventABI.InputParameters.FirstOrDefault(x => x.Order == paramNumber);
-            var parameter1 = _eventABI.InputParameters.FirstOrDefault(x => x.Order == 2);
-            var parameter2 = _eventABI.InputParameters.FirstOrDefault(x => x.Order == 3);
             
             if (parameter == null) throw new Exception("Event parameter not found at " + paramNumber);
-
-            Debug.Log($"parameter.Type = {parameter.Type}");
-            Debug.Log($"parameter.Type 2 = {parameter1.Type}");
-            Debug.Log($"parameter.Type 3 = {parameter2.Type}");
             
             for (var i = 0; i < values.Length; i++)
             {
                 if (values[i] != null)
                 {
-                    Debug.Log($"values[i] = {values[i]}");
-                    Debug.Log($"parameter.ABIType.Encode(values[i]) = {parameter.ABIType.Encode(values[i])}");
                     encoded[i] = EnsureHexPrefix(parameter.ABIType.Encode(values[i]).ToHex());
                 }
             }

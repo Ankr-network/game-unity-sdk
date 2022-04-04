@@ -1,8 +1,8 @@
 ﻿using Nethereum.RPC.Eth.Subscriptions;
-using System;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.Streaming;
+using Nethereum.RPC.Reactive.RpcStreaming;
 
 namespace Nethereum.JsonRpc.WebSocketStreamingClient
 {
