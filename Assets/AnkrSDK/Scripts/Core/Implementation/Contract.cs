@@ -108,7 +108,7 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 		
-		public async Task GetLogs_Observable_Subscription1<TEvDto>(EventFilterData evFilter) where TEvDto : IEventDTO, new()
+		public async Task GetLogs_Observable_Subscription1<TEvDto>(EventFilterData evFilter, string address) where TEvDto : IEventDTO, new()
 		{
 			var subscribeObserver = new SubscriptionObserver<string>();
 			var realtimeEventObserver = new SubscriptionObserver<FilterLog>();
@@ -122,7 +122,7 @@ namespace AnkrSDK.Core.Implementation
 			};
 			using(var client = new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
 			{ 
-				var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(EthHandler.DefaultAccount);
+				var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(address);
 
 				var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
 				filters.FromBlock = null;

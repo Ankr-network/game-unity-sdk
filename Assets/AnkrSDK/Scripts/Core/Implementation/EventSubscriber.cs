@@ -15,11 +15,6 @@ namespace AnkrSDK.Core.Implementation
 		private static string url = "wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
 		private WebSocket transport;
 
-		public EventSubscriber()
-		{
-			
-		}
-
 		public async Task Connect()
 		{
 			var eventCompleted = new TaskCompletionSource<bool>(TaskCreationOptions.None);
