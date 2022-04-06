@@ -6,8 +6,7 @@ namespace AnkrSDK.UseCases
 {
 	public class UseCaseUIHandler : MonoBehaviour
 	{
-		[SerializeField]
-		private List<UseCaseUI> _useCaseUIs;
+		[SerializeField] private List<UseCaseUI> _useCaseUIs;
 
 		private void Awake()
 		{
