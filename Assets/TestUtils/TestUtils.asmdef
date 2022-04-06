@@ -1,0 +1,8 @@
+{
+  "name": "TestUtils",
+  "rootNamespace": "",
+  "references": [
+    "WalletConnectSharp",
+    "WalletConnectSharp.Core"
+  ]
+}

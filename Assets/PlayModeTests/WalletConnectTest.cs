@@ -4,7 +4,9 @@ using Cysharp.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WalletConnectSharp.Unity.Network;
+using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using NUnit.Framework;
+using TestUtils;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
@@ -16,15 +18,23 @@ namespace PlayModeTests
 		[UnityTest]
 		public IEnumerator WalletConnect_ConnectedOnStart()
 		{
-			var walletConnect = CreateWalletConnectObject();
+			SavedSession savedSessionBeforeTest = null;
+			if (SessionSaveHandler.IsSessionSaved())
+			{
+				savedSessionBeforeTest = SessionSaveHandler.GetSavedSession();
+			}
 
+			SessionSaveHandler.ClearSession();
+
+			var walletConnect = TestHelper.CreateWalletConnectObject();
+			walletConnect.ConnectOnStart = true;
 			yield return UniTask.ToCoroutine(async () =>
 			{
 				try
 				{
 					await UniTask.WhenAny(
 						walletConnect.Connect().AsUniTask(),
-						UniTask.WaitUntil(() => walletConnect.Session.ReadyForUserPrompt),
+						UniTask.WaitUntil(() => WalletConnect.ActiveSession.ReadyForUserPrompt),
 						UniTask.Delay(TimeSpan.FromSeconds(5f)));
 				}
 				catch (Exception e)
@@ -33,46 +43,41 @@ namespace PlayModeTests
 				}
 			});
 
-			Assert.That(walletConnect.Session.ReadyForUserPrompt);
+			Assert.That(WalletConnect.ActiveSession.ReadyForUserPrompt);
 
 			Object.DestroyImmediate(walletConnect.gameObject);
+			if (savedSessionBeforeTest != null)
+			{
+				SessionSaveHandler.SaveSession(savedSessionBeforeTest);
+			}
+			else
+			{
+				SessionSaveHandler.ClearSession();
+			}
 		}
 
 		[Test]
 		public void WalletConnect_DefaultSessionIsUnInitialized()
 		{
-			var walletConnect = CreateWalletConnectObject();
-			Assert.IsNull(walletConnect.Session);
+			var walletConnect = TestHelper.CreateWalletConnectObject();
+			Assert.IsNull(WalletConnect.ActiveSession);
+
+			Object.DestroyImmediate(walletConnect.gameObject);
 		}
 
 		[Test]
 		public void WalletConnect_SessionConnection()
 		{
-			var walletConnect = CreateWalletConnectObject();
+			var walletConnect = TestHelper.CreateWalletConnectObject();
 			walletConnect.InitializeUnitySession();
-			Assert.IsNotNull(walletConnect.Session);
-			Assert.IsFalse(walletConnect.Session.Connected);
-			Assert.IsFalse(walletConnect.Session.Connecting);
-			Assert.IsFalse(walletConnect.Session.Disconnected);
-			Assert.IsFalse(walletConnect.Session.SessionUsed);
-		}
+			var session = WalletConnect.ActiveSession;
+			Assert.IsNotNull(session);
+			Assert.IsFalse(session.Connected);
+			Assert.IsFalse(session.Connecting);
+			Assert.IsFalse(session.Disconnected);
+			Assert.IsFalse(session.SessionUsed);
 
-		private static WalletConnect CreateWalletConnectObject()
-		{
-			var walletConnectObject = new GameObject("WalletConnect");
-			var walletConnect = walletConnectObject.AddComponent<WalletConnect>();
-			walletConnectObject.AddComponent<NativeWebSocketTransport>();
-			walletConnect.ConnectOnStart = false;
-			walletConnect.ConnectOnAwake = false;
-			walletConnect.AppData = new ClientMeta
-			{
-				_description = "Wallet",
-				_url = "https://www.ankr.com/",
-				_icons = new[] { "https://www.ankr.com/static/favicon/apple-touch-icon.png" },
-				_name = "Wallet"
-			};
-			
-			return walletConnect;
+			Object.DestroyImmediate(walletConnect.gameObject);
 		}
 	}
 }

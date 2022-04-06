@@ -2,9 +2,10 @@
     "name": "Tests",
     "rootNamespace": "",
     "references": [
+        "TestUtils",
+        "UnityEditor.TestRunner",
         "WalletConnectSharp",
-        "WalletConnectSharp.Core",
-        "UnityEditor.TestRunner"
+        "WalletConnectSharp.Core"
     ],
     "includePlatforms": [
         "Editor"
