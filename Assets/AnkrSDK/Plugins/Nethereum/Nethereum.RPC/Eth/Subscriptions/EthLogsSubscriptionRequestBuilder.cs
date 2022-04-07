@@ -10,7 +10,7 @@ namespace Nethereum.RPC.Eth.Subscriptions
         {
         }
 
-        public RpcRequest BuildRequest(NewFilterInput filterInput, object id)
+        public RpcRequest BuildRequest(NewFilterInput filterInput, string id)
         {
             if (id == null) id = Guid.NewGuid().ToString();
             return base.BuildRequest(id, "logs", filterInput);

@@ -1,22 +1,22 @@
 using System;
-using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Infrastructure;
+using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.JsonRpc.Client.RpcMessages;
 
 namespace AnkrSDK.Core.Implementation
 {	
-	public class ContractEventSubscription<TEventDTOBase> : IContractEventSubscription<TEventDTOBase> where TEventDTOBase : EventDTOBase
+	public class ContractEventSubscription<TEventDtoBase> : IContractEventSubscription where TEventDtoBase : IEventDTO, new()
 	{
-		private Action<TEventDTOBase> _handler;
+		private readonly Action<TEventDtoBase> _handler;
 
-		public ContractEventSubscription(Action<TEventDTOBase> handler)
+		public ContractEventSubscription(Action<TEventDtoBase> handler)
 		{
 			_handler = handler;
 		}
 
-		public void MessageReceived(RpcStreamingResponseMessage message)
+		public void HandleMessage(RpcStreamingResponseMessage message)
 		{
-			_handler?.Invoke(message.GetStreamingResult<TEventDTOBase>());
+			_handler?.Invoke(message.GetStreamingResult<TEventDtoBase>());
 		}
 	}
 }
