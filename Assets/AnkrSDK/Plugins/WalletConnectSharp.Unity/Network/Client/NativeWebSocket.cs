@@ -439,9 +439,7 @@ namespace NativeWebSocket
 
                 await m_Socket.ConnectAsync(uri, m_CancellationToken);
                 OnOpen?.Invoke();
-                Debug.Log("<<----- Start listening ----->>");
                 await Receive();
-                Debug.Log("<<----- Opening received ----->>");
             }
             catch (Exception ex)
             {

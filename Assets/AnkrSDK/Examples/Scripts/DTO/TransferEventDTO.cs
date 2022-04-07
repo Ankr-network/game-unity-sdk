@@ -1,4 +1,5 @@
 using System.Numerics;
+using AnkrSDK.Core.Data;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace AnkrSDK.Examples.DTO
@@ -6,7 +7,7 @@ namespace AnkrSDK.Examples.DTO
 	public partial class TransferEventDTO : TransferEventDTOBase { }
 	
 	[Event("Transfer")]
-	public class TransferEventDTOBase : IEventDTO
+	public class TransferEventDTOBase : EventDTOBase
 	{
 		[Parameter("address", "_from", 1, true)]
 		public string From { get; set; }

@@ -21,30 +21,21 @@ namespace AnkrSDK.Examples.ERC20Example
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
 		private EthHandler _eth;
-		private EventSubscriber _eventSubscriber;
+		private ContractEventSubscriber<> _eventSubscriber;
 
 		private async void Start()
 		{
-			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.ProviderURL);
+			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
 			_erc20Contract =
 				ankrSDK.GetContract(
 					ERC20ContractInformation.ContractAddress,
 					ERC20ContractInformation.ABI);
 			_eth = ankrSDK.Eth;
-			
-			var filters = new EventFilterData
-			{
-				fromBlock = BlockParameter.CreateLatest(),
-				toBlock = BlockParameter.CreateLatest()
-			};
-			
-//			await _erc20Contract.GetLogs_Observable_Subscription1<TransferEventDTO>(filters, ERC20ContractInformation.ContractAddress);
 
-			_eventSubscriber = new EventSubscriber();
+			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
 			await _eventSubscriber.Connect();
-			await _eventSubscriber.StartAsync();
 		}
-
+		
 		private void Update()
 		{
 			_eventSubscriber.Update();
@@ -62,17 +53,14 @@ namespace AnkrSDK.Examples.ERC20Example
 		
 		public async void SendMint()
 		{
-//			var evController = new TransactionEventDelegator();
-//			evController.OnTransactionSendBegin += HandleSending;
-//			evController.OnTransactionSendEnd += HandleSent;
-//			evController.OnTransactionHashReceived += HandleTransactionHash;
-//			evController.OnReceiptReceived += HandleReceipt;
-//			evController.OnError += HandleError;
-//			
-//			_erc20Contract.Web3SendMethod("mint", Array.Empty<object>(), evController);
-			
+			var filters = new EventFilterData
+			{
+				fromBlock = BlockParameter.CreateLatest(),
+				toBlock = BlockParameter.CreateLatest()
+			};
 			Debug.Log("------ Message sending ------");
-			await _eventSubscriber.StartConnect();
+			var subscription = await _eventSubscriber.Subscribe(filters, ERC20ContractInformation.ContractAddress);
+			Debug.Log(subscription);
 			Debug.Log("------ Message sent ------");
 		}
 		

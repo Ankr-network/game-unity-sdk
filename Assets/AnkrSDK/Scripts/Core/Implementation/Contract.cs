@@ -14,6 +14,7 @@ using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.WebSocketStreamingClient;
 using Nethereum.RPC.Eth.DTOs;
+using Nethereum.RPC.Eth.Subscriptions;
 using Nethereum.Web3;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -110,40 +111,60 @@ namespace AnkrSDK.Core.Implementation
 		
 		public async Task GetLogs_Observable_Subscription1<TEvDto>(EventFilterData evFilter, string address) where TEvDto : IEventDTO, new()
 		{
-			var subscribeObserver = new SubscriptionObserver<string>();
-			var realtimeEventObserver = new SubscriptionObserver<FilterLog>();
-			realtimeEventObserver.OnEvent = (sender, log) =>
+//			var subscribeObserver = new SubscriptionObserver<string>();
+//			var realtimeEventObserver = new SubscriptionObserver<FilterLog>();
+//			realtimeEventObserver.OnEvent = (sender, log) =>
+//			{
+//				var decoded = Event<TransferEventDTO>.DecodeEvent(log);
+//				Debug.Log("-------------------------");
+//				Debug.Log("From = " + decoded.Event.From);
+//				Debug.Log("To = " + decoded.Event.To);
+//				Debug.Log("Value = " + decoded.Event.Value);
+//			};
+			using (var client =
+				new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
 			{
-				var decoded = Event<TransferEventDTO>.DecodeEvent(log);
-				Debug.Log("-------------------------");
-				Debug.Log("From = " + decoded.Event.From);
-				Debug.Log("To = " + decoded.Event.To);
-				Debug.Log("Value = " + decoded.Event.Value);
-			};
-			using(var client = new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
-			{ 
 				var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(address);
+
+				var subscription = new EthLogsSubscription(client);
 
 				var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
 				filters.FromBlock = null;
 				filters.ToBlock = null;
 				filters.Address = null;
-				
-				// create the subscription
-				// nothing will happen just yet though
-				var subscription = new EthLogsObservableSubscription(client);
 
-				// attach our handler for each log
-				subscription.SetSubscriptionDataResponsesAsObservable(realtimeEventObserver);
-
-				// create the web socket connection
 				await client.StartAsync();
 
-				// begin receiving subscription data
-				// data will be received on another thread
-				subscription.SetSubscribeResponseAsObservable(subscribeObserver);
-				
+				subscription.SubscribeResponse += (sender, args) => { Debug.Log(args.Response); };
+
+				subscription.SubscriptionDataResponse += (sender, log) =>
+				{
+					var decoded = Event<TransferEventDTO>.DecodeEvent(log.Response);
+					Debug.Log("-------------------------");
+					Debug.Log("From = " + decoded.Event.From);
+					Debug.Log("To = " + decoded.Event.To);
+					Debug.Log("Value = " + decoded.Event.Value);
+				};
+
+				subscription.UnsubscribeResponse += (sender, args) => { Debug.Log("----- UnsubscribeResponse -----"); };
+
 				await subscription.SubscribeAsync(filters);
+//				
+//				// create the subscription
+//				// nothing will happen just yet though
+//				var subscription = new EthLogsObservableSubscription(client);
+//
+//				// attach our handler for each log
+//				subscription.SetSubscriptionDataResponsesAsObservable(realtimeEventObserver);
+//
+//				// create the web socket connection
+//				await client.StartAsync();
+//
+//				// begin receiving subscription data
+//				// data will be received on another thread
+//				subscription.SetSubscribeResponseAsObservable(subscribeObserver);
+//				
+//				await subscription.SubscribeAsync(filters);
 
 				// allow to run for a minute
 				await Task.Delay(TimeSpan.FromMinutes(20));

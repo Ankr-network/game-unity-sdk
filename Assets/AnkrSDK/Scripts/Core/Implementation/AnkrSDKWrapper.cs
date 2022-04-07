@@ -52,6 +52,11 @@ namespace AnkrSDK.Core.Implementation
 			return new Contract(_web3Provider, Eth, contractAddress, contractABI);
 		}
 
+		public ContractEventSubscriber GetSubscriber(string wsUrl)
+		{
+			return new ContractEventSubscriber(_web3Provider, wsUrl);
+		}
+
 		private static IWeb3 CreateWeb3Provider(string providerURI)
 		{
 			var wcProtocol = WalletConnect.ActiveSession;
