@@ -130,7 +130,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
 		private async void FlushQueue()
 		{
-			Debug.Log("[WebSocket] Flushing Queue. Count: " + _queuedMessages.Count);
+			Debug.Log("[WebSocket] Flushing Queue");
+			Debug.Log("[WebSocket] Queue Count: " + _queuedMessages.Count);
 			while (_queuedMessages.Count > 0)
 			{
 				var msg = _queuedMessages.Dequeue();
@@ -301,6 +302,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
 		public void ClearSubscriptions()
 		{
+			Debug.Log("[WebSocket] Subs Cleared");
 			if (_eventDelegator != null)
 			{
 				foreach (var subscribedTopic in subscribedTopics)

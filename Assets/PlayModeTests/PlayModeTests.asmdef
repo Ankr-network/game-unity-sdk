@@ -1,7 +1,6 @@
 {
     "name": "PlayModeTests",
     "references": [
-        "TestUtils",
         "UniTask",
         "WalletConnectSharp",
         "WalletConnectSharp.Core"

@@ -175,9 +175,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			OnTransportConnect?.Invoke(this, this);
 		}
 
-		public virtual Task Connect()
+		public virtual async Task Connect()
 		{
-			return SetupTransport();
+			await SetupTransport();
 		}
 
 		public async Task SubscribeAndListenToTopic(string topic)
@@ -277,9 +277,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			Transport = null;
 		}
 
-		public virtual Task Disconnect()
+		public virtual async Task Disconnect()
 		{
-			return DisconnectTransport();
+			await DisconnectTransport();
 		}
 	}
 }
