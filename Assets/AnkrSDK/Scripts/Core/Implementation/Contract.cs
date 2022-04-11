@@ -170,7 +170,7 @@ namespace AnkrSDK.Core.Implementation
 				await Task.Delay(TimeSpan.FromMinutes(20));
 
 //				// unsubscribe
-//				await subscription.UnsubscribeAsync();
+				await subscription.UnsubscribeAsync();
 //
 //				// allow some time to unsubscribe
 //				await Task.Delay(TimeSpan.FromSeconds(5));

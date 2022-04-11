@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
+using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.DTO;
-using AnkrSDK.Examples.ERC20Example;
-using AnkrSDK.UseCases;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.JsonRpc.WebSocketStreamingClient;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
-namespace AnkrSDK.ERC20Example
+namespace AnkrSDK.Examples.ERC20Example
 {
-	public class ERC20Example : UseCase
+	public class ERC20Example : MonoBehaviour
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
 		private EthHandler _eth;
-		private ContractEventSubscriber _eventSubscriber;
 
 		private async void Start()
 		{
@@ -27,9 +29,6 @@ namespace AnkrSDK.ERC20Example
 					ERC20ContractInformation.ContractAddress,
 					ERC20ContractInformation.ABI);
 			_eth = ankrSDK.Eth;
-
-			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
-			await _eventSubscriber.ListenForEvents();
 		}
 
 		public async void CallMint()
@@ -41,35 +40,29 @@ namespace AnkrSDK.ERC20Example
 
 			Debug.Log($"Nonce: {trx.Nonce}");
 		}
-
+		
 		public async void SendMint()
 		{
-			var filters = new EventFilterData
-			{
-				fromBlock = BlockParameter.CreateLatest(),
-				toBlock = BlockParameter.CreateLatest()
-			};
-
-			Debug.Log("------ Message sending ------");
-			var subscription = await _eventSubscriber.Subscribe(
-				filters,
-				ERC20ContractInformation.ContractAddress, 
-				(TransferEventDTO t) => Debug.Log(t.From)
-			);
-			Debug.Log(subscription);
-			Debug.Log("------ Message sent ------");
+			var evController = new TransactionEventDelegator();
+			evController.OnTransactionSendBegin += HandleSending;
+			evController.OnTransactionSendEnd += HandleSent;
+			evController.OnTransactionHashReceived += HandleTransactionHash;
+			evController.OnReceiptReceived += HandleReceipt;
+			evController.OnError += HandleError;
+			
+			_erc20Contract.Web3SendMethod("mint", Array.Empty<object>(), evController);
 		}
-
+		
 		public static void HandleSent(object sender, TransactionInput transaction)
 		{
 			Debug.Log("Transaction sent");
 		}
-
+		
 		public static void HandleSending(object sender, TransactionInput transaction)
 		{
 			Debug.Log("Transaction is sending");
 		}
-
+		
 		public void HandleTransactionHash(object sender, string transactionHash)
 		{
 			Debug.Log($"TsransactionHash: {transactionHash}");

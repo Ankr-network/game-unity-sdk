@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
@@ -19,14 +17,24 @@ using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
+	public delegate void OpenEventHandler();
+	public delegate void ErrorEventHandler(string errorMsg);
+	public delegate void CloseEventHandler(WebSocketCloseCode closeCode);
+	
 	public class ContractEventSubscriber : IClientRequestHeaderSupport
 	{
+		public event OpenEventHandler OnOpenHandler;
+		public event ErrorEventHandler OnErrorHandler;
+		public event CloseEventHandler OnCloseHandler;
+		
 		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 		private WebSocket _transport;
+		private bool _isCancellationRequested;
 
 		private readonly string _wsUrl;
 		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
 		private readonly EthLogsSubscriptionRequestBuilder _requestBuilder;
+		private readonly EthUnsubscribeRequestBuilder _unsubscribeRequestBuilder;
 		private readonly IWeb3 _web3Provider;
 
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
@@ -37,19 +45,23 @@ namespace AnkrSDK.Core.Implementation
 			_wsUrl = wsUrl;
 			_subscribers = new Dictionary<string, IContractEventSubscription>();
 			_requestBuilder = new EthLogsSubscriptionRequestBuilder();
+			_unsubscribeRequestBuilder = new EthUnsubscribeRequestBuilder();
 		}
 
 		public async UniTask ListenForEvents()
 		{
+			_isCancellationRequested = false;
 			this.SetBasicAuthenticationHeaderFromUri(new Uri(_wsUrl));
 
 			_transport = new WebSocket(_wsUrl, RequestHeaders);
 
 			_transport.OnOpen += OnSocketOpen;
-			_transport.OnMessage += OnTransportMessageReceived;
+			_transport.OnMessage += OnEventMessageReceived;
 			_transport.OnClose += OnClose;
 			_transport.OnError += OnError;
 
+			Update();
+			
 			var connectTask = _transport.Connect();
 			await connectTask;
 
@@ -59,9 +71,9 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 
-		private async UniTaskVoid Update(CancellationToken token)
+		private async UniTaskVoid Update()
 		{
-			while (!token.IsCancellationRequested)
+			while (!_isCancellationRequested)
 			{
 				_transport.DispatchMessageQueue();
 
@@ -69,22 +81,20 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 
-		public async UniTask<string> Subscribe<TEventType>(EventFilterData evFilter, string contractAddress,
+		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterData evFilter, string contractAddress,
 			Action<TEventType> handler) where TEventType : IEventDTO, new()
 		{
-			var subscriptionId = await CreateSubscription<TEventType>(evFilter, contractAddress);
+			var filters = TransformFilters<TEventType>(evFilter, contractAddress);
+			var subscriptionId = await CreateSubscription(filters);
 
-			var eventSubscription = new ContractEventSubscription<TEventType>(handler);
+			var eventSubscription = new ContractEventSubscription<TEventType>(subscriptionId, filters, handler);
 			_subscribers.Add(subscriptionId, eventSubscription);
 
-			return subscriptionId;
+			return eventSubscription;
 		}
 
-		private async UniTask<string> CreateSubscription<TEventType>(EventFilterData evFilter, string contractAddress)
-			where TEventType : IEventDTO, new()
+		private async UniTask<string> CreateSubscription(NewFilterInput filters)
 		{
-			var filters = TransformFilters<TEventType>(evFilter, contractAddress);
-
 			var rpcRequestJson = CreateRequest(filters);
 
 			Debug.Log(rpcRequestJson);
@@ -122,9 +132,10 @@ namespace AnkrSDK.Core.Implementation
 			return filters;
 		}
 
-		public void Unsubscribe(string subscriptionId)
+		public async void Unsubscribe(IContractEventSubscription subscription)
 		{
-			_subscribers.Remove(subscriptionId);
+			var rpcRequest = _unsubscribeRequestBuilder.BuildRequest(subscription.SubscriptionId);
+			await _transport.SendText(JsonConvert.SerializeObject(rpcRequest));
 		}
 
 		private RpcStreamingResponseMessage DeserializeMessage(byte[] message)
@@ -135,17 +146,7 @@ namespace AnkrSDK.Core.Implementation
 
 		private void OnSocketOpen()
 		{
-			Debug.Log("----- Socket opened -----");
-		}
-
-		private void OnTransportMessageReceived(byte[] rpcAnswer)
-		{
-			var rpcMessage = DeserializeMessage(rpcAnswer);
-
-			_transport.OnMessage -= OnTransportMessageReceived;
-			_taskCompletionSource.TrySetResult(rpcMessage);
-
-			_transport.OnMessage += OnTransportMessageReceived;
+			OnOpenHandler?.Invoke();
 		}
 
 		private void OnEventMessageReceived(byte[] rpcAnswer)
@@ -154,24 +155,60 @@ namespace AnkrSDK.Core.Implementation
 			Debug.Log(Encoding.UTF8.GetString(rpcAnswer));
 			var rpcMessage = DeserializeMessage(rpcAnswer);
 
-			_taskCompletionSource.TrySetResult(rpcMessage);
-			var subscriptionId = rpcMessage?.Params?.Subscription;
-
-			if (rpcMessage.Method == "eth_subscription" && subscriptionId != null &&
-			    _subscribers.ContainsKey(subscriptionId))
+			if (rpcMessage.Method == null)
 			{
-				_subscribers[subscriptionId].HandleMessage(rpcMessage);
+				_taskCompletionSource.TrySetResult(rpcMessage);
 			}
+			else
+			{
+				var subscriptionId = rpcMessage.Params?.Subscription;
+
+				if (rpcMessage.Method == "eth_subscription" && subscriptionId != null &&
+				    _subscribers.ContainsKey(subscriptionId))
+				{
+					_subscribers[subscriptionId].HandleMessage(rpcMessage);
+				}	
+			}
+		}
+
+		public void StopListen()
+		{
+			CloseConnection();
+			_transport.Close();
+			_subscribers.Clear();
+		}
+
+		private void CloseConnection()
+		{
+			_isCancellationRequested = true;
+			
+			_transport.OnOpen -= OnSocketOpen;
+			_transport.OnMessage -= OnEventMessageReceived;
+			_transport.OnClose -= OnClose;
+			_transport.OnError -= OnError;	
+		}
+
+		private void RefreshConnection()
+		{
+			CloseConnection();
+			ListenForEvents();
 		}
 
 		private void OnError(string errorMesssage)
 		{
 			Debug.Log("----- !!! Error !!! -----");
+			RefreshConnection();
+			OnErrorHandler?.Invoke(errorMesssage);
 		}
 
 		private void OnClose(WebSocketCloseCode code)
 		{
 			Debug.Log($"----- Socket closed ({code}) -----");
+			if (code == WebSocketCloseCode.Abnormal)
+			{
+				RefreshConnection();
+			}
+			OnCloseHandler?.Invoke(code);
 		}
 	}
 }
