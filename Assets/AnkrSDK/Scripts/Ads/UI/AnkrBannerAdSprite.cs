@@ -11,10 +11,10 @@ namespace AnkrSDK.Ads.UI
 
 		public event Action AdClicked;
 
-		public void SetupAd(AdData adData)
+		public void SetupAd(Sprite sprite)
 		{
-			_sprite.sprite = adData.Sprite;
-			_sprite.size = adData.Size;
+			_sprite.sprite = sprite;
+			_sprite.size = sprite.rect.size;
 		}
 
 		public void OnPointerClick(PointerEventData eventData)

@@ -12,9 +12,9 @@ namespace AnkrSDK.Ads.UI
 
 		public event Action AdClicked;
 
-		public void SetupAd(AdData adData)
+		public void SetupAd(Sprite sprite)
 		{
-			_image.sprite = adData.Sprite;
+			_image.sprite = sprite;
 			_image.SetNativeSize();
 		}
 

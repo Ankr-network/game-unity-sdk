@@ -2,6 +2,7 @@ using AnkrSDK.Ads;
 using AnkrSDK.Ads.Data;
 using AnkrSDK.Ads.UI;
 using AnkrSDK.Core.Implementation;
+using AnkrSDK.Core.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,19 +35,19 @@ namespace AnkrSDK.UseCases.Ads
 
 		private async UniTaskVoid DownloadAd()
 		{
+			_button.gameObject.SetActive(false);
+
 			var requestResult = await AnkrAds.RequestAdData(EthHandler.DefaultAccount, AdType.Banner);
 
-			_button.gameObject.SetActive(false);
-			var resultError = requestResult.Error;
-			if (!string.IsNullOrEmpty(resultError))
+			if (requestResult == null)
 			{
-				Debug.LogError(resultError);
 				return;
 			}
 
-			var data = requestResult.AdData;
-			_ankrBannerAdImage.SetupAd(data);
-			_ankrBannerAdSprite.SetupAd(data);
+			var data = requestResult;
+			var sprite = await AnkrWebHelper.GetImageFromURL(requestResult.TextureURL);
+			_ankrBannerAdImage.SetupAd(sprite);
+			_ankrBannerAdSprite.SetupAd(sprite);
 			_ankrBannerAdImage.gameObject.SetActive(true);
 			_ankrBannerAdSprite.gameObject.SetActive(true);
 		}
