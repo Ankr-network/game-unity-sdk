@@ -108,74 +108,6 @@ namespace AnkrSDK.Core.Implementation
 				evController?.ErrorReceived(exception);
 			}
 		}
-		
-		public async Task GetLogs_Observable_Subscription1<TEvDto>(EventFilterData evFilter, string address) where TEvDto : IEventDTO, new()
-		{
-//			var subscribeObserver = new SubscriptionObserver<string>();
-//			var realtimeEventObserver = new SubscriptionObserver<FilterLog>();
-//			realtimeEventObserver.OnEvent = (sender, log) =>
-//			{
-//				var decoded = Event<TransferEventDTO>.DecodeEvent(log);
-//				Debug.Log("-------------------------");
-//				Debug.Log("From = " + decoded.Event.From);
-//				Debug.Log("To = " + decoded.Event.To);
-//				Debug.Log("Value = " + decoded.Event.Value);
-//			};
-			using (var client =
-				new StreamingWebSocketClient("wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e"))
-			{
-				var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(address);
-
-				var subscription = new EthLogsSubscription(client);
-
-				var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
-				filters.FromBlock = null;
-				filters.ToBlock = null;
-				filters.Address = null;
-
-				await client.StartAsync();
-
-				subscription.SubscribeResponse += (sender, args) => { Debug.Log(args.Response); };
-
-				subscription.SubscriptionDataResponse += (sender, log) =>
-				{
-					var decoded = Event<TransferEventDTO>.DecodeEvent(log.Response);
-					Debug.Log("-------------------------");
-					Debug.Log("From = " + decoded.Event.From);
-					Debug.Log("To = " + decoded.Event.To);
-					Debug.Log("Value = " + decoded.Event.Value);
-				};
-
-				subscription.UnsubscribeResponse += (sender, args) => { Debug.Log("----- UnsubscribeResponse -----"); };
-
-				await subscription.SubscribeAsync(filters);
-//				
-//				// create the subscription
-//				// nothing will happen just yet though
-//				var subscription = new EthLogsObservableSubscription(client);
-//
-//				// attach our handler for each log
-//				subscription.SetSubscriptionDataResponsesAsObservable(realtimeEventObserver);
-//
-//				// create the web socket connection
-//				await client.StartAsync();
-//
-//				// begin receiving subscription data
-//				// data will be received on another thread
-//				subscription.SetSubscribeResponseAsObservable(subscribeObserver);
-//				
-//				await subscription.SubscribeAsync(filters);
-
-				// allow to run for a minute
-				await Task.Delay(TimeSpan.FromMinutes(20));
-
-//				// unsubscribe
-				await subscription.UnsubscribeAsync();
-//
-//				// allow some time to unsubscribe
-//				await Task.Delay(TimeSpan.FromSeconds(5));
-			}
-		}
 
 		public Task<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null)
@@ -212,27 +144,6 @@ namespace AnkrSDK.Core.Implementation
 			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
 			var callFunction = contract.GetFunction(methodName);
 			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);
-		}
-	}
-	
-	public class SubscriptionObserver<T> : IObserver<T>
-	{
-		public EventHandler<T> OnEvent;
-		public EventHandler<Exception> OnErrorHandler;
-		
-		public void OnNext(T value)
-		{
-			OnEvent?.Invoke(this, value);
-		}
-
-		public void OnError(Exception error)
-		{
-			OnErrorHandler?.Invoke(this, error);
-		}
-
-		public void OnCompleted()
-		{
-			Debug.Log("<--------------- RealtimeEvent OnCompleted --------------->");
 		}
 	}
 }
