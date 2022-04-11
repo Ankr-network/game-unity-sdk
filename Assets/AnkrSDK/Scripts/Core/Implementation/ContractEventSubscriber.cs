@@ -97,8 +97,6 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var rpcRequestJson = CreateRequest(filters);
 
-			Debug.Log(rpcRequestJson);
-
 			_taskCompletionSource = new UniTaskCompletionSource<RpcStreamingResponseMessage>();
 			await _transport.SendText(rpcRequestJson);
 
@@ -151,8 +149,6 @@ namespace AnkrSDK.Core.Implementation
 
 		private void OnEventMessageReceived(byte[] rpcAnswer)
 		{
-			Debug.Log("----- OnMessageReceived -----");
-			Debug.Log(Encoding.UTF8.GetString(rpcAnswer));
 			var rpcMessage = DeserializeMessage(rpcAnswer);
 
 			if (rpcMessage.Method == null)
@@ -196,14 +192,12 @@ namespace AnkrSDK.Core.Implementation
 
 		private void OnError(string errorMesssage)
 		{
-			Debug.Log("----- !!! Error !!! -----");
 			RefreshConnection();
 			OnErrorHandler?.Invoke(errorMesssage);
 		}
 
 		private void OnClose(WebSocketCloseCode code)
 		{
-			Debug.Log($"----- Socket closed ({code}) -----");
 			if (code == WebSocketCloseCode.Abnormal)
 			{
 				RefreshConnection();
