@@ -11,13 +11,11 @@ namespace AnkrSDK.Core.Implementation
 	public class ContractEventSubscription<TEventDtoBase> : IContractEventSubscription where TEventDtoBase : IEventDTO, new()
 	{
 		public string SubscriptionId { get; set; }
-		public NewFilterInput Filters;
-		private readonly Action<TEventDtoBase> _handler;
+		private Action<TEventDtoBase> _handler { get; }
 
-		public ContractEventSubscription(string subscriptionId, NewFilterInput filters, Action<TEventDtoBase> handler)
+		public ContractEventSubscription(string subscriptionId, Action<TEventDtoBase> handler)
 		{
 			SubscriptionId = subscriptionId;
-			Filters = filters;
 			_handler = handler;
 		}
 

@@ -87,7 +87,7 @@ namespace AnkrSDK.Core.Implementation
 			var filters = TransformFilters<TEventType>(evFilter, contractAddress);
 			var subscriptionId = await CreateSubscription(filters);
 
-			var eventSubscription = new ContractEventSubscription<TEventType>(subscriptionId, filters, handler);
+			var eventSubscription = new ContractEventSubscription<TEventType>(subscriptionId, handler);
 			_subscribers.Add(subscriptionId, eventSubscription);
 
 			return eventSubscription;
@@ -111,9 +111,14 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var request = _requestBuilder.BuildRequest(filterInput, id);
 
-			var reqMsg = new RpcRequestMessage(request.Id,
-				request.Method,
-				request.RawParameters);
+			return RpcRequestToString(request);
+		}
+
+		private string RpcRequestToString(RpcRequest rpcRequest)
+		{
+			var reqMsg = new RpcRequestMessage(rpcRequest.Id,
+				rpcRequest.Method,
+				rpcRequest.RawParameters);
 
 			return JsonConvert.SerializeObject(reqMsg);
 		}
@@ -130,10 +135,12 @@ namespace AnkrSDK.Core.Implementation
 			return filters;
 		}
 
-		public async void Unsubscribe(IContractEventSubscription subscription)
+		public async UniTaskVoid Unsubscribe(IContractEventSubscription subscription)
 		{
+			_subscribers.Remove(subscription.SubscriptionId);
 			var rpcRequest = _unsubscribeRequestBuilder.BuildRequest(subscription.SubscriptionId);
-			await _transport.SendText(JsonConvert.SerializeObject(rpcRequest));
+			var requestMessage = RpcRequestToString(rpcRequest);
+			await _transport.SendText(requestMessage);
 		}
 
 		private RpcStreamingResponseMessage DeserializeMessage(byte[] message)
@@ -184,24 +191,15 @@ namespace AnkrSDK.Core.Implementation
 			_transport.OnError -= OnError;	
 		}
 
-		private void RefreshConnection()
-		{
-			CloseConnection();
-			ListenForEvents();
-		}
-
 		private void OnError(string errorMesssage)
 		{
-			RefreshConnection();
+			StopListen();
 			OnErrorHandler?.Invoke(errorMesssage);
 		}
 
 		private void OnClose(WebSocketCloseCode code)
 		{
-			if (code == WebSocketCloseCode.Abnormal)
-			{
-				RefreshConnection();
-			}
+			StopListen();
 			OnCloseHandler?.Invoke(code);
 		}
 	}

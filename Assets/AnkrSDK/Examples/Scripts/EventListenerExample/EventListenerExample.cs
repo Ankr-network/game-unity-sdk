@@ -18,18 +18,18 @@ namespace AnkrSDK.EventListenerExample
 		private IContract _erc20Contract;
 		private EthHandler _eth;
 		private ContractEventSubscriber _eventSubscriber;
+		private IContractEventSubscription _subscription;
 
 		private async void Start()
 		{
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
 
 			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
-			_eventSubscriber.OnOpenHandler += SendMint;
+			_eventSubscriber.OnOpenHandler += Subscribe;
 			await _eventSubscriber.ListenForEvents();
-			SendMint();
 		}
 
-		public async void SendMint()
+		public async void Subscribe()
 		{
 			var filters = new EventFilterData
 			{
@@ -37,12 +37,19 @@ namespace AnkrSDK.EventListenerExample
 				toBlock = BlockParameter.CreateLatest()
 			};
 
-			var subscription = await _eventSubscriber.Subscribe(
+			_subscription = await _eventSubscriber.Subscribe(
 				filters,
 				ERC20ContractInformation.ContractAddress, 
 				(TransferEventDTO t) => Debug.Log(JsonConvert.SerializeObject(t))
 			);
 		}
+
+
+		public async void Unsubscribe()
+		{
+			_eventSubscriber.Unsubscribe(_subscription);
+		}
+		
 
 		private void OnDisable()
 		{

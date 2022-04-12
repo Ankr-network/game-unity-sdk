@@ -4,7 +4,7 @@ namespace AnkrSDK.Core.Infrastructure
 {
 	public interface IContractEventSubscription
 	{
-		string SubscriptionId { get; set; }
+		string SubscriptionId { get; }
 		void HandleMessage(RpcStreamingResponseMessage message);
 	}
 }
