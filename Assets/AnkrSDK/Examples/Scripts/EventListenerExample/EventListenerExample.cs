@@ -12,8 +12,6 @@ namespace AnkrSDK.EventListenerExample
 {
 	public class EventListenerExample : UseCase
 	{
-		private IContract _erc20Contract;
-		private EthHandler _eth;
 		private ContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
 		
@@ -23,12 +21,18 @@ namespace AnkrSDK.EventListenerExample
 			
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
 
-			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
+			_eventSubscriber = ankrSDK.CreateSubscriber(ERC20ContractInformation.WsProviderURL);
 			_eventSubscriber.ListenForEvents().Forget();
 			_eventSubscriber.OnOpenHandler += UniTask.Action(Subscribe);
 		}
 
-		public async UniTaskVoid Subscribe()
+		public override void DeActivateUseCase()
+		{
+			base.DeActivateUseCase();
+			_eventSubscriber.StopListen();
+		}
+
+		private async UniTaskVoid Subscribe()
 		{
 			var filters = new EventFilterData
 			{
@@ -51,12 +55,6 @@ namespace AnkrSDK.EventListenerExample
 		public void Unsubscribe()
 		{
 			_eventSubscriber.Unsubscribe(_subscription).Forget();
-		}
-
-		public void DeActivateUseCase()
-		{
-			base.DeActivateUseCase();
-			_eventSubscriber.StopListen();
 		}
 	}
 }

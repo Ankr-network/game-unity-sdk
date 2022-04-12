@@ -52,7 +52,7 @@ namespace AnkrSDK.Core.Implementation
 			return new Contract(_web3Provider, Eth, contractAddress, contractABI);
 		}
 
-		public ContractEventSubscriber GetSubscriber(string wsUrl)
+		public ContractEventSubscriber CreateSubscriber(string wsUrl)
 		{
 			return new ContractEventSubscriber(_web3Provider, wsUrl);
 		}

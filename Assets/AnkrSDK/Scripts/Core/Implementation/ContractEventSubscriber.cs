@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation;
 using Cysharp.Threading.Tasks;
-using NativeWebSocket;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.RpcMessages;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Subscriptions;
 using Nethereum.Web3;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
@@ -55,7 +55,7 @@ namespace AnkrSDK.Core.Implementation
 			_transport.OnClose += OnClose;
 			_transport.OnError += OnError;
 
-			Update();
+			Update().Forget();
 			
 			var connectTask = _transport.Connect();
 			await connectTask;

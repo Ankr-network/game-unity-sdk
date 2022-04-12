@@ -1,3 +1,4 @@
+using System;
 using AnkrSDK.Ads.Data;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
@@ -12,14 +13,12 @@ namespace AnkrSDK.Ads
 
 		private const string RandomImageURLBase = "http://45.77.189.28:5001/ad";
 
-		public static UniTask<AdRequestResult> RequestAdData(string accountAddress, AdType adType)
+		public static async UniTask<AdData> RequestAdData(string accountAddress, AdType adType)
 		{
-			return MakeRequest(accountAddress, adType);
-		}
-
-		private static async UniTask<AdRequestResult> MakeRequest(string accountAddress, AdType adType)
-		{
-			return await SendAdRequest(accountAddress);
+			var adRequestResult = await SendAdRequest(accountAddress);
+			return string.IsNullOrEmpty(adRequestResult.Error)
+				? adRequestResult.AdData
+				: null;
 		}
 
 		private static async UniTask<AdRequestResult> SendAdRequest(string accountAddress)
@@ -35,15 +34,16 @@ namespace AnkrSDK.Ads
 
 				if (www.result == UnityWebRequest.Result.Success)
 				{
-					var result = JsonConvert.DeserializeObject<AdRequestResult>(json);
-					if (result.Result)
+					try
 					{
-						Debug.Log($"Received Ad Data:{json}");
+						var result = JsonConvert.DeserializeObject<AdRequestResult>(json);
 						return result;
 					}
-
-					Debug.LogError("Error while making an ad request");
-					return null;
+					catch (Exception e)
+					{
+						Debug.LogError(e.Message);
+						return null;
+					}
 				}
 
 				Debug.LogError(www.error);

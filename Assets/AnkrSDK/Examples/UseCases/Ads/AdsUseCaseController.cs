@@ -39,17 +39,12 @@ namespace AnkrSDK.UseCases.Ads
 
 			var requestResult = await AnkrAds.RequestAdData(EthHandler.DefaultAccount, AdType.Banner);
 
-			if (requestResult == null)
-			{
-				return;
-			}
+			await UniTask.WhenAll(
+				_ankrBannerAdImage.SetupAd(requestResult),
+				_ankrBannerAdSprite.SetupAd(requestResult));
 
-			var data = requestResult;
-			var sprite = await AnkrWebHelper.GetImageFromURL(requestResult.TextureURL);
-			_ankrBannerAdImage.SetupAd(sprite);
-			_ankrBannerAdSprite.SetupAd(sprite);
-			_ankrBannerAdImage.gameObject.SetActive(true);
-			_ankrBannerAdSprite.gameObject.SetActive(true);
+			_ankrBannerAdImage.TryShow();
+			_ankrBannerAdSprite.TryShow();
 		}
 	}
 }
