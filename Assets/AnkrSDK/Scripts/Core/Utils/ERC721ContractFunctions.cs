@@ -117,7 +117,7 @@ namespace AnkrSDK.Core.Utils
 		///     Returns if the `operator` is allowed to manage all of the assets of `owner`.<br />
 		///     See <see cref="SetApprovalForAll" />
 		/// </summary>
-		public static UniTask<bool> IsApprovedForAll(string owner, string theOperator, IContract contract)
+		public static UniTask<bool> IsApprovedForAll(this IContract contract, string owner, string theOperator)
 		{
 			var isApprovedForAllMessage = new IsApprovedForAllMessage
 			{
@@ -133,7 +133,7 @@ namespace AnkrSDK.Core.Utils
 		///     Requirement:<br />
 		///     -"<paramref name="tokenId" />" must exist
 		/// </summary>
-		public static UniTask<bool> GetApproved(string tokenId, IContract contract)
+		public static UniTask<bool> GetApproved(this IContract contract, string tokenId)
 		{
 			var getApprovedMessage = new GetApprovedMessage
 			{
@@ -230,23 +230,7 @@ namespace AnkrSDK.Core.Utils
 				tokenId
 			});
 		}
-
-		/// <summary>
-		///     Returns the account approved for "<paramref name="tokenId" />" token.
-		///     Requirements:<br />
-		///     - `tokenId` must exist.
-		/// </summary>
-		/// <returns>The Operator's address in a string format</returns>
-		public static UniTask<string> GetApproved(this IContract contract, string tokenId)
-		{
-			const string getApprovedMethodName = "getApproved";
-
-			return contract.CallContractMethod(getApprovedMethodName, new object[]
-			{
-				tokenId
-			});
-		}
-
+		
 		/// <summary>
 		///     Approve or remove "<paramref name="callOperator" />" as an operator for the caller.
 		///     Operators can call <see cref="TransferFrom" /> or <see cref="SafeTransferFrom" /> for any token owned by the
