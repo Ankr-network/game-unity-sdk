@@ -32,20 +32,23 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 		// Message to be signed, which should be provided by the server
 		[SerializeField] private string _message = "Hahaha!";
 
-		[SerializeField] private TMP_Text _address;
+		[SerializeField] private TMP_Text _text;
 		
 		[SerializeField] private Button _signLinkinMessageButton;
+		[SerializeField] private Button _checkSignatureButton;
 
 		private string _signature;
 		
 		private void Awake()
 		{
 			_signLinkinMessageButton.onClick.AddListener(Sign);
+			_checkSignatureButton.onClick.AddListener(CheckSignature);
 		}
 
 		private void OnDestroy()
 		{
 			_signLinkinMessageButton.onClick.RemoveListener(Sign);
+			_checkSignatureButton.onClick.RemoveListener(CheckSignature);
 		}
 		
 		// function to sign the message
@@ -55,17 +58,13 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 		private async void Sign()
 		{
 			_signature = await AnkrSignatureHelper.Sign(_message);
-			Debug.Log($"Signature: {_signature}");
-			_address.text = _signature;
-			var address = await SendSignature(_signature);
-			Debug.Log($"Answer: {address}");
-
-			ShowAddressInUI();
+			UpdateUILogs($"Signature: {_signature}");
 		}
-
-		private void ShowAddressInUI()
+		
+		private async void CheckSignature()
 		{
-			_address.text = _signature;
+			var address = await SendSignature(_signature);
+			UpdateUILogs($"Answer: {address}");
 		}
 
 		private async Task<string> SendSignature(string signature)
@@ -82,6 +81,12 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 				.SendWebRequest();
 			var data = JsonConvert.DeserializeObject<RequestAnswer>(result.downloadHandler.text);
 			return data.Address;
+		}
+		
+		private void UpdateUILogs(string log)
+		{
+			_text.text += "\n" + log;
+			Debug.Log(log);
 		}
 	}
 }
