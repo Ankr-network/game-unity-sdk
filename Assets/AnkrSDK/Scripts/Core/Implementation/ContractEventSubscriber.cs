@@ -23,22 +23,22 @@ namespace AnkrSDK.Core.Implementation
 	
 	public class ContractEventSubscriber : IClientRequestHeaderSupport
 	{
-		public event OpenEventHandler OnOpenHandler;
-		public event ErrorEventHandler OnErrorHandler;
-		public event CloseEventHandler OnCloseHandler;
-		
-		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
-		private WebSocket _transport;
-		private bool _isCancellationRequested;
-
 		private readonly string _wsUrl;
 		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
 		private readonly EthLogsSubscriptionRequestBuilder _requestBuilder;
 		private readonly EthUnsubscribeRequestBuilder _unsubscribeRequestBuilder;
 		private readonly IWeb3 _web3Provider;
-
+		
+		private WebSocket _transport;
+		private bool _isCancellationRequested;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
-
+		
+		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
+		
+		public event OpenEventHandler OnOpenHandler;
+		public event ErrorEventHandler OnErrorHandler;
+		public event CloseEventHandler OnCloseHandler;
+		
 		public ContractEventSubscriber(IWeb3 web3Provider, string wsUrl)
 		{
 			_web3Provider = web3Provider;
@@ -128,9 +128,6 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var eventHandler = _web3Provider.Eth.GetEvent<TEventType>(contractAddress);
 			var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
-			filters.Address = null;
-			filters.FromBlock = null;
-			filters.ToBlock = null;
 
 			return filters;
 		}
@@ -177,8 +174,8 @@ namespace AnkrSDK.Core.Implementation
 		public void StopListen()
 		{
 			CloseConnection();
-			_transport.Close();
 			_subscribers.Clear();
+			_transport.Close();
 		}
 
 		private void CloseConnection()

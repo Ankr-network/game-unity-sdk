@@ -608,6 +608,7 @@ namespace NativeWebSocket
         {
             WebSocketCloseCode closeCode = WebSocketCloseCode.Abnormal;
             await new WaitForBackgroundThread();
+            
             ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[8192]);
             try
             {

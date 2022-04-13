@@ -44,6 +44,11 @@ namespace AnkrSDK.EventListenerExample
 			);
 		}
 
+		public void ReceiveEvent(TransferEventDTO contractEvent)
+		{
+			Debug.Log($"{contractEvent.From} - {contractEvent.To} - {contractEvent.Value}");
+		}
+
 
 		public async void Unsubscribe()
 		{
