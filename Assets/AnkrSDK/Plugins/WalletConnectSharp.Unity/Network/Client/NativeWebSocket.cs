@@ -439,6 +439,7 @@ namespace NativeWebSocket
 
                 await m_Socket.ConnectAsync(uri, m_CancellationToken);
                 OnOpen?.Invoke();
+
                 await Receive();
             }
             catch (Exception ex)
@@ -608,13 +609,14 @@ namespace NativeWebSocket
         {
             WebSocketCloseCode closeCode = WebSocketCloseCode.Abnormal;
             await new WaitForBackgroundThread();
-            
+
             ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[8192]);
             try
             {
                 while (m_Socket.State == System.Net.WebSockets.WebSocketState.Open)
                 {
                     WebSocketReceiveResult result = null;
+
                     using (var ms = new MemoryStream())
                     {
                         do
@@ -622,7 +624,9 @@ namespace NativeWebSocket
                             result = await m_Socket.ReceiveAsync(buffer, m_CancellationToken);
                             ms.Write(buffer.Array, buffer.Offset, result.Count);
                         } while (!result.EndOfMessage);
+
                         ms.Seek(0, SeekOrigin.Begin);
+
                         if (result.MessageType == WebSocketMessageType.Text)
                         {
                             m_MessageListMutex.WaitOne();
