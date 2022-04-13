@@ -21,7 +21,7 @@ namespace AnkrSDK.Examples.ERC20Example
 		private IContract _erc20Contract;
 		private EthHandler _eth;
 
-		private async void Start()
+		private void Start()
 		{
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
 			_erc20Contract =
@@ -50,7 +50,7 @@ namespace AnkrSDK.Examples.ERC20Example
 			evController.OnReceiptReceived += HandleReceipt;
 			evController.OnError += HandleError;
 			
-			_erc20Contract.Web3SendMethod("mint", Array.Empty<object>(), evController);
+			_erc20Contract.Web3SendMethod(MintMethodName, Array.Empty<object>(), evController);
 		}
 		
 		public static void HandleSent(object sender, TransactionInput transaction)

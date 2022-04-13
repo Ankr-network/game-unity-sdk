@@ -16,11 +16,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
-{
-	public delegate void OpenEventHandler();
-	public delegate void ErrorEventHandler(string errorMsg);
-	public delegate void CloseEventHandler(WebSocketCloseCode closeCode);
-	
+{	
 	public class ContractEventSubscriber : IClientRequestHeaderSupport
 	{
 		private readonly string _wsUrl;
@@ -35,9 +31,9 @@ namespace AnkrSDK.Core.Implementation
 		
 		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 		
-		public event OpenEventHandler OnOpenHandler;
-		public event ErrorEventHandler OnErrorHandler;
-		public event CloseEventHandler OnCloseHandler;
+		public event Action OnOpenHandler;
+		public event Action<string> OnErrorHandler;
+		public event Action<WebSocketCloseCode> OnCloseHandler;
 		
 		public ContractEventSubscriber(IWeb3 web3Provider, string wsUrl)
 		{
