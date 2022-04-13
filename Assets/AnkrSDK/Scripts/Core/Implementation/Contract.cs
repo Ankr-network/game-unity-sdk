@@ -5,19 +5,12 @@ using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Events.Infrastructure;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
-using AnkrSDK.Examples.DTO;
-using Common.Logging;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
-using Nethereum.JsonRpc.Client;
-using Nethereum.JsonRpc.WebSocketStreamingClient;
 using Nethereum.RPC.Eth.DTOs;
-using Nethereum.RPC.Eth.Subscriptions;
 using Nethereum.Web3;
-using Newtonsoft.Json;
-using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
