@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Nethereum.JsonRpc.Client.RpcMessages;
-using UnityEngine;
 
 
 namespace Nethereum.JsonRpc.Client.Streaming

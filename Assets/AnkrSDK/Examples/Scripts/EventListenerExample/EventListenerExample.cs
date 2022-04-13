@@ -40,15 +40,14 @@ namespace AnkrSDK.EventListenerExample
 			_subscription = await _eventSubscriber.Subscribe(
 				filters,
 				ERC20ContractInformation.ContractAddress, 
-				(TransferEventDTO t) => Debug.Log(JsonConvert.SerializeObject(t))
+				(TransferEventDTO t) => ReceiveEvent(t)
 			);
 		}
 
-		public void ReceiveEvent(TransferEventDTO contractEvent)
+		private void ReceiveEvent(TransferEventDTO contractEvent)
 		{
 			Debug.Log($"{contractEvent.From} - {contractEvent.To} - {contractEvent.Value}");
 		}
-
 
 		public async void Unsubscribe()
 		{
