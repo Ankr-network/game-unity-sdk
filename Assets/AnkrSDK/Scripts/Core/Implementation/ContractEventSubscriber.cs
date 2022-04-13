@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
@@ -107,16 +106,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var request = _requestBuilder.BuildRequest(filterInput, id);
 
-			return RpcRequestToString(request);
-		}
-
-		private string RpcRequestToString(RpcRequest rpcRequest)
-		{
-			var reqMsg = new RpcRequestMessage(rpcRequest.Id,
-				rpcRequest.Method,
-				rpcRequest.RawParameters);
-
-			return JsonConvert.SerializeObject(reqMsg);
+			return EventSubscriberHelper.RpcRequestToString(request);
 		}
 
 		private NewFilterInput TransformFilters<TEventType>(EventFilterData evFilter, string contractAddress)
@@ -132,14 +122,8 @@ namespace AnkrSDK.Core.Implementation
 		{
 			_subscribers.Remove(subscription.SubscriptionId);
 			var rpcRequest = _unsubscribeRequestBuilder.BuildRequest(subscription.SubscriptionId);
-			var requestMessage = RpcRequestToString(rpcRequest);
+			var requestMessage = EventSubscriberHelper.RpcRequestToString(rpcRequest);
 			await _transport.SendText(requestMessage);
-		}
-
-		private RpcStreamingResponseMessage DeserializeMessage(byte[] message)
-		{
-			var messageJson = Encoding.UTF8.GetString(message);
-			return JsonConvert.DeserializeObject<RpcStreamingResponseMessage>(messageJson);
 		}
 
 		private void OnSocketOpen()
@@ -149,7 +133,7 @@ namespace AnkrSDK.Core.Implementation
 
 		private void OnEventMessageReceived(byte[] rpcAnswer)
 		{
-			var rpcMessage = DeserializeMessage(rpcAnswer);
+			var rpcMessage = EventSubscriberHelper.DeserializeMessage(rpcAnswer);
 
 			if (rpcMessage.Method == null)
 			{
