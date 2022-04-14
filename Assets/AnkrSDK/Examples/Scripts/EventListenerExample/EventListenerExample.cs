@@ -25,7 +25,7 @@ namespace AnkrSDK.EventListenerExample
 
 			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
 			_eventSubscriber.ListenForEvents().Forget();
-			_eventSubscriber.OnOpenHandler += Subscribe;
+			_eventSubscriber.OnOpenHandler += UniTask.Action(Subscribe);
 		}
 
 		public async UniTaskVoid Subscribe()
