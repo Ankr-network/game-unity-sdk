@@ -53,10 +53,10 @@ namespace AnkrSDK.UI
 
 		private async UniTaskVoid TrySubscribeToWalletEvents()
 		{
-			if (WalletConnect.ActiveSession == null)
+			if (WalletConnect.Instance == null)
 			{
 				Debug.Log("Wallet Connect Instance is null waiting.");
-				await UniTask.WaitWhile(() => WalletConnect.ActiveSession == null);
+				await UniTask.WaitWhile(() => WalletConnect.Instance == null);
 			}
 
 			_loginButton.onClick.AddListener(GetLoginAction());
@@ -72,30 +72,23 @@ namespace AnkrSDK.UI
 	#else
 		private UnityAction GetLoginAction()
 		{
+			var connectURL = WalletConnect.Instance.ConnectURL;
 			if (_qrCodeImage != null)
 			{
-				return GetQrLoginAction;
+				return () =>
+				{
+					_qrCodeImage.UpdateQRCode(connectURL);
+					_qrCodeImage.SetImageActive(true);
+				};
 			}
 
-			return DefaultLoginAction;
-		}
-
-		private void GetQrLoginAction()
-		{
-			var connectURL = WalletConnect.Instance.ConnectURL;
-			_qrCodeImage.UpdateQRCode(connectURL);
-			_qrCodeImage.SetImageActive(true);
-		}
-
-		private void DefaultLoginAction()
-		{
-			var connectURL = WalletConnect.Instance.ConnectURL;
-			Debug.Log($"Trying to open {connectURL}");
+			return () => Debug.Log($"Trying to open {connectURL}");
 		}
 	#endif
 
 		private void SubscribeOnTransportEvents()
 		{
+			UpdateSceneState();
 			UpdateLoginButtonState(this, WalletConnect.ActiveSession);
 
 			WalletConnect.Instance.ConnectedEvent.AddListener(UpdateSceneState);
