@@ -76,4 +76,5 @@ UserSettings/EditorUserSettings.asset
 *.sln
 UserSettings/AndroidLogcatSettings.asset
 *.csproj.meta
-.idea/.idea.mirage-unity-sdk
+.idea
+.idea.mirage-unity-sdk

@@ -1,4 +1,3 @@
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Data;
 using Nethereum.Contracts;
 using Nethereum.RPC.Eth.DTOs;
@@ -35,7 +34,6 @@ namespace AnkrSDK.Core.Utils
 				return eventHandler.CreateFilterInput(evFilter.filterTopic1, evFilter.fromBlock,
 					evFilter.toBlock);
 			}
-
 			return eventHandler.CreateFilterInput(evFilter.fromBlock, evFilter.toBlock);
 		}
 	}

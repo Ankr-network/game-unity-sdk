@@ -356,7 +356,7 @@ namespace Cysharp.Threading.Tasks.Internal
         }
     }
 
-    internal sealed class AsyncSubject<T> : IObservable<T>, IObserver<T>
+    public class AsyncSubject<T> : IObservable<T>, IObserver<T>
     {
         object observerLock = new object();
 

@@ -128,7 +128,6 @@ namespace Nethereum.JsonRpc.Client.Streaming
                             HandleSubscribeResponse(result);
                         }
                     }
-
                     if (!string.IsNullOrEmpty(UnsubscribeRequestId) && rpcStreamingResponse.Id.ToString() == UnsubscribeRequestId)
                     {
                         if (rpcStreamingResponse.HasError)
