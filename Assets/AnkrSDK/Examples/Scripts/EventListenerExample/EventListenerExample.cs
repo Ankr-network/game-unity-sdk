@@ -20,13 +20,13 @@ namespace AnkrSDK.EventListenerExample
 		private ContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
 
-		private async void Start()
+		private void Start()
 		{
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
 
 			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
+			_eventSubscriber.ListenForEvents();
 			_eventSubscriber.OnOpenHandler += Subscribe;
-			await _eventSubscriber.ListenForEvents();
 		}
 
 		public async void Subscribe()
