@@ -30,9 +30,9 @@ namespace AnkrSDK.Core.Implementation
 		
 		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 		
-		public event Action OnOpenHandler;
-		public event Action<string> OnErrorHandler;
-		public event Action<WebSocketCloseCode> OnCloseHandler;
+		public event Func<UniTaskVoid> OnOpenHandler;
+		public event Func<string, UniTaskVoid> OnErrorHandler;
+		public event Func<WebSocketCloseCode, UniTaskVoid> OnCloseHandler;
 		
 		public ContractEventSubscriber(IWeb3 web3Provider, string wsUrl)
 		{

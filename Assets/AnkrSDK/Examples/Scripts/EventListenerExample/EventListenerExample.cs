@@ -1,14 +1,11 @@
-﻿using System;
-using System.Numerics;
-using AnkrSDK.Core.Data;
-using AnkrSDK.Core.Data.ContractMessages.ERC721;
+﻿using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
 using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.UseCases;
+using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AnkrSDK.EventListenerExample
@@ -19,17 +16,19 @@ namespace AnkrSDK.EventListenerExample
 		private EthHandler _eth;
 		private ContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
-
-		private void Start()
+		
+		public override void ActivateUseCase()
 		{
+			base.ActivateUseCase();
+			
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
 
 			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
-			_eventSubscriber.ListenForEvents();
+			_eventSubscriber.ListenForEvents().Forget();
 			_eventSubscriber.OnOpenHandler += Subscribe;
 		}
 
-		public async void Subscribe()
+		public async UniTaskVoid Subscribe()
 		{
 			var filters = new EventFilterData
 			{
@@ -49,14 +48,14 @@ namespace AnkrSDK.EventListenerExample
 			Debug.Log($"{contractEvent.From} - {contractEvent.To} - {contractEvent.Value}");
 		}
 
-		public async void Unsubscribe()
+		public void Unsubscribe()
 		{
-			_eventSubscriber.Unsubscribe(_subscription);
+			_eventSubscriber.Unsubscribe(_subscription).Forget();
 		}
-		
 
-		private void OnDisable()
+		public void DeActivateUseCase()
 		{
+			base.DeActivateUseCase();
 			_eventSubscriber.StopListen();
 		}
 	}
