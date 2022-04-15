@@ -4,23 +4,11 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a273faea-5c8d-42d6-a5fb-ea57badc29c3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/WearableNFTExample/WearableNFTExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/WearableNFTExample/WearableNFTExample.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a273faea-5c8d-42d6-a5fb-ea57badc29c3" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="RunManager">
-    <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/Builds/Android\Ankr SDK.exe" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="E:\Github\Ankr\game-unity-sdk\Builds\Android" />
-      <option name="PASS_PARENT_ENVS" value="1" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <method v="2" />
-    </configuration>
   </component>
   <component name="TaskManager">
     <servers />

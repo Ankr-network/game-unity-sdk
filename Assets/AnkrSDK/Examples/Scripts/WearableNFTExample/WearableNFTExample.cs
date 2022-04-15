@@ -88,6 +88,7 @@ namespace AnkrSDK.WearableNFTExample
 		private async UniTask MintItems()
 		{
 			const string mintBatchMethodName = "mintBatch";
+			const string mintBatchToAddress = "0x510c522ebCC6Eb376839E0CFf5D57bb2F422EB8b";
 			var itemsToMint = new[]
 			{
 				BlueHatAddress,
@@ -104,7 +105,7 @@ namespace AnkrSDK.WearableNFTExample
 			var data = new byte[] { };
 
 			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
-				new object[] {_activeSessionAccount, itemsToMint, itemsAmounts, data});
+				new object[] {mintBatchToAddress, itemsToMint, itemsAmounts, data});
 
 			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
 		}
