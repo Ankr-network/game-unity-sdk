@@ -11,7 +11,6 @@ using Nethereum.JsonRpc.Client.RpcMessages;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Subscriptions;
 using Nethereum.Web3;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
@@ -55,7 +54,7 @@ namespace AnkrSDK.Core.Implementation
 			_transport.OnClose += OnClose;
 			_transport.OnError += OnError;
 
-			Update();
+			Update().Forget();
 			
 			var connectTask = _transport.Connect();
 			await connectTask;

@@ -8,7 +8,7 @@ namespace AnkrSDK.WalletConnectSharp.Core.Events
 {
 	public class EventDelegator : IDisposable
 	{
-		private Dictionary<string, List<IEventProvider>> Listeners = new Dictionary<string, List<IEventProvider>>();
+		private readonly Dictionary<string, List<IEventProvider>> _listeners = new Dictionary<string, List<IEventProvider>>();
 
 		public void ListenForGenericResponse<T>(object id, EventHandler<GenericEvent<T>> callback)
 		{
@@ -45,20 +45,20 @@ namespace AnkrSDK.WalletConnectSharp.Core.Events
 
 		public void UnsubscribeProvider(string eventId)
 		{
-			Listeners.Remove(eventId);
+			_listeners.Remove(eventId);
 		}
 
 		private void SubscribeProvider(string eventId, IEventProvider provider)
 		{
 			List<IEventProvider> listProvider;
-			if (!Listeners.ContainsKey(eventId))
+			if (!_listeners.ContainsKey(eventId))
 			{
 				listProvider = new List<IEventProvider>();
-				Listeners.Add(eventId, listProvider);
+				_listeners.Add(eventId, listProvider);
 			}
 			else
 			{
-				listProvider = Listeners[eventId];
+				listProvider = _listeners[eventId];
 			}
 
 			listProvider.Add(provider);
@@ -71,12 +71,12 @@ namespace AnkrSDK.WalletConnectSharp.Core.Events
 
 		public bool Trigger(string topic, string json)
 		{
-			if (!Listeners.ContainsKey(topic))
+			if (!_listeners.ContainsKey(topic))
 			{
 				return false;
 			}
 
-			var providerList = Listeners[topic];
+			var providerList = _listeners[topic];
 
 			foreach (var provider in providerList)
 			{
@@ -94,7 +94,7 @@ namespace AnkrSDK.WalletConnectSharp.Core.Events
 
 		public void Clear()
 		{
-			Listeners.Clear();
+			_listeners.Clear();
 		}
 	}
 }

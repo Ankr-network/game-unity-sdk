@@ -9,7 +9,7 @@ namespace AnkrSDK.UseCases
 			gameObject.SetActive(true);
 		}
 
-		public void DeActivateUseCase()
+		public virtual void DeActivateUseCase()
 		{
 			gameObject.SetActive(false);
 		}

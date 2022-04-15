@@ -311,6 +311,7 @@ namespace NativeWebSocket
         }
       }
     }
+    public void DispatchMessageQueue(){}
 
     public void DelegateOnOpenEvent () {
       this.OnOpen?.Invoke ();
