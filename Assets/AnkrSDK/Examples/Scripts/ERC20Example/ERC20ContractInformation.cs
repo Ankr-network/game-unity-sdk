@@ -7,6 +7,6 @@ namespace AnkrSDK.Examples.ERC20Example
 
 		public const string ContractAddress = "0x2fF8D8A0E5D8e3cf34aa490aBfD8F365e1F77F0d";
 		public const string HttpProviderURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
-		public const string WsProviderURL = "wss://mainnet.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
+		public const string WsProviderURL = "wss://rinkeby.infura.io/ws/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
 	}
 }

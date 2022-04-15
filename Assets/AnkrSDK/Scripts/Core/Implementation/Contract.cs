@@ -42,7 +42,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_contractAddress);
 
-			var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
+			var filters = EventFilterHelper.CreateEventFilters<TEvDto>(_contractAddress, evFilter);
 
 			return eventHandler.GetAllChangesAsync(filters);
 		}

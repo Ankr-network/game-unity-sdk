@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.DTO;
-using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.JsonRpc.WebSocketStreamingClient;
+using AnkrSDK.UseCases;
+using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
 namespace AnkrSDK.Examples.ERC20Example
 {
-	public class ERC20Example : MonoBehaviour
+	public class ERC20Example : UseCase
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
 		private EthHandler _eth;
+		private ContractEventSubscriber _eventSubscriber;
 
 		private void Start()
 		{
@@ -29,6 +28,29 @@ namespace AnkrSDK.Examples.ERC20Example
 					ERC20ContractInformation.ContractAddress,
 					ERC20ContractInformation.ABI);
 			_eth = ankrSDK.Eth;
+			
+			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
+			_eventSubscriber.ListenForEvents().Forget();
+			_eventSubscriber.OnOpenHandler += UniTask.Action(Subscribe);
+		}
+		
+		public async UniTaskVoid Subscribe()
+		{
+			var filters = new EventFilterData
+			{
+				filterTopic2 = new [] { EthHandler.DefaultAccount }
+			};
+
+			var _subscription = await _eventSubscriber.Subscribe(
+				filters,
+				ERC20ContractInformation.ContractAddress, 
+				(TransferEventDTO t) => ReceiveEvent(t)
+			);
+		}
+		
+		private void ReceiveEvent(TransferEventDTO contractEvent)
+		{
+			Debug.Log($"{contractEvent.From} - {contractEvent.To} - {contractEvent.Value}");
 		}
 
 		public async void CallMint()
