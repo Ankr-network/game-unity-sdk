@@ -13,8 +13,8 @@ namespace AnkrSDK.Core.Utils
 		{
 			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
 			
-			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter.fromBlock, evFilter.toBlock);
-			if (evFilter.AreTopicsFilled())
+			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter?.fromBlock, evFilter?.toBlock);
+			if (evFilter != null && evFilter.AreTopicsFilled())
 			{
 				ethFilterInput.Topics = eventABI.GetTopicBuilder()
 					.GetTopics(evFilter.filterTopic1, evFilter.filterTopic2, evFilter.filterTopic3);
@@ -29,8 +29,8 @@ namespace AnkrSDK.Core.Utils
 			
 			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
 			
-			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter.fromBlock, evFilter.toBlock);
-			if (values.Any())
+			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter?.fromBlock, evFilter?.toBlock);
+			if (evFilter != null && values.Any())
 			{
 				ethFilterInput.Topics = eventABI.GetTopicBuilder()
 					.GetTopics(
