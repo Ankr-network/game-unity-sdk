@@ -45,28 +45,6 @@ namespace AnkrSDK.EventListenerExample
 				(TransferEventDTO t) => ReceiveEvent(t)
 			);
 		}
-		
-		// If you know only topic name then you can use EventFilterRequest
-		public async UniTaskVoid SubscribeWithRequest()
-		{
-			var eventRequest = new TransferEventDTO
-			{
-				To = EthHandler.DefaultAccount
-			};
-
-			var filtersRequest = new EventFilterRequest<TransferEventDTO>
-			{
-				fromBlock = BlockParameter.CreateLatest(),
-				toBlock = BlockParameter.CreateLatest(),
-				request = eventRequest
-			};
-
-			_subscription = await _eventSubscriber.Subscribe(
-				filtersRequest,
-				ERC20ContractInformation.ContractAddress, 
-				(TransferEventDTO t) => ReceiveEvent(t)
-			);
-		}
 
 		private void ReceiveEvent(TransferEventDTO contractEvent)
 		{

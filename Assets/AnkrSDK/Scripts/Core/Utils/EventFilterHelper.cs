@@ -14,7 +14,7 @@ namespace AnkrSDK.Core.Utils
 			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
 			
 			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter.fromBlock, evFilter.toBlock);
-			if (evFilter.TopicsIsFilled())
+			if (evFilter.AreTopicsFilled())
 			{
 				ethFilterInput.Topics = eventABI.GetTopicBuilder()
 					.GetTopics(evFilter.filterTopic1, evFilter.filterTopic2, evFilter.filterTopic3);
@@ -51,15 +51,8 @@ namespace AnkrSDK.Core.Utils
 		private static List<object> GetDataFromRequest<TEvDto>(EventFilterRequest<TEvDto> evFilter)
 		{
 			var properties = PropertiesExtractor.GetPropertiesWithParameterAttribute(typeof(TEvDto));
-			var values = new List<object>();
 			
-			foreach (var property in properties)
-			{
-				var propValue = property.GetValue(evFilter, null);
-				values.Add(propValue);
-			}
-			
-			return values;
-		}
+			return properties.Select(property => property.GetValue(evFilter, null)).ToList();
+		}	
 	}
 }
