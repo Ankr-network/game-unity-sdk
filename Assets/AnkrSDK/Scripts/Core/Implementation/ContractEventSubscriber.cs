@@ -78,7 +78,19 @@ namespace AnkrSDK.Core.Implementation
 		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterData evFilter, string contractAddress,
 			Action<TEventType> handler) where TEventType : IEventDTO, new()
 		{
-			var filters = TransformFilters<TEventType>(evFilter, contractAddress);
+			var filters = EventFilterHelper.CreateEventFilters<TEventType>(contractAddress, evFilter);
+			var subscriptionId = await CreateSubscription(filters);
+
+			var eventSubscription = new ContractEventSubscription<TEventType>(subscriptionId, handler);
+			_subscribers.Add(subscriptionId, eventSubscription);
+
+			return eventSubscription;
+		}
+		
+		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterRequest<TEventType> evFilter, string contractAddress,
+			Action<TEventType> handler) where TEventType : IEventDTO, new()
+		{
+			var filters = EventFilterHelper.CreateEventFilters(contractAddress, evFilter);
 			var subscriptionId = await CreateSubscription(filters);
 
 			var eventSubscription = new ContractEventSubscription<TEventType>(subscriptionId, handler);
@@ -106,15 +118,6 @@ namespace AnkrSDK.Core.Implementation
 			var request = _requestBuilder.BuildRequest(filterInput, id);
 
 			return EventSubscriberHelper.RpcRequestToString(request);
-		}
-
-		private NewFilterInput TransformFilters<TEventType>(EventFilterData evFilter, string contractAddress)
-			where TEventType : IEventDTO, new()
-		{
-			var eventHandler = _web3Provider.Eth.GetEvent<TEventType>(contractAddress);
-			var filters = EventFilterHelper.CreateEventFilters(eventHandler, evFilter);
-
-			return filters;
 		}
 
 		public async UniTaskVoid Unsubscribe(IContractEventSubscription subscription)

@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.DTO;
-using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.JsonRpc.WebSocketStreamingClient;
+using AnkrSDK.UseCases;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
 namespace AnkrSDK.Examples.ERC20Example
 {
-	public class ERC20Example : MonoBehaviour
+	public class ERC20Example : UseCase
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
@@ -41,7 +38,7 @@ namespace AnkrSDK.Examples.ERC20Example
 			Debug.Log($"Nonce: {trx.Nonce}");
 		}
 		
-		public async void SendMint()
+		public void SendMint()
 		{
 			var evController = new TransactionEventDelegator();
 			evController.OnTransactionSendBegin += HandleSending;
@@ -94,6 +91,7 @@ namespace AnkrSDK.Examples.ERC20Example
 			{
 				fromBlock = BlockParameter.CreateEarliest(),
 				toBlock = BlockParameter.CreateLatest(),
+				filterTopic2 = new [] { EthHandler.DefaultAccount }
 			};
 			var events = await _erc20Contract.GetAllChanges<TransferEventDTO>(filters);
 

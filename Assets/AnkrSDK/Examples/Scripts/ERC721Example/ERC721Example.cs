@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Numerics;
+using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
-using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.UseCases;
+using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
 namespace AnkrSDK.Examples.ERC721Example
 {
-	public class ERC721Example : MonoBehaviour
+	public class ERC721Example : UseCase
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc721Contract;
@@ -47,7 +49,13 @@ namespace AnkrSDK.Examples.ERC721Example
 
 		public async void GetEvents()
 		{
-			var events = await _erc721Contract.GetAllChanges<TransferEventDTO>();
+			var filters = new EventFilterData()
+			{
+				fromBlock = BlockParameter.CreateEarliest(),
+				toBlock = BlockParameter.CreateLatest(),
+				filterTopic2 = new [] { EthHandler.DefaultAccount }
+			};
+			var events = await _erc721Contract.GetAllChanges<TransferEventDTO>(filters);
 
 			foreach (var ev in events)
 			{
