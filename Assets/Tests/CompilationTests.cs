@@ -14,13 +14,17 @@ namespace Tests
 	{
 		private static readonly Dictionary<string, ScriptCompilationSettings> ScriptCompilationSettings = new Dictionary<string, ScriptCompilationSettings>
 		{
-			["AndroidQa"] = new ScriptCompilationSettings
+			["Android"] = new ScriptCompilationSettings
 			{
 				group = BuildTargetGroup.Android, options = ScriptCompilationOptions.None, target = BuildTarget.Android,
 			},
-			["iOSProd"] = new ScriptCompilationSettings
+			["iOS"] = new ScriptCompilationSettings
 			{
 				group = BuildTargetGroup.iOS, options = ScriptCompilationOptions.None, target = BuildTarget.iOS,
+			},
+			["WebGL"] = new ScriptCompilationSettings
+			{
+				group = BuildTargetGroup.WebGL, options = ScriptCompilationOptions.None, target = BuildTarget.WebGL,
 			}
 		};
 

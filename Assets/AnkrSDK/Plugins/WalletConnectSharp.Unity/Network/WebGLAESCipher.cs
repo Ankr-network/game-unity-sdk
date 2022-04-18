@@ -15,44 +15,46 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
         public Task<EncryptedPayload> EncryptWithKey(byte[] key, string message, Encoding encoding = null)
         {
             if (encoding == null)
+            {
                 encoding = Encoding.UTF8;
+            }
 
-            byte[] data = encoding.GetBytes(message);
+            var data = encoding.GetBytes(message);
 
             //Encrypt with AES/CBC/PKCS7Padding
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
-                using (AesManaged ciphor = new AesManaged())
+                using (var cipher = new AesManaged())
                 {
-                    ciphor.Mode = CipherMode.CBC;
-                    ciphor.Padding = PaddingMode.PKCS7;
-                    ciphor.KeySize = 256;
+                    cipher.Mode = CipherMode.CBC;
+                    cipher.Padding = PaddingMode.PKCS7;
+                    cipher.KeySize = 256;
                     
-                    byte[] iv = ciphor.IV;
+                    var iv = cipher.IV;
 
-                    using (CryptoStream cs = new CryptoStream(ms, ciphor.CreateEncryptor(key, iv),
+                    using (var cs = new CryptoStream(ms, cipher.CreateEncryptor(key, iv),
                         CryptoStreamMode.Write))
                     {
                         cs.Write(data, 0, data.Length);
                     }
 
-                    byte[] encryptedContent = ms.ToArray();
+                    var encryptedContent = ms.ToArray();
 
-                    using (HMACSHA256 hmac = new HMACSHA256(key))
+                    using (var hmac = new HMACSHA256(key))
                     {
                         hmac.Initialize();
                         
-                        byte[] toSign = new byte[iv.Length + encryptedContent.Length];
+                        var toSign = new byte[iv.Length + encryptedContent.Length];
 
                         //copy our 2 array into one
                         Buffer.BlockCopy(encryptedContent, 0, toSign, 0,encryptedContent.Length);
                         Buffer.BlockCopy(iv, 0, toSign, encryptedContent.Length, iv.Length);
 
-                        byte[] signature = hmac.ComputeHash(toSign);
+                        var signature = hmac.ComputeHash(toSign);
                         
-                        string ivHex = iv.ToHex();
-                        string dataHex = encryptedContent.ToHex();
-                        string hmacHex = signature.ToHex();
+                        var ivHex = iv.ToHex();
+                        var dataHex = encryptedContent.ToHex();
+                        var hmacHex = signature.ToHex();
 
                         return Task.FromResult(new EncryptedPayload()
                         {
@@ -68,29 +70,33 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
         public Task<string> DecryptWithKey(byte[] key, EncryptedPayload encryptedData, Encoding encoding = null)
         {
             if (encoding == null)
+            {
                 encoding = Encoding.UTF8;
-            
-            byte[] rawData = encryptedData.data.FromHex();
-            byte[] iv = encryptedData.iv.FromHex();
-            byte[] hmacReceived = encryptedData.hmac.FromHex();
+            }
 
-            using (HMACSHA256 hmac = new HMACSHA256(key))
+            var rawData = encryptedData.data.FromHex();
+            var iv = encryptedData.iv.FromHex();
+            var hmacReceived = encryptedData.hmac.FromHex();
+
+            using (var hmac = new HMACSHA256(key))
             {
                 hmac.Initialize();
 
-                byte[] toSign = new byte[iv.Length + rawData.Length];
+                var toSign = new byte[iv.Length + rawData.Length];
                         
                 //copy our 2 array into one
                 Buffer.BlockCopy(rawData, 0, toSign, 0,rawData.Length);
                 Buffer.BlockCopy(iv, 0, toSign, rawData.Length, iv.Length);
                 
-                byte[] signature = hmac.ComputeHash(toSign);
+                var signature = hmac.ComputeHash(toSign);
 
                 if (!signature.SequenceEqual(hmacReceived))
+                {
                     throw new InvalidDataException("HMAC Provided does not match expected"); //Ignore
+                }
             }
 
-            using (AesManaged cryptor = new AesManaged())
+            using (var cryptor = new AesManaged())
             {
                 cryptor.Mode = CipherMode.CBC;
                 cryptor.Padding = PaddingMode.PKCS7;
@@ -99,22 +105,24 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
                 cryptor.IV = iv;
                 cryptor.Key = key;
 
-                ICryptoTransform decryptor = cryptor.CreateDecryptor(cryptor.Key, cryptor.IV);
+                var decryptor = cryptor.CreateDecryptor(cryptor.Key, cryptor.IV);
 
-                using (MemoryStream ms = new MemoryStream(rawData))
+                using (var ms = new MemoryStream(rawData))
                 {
-                    using (MemoryStream sink = new MemoryStream())
+                    using (var sink = new MemoryStream())
                     {
-                        using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                        using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
                         {
-                            int read = 0;
-                            byte[] buffer = new byte[1024];
+                            var read = 0;
+                            var buffer = new byte[1024];
                             do
                             {
                                 read = cs.Read(buffer, 0, buffer.Length);
                                 
                                 if (read > 0)
+                                {
                                     sink.Write(buffer, 0, read);
+                                }
                             } while (read > 0);
 
                             cs.Flush();

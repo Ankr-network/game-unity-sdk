@@ -1,4 +1,4 @@
-﻿using AnkrSDK.Core.Data;
+using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
