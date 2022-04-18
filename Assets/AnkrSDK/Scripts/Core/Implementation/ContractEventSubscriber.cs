@@ -87,6 +87,18 @@ namespace AnkrSDK.Core.Implementation
 
 			return eventSubscription;
 		}
+		
+		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterRequest<TEventType> evFilter, string contractAddress,
+			Action<TEventType> handler) where TEventType : IEventDTO, new()
+		{
+			var filters = EventFilterHelper.CreateEventFilters(contractAddress, evFilter);
+			var subscriptionId = await CreateSubscription(filters);
+
+			var eventSubscription = new ContractEventSubscription<TEventType>(subscriptionId, handler);
+			_subscribers.Add(subscriptionId, eventSubscription);
+
+			return eventSubscription;
+		}
 
 		private async UniTask<string> CreateSubscription(NewFilterInput filters)
 		{

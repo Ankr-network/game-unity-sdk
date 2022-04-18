@@ -5,6 +5,7 @@ using AnkrSDK.Examples.DTO;
 using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
+using Nethereum.Contracts;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
@@ -25,19 +26,43 @@ namespace AnkrSDK.EventListenerExample
 
 			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
 			_eventSubscriber.ListenForEvents().Forget();
-			_eventSubscriber.OnOpenHandler += UniTask.Action(Subscribe);
+			_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithTopics);
 		}
 
-		public async UniTaskVoid Subscribe()
+		// If you know topic position then you can use EventFilterData
+		public async UniTaskVoid SubscribeWithTopics()
 		{
 			var filters = new EventFilterData
 			{
 				fromBlock = BlockParameter.CreateLatest(),
-				toBlock = BlockParameter.CreateLatest()
+				toBlock = BlockParameter.CreateLatest(),
+				filterTopic2 = new[] { EthHandler.DefaultAccount }
 			};
 
 			_subscription = await _eventSubscriber.Subscribe(
 				filters,
+				ERC20ContractInformation.ContractAddress, 
+				(TransferEventDTO t) => ReceiveEvent(t)
+			);
+		}
+		
+		// If you know only topic name then you can use EventFilterRequest
+		public async UniTaskVoid SubscribeWithRequest()
+		{
+			var eventRequest = new TransferEventDTO
+			{
+				To = EthHandler.DefaultAccount
+			};
+
+			var filtersRequest = new EventFilterRequest<TransferEventDTO>
+			{
+				fromBlock = BlockParameter.CreateLatest(),
+				toBlock = BlockParameter.CreateLatest(),
+				request = eventRequest
+			};
+
+			_subscription = await _eventSubscriber.Subscribe(
+				filtersRequest,
 				ERC20ContractInformation.ContractAddress, 
 				(TransferEventDTO t) => ReceiveEvent(t)
 			);
