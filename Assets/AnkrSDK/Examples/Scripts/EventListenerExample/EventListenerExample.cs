@@ -1,4 +1,4 @@
-using AnkrSDK.Core.Data;
+﻿using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
@@ -24,7 +24,7 @@ namespace AnkrSDK.EventListenerExample
 			
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
 
-			_eventSubscriber = ankrSDK.GetSubscriber(ERC20ContractInformation.WsProviderURL);
+			_eventSubscriber = ankrSDK.CreateSubscriber(ERC20ContractInformation.WsProviderURL);
 			_eventSubscriber.ListenForEvents().Forget();
 			_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithTopics);
 		}
