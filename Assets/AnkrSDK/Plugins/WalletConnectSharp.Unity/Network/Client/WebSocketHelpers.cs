@@ -1,6 +1,6 @@
 using System;
 
-namespace NativeWebSocket
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
 {
 	public static class WebSocketHelpers
 	{

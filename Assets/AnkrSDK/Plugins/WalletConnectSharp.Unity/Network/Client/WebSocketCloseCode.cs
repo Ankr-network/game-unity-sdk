@@ -1,4 +1,4 @@
-namespace NativeWebSocket
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
 {
 	public enum WebSocketCloseCode
 	{

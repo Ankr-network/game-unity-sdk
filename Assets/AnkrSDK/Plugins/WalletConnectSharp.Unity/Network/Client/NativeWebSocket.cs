@@ -5,14 +5,14 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 #if UNITY_WEBGL && !UNITY_EDITOR
 using AOT;
 using System.Runtime.InteropServices;
 #endif
-using UnityEngine;
-using Cysharp.Threading.Tasks;
 
-namespace NativeWebSocket
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
 {
 #if UNITY_WEBGL && !UNITY_EDITOR
 

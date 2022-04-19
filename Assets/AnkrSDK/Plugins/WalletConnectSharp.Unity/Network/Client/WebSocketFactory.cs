@@ -5,14 +5,8 @@ using System.Runtime.InteropServices;
 using AOT;
 #endif
 
-namespace NativeWebSocket
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
 {
-	///
-	/// Factory
-	///
-	/// <summary>
-	/// Class providing static access methods to work with JSLIB WebSocket or WebSocketSharp interface
-	/// </summary>
 	public static class WebSocketFactory
 	{
 	#if UNITY_WEBGL && !UNITY_EDITOR

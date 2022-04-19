@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace NativeWebSocket
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
 {
 	public class WaitForBackgroundThread
 	{
