@@ -6,7 +6,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.RPC.Eth.DTOs;
 
 namespace AnkrSDK.Core.Data
-{	
+{
 	public class EventFilterRequest<TEvDto>
 	{
 		private class Topic
@@ -15,11 +15,11 @@ namespace AnkrSDK.Core.Data
 			public string Alias { get; set; }
 			public object Value { get; set; }
 		}
-		
+
 		public BlockParameter FromBlock { get; set; }
 		public BlockParameter ToBlock { get; set; }
 		private readonly List<Topic> _topics;
-		
+
 		public EventFilterRequest()
 		{
 			_topics = CollectTopics();
@@ -29,7 +29,7 @@ namespace AnkrSDK.Core.Data
 		{
 			FromBlock = fromBlock;
 		}
-		
+
 		public void SetToBlock(BlockParameter toBlock)
 		{
 			ToBlock = toBlock;
@@ -50,17 +50,14 @@ namespace AnkrSDK.Core.Data
 
 		public object[][] AssembleTopics()
 		{
-			return _topics.Select(topic =>
-			{
-				return topic.Value != null ? new[] { topic.Value } : null;
-			}).ToArray();
+			return _topics.Select(topic => { return topic.Value != null ? new[] {topic.Value} : null; }).ToArray();
 		}
 
 		private Topic FindTopicByName(string name)
 		{
 			return _topics.FirstOrDefault(topic => topic.Name == name || topic.Alias == name);
-		} 
-		
+		}
+
 		private List<Topic> CollectTopics()
 		{
 			var properties = PropertiesExtractor.GetPropertiesWithParameterAttribute(typeof(TEvDto)).ToArray();
