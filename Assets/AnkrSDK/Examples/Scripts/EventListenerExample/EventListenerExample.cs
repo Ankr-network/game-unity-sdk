@@ -26,7 +26,7 @@ namespace AnkrSDK.EventListenerExample
 
 			_eventSubscriber = ankrSDK.CreateSubscriber(ERC20ContractInformation.WsProviderURL);
 			_eventSubscriber.ListenForEvents().Forget();
-			_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithTopics);
+			_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithRequest);
 		}
 
 		// If you know topic position then you can use EventFilterData
@@ -41,6 +41,23 @@ namespace AnkrSDK.EventListenerExample
 
 			_subscription = await _eventSubscriber.Subscribe(
 				filters,
+				ERC20ContractInformation.ContractAddress, 
+				(TransferEventDTO t) => ReceiveEvent(t)
+			);
+		}
+		
+		// If you know only topic name then you can use EventFilterRequest
+		public async UniTaskVoid SubscribeWithRequest()
+		{
+			var filtersRequest = new EventFilterRequest<TransferEventDTO>
+			{
+				fromBlock = BlockParameter.CreateLatest(),
+				toBlock = BlockParameter.CreateLatest(),
+			};
+			filtersRequest.AddTopic("To", EthHandler.DefaultAccount);
+
+			_subscription = await _eventSubscriber.Subscribe(
+				filtersRequest,
 				ERC20ContractInformation.ContractAddress, 
 				(TransferEventDTO t) => ReceiveEvent(t)
 			);

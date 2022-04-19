@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using AnkrSDK.Core.Data;
-using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.RPC.Eth.DTOs;
 
@@ -24,8 +22,8 @@ namespace AnkrSDK.Core.Utils
 		}
 		
 		public static NewFilterInput CreateEventFilters<TEvDto>(string contractAddress, EventFilterRequest<TEvDto> evFilter = null)
-		{				
-			var values = GetDataFromRequest(evFilter);
+		{
+			var values = evFilter.AssembleTopics();
 			
 			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
 			
@@ -33,26 +31,10 @@ namespace AnkrSDK.Core.Utils
 			if (evFilter != null && values.Any())
 			{
 				ethFilterInput.Topics = eventABI.GetTopicBuilder()
-					.GetTopics(
-						ReturnArrayOrNull(values[0]),
-						ReturnArrayOrNull(values[1]),
-						ReturnArrayOrNull(values[2])
-						);
+					.GetTopics(values[0], values[1], values[2]);
 			}
 
 			return ethFilterInput;
 		}
-
-		private static object[] ReturnArrayOrNull(object value)
-		{
-			return value != null ? new[] {value} : null;
-		}
-
-		private static List<object> GetDataFromRequest<TEvDto>(EventFilterRequest<TEvDto> evFilter)
-		{
-			var properties = PropertiesExtractor.GetPropertiesWithParameterAttribute(typeof(TEvDto));
-			
-			return properties.Select(property => property.GetValue(evFilter, null)).ToList();
-		}	
 	}
 }
