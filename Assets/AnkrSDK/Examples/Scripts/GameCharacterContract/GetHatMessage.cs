@@ -1,3 +1,4 @@
+using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
@@ -7,6 +8,6 @@ namespace AnkrSDK.Examples.GameCharacterContract
 	public class GetHatMessage : FunctionMessage
 	{
 		[Parameter("uint256", "_characterId")]
-		public string CharacterId { get; set; }
+		public BigInteger CharacterId { get; set; }
 	}
 }

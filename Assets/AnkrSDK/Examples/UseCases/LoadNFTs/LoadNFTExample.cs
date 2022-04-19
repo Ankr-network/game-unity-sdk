@@ -120,7 +120,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		{
 			var getHatMessage = new GetHatMessage
 			{
-				CharacterId = tokenID.ToString()
+				CharacterId = tokenID
 			};
 			var hatId = await _gameCharacterContract.GetData<GetHatMessage, BigInteger>(getHatMessage);
 
