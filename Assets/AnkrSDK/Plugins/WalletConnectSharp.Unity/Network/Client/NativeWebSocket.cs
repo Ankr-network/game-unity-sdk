@@ -10,9 +10,7 @@ using AOT;
 using System.Runtime.InteropServices;
 #endif
 using UnityEngine;
-using System.Collections;
 using Cysharp.Threading.Tasks;
-using UnityEngine.Events;
 
 namespace NativeWebSocket
 {
@@ -188,105 +186,90 @@ namespace NativeWebSocket
         public event WebSocketErrorEventHandler OnError;
         public event WebSocketCloseEventHandler OnClose;
 
-        private Uri uri;
-        private Dictionary<string, string> headers;
-        private List<string> subprotocols;
-        private ClientWebSocket m_Socket = new ClientWebSocket();
+        private readonly Uri _uri;
+        private readonly Dictionary<string, string> _headers;
+        private readonly List<string> _subprotocols;
+        private ClientWebSocket _socket = new ClientWebSocket();
 
-        private CancellationTokenSource m_TokenSource;
-        private CancellationToken m_CancellationToken;
+        private CancellationTokenSource _tokenSource;
+        private CancellationToken _cancellationToken;
 
-        private readonly object Lock = new object();
+        private readonly object _lock = new object();
 
-        private bool isSending = false;
-        private List<ArraySegment<byte>> sendBytesQueue = new List<ArraySegment<byte>>();
-        private List<ArraySegment<byte>> sendTextQueue = new List<ArraySegment<byte>>();
+        private bool _isSending;
+        private readonly List<ArraySegment<byte>> _sendBytesQueue = new List<ArraySegment<byte>>();
+        private readonly List<ArraySegment<byte>> _sendTextQueue = new List<ArraySegment<byte>>();
 
         public WebSocket(string url, Dictionary<string, string> headers = null)
         {
-            uri = new Uri(url);
+            _uri = new Uri(url);
 
-            if (headers == null)
-            {
-                this.headers = new Dictionary<string, string>();
-            }
-            else
-            {
-                this.headers = headers;
-            }
+            _headers = headers ?? new Dictionary<string, string>();
 
-            subprotocols = new List<string>();
+            _subprotocols = new List<string>();
 
-            string protocol = uri.Scheme;
+            var protocol = _uri.Scheme;
             if (!protocol.Equals("ws") && !protocol.Equals("wss"))
+            {
                 throw new ArgumentException("Unsupported protocol: " + protocol);
+            }
         }
 
         public WebSocket(string url, string subprotocol, Dictionary<string, string> headers = null)
         {
-            uri = new Uri(url);
+            _uri = new Uri(url);
 
-            if (headers == null)
-            {
-                this.headers = new Dictionary<string, string>();
-            }
-            else
-            {
-                this.headers = headers;
-            }
+            _headers = headers ?? new Dictionary<string, string>();
 
-            subprotocols = new List<string> {subprotocol};
+            _subprotocols = new List<string> {subprotocol};
 
-            string protocol = uri.Scheme;
+            var protocol = _uri.Scheme;
             if (!protocol.Equals("ws") && !protocol.Equals("wss"))
+            {
                 throw new ArgumentException("Unsupported protocol: " + protocol);
+            }
         }
 
         public WebSocket(string url, List<string> subprotocols, Dictionary<string, string> headers = null)
         {
-            uri = new Uri(url);
+            _uri = new Uri(url);
 
-            if (headers == null)
-            {
-                this.headers = new Dictionary<string, string>();
-            }
-            else
-            {
-                this.headers = headers;
-            }
+            _headers = headers ?? new Dictionary<string, string>();
 
-            this.subprotocols = subprotocols;
+            _subprotocols = subprotocols;
 
-            string protocol = uri.Scheme;
+            var protocol = _uri.Scheme;
             if (!protocol.Equals("ws") && !protocol.Equals("wss"))
+            {
                 throw new ArgumentException("Unsupported protocol: " + protocol);
+            }
         }
 
         public void CancelConnection()
         {
-            m_TokenSource?.Cancel();
+            _tokenSource?.Cancel();
         }
 
         public async Task Connect()
         {
             try
             {
-                m_TokenSource = new CancellationTokenSource();
-                m_CancellationToken = m_TokenSource.Token;
+                _tokenSource = new CancellationTokenSource();
+                _cancellationToken = _tokenSource.Token;
 
-                m_Socket = new ClientWebSocket();
+                _socket = new ClientWebSocket();
 
-                foreach (var header in headers)
+                foreach (var header in _headers)
                 {
-                    m_Socket.Options.SetRequestHeader(header.Key, header.Value);
+                    _socket.Options.SetRequestHeader(header.Key, header.Value);
                 }
 
-                foreach (var subprotocol in subprotocols)
+                foreach (var subprotocol in _subprotocols)
                 {
-                    m_Socket.Options.AddSubProtocol(subprotocol);
+                    _socket.Options.AddSubProtocol(subprotocol);
                 }
 
-                await m_Socket.ConnectAsync(uri, m_CancellationToken);
+                await _socket.ConnectAsync(_uri, _cancellationToken);
                 OnOpen?.Invoke();
 
                 await Receive();
@@ -298,10 +281,10 @@ namespace NativeWebSocket
             }
             finally
             {
-                if (m_Socket != null)
+                if (_socket != null)
                 {
-                    m_TokenSource.Cancel();
-                    m_Socket.Dispose();
+                    _tokenSource.Cancel();
+                    _socket.Dispose();
                 }
             }
         }
@@ -310,7 +293,7 @@ namespace NativeWebSocket
         {
             get
             {
-                switch (m_Socket.State)
+                switch (_socket.State)
                 {
                     case System.Net.WebSockets.WebSocketState.Connecting:
                         return WebSocketState.Connecting;
@@ -334,7 +317,7 @@ namespace NativeWebSocket
         public Task Send(byte[] bytes)
         {
             // return m_Socket.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
-            return SendMessage(sendBytesQueue, WebSocketMessageType.Binary, new ArraySegment<byte>(bytes));
+            return SendMessage(_sendBytesQueue, WebSocketMessageType.Binary, new ArraySegment<byte>(bytes));
         }
 
         public Task SendText(string message)
@@ -342,7 +325,7 @@ namespace NativeWebSocket
             var encoded = Encoding.UTF8.GetBytes(message);
 
             // m_Socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
-            return SendMessage(sendTextQueue, WebSocketMessageType.Text,
+            return SendMessage(_sendTextQueue, WebSocketMessageType.Text,
                 new ArraySegment<byte>(encoded, 0, encoded.Length));
         }
 
@@ -361,43 +344,43 @@ namespace NativeWebSocket
             // The state of the connection is contained in the context Items dictionary.
             bool sending;
 
-            lock (Lock)
+            lock (_lock)
             {
-                sending = isSending;
+                sending = _isSending;
 
                 // If not, we are now.
-                if (!isSending)
+                if (!_isSending)
                 {
-                    isSending = true;
+                    _isSending = true;
                 }
             }
 
             if (!sending)
             {
                 // Lock with a timeout, just in case.
-                if (!Monitor.TryEnter(m_Socket, 1000))
+                if (!Monitor.TryEnter(_socket, 1000))
                 {
                     // If we couldn't obtain exclusive access to the socket in one second, something is wrong.
-                    await m_Socket.CloseAsync(WebSocketCloseStatus.InternalServerError, string.Empty,
-                        m_CancellationToken);
+                    await _socket.CloseAsync(WebSocketCloseStatus.InternalServerError, string.Empty,
+                        _cancellationToken);
                     return;
                 }
 
                 try
                 {
                     // Send the message synchronously.
-                    var t = m_Socket.SendAsync(buffer, messageType, true, m_CancellationToken);
-                    t.Wait(m_CancellationToken);
+                    var t = _socket.SendAsync(buffer, messageType, true, _cancellationToken);
+                    t.Wait(_cancellationToken);
                 }
                 finally
                 {
-                    Monitor.Exit(m_Socket);
+                    Monitor.Exit(_socket);
                 }
 
                 // Note that we've finished sending.
-                lock (Lock)
+                lock (_lock)
                 {
-                    isSending = false;
+                    _isSending = false;
                 }
 
                 // Handle any queued messages.
@@ -406,7 +389,7 @@ namespace NativeWebSocket
             else
             {
                 // Add the message to the queue.
-                lock (Lock)
+                lock (_lock)
                 {
                     queue.Add(buffer);
                 }
@@ -416,7 +399,7 @@ namespace NativeWebSocket
         private async Task HandleQueue(List<ArraySegment<byte>> queue, WebSocketMessageType messageType)
         {
             var buffer = new ArraySegment<byte>();
-            lock (Lock)
+            lock (_lock)
             {
                 // Check for an item in the queue.
                 if (queue.Count > 0)
@@ -442,13 +425,13 @@ namespace NativeWebSocket
         {
             // lock mutex, copy queue content and clear the queue.
             m_MessageListMutex.WaitOne();
-            List<byte[]> messageListCopy = new List<byte[]>();
+            var messageListCopy = new List<byte[]>();
             messageListCopy.AddRange(m_MessageList);
             m_MessageList.Clear();
             // release mutex to allow the websocket to add new messages
             m_MessageListMutex.ReleaseMutex();
 
-            foreach (byte[] bytes in messageListCopy)
+            foreach (var bytes in messageListCopy)
             {
                 OnMessage?.Invoke(bytes);
             }
@@ -456,21 +439,20 @@ namespace NativeWebSocket
 
         public async Task Receive()
         {
-            WebSocketCloseCode closeCode = WebSocketCloseCode.Abnormal;
+            var closeCode = WebSocketCloseCode.Abnormal;
             await new WaitForBackgroundThread();
 
-            ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[8192]);
+            var buffer = new ArraySegment<byte>(new byte[8192]);
             try
             {
-                while (m_Socket.State == System.Net.WebSockets.WebSocketState.Open)
+                while (_socket.State == System.Net.WebSockets.WebSocketState.Open)
                 {
-                    WebSocketReceiveResult result = null;
-
                     using (var ms = new MemoryStream())
                     {
+                        WebSocketReceiveResult result;
                         do
                         {
-                            result = await m_Socket.ReceiveAsync(buffer, m_CancellationToken);
+                            result = await _socket.ReceiveAsync(buffer, _cancellationToken);
                             ms.Write(buffer.Array, buffer.Offset, result.Count);
                         } while (!result.EndOfMessage);
 
@@ -506,7 +488,7 @@ namespace NativeWebSocket
             catch (Exception e)
             {
                 Debug.LogError(e);
-                m_TokenSource.Cancel();
+                _tokenSource.Cancel();
             }
             finally
             {
@@ -519,7 +501,7 @@ namespace NativeWebSocket
         {
             if (State == WebSocketState.Open)
             {
-                await m_Socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, m_CancellationToken);
+                await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _cancellationToken);
             }
         }
     }
