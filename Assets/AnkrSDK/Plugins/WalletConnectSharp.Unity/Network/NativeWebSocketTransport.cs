@@ -7,6 +7,7 @@ using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Exceptions;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;

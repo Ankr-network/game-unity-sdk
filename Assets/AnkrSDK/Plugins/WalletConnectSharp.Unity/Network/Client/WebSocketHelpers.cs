@@ -1,5 +1,6 @@
 using System;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Exceptions;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
 {

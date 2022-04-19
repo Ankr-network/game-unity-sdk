@@ -1,6 +1,6 @@
 using System;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Exceptions
 {
 	public class WebSocketInvalidStateException : WebSocketException
 	{

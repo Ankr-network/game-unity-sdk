@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.EventHandlers;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using WebSocketState = AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data.WebSocketState;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 {

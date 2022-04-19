@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.EventHandlers;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure
 {
