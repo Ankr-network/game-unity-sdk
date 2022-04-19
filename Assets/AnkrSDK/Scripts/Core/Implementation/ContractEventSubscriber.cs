@@ -44,7 +44,7 @@ namespace AnkrSDK.Core.Implementation
 			_isCancellationRequested = false;
 			this.SetBasicAuthenticationHeaderFromUri(new Uri(_wsUrl));
 
-			_transport = new WebSocket(_wsUrl, RequestHeaders);
+			_transport = new WebSocket(_wsUrl);
 
 			_transport.OnOpen += OnSocketOpen;
 			_transport.OnMessage += OnEventMessageReceived;

@@ -16,169 +16,203 @@ namespace NativeWebSocket
 {
 #if UNITY_WEBGL && !UNITY_EDITOR
 
-  /// <summary>
-  /// WebSocket class bound to JSLIB.
-  /// </summary>
-  public class WebSocket : IWebSocket {
+	/// <summary>
+	/// WebSocket class bound to JSLIB.
+	/// </summary>
+	public class WebSocket : IWebSocket
+	{
+		/* WebSocket JSLIB functions */
+		[DllImport("__Internal")]
+		public static extern int WebSocketConnect(int instanceId);
 
-    /* WebSocket JSLIB functions */
-    [DllImport ("__Internal")]
-    public static extern int WebSocketConnect (int instanceId);
+		[DllImport("__Internal")]
+		public static extern int WebSocketClose(int instanceId, int code, string reason);
 
-    [DllImport ("__Internal")]
-    public static extern int WebSocketClose (int instanceId, int code, string reason);
+		[DllImport("__Internal")]
+		public static extern int WebSocketSend(int instanceId, byte[] dataPtr, int dataLength);
 
-    [DllImport ("__Internal")]
-    public static extern int WebSocketSend (int instanceId, byte[] dataPtr, int dataLength);
+		[DllImport("__Internal")]
+		public static extern int WebSocketSendText(int instanceId, string message);
 
-    [DllImport ("__Internal")]
-    public static extern int WebSocketSendText (int instanceId, string message);
+		[DllImport("__Internal")]
+		public static extern int WebSocketGetState(int instanceId);
 
-    [DllImport ("__Internal")]
-    public static extern int WebSocketGetState (int instanceId);
+		protected int instanceId;
 
-    protected int instanceId;
+		public event WebSocketOpenEventHandler OnOpen;
+		public event WebSocketMessageEventHandler OnMessage;
+		public event WebSocketErrorEventHandler OnError;
+		public event WebSocketCloseEventHandler OnClose;
 
-    public event WebSocketOpenEventHandler OnOpen;
-    public event WebSocketMessageEventHandler OnMessage;
-    public event WebSocketErrorEventHandler OnError;
-    public event WebSocketCloseEventHandler OnClose;
+		public WebSocket(string url)
+		{
+			if (!WebSocketFactory.isInitialized)
+			{
+				WebSocketFactory.Initialize();
+			}
 
-    public WebSocket (string url, Dictionary<string, string> headers = null) {
-      if (!WebSocketFactory.isInitialized) {
-        WebSocketFactory.Initialize ();
-      }
+			int allocatedSocketId = WebSocketFactory.WebSocketAllocate(url);
+			WebSocketFactory.instances.Add(allocatedSocketId, this);
 
-      int instanceId = WebSocketFactory.WebSocketAllocate (url);
-      WebSocketFactory.instances.Add (instanceId, this);
+			instanceId = allocatedSocketId;
+		}
 
-      this.instanceId = instanceId;
-    }
+		public WebSocket(string url, string subprotocol)
+		{
+			if (!WebSocketFactory.isInitialized)
+			{
+				WebSocketFactory.Initialize();
+			}
 
-    public WebSocket (string url, string subprotocol, Dictionary<string, string> headers = null) {
-      if (!WebSocketFactory.isInitialized) {
-        WebSocketFactory.Initialize ();
-      }
+			int allocatedSocketId = WebSocketFactory.WebSocketAllocate(url);
+			WebSocketFactory.instances.Add(allocatedSocketId, this);
 
-      int instanceId = WebSocketFactory.WebSocketAllocate (url);
-      WebSocketFactory.instances.Add (instanceId, this);
+			WebSocketFactory.WebSocketAddSubProtocol(allocatedSocketId, subprotocol);
 
-      WebSocketFactory.WebSocketAddSubProtocol(instanceId, subprotocol);
+			instanceId = allocatedSocketId;
+		}
 
-      this.instanceId = instanceId;
-    }
+		public WebSocket(string url, List<string> subprotocols)
+		{
+			if (!WebSocketFactory.isInitialized)
+			{
+				WebSocketFactory.Initialize();
+			}
 
-    public WebSocket (string url, List<string> subprotocols, Dictionary<string, string> headers = null) {
-      if (!WebSocketFactory.isInitialized) {
-        WebSocketFactory.Initialize ();
-      }
+			int allocatedSocketId = WebSocketFactory.WebSocketAllocate(url);
+			WebSocketFactory.instances.Add(instanceId, this);
 
-      int instanceId = WebSocketFactory.WebSocketAllocate (url);
-      WebSocketFactory.instances.Add (instanceId, this);
+			foreach (var subprotocol in subprotocols)
+			{
+				WebSocketFactory.WebSocketAddSubProtocol(instanceId, subprotocol);
+			}
 
-      foreach (string subprotocol in subprotocols) {
-        WebSocketFactory.WebSocketAddSubProtocol(instanceId, subprotocol);
-      }
+			instanceId = allocatedSocketId;
+		}
 
-      this.instanceId = instanceId;
-    }
+		~WebSocket()
+		{
+			WebSocketFactory.HandleInstanceDestroy(instanceId);
+		}
 
-    ~WebSocket () {
-      WebSocketFactory.HandleInstanceDestroy (this.instanceId);
-    }
+		public int GetInstanceId()
+		{
+			return instanceId;
+		}
 
-    public int GetInstanceId () {
-      return this.instanceId;
-    }
+		public Task Connect()
+		{
+			var ret = WebSocketConnect(instanceId);
 
-    public Task Connect () {
-      int ret = WebSocketConnect (this.instanceId);
+			if (ret < 0)
+			{
+				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
+			}
 
-      if (ret < 0)
-        throw WebSocketHelpers.GetErrorMessageFromCode (ret, null);
+			return Task.CompletedTask;
+		}
 
-      return Task.CompletedTask;
-    }
+		public void CancelConnection()
+		{
+			if (State == WebSocketState.Open)
+			{
+				Close(WebSocketCloseCode.Abnormal);
+			}
+		}
 
-	public void CancelConnection () {
-		if (State == WebSocketState.Open)
-			Close (WebSocketCloseCode.Abnormal);
+		public Task Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
+		{
+			var ret = WebSocketClose(instanceId, (int)code, reason);
+
+			if (ret < 0)
+			{
+				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
+			}
+
+			return Task.CompletedTask;
+		}
+
+		public Task Send(byte[] data)
+		{
+			var ret = WebSocketSend(instanceId, data, data.Length);
+
+			if (ret < 0)
+			{
+				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
+			}
+
+			return Task.CompletedTask;
+		}
+
+		public Task SendText(string message)
+		{
+			var ret = WebSocketSendText(instanceId, message);
+
+			if (ret < 0)
+			{
+				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
+			}
+
+			return Task.CompletedTask;
+		}
+
+		public WebSocketState State
+		{
+			get
+			{
+				var state = WebSocketGetState(instanceId);
+
+				if (state < 0)
+				{
+					throw WebSocketHelpers.GetErrorMessageFromCode(state, null);
+				}
+
+				switch (state)
+				{
+					case 0:
+						return WebSocketState.Connecting;
+
+					case 1:
+						return WebSocketState.Open;
+
+					case 2:
+						return WebSocketState.Closing;
+
+					case 3:
+						return WebSocketState.Closed;
+
+					default:
+						return WebSocketState.Closed;
+				}
+			}
+		}
+
+		public void DispatchMessageQueue()
+		{
+		}
+
+		public void DelegateOnOpenEvent()
+		{
+			OnOpen?.Invoke();
+		}
+
+		public void DelegateOnMessageEvent(byte[] data)
+		{
+			OnMessage?.Invoke(data);
+		}
+
+		public void DelegateOnErrorEvent(string errorMsg)
+		{
+			OnError?.Invoke(errorMsg);
+		}
+
+		public void DelegateOnCloseEvent(int closeCode)
+		{
+			OnClose?.Invoke(WebSocketHelpers.ParseCloseCodeEnum(closeCode));
+		}
 	}
 
-    public Task Close (WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null) {
-      int ret = WebSocketClose (this.instanceId, (int) code, reason);
-
-      if (ret < 0)
-        throw WebSocketHelpers.GetErrorMessageFromCode (ret, null);
-
-      return Task.CompletedTask;
-    }
-
-    public Task Send (byte[] data) {
-      int ret = WebSocketSend (this.instanceId, data, data.Length);
-
-      if (ret < 0)
-        throw WebSocketHelpers.GetErrorMessageFromCode (ret, null);
-
-      return Task.CompletedTask;
-    }
-
-    public Task SendText (string message) {
-      int ret = WebSocketSendText (this.instanceId, message);
-
-      if (ret < 0)
-        throw WebSocketHelpers.GetErrorMessageFromCode (ret, null);
-
-      return Task.CompletedTask;
-    }
-
-    public WebSocketState State {
-      get {
-        int state = WebSocketGetState (this.instanceId);
-
-        if (state < 0)
-          throw WebSocketHelpers.GetErrorMessageFromCode (state, null);
-
-        switch (state) {
-          case 0:
-            return WebSocketState.Connecting;
-
-          case 1:
-            return WebSocketState.Open;
-
-          case 2:
-            return WebSocketState.Closing;
-
-          case 3:
-            return WebSocketState.Closed;
-
-          default:
-            return WebSocketState.Closed;
-        }
-      }
-    }
-    public void DispatchMessageQueue(){}
-
-    public void DelegateOnOpenEvent () {
-      this.OnOpen?.Invoke ();
-    }
-
-    public void DelegateOnMessageEvent (byte[] data) {
-      this.OnMessage?.Invoke (data);
-    }
-
-    public void DelegateOnErrorEvent (string errorMsg) {
-      this.OnError?.Invoke (errorMsg);
-    }
-
-    public void DelegateOnCloseEvent (int closeCode) {
-      this.OnClose?.Invoke (WebSocketHelpers.ParseCloseCodeEnum (closeCode));
-    }
-
-  }
-
 #else
-
     public class WebSocket : IWebSocket
     {
         public event WebSocketOpenEventHandler OnOpen;

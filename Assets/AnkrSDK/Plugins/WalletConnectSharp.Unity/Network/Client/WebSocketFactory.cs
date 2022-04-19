@@ -1,15 +1,20 @@
+#if UNITY_WEBGL && !UNITY_EDITOR
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using AOT;
+#endif
+
 namespace NativeWebSocket
 {
 	///
 	/// Factory
 	///
-
 	/// <summary>
 	/// Class providing static access methods to work with JSLIB WebSocket or WebSocketSharp interface
 	/// </summary>
 	public static class WebSocketFactory
 	{
-
 	#if UNITY_WEBGL && !UNITY_EDITOR
     /* Map of websocket instances */
     public static Dictionary<Int32, WebSocket> instances = new Dictionary<Int32, WebSocket> ();
@@ -131,6 +136,5 @@ namespace NativeWebSocket
 		{
 			return new WebSocket(url);
 		}
-
 	}
 }
