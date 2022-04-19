@@ -105,15 +105,24 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			nextClient.OnClose += ClientTryReconnect;
 			nextClient.OnError += e =>
 			{
-				Debug.Log("[WebSocket] OnError " + e);
 				HandleError(new Exception(e));
 			};
 
-			nextClient.Connect().ContinueWith(t => HandleError(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+			StartClientConnect().Forget();
 
 			Debug.Log("[WebSocket] Waiting for Open " + url);
 			await eventCompleted.Task;
 			Debug.Log("[WebSocket] Open Completed");
+		}
+
+		private async UniTaskVoid StartClientConnect()
+		{
+			var connectTask = nextClient.Connect();
+			await connectTask;
+			if (connectTask.IsFaulted)
+			{
+				HandleError(connectTask.Exception);
+			}
 		}
 
 		private void HandleError(Exception e)
