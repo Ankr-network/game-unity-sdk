@@ -11,10 +11,21 @@ using UnityEngine;
 
 namespace AnkrSDK.EventListenerExample
 {
+	/// <summary>
+	/// Your usual flow will be this:
+	/// 	Get the subscriber instance with provided Endpoint
+	///			_eventSubscriber = ankrSDK.CreateSubscriber(ERC20ContractInformation.WsProviderURL);
+	///		Manually connect socket
+	///			_eventSubscriber.ListenForEvents().Forget();
+	///		Subscribe custom handler for events
+	///			_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithTopics);
+	///		Unsubscribe
+	///			_eventSubscriber.Unsubscribe(_subscription).Forget();
+	///		Manually stop listen
+	///			_eventSubscriber.StopListen();
+	/// 	</summary>
 	public class EventListenerExample : UseCase
 	{
-		private IContract _erc20Contract;
-		private EthHandler _eth;
 		private ContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
 		
@@ -36,7 +47,7 @@ namespace AnkrSDK.EventListenerExample
 			{
 				fromBlock = BlockParameter.CreateLatest(),
 				toBlock = BlockParameter.CreateLatest(),
-				filterTopic2 = new[] { EthHandler.DefaultAccount }
+				filterTopic2 = new object[] { EthHandler.DefaultAccount }
 			};
 
 			_subscription = await _eventSubscriber.Subscribe(
@@ -56,7 +67,7 @@ namespace AnkrSDK.EventListenerExample
 			_eventSubscriber.Unsubscribe(_subscription).Forget();
 		}
 
-		public void DeActivateUseCase()
+		public override void DeActivateUseCase()
 		{
 			base.DeActivateUseCase();
 			_eventSubscriber.StopListen();

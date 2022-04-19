@@ -25,6 +25,8 @@ namespace AnkrSDK.Core.Implementation
 			{
 				var log = message.GetStreamingResult<FilterLog>();
 				var dto = log.DecodeEvent<TEventDtoBase>();
+				
+				Debug.Log("Event Received");
 				_handler?.Invoke(dto.Event);
 			}
 			catch (Exception ex)
