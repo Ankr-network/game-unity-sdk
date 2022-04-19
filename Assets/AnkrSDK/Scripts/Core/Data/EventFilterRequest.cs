@@ -16,13 +16,23 @@ namespace AnkrSDK.Core.Data
 			public object Value { get; set; }
 		}
 		
-		public BlockParameter fromBlock { get; set; }
-		public BlockParameter toBlock { get; set; }
+		public BlockParameter FromBlock { get; set; }
+		public BlockParameter ToBlock { get; set; }
 		private readonly List<Topic> _topics;
 		
 		public EventFilterRequest()
 		{
 			_topics = CollectTopics();
+		}
+
+		public void SetFromBlock(BlockParameter fromBlock)
+		{
+			FromBlock = fromBlock;
+		}
+		
+		public void SetToBlock(BlockParameter toBlock)
+		{
+			ToBlock = toBlock;
 		}
 
 		public void AddTopic(string name, object value)

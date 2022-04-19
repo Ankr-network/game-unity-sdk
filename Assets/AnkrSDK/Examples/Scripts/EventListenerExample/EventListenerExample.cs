@@ -49,11 +49,9 @@ namespace AnkrSDK.EventListenerExample
 		// If you know only topic name then you can use EventFilterRequest
 		public async UniTaskVoid SubscribeWithRequest()
 		{
-			var filtersRequest = new EventFilterRequest<TransferEventDTO>
-			{
-				fromBlock = BlockParameter.CreateLatest(),
-				toBlock = BlockParameter.CreateLatest(),
-			};
+			var filtersRequest = new EventFilterRequest<TransferEventDTO>();
+			filtersRequest.SetFromBlock(BlockParameter.CreateLatest());
+			filtersRequest.SetToBlock(BlockParameter.CreateLatest());
 			filtersRequest.AddTopic("To", EthHandler.DefaultAccount);
 
 			_subscription = await _eventSubscriber.Subscribe(

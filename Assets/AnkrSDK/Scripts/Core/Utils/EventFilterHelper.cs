@@ -27,7 +27,7 @@ namespace AnkrSDK.Core.Utils
 			
 			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
 			
-			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter?.fromBlock, evFilter?.toBlock);
+			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter?.FromBlock, evFilter?.ToBlock);
 			if (evFilter != null && values.Any())
 			{
 				ethFilterInput.Topics = eventABI.GetTopicBuilder()
