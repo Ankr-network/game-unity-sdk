@@ -4,6 +4,8 @@ using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.JsonRpc.Client;
@@ -21,7 +23,7 @@ namespace AnkrSDK.Core.Implementation
 		private readonly EthLogsSubscriptionRequestBuilder _requestBuilder;
 		private readonly EthUnsubscribeRequestBuilder _unsubscribeRequestBuilder;
 
-		private WebSocket _transport;
+		private IWebSocket _transport;
 		private bool _isCancellationRequested;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
 		
@@ -44,7 +46,7 @@ namespace AnkrSDK.Core.Implementation
 			_isCancellationRequested = false;
 			this.SetBasicAuthenticationHeaderFromUri(new Uri(_wsUrl));
 
-			_transport = new WebSocket(_wsUrl);
+			_transport = WebSocketFactory.CreateInstance(_wsUrl);
 
 			_transport.OnOpen += OnSocketOpen;
 			_transport.OnMessage += OnEventMessageReceived;

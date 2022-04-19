@@ -1,4 +1,6 @@
-namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
+using System.Threading.Tasks;
+
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure
 {
 	public interface IWebSocket
 	{
@@ -8,5 +10,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
 		event WebSocketCloseEventHandler OnClose;
 
 		WebSocketState State { get; }
+
+		Task Connect();
+		void DispatchMessageQueue();
+		Task SendText(string requestMessage);
+		Task Close();
 	}
 }
