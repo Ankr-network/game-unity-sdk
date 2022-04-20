@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,12 +14,12 @@ namespace AnkrSDK.Core.Data
 		{
 			public string Name { get; set; }
 			public string Alias { get; set; }
-			public object Value { get; set; }
+			public List<object> Values { get; set; }
 		}
 
 		public BlockParameter FromBlock { get; set; }
 		public BlockParameter ToBlock { get; set; }
-		private readonly List<Topic> _topics;
+		private readonly IEnumerable<Topic> _topics;
 
 		public EventFilterRequest()
 		{
@@ -40,7 +41,20 @@ namespace AnkrSDK.Core.Data
 			var topic = FindTopicByName(name);
 			if (topic != null)
 			{
-				topic.Value = value;
+				topic.Values.Add(value);
+			}
+			else
+			{
+				throw new Exception("Topic name is not allowed");
+			}
+		}
+		
+		public void AddTopics(string name, object[] values)
+		{
+			var topic = FindTopicByName(name);
+			if (topic != null)
+			{
+				topic.Values.AddRange(values);
 			}
 			else
 			{
@@ -50,7 +64,7 @@ namespace AnkrSDK.Core.Data
 
 		public object[][] AssembleTopics()
 		{
-			return _topics.Select(topic => { return topic.Value != null ? new[] {topic.Value} : null; }).ToArray();
+			return _topics.Select(topic => { return topic.Values.Any() ? topic.Values.ToArray() : null; }).ToArray();
 		}
 
 		private Topic FindTopicByName(string name)
@@ -68,7 +82,8 @@ namespace AnkrSDK.Core.Data
 				return new Topic
 				{
 					Name = property.Name,
-					Alias = parameterAttribute.Name
+					Alias = parameterAttribute.Name,
+					Values = new List<object>()
 				};
 			}).ToList();
 		}
