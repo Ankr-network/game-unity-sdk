@@ -34,8 +34,6 @@ namespace AnkrSDK.EventListenerExample
 		{
 			var filters = new EventFilterData
 			{
-				fromBlock = BlockParameter.CreateEarliest(),
-				toBlock = BlockParameter.CreateLatest(),
 				filterTopic2 = new[] { EthHandler.DefaultAccount }
 			};
 
@@ -50,8 +48,6 @@ namespace AnkrSDK.EventListenerExample
 		public async UniTaskVoid SubscribeWithRequest()
 		{
 			var filtersRequest = new EventFilterRequest<TransferEventDTO>();
-			filtersRequest.SetFromBlock(BlockParameter.CreateLatest());
-			filtersRequest.SetToBlock(BlockParameter.CreateLatest());
 			filtersRequest.AddTopic("To", EthHandler.DefaultAccount);
 
 			_subscription = await _eventSubscriber.Subscribe(

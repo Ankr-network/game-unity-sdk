@@ -72,7 +72,7 @@ namespace AnkrSDK.Core.Data
 			return _topics.FirstOrDefault(topic => topic.Name == name || topic.Alias == name);
 		}
 
-		private List<Topic> CollectTopics()
+		private IEnumerable<Topic> CollectTopics()
 		{
 			var properties = PropertiesExtractor.GetPropertiesWithParameterAttribute(typeof(TEvDTO)).ToArray();
 			return properties.Select(property =>
@@ -85,7 +85,7 @@ namespace AnkrSDK.Core.Data
 					Alias = parameterAttribute.Name,
 					Values = new List<object>()
 				};
-			}).ToList();
+			});
 		}
 	}
 }
