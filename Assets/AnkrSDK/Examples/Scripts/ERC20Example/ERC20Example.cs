@@ -88,7 +88,7 @@ namespace AnkrSDK.Examples.ERC20Example
 		public async void GetEvents()
 		{
 			var filtersRequest = new EventFilterRequest<TransferEventDTO>();
-			filtersRequest.SetFromBlock(BlockParameter.CreateLatest());
+			filtersRequest.SetFromBlock(BlockParameter.CreateEarliest());
 			filtersRequest.SetToBlock(BlockParameter.CreateLatest());
 			filtersRequest.AddTopic("To", EthHandler.DefaultAccount);
 			
