@@ -34,7 +34,7 @@ namespace AnkrSDK.EventListenerExample
 		{
 			var filters = new EventFilterData
 			{
-				fromBlock = BlockParameter.CreateLatest(),
+				fromBlock = BlockParameter.CreateEarliest(),
 				toBlock = BlockParameter.CreateLatest(),
 				filterTopic2 = new[] { EthHandler.DefaultAccount }
 			};

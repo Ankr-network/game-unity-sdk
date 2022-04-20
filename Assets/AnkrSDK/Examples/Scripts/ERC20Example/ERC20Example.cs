@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
@@ -93,7 +93,7 @@ namespace AnkrSDK.Examples.ERC20Example
 				toBlock = BlockParameter.CreateLatest(),
 				filterTopic2 = new [] { EthHandler.DefaultAccount }
 			};
-			var events = await _erc20Contract.GetAllChanges<TransferEventDTO>(filters);
+			var events = await _erc20Contract.GetEvents<TransferEventDTO>(filters);
 
 			foreach (var ev in events)
 			{
