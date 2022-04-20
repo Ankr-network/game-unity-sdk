@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +7,7 @@ using Nethereum.RPC.Eth.DTOs;
 
 namespace AnkrSDK.Core.Data
 {
-	public class EventFilterRequest<TEvDto>
+	public class EventFilterRequest<TEvDTO>
 	{
 		private class Topic
 		{
@@ -16,10 +15,11 @@ namespace AnkrSDK.Core.Data
 			public string Alias { get; set; }
 			public List<object> Values { get; set; }
 		}
-
+		
+		private readonly IEnumerable<Topic> _topics;
+		
 		public BlockParameter FromBlock { get; set; }
 		public BlockParameter ToBlock { get; set; }
-		private readonly IEnumerable<Topic> _topics;
 
 		public EventFilterRequest()
 		{
@@ -74,7 +74,7 @@ namespace AnkrSDK.Core.Data
 
 		private List<Topic> CollectTopics()
 		{
-			var properties = PropertiesExtractor.GetPropertiesWithParameterAttribute(typeof(TEvDto)).ToArray();
+			var properties = PropertiesExtractor.GetPropertiesWithParameterAttribute(typeof(TEvDTO)).ToArray();
 			return properties.Select(property =>
 			{
 				var parameterAttribute = property.GetCustomAttribute<ParameterAttribute>(true);
