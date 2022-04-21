@@ -26,16 +26,6 @@ namespace AnkrSDK.Core.Data
 			_topics = CollectTopics();
 		}
 
-		public void SetFromBlock(BlockParameter fromBlock)
-		{
-			FromBlock = fromBlock;
-		}
-
-		public void SetToBlock(BlockParameter toBlock)
-		{
-			ToBlock = toBlock;
-		}
-
 		public void AddTopic(string name, object value)
 		{
 			var topic = FindTopicByName(name);
