@@ -211,11 +211,12 @@ namespace AnkrSDK.WearableNFTExample
 			var characterID = await GetCharacterTokenId();
 			var getHatMessage = new GetHatMessage
 			{
-				CharacterId = characterID.ToString()
+				CharacterId = characterID
 			};
 			var hatId = await _gameCharacterContract.GetData<GetHatMessage, BigInteger>(getHatMessage);
-
-			UpdateUILogs($"Hat Id: {hatId}");
+			var hexHatID = AnkrSDKHelper.StringToBigInteger(hatId.ToString());
+			
+			UpdateUILogs($"Hat Id: {hexHatID}");
 
 			return hatId;
 		}

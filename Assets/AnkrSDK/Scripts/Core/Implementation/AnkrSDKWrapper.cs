@@ -54,7 +54,7 @@ namespace AnkrSDK.Core.Implementation
 
 		public ContractEventSubscriber CreateSubscriber(string wsUrl)
 		{
-			return new ContractEventSubscriber(_web3Provider, wsUrl);
+			return new ContractEventSubscriber(wsUrl);
 		}
 
 		private static IWeb3 CreateWeb3Provider(string providerURI)
