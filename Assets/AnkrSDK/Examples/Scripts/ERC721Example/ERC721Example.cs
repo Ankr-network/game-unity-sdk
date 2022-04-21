@@ -55,7 +55,7 @@ namespace AnkrSDK.Examples.ERC721Example
 				toBlock = BlockParameter.CreateLatest(),
 				filterTopic2 = new [] { EthHandler.DefaultAccount }
 			};
-			var events = await _erc721Contract.GetAllChanges<TransferEventDTO>(filters);
+			var events = await _erc721Contract.GetEvents<TransferEventDTO>(filters);
 
 			foreach (var ev in events)
 			{
