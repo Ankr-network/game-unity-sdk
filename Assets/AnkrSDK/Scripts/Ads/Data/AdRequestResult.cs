@@ -6,8 +6,8 @@ namespace AnkrSDK.Ads.Data
 	[Serializable]
 	public class AdRequestResult
 	{
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "status")]
-		public bool Status { get; set; }
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "code")]
+		public int Code { get; set; }
 
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "error")]
 		public string Error { get; set; }
