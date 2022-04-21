@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
 using Cysharp.Threading.Tasks;
-using NativeWebSocket;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.RpcMessages;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Subscriptions;
-using Nethereum.Web3;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
@@ -21,9 +22,8 @@ namespace AnkrSDK.Core.Implementation
 		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
 		private readonly EthLogsSubscriptionRequestBuilder _requestBuilder;
 		private readonly EthUnsubscribeRequestBuilder _unsubscribeRequestBuilder;
-		private readonly IWeb3 _web3Provider;
-		
-		private WebSocket _transport;
+
+		private IWebSocket _transport;
 		private bool _isCancellationRequested;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
 		
@@ -33,9 +33,8 @@ namespace AnkrSDK.Core.Implementation
 		public event Action<string> OnErrorHandler;
 		public event Action<WebSocketCloseCode> OnCloseHandler;
 		
-		public ContractEventSubscriber(IWeb3 web3Provider, string wsUrl)
+		public ContractEventSubscriber(string wsUrl)
 		{
-			_web3Provider = web3Provider;
 			_wsUrl = wsUrl;
 			_subscribers = new Dictionary<string, IContractEventSubscription>();
 			_requestBuilder = new EthLogsSubscriptionRequestBuilder();
@@ -47,7 +46,7 @@ namespace AnkrSDK.Core.Implementation
 			_isCancellationRequested = false;
 			this.SetBasicAuthenticationHeaderFromUri(new Uri(_wsUrl));
 
-			_transport = new WebSocket(_wsUrl, RequestHeaders);
+			_transport = WebSocketFactory.CreateInstance(_wsUrl);
 
 			_transport.OnOpen += OnSocketOpen;
 			_transport.OnMessage += OnEventMessageReceived;
@@ -63,6 +62,8 @@ namespace AnkrSDK.Core.Implementation
 			{
 				Debug.LogError(connectTask.Exception);
 			}
+			
+			Debug.Log("Listen for events socket connected");
 		}
 
 		private async UniTaskVoid Update()

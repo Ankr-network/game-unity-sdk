@@ -206,7 +206,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				{
 					result = await CreateSession();
 					//Reset this back after we have established a session
-					ReadyForUserPrompt = false;
 					Connecting = false;
 
 					OnSessionCreated?.Invoke(this, this);
@@ -227,6 +226,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					OnSessionResumed?.Invoke(this, this);
 				}
 
+				Debug.Log($"Chain ID == {ChainId}");
 				OnSessionConnect?.Invoke(this, this);
 
 				return result;

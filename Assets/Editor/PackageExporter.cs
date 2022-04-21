@@ -11,7 +11,7 @@ public static class PackageExporter
 
 	// Path to export to.
 	private const string ExportPath = "Build";
-	
+
 	[MenuItem("AnkrSDK/Export Ankr Package")]
 	public static void Export()
 	{
@@ -33,6 +33,8 @@ public static class PackageExporter
 			exportPath,
 			ExportPackageOptions.Recurse
 		);
+
+		EditorUtility.RevealInFinder(exportPath);
 	}
 }
 #endif

@@ -1,5 +1,4 @@
 using System;
-using AnkrSDK.Ads.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
