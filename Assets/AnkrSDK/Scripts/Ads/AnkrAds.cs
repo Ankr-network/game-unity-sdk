@@ -17,7 +17,8 @@ namespace AnkrSDK.Ads
 		private const string PublicAddressFieldName = "public_address";
 		private const string LanguageFieldName = "language";
 
-		private const string RandomImageURLBase = "http://45.77.189.28:5001/ad";
+		private const string RandomImageURLBaseAD = "http://45.77.189.28:5001/ad";
+		private const string RandomImageURLBaseStart = "http://45.77.189.28:5001/start";
 
 		public static async UniTask<AdData> Show(AdType adType)
 		{
@@ -27,7 +28,7 @@ namespace AnkrSDK.Ads
 		public static async UniTask<bool> Initialize()
 		{
 			return await RequestStartSessionData
-				(Application.identifier, SystemInfo.deviceUniqueIdentifier, EthHandler.DefaultAccount,"EN");
+				("com.ankr.test", SystemInfo.deviceUniqueIdentifier, EthHandler.DefaultAccount,"EN"); //AppId : Application.identifier
 		}
 		
 		private static async UniTask<AdData> RequestAdData(string deviceId, AdType adType)
@@ -40,10 +41,11 @@ namespace AnkrSDK.Ads
 					Debug.Log("0 = success. Show the ad");
 					break;
 				case 1:
-					Debug.Log("1 = Session expired. call /start first");
+					Debug.LogError("1 = Session expired. call /start first");
 					
 					await Initialize();
 					adRequestResult = await SendAdRequest(deviceId, adType);
+					Debug.Log(adRequestResult.Code);
 					
 					break;
 				case 1001:
@@ -68,7 +70,7 @@ namespace AnkrSDK.Ads
 		private static async UniTask<bool> RequestStartSessionData(string appId, string deviceId, string publicAddress, string language)
 		{
 			var startSessionRequestResult = await SendStartSessionRequest(appId, deviceId, publicAddress,language);
-			
+			Debug.LogWarning(startSessionRequestResult.Code);
 			switch (startSessionRequestResult.Code)
 			{
 				case 0:
@@ -97,7 +99,7 @@ namespace AnkrSDK.Ads
 			form.AddField(DeviceIdFieldName, deviceId);
 			form.AddField(AdTypeFieldName, adType.ToString());
 
-			using (var www = UnityWebRequest.Post(RandomImageURLBase, form))
+			using (var www = UnityWebRequest.Post(RandomImageURLBaseAD, form))
 			{
 				await www.SendWebRequest();
 
@@ -130,7 +132,7 @@ namespace AnkrSDK.Ads
 			form.AddField(PublicAddressFieldName, publicAddress);
 			form.AddField(LanguageFieldName, language);
 
-			using (var www = UnityWebRequest.Post(RandomImageURLBase, form))
+			using (var www = UnityWebRequest.Post(RandomImageURLBaseStart, form))
 			{
 				await www.SendWebRequest();
 

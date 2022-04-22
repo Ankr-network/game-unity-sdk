@@ -38,13 +38,7 @@ namespace AnkrSDK.UseCases.Ads
 		private async UniTaskVoid DownloadAd()
 		{
 			_button.gameObject.SetActive(false);
-
-			if (!_isInitialized)
-			{
-				await AnkrAds.Initialize();
-				_isInitialized = true;
-			}
-
+			
 			var requestResult = await AnkrAds.Show(AdType.Banner);
 
 			await UniTask.WhenAll(
