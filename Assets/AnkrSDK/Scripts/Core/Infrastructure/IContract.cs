@@ -16,7 +16,10 @@ namespace AnkrSDK.Core.Infrastructure
 		Task Web3SendMethod(string methodName, object[] arguments, ITransactionEventHandler evController = null,
 			string gas = null, string gasPrice = null, string nonce = null);
 
-		Task<List<EventLog<TEvDto>>> GetAllChanges<TEvDto>(EventFilterData evFilter = null)
+		Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterData evFilter = null)
+			where TEvDto : IEventDTO, new();
+
+		Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterRequest<TEvDto> evFilter = null)
 			where TEvDto : IEventDTO, new();
 
 		Task<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)

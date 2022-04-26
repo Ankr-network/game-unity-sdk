@@ -37,12 +37,22 @@ namespace AnkrSDK.Core.Implementation
 			return contract.QueryAsync<TFieldData, TReturnType>(requestData);
 		}
 
-		public Task<List<EventLog<TEvDto>>> GetAllChanges<TEvDto>(EventFilterData evFilter)
+		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterData evFilter)
 			where TEvDto : IEventDTO, new()
 		{
 			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_contractAddress);
 
 			var filters = EventFilterHelper.CreateEventFilters<TEvDto>(_contractAddress, evFilter);
+
+			return eventHandler.GetAllChangesAsync(filters);
+		}
+		
+		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterRequest<TEvDto> evFilter)
+			where TEvDto : IEventDTO, new()
+		{
+			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_contractAddress);
+
+			var filters = EventFilterHelper.CreateEventFilters(_contractAddress, evFilter);
 
 			return eventHandler.GetAllChangesAsync(filters);
 		}
