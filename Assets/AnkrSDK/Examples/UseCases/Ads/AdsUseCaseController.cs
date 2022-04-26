@@ -15,6 +15,8 @@ namespace AnkrSDK.UseCases.Ads
 		[SerializeField] private AnkrBannerAdImage _ankrBannerAdImage;
 		[SerializeField] private AnkrBannerAdSprite _ankrBannerAdSprite;
 
+		private bool _isInitialized = false;
+
 		private void OnEnable()
 		{
 			_ankrBannerAdImage.gameObject.SetActive(false);
@@ -36,15 +38,20 @@ namespace AnkrSDK.UseCases.Ads
 		private async UniTaskVoid DownloadAd()
 		{
 			_button.gameObject.SetActive(false);
+			
+			var requestResult = await AnkrAds.DownloadAdData(AdType.Banner);
 
-			var requestResult = await AnkrAds.RequestAdData(EthHandler.DefaultAccount, AdType.Banner);
-
-			await UniTask.WhenAll(
-				_ankrBannerAdImage.SetupAd(requestResult),
-				_ankrBannerAdSprite.SetupAd(requestResult));
+			if (requestResult != null)
+			{
+				await UniTask.WhenAll(
+					_ankrBannerAdImage.SetupAd(requestResult),
+					_ankrBannerAdSprite.SetupAd(requestResult));
+			}
 
 			_ankrBannerAdImage.TryShow();
 			_ankrBannerAdSprite.TryShow();
 		}
+		
+		
 	}
 }

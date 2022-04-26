@@ -6,6 +6,9 @@ namespace AnkrSDK.Ads.Data
 	[Serializable]
 	public class AdData
 	{
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "ad_type")]
+		public string AdType { get; set; }
+		
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "uuid")]
 		public string UUID { get; set; }
 
@@ -14,7 +17,10 @@ namespace AnkrSDK.Ads.Data
 
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "texture_url")]
 		public string TextureURL { get; set; }
-
+		
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "engagement_url")]
+		public string EngagementURL { get; set; }
+		
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "texture_width")]
 		public int TextureWidth { get; set; }
 

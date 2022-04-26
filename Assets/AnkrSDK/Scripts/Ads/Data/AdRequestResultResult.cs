@@ -4,11 +4,8 @@ using Newtonsoft.Json;
 namespace AnkrSDK.Ads.Data
 {
 	[Serializable]
-	public class AdRequestResult
+	public class AdRequestResultResult : AdRequestResultBase
 	{
-		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "status")]
-		public bool Status { get; set; }
-
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "error")]
 		public string Error { get; set; }
 

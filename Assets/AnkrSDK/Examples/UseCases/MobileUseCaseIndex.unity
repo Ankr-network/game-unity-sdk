@@ -353,7 +353,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &588941422
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1216,6 +1216,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UseCase-AddSwitchNetwork
       objectReference: {fileID: 0}
+    - target: {fileID: 8204170137558247224, guid: 8368d21c182af5949a533a84eac524e7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8204170137558247225, guid: 8368d21c182af5949a533a84eac524e7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1510,6 +1514,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UseCase-WearableNFT
       objectReference: {fileID: 0}
+    - target: {fileID: 6143206494044693629, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
 --- !u!224 &2857082619985022819 stripped
@@ -1538,6 +1546,10 @@ PrefabInstance:
     - target: {fileID: 8286684085969758354, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
       propertyPath: m_Name
       value: UseCase-LoadNftData
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286684085969758354, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286684085969758381, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
       propertyPath: m_Pivot.x
@@ -1675,6 +1687,10 @@ PrefabInstance:
     - target: {fileID: 3524072961780305827, guid: a2063caecddadc04882fb2a09a1a531b, type: 3}
       propertyPath: m_Name
       value: UseCase-OpenSea
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524072961780305827, guid: a2063caecddadc04882fb2a09a1a531b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3524072961780305828, guid: a2063caecddadc04882fb2a09a1a531b, type: 3}
       propertyPath: m_Pivot.x
@@ -1857,6 +1873,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UseCase-UpdateNFT
       objectReference: {fileID: 0}
+    - target: {fileID: 2312622775736458202, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
 --- !u!224 &7667150405305432022 stripped
@@ -1969,6 +1989,10 @@ PrefabInstance:
     - target: {fileID: 7299830043460413594, guid: 2726c15012c748242879c26390034d17, type: 3}
       propertyPath: m_Name
       value: UseCase-LinkingWallet
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299830043460413594, guid: 2726c15012c748242879c26390034d17, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2726c15012c748242879c26390034d17, type: 3}
