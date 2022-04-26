@@ -5,16 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a273faea-5c8d-42d6-a5fb-ea57badc29c3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AdsWebHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AdsWebHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AnkrAds.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AnkrAds.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/Data/ResponseCodeType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/Data/ResponseCodeType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/Helpers/RequestResponseCodeLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/Helpers/RequestResponseCodeLogger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Builds/Android/v0.0.1.apk" beforeDir="false" afterPath="$PROJECT_DIR$/Builds/Android/v0.0.1.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/UseCase-Ads.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/UseCase-Ads.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/MobileUseCaseIndex.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/MobileUseCaseIndex.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/UI/AnkrBannerAdImage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/UI/AnkrBannerAdImage.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Image.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="TaskManager">
     <servers />
