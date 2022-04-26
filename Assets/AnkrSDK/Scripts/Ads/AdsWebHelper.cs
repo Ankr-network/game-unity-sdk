@@ -33,5 +33,18 @@ namespace AnkrSDK.Ads
 				return default;
 			}
 		}
+		
+		public static string AppLanguage()
+		{
+			switch (Application.systemLanguage)
+			{
+				case SystemLanguage.English: return "EN";
+				case SystemLanguage.French: return "FR";
+				case SystemLanguage.Spanish: return "ES";
+				case SystemLanguage.Chinese: return "CN";
+			}
+
+			return null;
+		}
 	}
 }

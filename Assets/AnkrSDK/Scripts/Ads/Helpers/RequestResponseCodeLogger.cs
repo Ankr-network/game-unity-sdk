@@ -18,6 +18,9 @@ namespace AnkrSDK.Ads.Helpers
 				case ResponseCodeType.DeviceIdNotProvided:
 					Debug.LogError("1001 = no device id provided");
 					break;
+				case ResponseCodeType.ApplicationKeyNotFound:
+					Debug.LogError("1002 = Application key not found");
+					break;
 				case ResponseCodeType.DeviceNotFound:
 					Debug.LogError("1003 = Device not found (this can indicate you haven't call /start yet)");
 					break;
@@ -26,6 +29,12 @@ namespace AnkrSDK.Ads.Helpers
 					break;
 				case ResponseCodeType.IncorrectAdType:
 					Debug.LogError("1005 = Incorrect app_type");
+					break;
+				case ResponseCodeType.IncorrectPublicAddress:
+					Debug.LogError("1006 = Incorrect public address");
+					break;
+				case ResponseCodeType.IncorrectLanguage:
+					Debug.LogError("1007 = Incorrect Language");
 					break;
 				default:
 					Debug.Log($"Code = {code} received");

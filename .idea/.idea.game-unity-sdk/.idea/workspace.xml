@@ -4,7 +4,13 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a273faea-5c8d-42d6-a5fb-ea57badc29c3" name="Changes" comment="" />
+    <list default="true" id="a273faea-5c8d-42d6-a5fb-ea57badc29c3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AdsWebHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AdsWebHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AnkrAds.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AnkrAds.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/Data/ResponseCodeType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/Data/ResponseCodeType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/Helpers/RequestResponseCodeLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/Helpers/RequestResponseCodeLogger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Builds/Android/v0.0.1.apk" beforeDir="false" afterPath="$PROJECT_DIR$/Builds/Android/v0.0.1.apk" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

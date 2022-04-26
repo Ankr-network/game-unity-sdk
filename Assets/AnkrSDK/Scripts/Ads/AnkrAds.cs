@@ -23,7 +23,7 @@ namespace AnkrSDK.Ads
 		{
 			return await RequestStartSessionData
 			(appID, SystemInfo.deviceUniqueIdentifier, EthHandler.DefaultAccount,
-				"EN"); //AppId : Application.identifier
+				AdsWebHelper.AppLanguage()); //AppId : Application.identifier
 		}
 
 		private static async UniTask<AdData> RequestAdData(string deviceId, AdType adType)
