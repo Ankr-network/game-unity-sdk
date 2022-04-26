@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 namespace AnkrSDK.Ads.Data
 {
 	[Serializable]
-	public class StartRequestResult
+	public abstract class AdRequestResultBase
 	{
 		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "code")]
-		public int Code { get; set; }
+		public ResponseCodeType Code { get; set; }
 	}
 }

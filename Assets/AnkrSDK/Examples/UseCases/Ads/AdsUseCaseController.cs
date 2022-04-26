@@ -39,11 +39,14 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			_button.gameObject.SetActive(false);
 			
-			var requestResult = await AnkrAds.Show(AdType.Banner);
+			var requestResult = await AnkrAds.DownloadAdData(AdType.Banner);
 
-			await UniTask.WhenAll(
-				_ankrBannerAdImage.SetupAd(requestResult),
-				_ankrBannerAdSprite.SetupAd(requestResult));
+			if (requestResult != null)
+			{
+				await UniTask.WhenAll(
+					_ankrBannerAdImage.SetupAd(requestResult),
+					_ankrBannerAdSprite.SetupAd(requestResult));
+			}
 
 			_ankrBannerAdImage.TryShow();
 			_ankrBannerAdSprite.TryShow();
