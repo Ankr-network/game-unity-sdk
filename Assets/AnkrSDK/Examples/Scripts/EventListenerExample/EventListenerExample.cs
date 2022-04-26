@@ -1,7 +1,7 @@
 ﻿using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.DTO;
+using AnkrSDK.DTO;
 using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
@@ -45,7 +45,7 @@ namespace AnkrSDK.EventListenerExample
 		{
 			var filters = new EventFilterData
 			{
-				filterTopic2 = new[] { EthHandler.DefaultAccount }
+				FilterTopic2 = new[] { EthHandler.DefaultAccount }
 			};
 
 			_subscription = await _eventSubscriber.Subscribe(
@@ -64,7 +64,7 @@ namespace AnkrSDK.EventListenerExample
 			_subscription = await _eventSubscriber.Subscribe(
 				filtersRequest,
 				ERC20ContractInformation.ContractAddress, 
-				(TransferEventDTO t) => ReceiveEvent(t)
+				ReceiveEvent
 			);
 		}
 

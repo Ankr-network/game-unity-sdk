@@ -353,7 +353,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &588941422
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1557,6 +1557,10 @@ PrefabInstance:
       propertyPath: _ankrBannerAdSprite
       value: 
       objectReference: {fileID: 1144955346}
+    - target: {fileID: 5976548454594715780, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8547154265603219201, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
       propertyPath: m_Name
       value: UseCase-Ads

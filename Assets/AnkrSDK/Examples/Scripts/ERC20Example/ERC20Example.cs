@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Numerics;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.DTO;
+using AnkrSDK.DTO;
 using AnkrSDK.UseCases;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;

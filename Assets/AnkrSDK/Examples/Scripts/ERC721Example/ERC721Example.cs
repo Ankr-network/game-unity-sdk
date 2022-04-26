@@ -4,7 +4,7 @@ using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.DTO;
+using AnkrSDK.DTO;
 using AnkrSDK.UseCases;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
@@ -51,9 +51,9 @@ namespace AnkrSDK.Examples.ERC721Example
 		{
 			var filters = new EventFilterData()
 			{
-				fromBlock = BlockParameter.CreateEarliest(),
-				toBlock = BlockParameter.CreateLatest(),
-				filterTopic2 = new [] { EthHandler.DefaultAccount }
+				FromBlock = BlockParameter.CreateEarliest(),
+				ToBlock = BlockParameter.CreateLatest(),
+				FilterTopic2 = new [] { EthHandler.DefaultAccount }
 			};
 			var events = await _erc721Contract.GetEvents<TransferEventDTO>(filters);
 

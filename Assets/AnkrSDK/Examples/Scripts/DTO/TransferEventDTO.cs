@@ -2,7 +2,7 @@ using System.Numerics;
 using AnkrSDK.Core.Data;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
-namespace AnkrSDK.Examples.DTO
+namespace AnkrSDK.DTO
 {
 	[Event("Transfer")]
 	public class TransferEventDTO : EventDTOBase
