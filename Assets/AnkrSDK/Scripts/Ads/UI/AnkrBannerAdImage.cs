@@ -14,7 +14,6 @@ namespace AnkrSDK.Ads.UI
 		protected override void OnTextureLoaded(Sprite texture)
 		{
 			_image.sprite = texture;
-			_image.SetNativeSize();
 		}
 
 		private void OnEnable()
