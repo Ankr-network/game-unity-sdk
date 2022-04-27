@@ -45,7 +45,7 @@ namespace AnkrSDK.EventListenerExample
 		{
 			var filters = new EventFilterData
 			{
-				filterTopic2 = new[] { EthHandler.DefaultAccount }
+				filterTopic2 = new[] { await EthHandler.GetDefaultAccount() }
 			};
 
 			_subscription = await _eventSubscriber.Subscribe(
@@ -59,7 +59,7 @@ namespace AnkrSDK.EventListenerExample
 		public async UniTaskVoid SubscribeWithRequest()
 		{
 			var filtersRequest = new EventFilterRequest<TransferEventDTO>();
-			filtersRequest.AddTopic("To", EthHandler.DefaultAccount);
+			filtersRequest.AddTopic("To", await EthHandler.GetDefaultAccount());
 
 			_subscription = await _eventSubscriber.Subscribe(
 				filtersRequest,

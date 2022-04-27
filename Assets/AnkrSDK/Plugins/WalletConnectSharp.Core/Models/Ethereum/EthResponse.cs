@@ -5,7 +5,7 @@ namespace AnkrSDK.WalletConnectSharp.Core.Models.Ethereum
     public class EthResponse : JsonRpcResponse
     {
         [JsonProperty]
-        private string result;
+        public string result;
 
         [JsonIgnore]
         public string Result => result;

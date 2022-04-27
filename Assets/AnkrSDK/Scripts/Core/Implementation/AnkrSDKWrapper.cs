@@ -59,10 +59,14 @@ namespace AnkrSDK.Core.Implementation
 
 		private static IWeb3 CreateWeb3Provider(string providerURI)
 		{
+#if UNITY_WEBGL
+			return new Web3(providerURI);
+#else
 			var wcProtocol = WalletConnect.ActiveSession;
 			var client = wcProtocol.CreateProvider(new Uri(providerURI));
 			var web3Provider = new Web3(client);
 			return web3Provider;
+#endif
 		}
 	}
 }

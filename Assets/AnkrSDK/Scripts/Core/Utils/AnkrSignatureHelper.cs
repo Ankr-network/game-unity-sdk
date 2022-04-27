@@ -12,9 +12,9 @@ namespace AnkrSDK.Core.Utils
 		/// </summary>
 		/// <param name="messageToSign">Message you would like to sign</param>
 		/// <returns>Signed message</returns>
-		public static Task<string> Sign(string messageToSign)
+		public static async Task<string> Sign(string messageToSign)
 		{
-			return WalletConnect.ActiveSession.EthSign(EthHandler.DefaultAccount, messageToSign);
+			return await WalletConnect.ActiveSession.EthSign(await EthHandler.GetDefaultAccount(), messageToSign);
 		}
 
 		/// <summary>

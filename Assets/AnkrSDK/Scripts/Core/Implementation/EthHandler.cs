@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.WebGL;
 using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
@@ -12,17 +13,20 @@ namespace AnkrSDK.Core.Implementation
 	{
 		private readonly IWeb3 _web3Provider;
 
-		public static string DefaultAccount
+		public static async UniTask<string> GetDefaultAccount()
 		{
-			get
-			{
-				if (WalletConnect.ActiveSession != null)
-				{
-					return WalletConnect.ActiveSession.Accounts[0];
-				}
 
-				throw new Exception("Application is not linked to wallet");
+#if UNITY_WEBGL
+			var interlayer = new WebGLWrapper();
+			return await interlayer.GetDefaultAccount();
+#else
+			if (WalletConnect.ActiveSession != null)
+			{
+				return WalletConnect.ActiveSession.Accounts[0];
 			}
+
+			throw new Exception("Application is not linked to wallet");
+#endif
 		}
 
 		public EthHandler(IWeb3 web3Provider)

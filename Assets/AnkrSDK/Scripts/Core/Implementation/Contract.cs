@@ -62,7 +62,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var transactionInput = CreateTransactionInput(methodName, arguments);
 			var sendTransaction = await AnkrWalletHelper.SendTransaction(
-				EthHandler.DefaultAccount,
+				await EthHandler.GetDefaultAccount(),
 				_contractAddress,
 				transactionInput.Data,
 				gas: gas,
@@ -81,7 +81,7 @@ namespace AnkrSDK.Core.Implementation
 			evController?.TransactionSendBegin(transactionInput);
 
 			var sendTransactionTask = AnkrWalletHelper.SendTransaction(
-				EthHandler.DefaultAccount,
+				await EthHandler.GetDefaultAccount(),
 				_contractAddress,
 				transactionInput.Data,
 				gas: gas,
@@ -143,7 +143,9 @@ namespace AnkrSDK.Core.Implementation
 
 		private TransactionInput CreateTransactionInput(string methodName, object[] arguments)
 		{
-			var activeSessionAccount = EthHandler.DefaultAccount;
+			var activeSessionAccount = "";
+			var defaultAccountTask = EthHandler.GetDefaultAccount();
+			defaultAccountTask.ContinueWith(result => { activeSessionAccount = result; });
 			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
 			var callFunction = contract.GetFunction(methodName);
 			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);

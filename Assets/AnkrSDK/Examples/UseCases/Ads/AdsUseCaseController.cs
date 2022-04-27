@@ -37,7 +37,7 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			_button.gameObject.SetActive(false);
 
-			var requestResult = await AnkrAds.RequestAdData(EthHandler.DefaultAccount, AdType.Banner);
+			var requestResult = await AnkrAds.RequestAdData(await EthHandler.GetDefaultAccount(), AdType.Banner);
 
 			await UniTask.WhenAll(
 				_ankrBannerAdImage.SetupAd(requestResult),

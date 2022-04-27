@@ -7,6 +7,7 @@ using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
 using AnkrSDK.UseCases;
+using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
@@ -75,24 +76,24 @@ namespace AnkrSDK.Examples.ERC20Example
 			Debug.Log("Receipt: " + receipt.Status);
 		}
 
-		public async void GetBalance()
+		public async UniTaskVoid GetBalance()
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = EthHandler.DefaultAccount
+				Owner = await EthHandler.GetDefaultAccount()
 			};
 			var balance = await _erc20Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
 		}
 
-		public async void GetEvents()
+		public async UniTaskVoid GetEvents()
 		{
 			var filtersRequest = new EventFilterRequest<TransferEventDTO>
 			{
 				FromBlock = BlockParameter.CreateEarliest(),
 				ToBlock = BlockParameter.CreateLatest()
 			};
-			filtersRequest.AddTopic("To", EthHandler.DefaultAccount);
+			filtersRequest.AddTopic("To", await EthHandler.GetDefaultAccount());
 			
 			var events = await _erc20Contract.GetEvents(filtersRequest);
 

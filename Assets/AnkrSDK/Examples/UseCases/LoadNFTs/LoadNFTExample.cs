@@ -39,7 +39,8 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			_gameCharacterContract = ankrSDKWrapper.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress,
 				WearableNFTContractInformation.GameCharacterABI);
-			_activeSessionAccount = EthHandler.DefaultAccount;
+			var defaultAccountTask = EthHandler.GetDefaultAccount();
+			defaultAccountTask.ContinueWith(result => { _activeSessionAccount = result; });
 		}
 
 		public override void ActivateUseCase()

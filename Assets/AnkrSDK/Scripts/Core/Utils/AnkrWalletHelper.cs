@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.WebGL;
 
 namespace AnkrSDK.Core.Utils
 {
 	public static class AnkrWalletHelper
 	{
-		public static Task<EthResponse> SendTransaction(
+		public static async Task<EthResponse> SendTransaction(
 			string from,
 			string to,
 			string data = null,
@@ -27,9 +28,21 @@ namespace AnkrSDK.Core.Utils
 				nonce = nonce
 			};
 
-			var request = new EthSendTransaction(transactionData);
+			#if !UNITY_WEBGL
 
+			var request = new EthSendTransaction(transactionData);
 			return WalletConnect.ActiveSession.Send<EthSendTransaction, EthResponse>(request);
+	
+			#else
+			
+			var interlayer = new WebGLWrapper();
+			var response = new EthResponse
+			{
+				result = await interlayer.SendTransaction(transactionData)
+			};
+			return response;
+			
+			#endif
 		}
 	}
 }
