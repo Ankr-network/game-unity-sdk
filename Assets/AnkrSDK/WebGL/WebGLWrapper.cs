@@ -1,24 +1,33 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using Cysharp.Threading.Tasks;
-using Nethereum.Contracts;
-using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.WebGL
 {
 	public class WebGLWrapper
 	{
+		private static WebGLWrapper instance;
+		
 		private static Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>> completionSources;
 		private bool _isCancellationRequested;
 
-		public WebGLWrapper()
+		protected WebGLWrapper()
 		{
 			completionSources = new Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>>();
 			Update().Forget();
+		}
+
+		public static WebGLWrapper Instance()
+		{
+			if (instance == null)
+			{
+				instance = new WebGLWrapper();
+			}
+
+			return instance;
 		}
 
 		public async UniTaskVoid Update()
@@ -27,7 +36,7 @@ namespace AnkrSDK.WebGL
 			{
 				ReceiveMessages();
 
-				await UniTask.Yield(PlayerLoopTiming.Update);
+				await UniTask.Delay(100);
 			}
 		}
     

@@ -20,10 +20,10 @@ mergeInto(LibraryManager.library, {
     },
 
     GetResponses: function () {
-        // var responses = window.messageQueue.messages;
-        var bufferSize = lengthBytesUTF8(window.messageQueue.messages) + 1;
+        var responses = window.messageQueue.messages;
+        var bufferSize = lengthBytesUTF8(responses) + 1;
         var buffer = _malloc(bufferSize);
-        stringToUTF8(window.messageQueue.messages, buffer, bufferSize);
+        stringToUTF8(responses, buffer, bufferSize);
         return buffer;
     }
 });

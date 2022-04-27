@@ -10,7 +10,7 @@ public class WebGLInterlayer
     public static extern void SignMessage(string id, string payload);
     
     [DllImport("__Internal")]
-    public static extern string GetAddresses(string id);
+    public static extern void GetAddresses(string id);
     
     [DllImport("__Internal")]
     public static extern string GetResponses();

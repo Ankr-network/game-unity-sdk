@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WebGL;
+using UnityEngine;
 
 namespace AnkrSDK.Core.Utils
 {
@@ -35,7 +35,7 @@ namespace AnkrSDK.Core.Utils
 	
 			#else
 			
-			var interlayer = new WebGLWrapper();
+			var interlayer = WebGLWrapper.Instance();
 			var response = new EthResponse
 			{
 				result = await interlayer.SendTransaction(transactionData)

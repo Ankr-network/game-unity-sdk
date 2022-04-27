@@ -7,6 +7,7 @@ using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.DTO;
 using AnkrSDK.UseCases;
+using AnkrSDK.WebGL;
 using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace AnkrSDK.Examples.ERC20Example
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
 		private EthHandler _eth;
+		private WebGLWrapper interlayer;
 
 		private void Start()
 		{
@@ -34,9 +36,9 @@ namespace AnkrSDK.Examples.ERC20Example
 			var receipt = await _erc20Contract.CallMethod(MintMethodName, Array.Empty<object>());
 			Debug.Log($"Receipt: {receipt}");
 
-			var trx = await _eth.GetTransaction(receipt);
-
-			Debug.Log($"Nonce: {trx.Nonce}");
+//			var trx = await _eth.GetTransaction(receipt);
+//
+//			Debug.Log($"Nonce: {trx.Nonce}");
 		}
 		
 		public void SendMint()

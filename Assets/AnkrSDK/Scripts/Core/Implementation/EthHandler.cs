@@ -17,7 +17,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 
 #if UNITY_WEBGL
-			var interlayer = new WebGLWrapper();
+			var interlayer = WebGLWrapper.Instance();
 			return await interlayer.GetDefaultAccount();
 #else
 			if (WalletConnect.ActiveSession != null)
