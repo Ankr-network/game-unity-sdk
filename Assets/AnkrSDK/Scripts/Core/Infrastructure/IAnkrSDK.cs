@@ -6,6 +6,6 @@ namespace AnkrSDK.Core.Infrastructure
 	{
 		EthHandler Eth { get; }
 		IContract GetContract(string contractAddress, string contractABI);
-		ContractEventSubscriber CreateSubscriber(string wsUrl);
+		IContractEventSubscriber CreateSubscriber(string wsUrl);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using AnkrSDK.Core;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
@@ -20,7 +21,7 @@ namespace AnkrSDK.Examples.ERC20Example
 
 		private void Start()
 		{
-			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
 			_erc20Contract =
 				ankrSDK.GetContract(
 					ERC20ContractInformation.ContractAddress,

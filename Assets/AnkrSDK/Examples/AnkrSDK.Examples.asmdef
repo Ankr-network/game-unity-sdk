@@ -1,0 +1,12 @@
+{
+  "name": "AnkrSDK.Examples",
+  "references": [
+    "UniTask",
+    "AnkrSDK.Ads",
+    "AnkrSDK.Core",
+    "AnkrSDK.OpenSea",
+    "WalletConnectSharp",
+    "WalletConnectSharp.Core",
+    "Unity.TextMeshPro"
+  ]
+}

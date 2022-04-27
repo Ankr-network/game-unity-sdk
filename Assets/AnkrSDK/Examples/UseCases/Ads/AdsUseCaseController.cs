@@ -1,8 +1,6 @@
-using AnkrSDK.Ads;
-using AnkrSDK.Ads.Data;
+using AnkrAds.Ads.Data;
 using AnkrSDK.Ads.UI;
 using AnkrSDK.Core.Implementation;
-using AnkrSDK.Core.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,7 +37,7 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			_button.gameObject.SetActive(false);
 			
-			var requestResult = await AnkrAds.DownloadAdData(AdType.Banner);
+			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(AdType.Banner, EthHandler.DefaultAccount);
 
 			if (requestResult != null)
 			{

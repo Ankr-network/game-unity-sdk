@@ -1,4 +1,4 @@
-namespace AnkrSDK.Examples.WearableNFTExample
+namespace AnkrSDK.WearableNFTExample
 {
 	public class WearableNFTContractInformation
 	{

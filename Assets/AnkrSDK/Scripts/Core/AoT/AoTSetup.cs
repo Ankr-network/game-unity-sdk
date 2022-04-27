@@ -1,7 +1,6 @@
 using System.Numerics;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Data.ContractMessages.ERC721.RentableExtension;
-using AnkrSDK.Examples.GameCharacterContract;
 using Nethereum.Web3;
 
 namespace AnkrSDK.Core.AoT
@@ -14,8 +13,6 @@ namespace AnkrSDK.Core.AoT
 			var contractHandler = web3.Eth.GetContractHandler("");
 			contractHandler.QueryAsync<Data.ContractMessages.ERC721.BalanceOfMessage, BigInteger>();
 			contractHandler.QueryAsync<Data.ContractMessages.ERC1155.BalanceOfMessage, BigInteger>();
-			contractHandler.QueryAsync<GetHatMessage, BigInteger>();
-			contractHandler.QueryAsync<GetShoesMessage, BigInteger>();
 			contractHandler.QueryAsync<TotalSupplyMessage, BigInteger>();
 			contractHandler.QueryAsync<TokenOfOwnerByIndexMessage, BigInteger>();
 			contractHandler.QueryAsync<TokenByIndexMessage, BigInteger>();

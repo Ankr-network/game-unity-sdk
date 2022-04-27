@@ -1,7 +1,7 @@
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace AnkrSDK.Examples.GameCharacterContract
+namespace AnkrSDK.GameCharacterContract
 {
 	[Function("getShoes", "uint256")]
 	public class GetShoesMessage : FunctionMessage
