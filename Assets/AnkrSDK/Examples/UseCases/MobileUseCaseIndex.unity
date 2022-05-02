@@ -1525,42 +1525,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 588941422}
     m_Modifications:
-    - target: {fileID: 1399396242, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957219522749174682, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957219522749174682, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957219522749174682, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957219522749174682, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957219522749174682, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957219522749174682, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -3646
-      objectReference: {fileID: 0}
     - target: {fileID: 4387436828440451832, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
       propertyPath: _ankrBannerAdSprite
       value: 
       objectReference: {fileID: 1144955346}
-    - target: {fileID: 5976548454594715780, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8547154265603219201, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
       propertyPath: m_Name
       value: UseCase-Ads
