@@ -8,11 +8,11 @@ namespace AnkrSDK.Core.Infrastructure
 {
 	public interface IEthHandler
 	{
-		UniTask<string> GetDefaultAccount();
+		Task<string> GetDefaultAccount();
 		Task<TransactionReceipt> GetTransactionReceipt(string transactionHash);
 		Task<Transaction> GetTransaction(string transactionReceipt);
 		Task<HexBigInteger> EstimateGas(TransactionInput transactionInput);
-		UniTask<HexBigInteger> EstimateGas(
+		Task<HexBigInteger> EstimateGas(
 			string from,
 			string to,
 			string data = null,

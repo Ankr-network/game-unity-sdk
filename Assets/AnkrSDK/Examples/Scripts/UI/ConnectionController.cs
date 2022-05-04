@@ -8,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using AnkrSDK.WebGL;
 	
 namespace AnkrSDK.UI
 {

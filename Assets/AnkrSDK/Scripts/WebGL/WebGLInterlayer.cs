@@ -1,6 +1,6 @@
+#if UNITY_WEBGL
 using System.Runtime.InteropServices;
 
-#if UNITY_WEBGL
 public class WebGLInterlayer
 {
     [DllImport("__Internal")]

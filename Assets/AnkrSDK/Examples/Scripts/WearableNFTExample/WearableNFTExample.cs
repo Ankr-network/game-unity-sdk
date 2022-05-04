@@ -82,8 +82,13 @@ namespace AnkrSDK.WearableNFTExample
 				WearableNFTContractInformation.GameCharacterABI);
 			_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
 				WearableNFTContractInformation.GameItemABI);
-			var activeSessionTask = ankrSDK.Eth.GetDefaultAccount();
-			activeSessionTask.ContinueWith(result => { _activeSessionAccount = result; });
+			ActivateAsync(ankrSDK).Forget();
+		}
+
+		private async UniTaskVoid ActivateAsync(IAnkrSDK ankrSDK)
+		{
+			var result = await ankrSDK.Eth.GetDefaultAccount();
+			_activeSessionAccount = result;
 		}
 
 		private async UniTask MintItems()
@@ -105,7 +110,7 @@ namespace AnkrSDK.WearableNFTExample
 			var data = new byte[] { };
 
 			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
-				new object[] {_activeSessionAccount, itemsToMint, itemsAmounts, data});
+				new object[] { _activeSessionAccount, itemsToMint, itemsAmounts, data });
 
 			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
 		}
@@ -115,7 +120,7 @@ namespace AnkrSDK.WearableNFTExample
 			const string safeMintMethodName = "safeMint";
 
 			var transactionHash =
-				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] {_activeSessionAccount});
+				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] { _activeSessionAccount });
 
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
 		}
@@ -216,7 +221,7 @@ namespace AnkrSDK.WearableNFTExample
 			};
 			var hatId = await _gameCharacterContract.GetData<GetHatMessage, BigInteger>(getHatMessage);
 			var hexHatID = AnkrSDKHelper.StringToBigInteger(hatId.ToString());
-			
+
 			UpdateUILogs($"Hat Id: {hexHatID}");
 
 			return hatId;

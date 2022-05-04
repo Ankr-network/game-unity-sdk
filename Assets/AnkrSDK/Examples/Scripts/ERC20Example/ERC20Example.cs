@@ -4,25 +4,21 @@ using AnkrSDK.Core;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.DTO;
-using AnkrSDK.Core.Utils;
-using AnkrSDK.DTO;
+using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.UseCases;
-using AnkrSDK.WebGL;
 using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
-namespace AnkrSDK.Examples.ERC20Example
+namespace AnkrSDK.ERC20Example
 {
 	public class ERC20Example : UseCase
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
 		private IEthHandler _eth;
-		private WebGLWrapper interlayer;
 
 		private void Start()
 		{

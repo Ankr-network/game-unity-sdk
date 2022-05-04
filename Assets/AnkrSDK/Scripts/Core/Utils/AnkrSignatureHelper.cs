@@ -1,20 +1,18 @@
 using System.Threading.Tasks;
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.WalletConnectSharp.Unity;
-using AnkrSDK.WebGL;
 using Nethereum.Signer;
 
 namespace AnkrSDK.Core.Utils
 {
 	public class AnkrSignatureHelper
 	{
-		
 		/// <summary>
 		/// Sign a message using  currently active session.
 		/// </summary>
 		/// <param name="messageToSign">Message you would like to sign</param>
+		/// <param name="address">Users wallet address</param>
 		/// <returns>Signed message</returns>
-		public static async Task<string> Sign(string messageToSign, string address)
+		public static Task<string> Sign(string messageToSign, string address)
 		{
 #if UNITY_WEBGL
 			var props = new DataSignaturePropsDTO
@@ -23,9 +21,9 @@ namespace AnkrSDK.Core.Utils
 				message = messageToSign
 			};
 			var interlayer = WebGLWrapper.Instance();
-			return await interlayer.Sign(props);
+			return interlayer.Sign(props);
 #else
-			return await WalletConnect.ActiveSession.EthSign(await EthHandler.GetDefaultAccount(), messageToSign);
+			return WalletConnect.ActiveSession.EthSign(address, messageToSign);
 #endif
 		}
 

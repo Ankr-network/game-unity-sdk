@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using AnkrSDK.WebGL;
-using Nethereum.Hex.HexTypes;
-using UnityEngine;
+using AnkrSDK.WalletConnectSharp.Unity;
 
 namespace AnkrSDK.Core.Utils
 {
@@ -18,6 +16,24 @@ namespace AnkrSDK.Core.Utils
 			string nonce = null
 		)
 		{
+		#if UNITY_WEBGL
+			var transactionData = new AnkrSDK.WebGL.DTO.TransactionData
+			{
+				from = from,
+				to = to,
+				data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
+				nonce = nonce
+			};
+			var interlayer = WebGLWrapper.Instance();
+			var response = new EthResponse
+			{
+				result = await interlayer.SendTransaction(transactionData)
+			};
+			return response;
+		#else
 			var transactionData = new TransactionData
 			{
 				from = from,
@@ -29,20 +45,9 @@ namespace AnkrSDK.Core.Utils
 				nonce = nonce
 			};
 
-#if !UNITY_WEBGL
 			var request = new EthSendTransaction(transactionData);
-			return WalletConnect.ActiveSession.Send<EthSendTransaction, EthResponse>(request);
-	
-			#else
-
-			var interlayer = WebGLWrapper.Instance();
-			var response = new EthResponse
-			{
-				result = await interlayer.SendTransaction(transactionData)
-			};
-			return response;
-
-#endif
+			return await WalletConnect.ActiveSession.Send<EthSendTransaction, EthResponse>(request);
+		#endif
 		}
 	}
 }

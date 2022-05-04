@@ -1,3 +1,4 @@
+#if UNITY_WEBGL
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -7,19 +8,20 @@ namespace AnkrSDK.WebGL
 {
 	public class WebGLCommunicationProtocol
 	{
-		private static Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>> _completionSources;
-		private bool _isCancellationRequested = false;
-		
-		public WebGLCommunicationProtocol() {
+		private Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>> _completionSources;
+		private bool _isCancellationRequested;
+
+		public WebGLCommunicationProtocol()
+		{
 			_completionSources = new Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>>();
 		}
 
-		public async UniTaskVoid Connect()
+		public UniTask Connect()
 		{
-			StartReceiveCycle();
+			return StartReceiveCycle();
 		}
-	
-		public async UniTaskVoid StartReceiveCycle()
+
+		private async UniTask StartReceiveCycle()
 		{
 			while (!_isCancellationRequested)
 			{
@@ -28,14 +30,14 @@ namespace AnkrSDK.WebGL
 				await UniTask.Yield(PlayerLoopTiming.Update);
 			}
 		}
-		
+
 		public string GenerateId()
 		{
 			var id = Guid.NewGuid().ToString();
-			
+
 			var completionTask = new UniTaskCompletionSource<WebGLMessageDTO>();
 			_completionSources.Add(id, completionTask);
-			
+
 			return id;
 		}
 
@@ -46,24 +48,6 @@ namespace AnkrSDK.WebGL
 			_completionSources.Remove(id);
 
 			return answer;
-		}
-
-		private void ReceiveMessages()
-		{
-			var json = WebGLInterlayer.GetResponses();
-			if (json.Length > 0)
-			{
-				var messages = JsonConvert.DeserializeObject<WebGLMessageDTO[]>(json);
-
-				foreach (var message in messages)
-				{
-					if (_completionSources.ContainsKey(message.id))
-					{
-						var completionSource = _completionSources[message.id];
-						completionSource.TrySetResult(message);
-					}
-				}
-			}
 		}
 
 		public void Disconnect()
@@ -77,9 +61,29 @@ namespace AnkrSDK.WebGL
 			_completionSources = null;
 		}
 
+		private void ReceiveMessages()
+		{
+			var json = WebGLInterlayer.GetResponses();
+			if (json.Length <= 0)
+			{
+				return;
+			}
+
+			var messages = JsonConvert.DeserializeObject<WebGLMessageDTO[]>(json);
+
+			foreach (var message in messages)
+			{
+				if (_completionSources.ContainsKey(message.id))
+				{
+					var completionSource = _completionSources[message.id];
+					completionSource.TrySetResult(message);
+				}
+			}
+		}
+
 		private void CompleteAllSources()
 		{
-			foreach(KeyValuePair<string, UniTaskCompletionSource<WebGLMessageDTO>> entry in _completionSources)
+			foreach (var entry in _completionSources)
 			{
 				var answer = new WebGLMessageDTO
 				{
@@ -89,6 +93,7 @@ namespace AnkrSDK.WebGL
 				};
 				entry.Value.TrySetResult(answer);
 			}
+
 			_completionSources.Clear();
 		}
 
@@ -98,3 +103,4 @@ namespace AnkrSDK.WebGL
 		}
 	}
 }
+#endif

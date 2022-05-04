@@ -1,12 +1,11 @@
+#if UNITY_WEBGL
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.WebGL;
-using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using AnkrSDK.Core.Utils;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using UnityEngine;
+using AnkrSDK.WebGL.Extensions;
 
 namespace AnkrSDK.Core.Implementation
 {
@@ -19,7 +18,7 @@ namespace AnkrSDK.Core.Implementation
 			_webGlWrapper = WebGLWrapper.Instance();
 		}
 		
-		public UniTask<string> GetDefaultAccount()
+		public Task<string> GetDefaultAccount()
 		{
 			return _webGlWrapper.GetDefaultAccount();
 		}
@@ -39,7 +38,7 @@ namespace AnkrSDK.Core.Implementation
 			return await _webGlWrapper.EstimateGas(transactionInput.ToTransactionData());
 		}
 		
-		public async UniTask<HexBigInteger> EstimateGas(
+		public async Task<HexBigInteger> EstimateGas(
 			string from,
 			string to,
 			string data = null,
@@ -49,7 +48,7 @@ namespace AnkrSDK.Core.Implementation
 			string nonce = null
 		)
 		{
-			var transactionData = new TransactionData
+			var transactionData = new WebGL.DTO.TransactionData
 			{
 				from = from,
 				to = to,
@@ -64,3 +63,4 @@ namespace AnkrSDK.Core.Implementation
 		}
 	}
 }
+#endif

@@ -1,6 +1,8 @@
+#if UNITY_WEBGL
 using System;
 using System.Linq;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
+using System.Threading.Tasks;
+using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
@@ -10,11 +12,11 @@ namespace AnkrSDK.WebGL
 {
 	public class WebGLWrapper
 	{
-		private static WebGLWrapper instance;
-		
-		private WebGLCommunicationProtocol _protocol;
+		private static WebGLWrapper _instance;
 
-		protected WebGLWrapper()
+		private readonly WebGLCommunicationProtocol _protocol;
+
+		private WebGLWrapper()
 		{
 			_protocol = new WebGLCommunicationProtocol();
 			_protocol.Connect().Forget();
@@ -22,14 +24,9 @@ namespace AnkrSDK.WebGL
 
 		public static WebGLWrapper Instance()
 		{
-			if (instance == null)
-			{
-				instance = new WebGLWrapper();
-			}
-
-			return instance;
+			return _instance ?? (_instance = new WebGLWrapper());
 		}
-    
+
 		public async UniTask<string> SendTransaction(TransactionData transaction)
 		{
 			var id = _protocol.GenerateId();
@@ -42,10 +39,10 @@ namespace AnkrSDK.WebGL
 			{
 				return answer.payload;
 			}
-			
+
 			throw new Exception(answer.payload);
 		}
-		
+
 		public async UniTask<HexBigInteger> EstimateGas(TransactionData transaction)
 		{
 			var id = _protocol.GenerateId();
@@ -58,31 +55,31 @@ namespace AnkrSDK.WebGL
 			{
 				return new HexBigInteger(answer.payload);
 			}
-			
+
 			throw new Exception(answer.payload);
 		}
 
-		public async UniTask<string> Sign(DataSignaturePropsDTO signProps)
+		public async Task<string> Sign(DataSignaturePropsDTO signProps)
 		{
 			var id = _protocol.GenerateId();
 
 			WebGLInterlayer.SignMessage(id, JsonConvert.SerializeObject(signProps));
-        
+
 			var answer = await _protocol.WaitForAnswer(id);
 
 			if (answer.status == WebGLMessageStatus.Success)
 			{
 				return answer.payload;
 			}
-			
+
 			throw new Exception(answer.payload);
 		}
-		
-		public async UniTask<string> GetDefaultAccount()
+
+		public async Task<string> GetDefaultAccount()
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetAddresses(id);
-        
+
 			var answer = await _protocol.WaitForAnswer(id);
 
 			if (answer.status == WebGLMessageStatus.Success)
@@ -93,12 +90,12 @@ namespace AnkrSDK.WebGL
 
 			throw new Exception(answer.payload);
 		}
-		
+
 		public async UniTask<Transaction> GetTransaction(string transactionHash)
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetTransaction(id, transactionHash);
-        
+
 			var answer = await _protocol.WaitForAnswer(id);
 
 			if (answer.status == WebGLMessageStatus.Success)
@@ -109,12 +106,12 @@ namespace AnkrSDK.WebGL
 
 			throw new Exception(answer.payload);
 		}
-		
+
 		public async UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetTransactionReceipt(id, transactionHash);
-        
+
 			var answer = await _protocol.WaitForAnswer(id);
 
 			if (answer.status == WebGLMessageStatus.Success)
@@ -126,3 +123,4 @@ namespace AnkrSDK.WebGL
 		}
 	}
 }
+#endif
