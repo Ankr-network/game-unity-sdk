@@ -8,9 +8,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
+using AnkrSDK.WebGL;
+	
 namespace AnkrSDK.UI
 {
+#if !UNITY_WEBGL
 	public class ConnectionController : MonoBehaviour
 	{
 		private const string LoginText = "Login";
@@ -151,4 +153,33 @@ namespace AnkrSDK.UI
 			_loginButton.interactable = e.TransportConnected;
 		}
 	}
+	
+#else
+	public class ConnectionController : MonoBehaviour
+	{
+		private const string LoginText = "Login";
+		private const string ConnectingText = "Connecting...";
+
+		[SerializeField] private QRCodeImage _qrCodeImage;
+		[SerializeField] private TMP_Text _connectionText;
+		[SerializeField] private Button _loginButton;
+		[SerializeField] private GameObject _sceneChooser;
+
+		private async void OnEnable()
+		{
+			var webGlWrapper = WebGLWrapper.Instance();
+			try
+			{
+				_connectionText.text = ConnectingText;
+				await webGlWrapper.GetDefaultAccount();
+				_sceneChooser.SetActive(true);
+				_loginButton.gameObject.SetActive(false);
+			}
+			catch (Exception exception)
+			{
+				_connectionText.text = LoginText;
+			}
+		}
+	}
+#endif
 }

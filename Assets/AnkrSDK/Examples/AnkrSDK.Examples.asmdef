@@ -5,6 +5,7 @@
     "AnkrSDK.Ads",
     "AnkrSDK.Core",
     "AnkrSDK.OpenSea",
+    "AnkrSDK.WebGL",
     "WalletConnectSharp",
     "WalletConnectSharp.Core",
     "Unity.TextMeshPro"

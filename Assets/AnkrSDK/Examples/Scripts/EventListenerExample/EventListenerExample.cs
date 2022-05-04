@@ -34,7 +34,7 @@ namespace AnkrSDK.EventListenerExample
 			base.ActivateUseCase();
 			
 
-			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
 			_eth = ankrSDK.Eth;
 
 			_eventSubscriber = ankrSDK.CreateSubscriber(ERC20ContractInformation.WsProviderURL);

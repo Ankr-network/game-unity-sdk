@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using AnkrSDK.Core;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
@@ -60,7 +61,7 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 		{
 			base.ActivateUseCase();
 			
-			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
 			_eth = ankrSDK.Eth;
 		}
 

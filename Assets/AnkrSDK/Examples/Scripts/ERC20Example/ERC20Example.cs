@@ -8,7 +8,7 @@ using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.DTO;
 using AnkrSDK.Core.Utils;
-using AnkrSDK.Examples.DTO;
+using AnkrSDK.DTO;
 using AnkrSDK.UseCases;
 using AnkrSDK.WebGL;
 using Cysharp.Threading.Tasks;

@@ -1,0 +1,8 @@
+{
+  "name": "AnkrSDK.WebGL",
+  "references": [
+    "UniTask",
+    "WalletConnectSharp",
+    "WalletConnectSharp.Core"
+  ]
+}

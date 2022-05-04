@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace AnkrSDK.WebGL
 {
