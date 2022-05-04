@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Numerics;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.DTO;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.DTO;
 using AnkrSDK.UseCases;

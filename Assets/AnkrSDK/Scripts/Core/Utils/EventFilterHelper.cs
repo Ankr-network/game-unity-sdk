@@ -11,11 +11,11 @@ namespace AnkrSDK.Core.Utils
 		{
 			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
 			
-			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter?.fromBlock, evFilter?.toBlock);
+			var ethFilterInput = FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter?.FromBlock, evFilter?.ToBlock);
 			if (evFilter != null && evFilter.AreTopicsFilled())
 			{
 				ethFilterInput.Topics = eventABI.GetTopicBuilder()
-					.GetTopics(evFilter.filterTopic1, evFilter.filterTopic2, evFilter.filterTopic3);
+					.GetTopics(evFilter.FilterTopic1, evFilter.FilterTopic2, evFilter.FilterTopic3);
 			}
 
 			return ethFilterInput;

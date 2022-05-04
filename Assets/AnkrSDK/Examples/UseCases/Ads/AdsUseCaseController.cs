@@ -26,6 +26,8 @@ namespace AnkrSDK.UseCases.Ads
 			_eth = ankrSDK.Eth;
 		}
 
+		private bool _isInitialized = false;
+
 		private void OnEnable()
 		{
 			_ankrBannerAdImage.gameObject.SetActive(false);
@@ -47,15 +49,20 @@ namespace AnkrSDK.UseCases.Ads
 		private async UniTaskVoid DownloadAd()
 		{
 			_button.gameObject.SetActive(false);
-
+			
 			var requestResult = await AnkrAds.RequestAdData(await _eth.GetDefaultAccount(), AdType.Banner);
 
-			await UniTask.WhenAll(
-				_ankrBannerAdImage.SetupAd(requestResult),
-				_ankrBannerAdSprite.SetupAd(requestResult));
-
+			if (requestResult != null)
+			{
+				await UniTask.WhenAll(
+					_ankrBannerAdImage.SetupAd(requestResult),
+					_ankrBannerAdSprite.SetupAd(requestResult));
+			}
+      
 			_ankrBannerAdImage.TryShow();
 			_ankrBannerAdSprite.TryShow();
 		}
+		
+		
 	}
 }

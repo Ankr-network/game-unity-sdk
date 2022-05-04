@@ -4,9 +4,5 @@ namespace AnkrSDK.Core.Data
 {
 	public class EventDTOBase : IEventDTO
 	{
-		public EventDTOBase()
-		{
-			
-		}
 	}
 }
