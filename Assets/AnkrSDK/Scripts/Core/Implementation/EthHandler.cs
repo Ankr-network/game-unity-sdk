@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Core.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
@@ -59,6 +61,31 @@ namespace AnkrSDK.Core.Implementation
 			};
 
 			return EstimateGas(transactionInput);
+		}
+
+		public Task<string> Sign(string messageToSign, string address)
+		{
+			return WalletConnect.ActiveSession.EthSign(address, messageToSign);
+		}
+
+		public Task<EthResponse> SendTransaction(string @from, string to, string data = null, string value = null,
+			string gas = null,
+			string gasPrice = null, string nonce = null)
+		{
+			var transactionData = new TransactionData
+			{
+				from = from,
+				to = to,
+				data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
+				nonce = nonce
+			};
+
+			var request = new AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction(transactionData);
+			return WalletConnect.ActiveSession
+				.Send<AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction, EthResponse>(request);
 		}
 
 		public Task<HexBigInteger> EstimateGas(TransactionInput transactionInput)

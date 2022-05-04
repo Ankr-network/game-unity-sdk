@@ -1,4 +1,3 @@
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
@@ -59,7 +58,7 @@ namespace AnkrSDK.UI
 
 		private static void OnButtonClick()
 		{
-			AnkrSDKWrapper.Disconnect().Forget();
+			WalletConnect.CloseSession().Forget();
 		}
 	}
 }

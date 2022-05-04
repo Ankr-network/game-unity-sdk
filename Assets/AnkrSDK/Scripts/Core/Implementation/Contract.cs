@@ -11,7 +11,6 @@ using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
-using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
@@ -47,7 +46,7 @@ namespace AnkrSDK.Core.Implementation
 
 			return eventHandler.GetAllChangesAsync(filters);
 		}
-		
+
 		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterRequest<TEvDto> evFilter)
 			where TEvDto : IEventDTO, new()
 		{
@@ -62,8 +61,9 @@ namespace AnkrSDK.Core.Implementation
 			string gasPrice = null, string nonce = null)
 		{
 			var transactionInput = await CreateTransactionInput(methodName, arguments);
-			var sendTransaction = await AnkrWalletHelper.SendTransaction(
-				await _ethHandler.GetDefaultAccount(),
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			var sendTransaction = await _ethHandler.SendTransaction(
+				defaultAccount,
 				_contractAddress,
 				transactionInput.Data,
 				gas: gas,
@@ -75,13 +75,14 @@ namespace AnkrSDK.Core.Implementation
 		}
 
 		public async Task Web3SendMethod(string methodName, object[] arguments,
-			ITransactionEventHandler evController = null, string gas = null, string gasPrice = null, string nonce = null)
+			ITransactionEventHandler evController = null, string gas = null, string gasPrice = null,
+			string nonce = null)
 		{
 			var transactionInput = await CreateTransactionInput(methodName, arguments);
 
 			evController?.TransactionSendBegin(transactionInput);
 
-			var sendTransactionTask = AnkrWalletHelper.SendTransaction(
+			var sendTransactionTask = _ethHandler.SendTransaction(
 				await _ethHandler.GetDefaultAccount(),
 				_contractAddress,
 				transactionInput.Data,

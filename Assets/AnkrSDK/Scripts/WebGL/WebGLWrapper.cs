@@ -1,37 +1,29 @@
-#if UNITY_WEBGL
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+#if UNITY_WEBGL && !UNITY_EDITOR
 using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
+using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace AnkrSDK.WebGL
 {
 	public class WebGLWrapper
 	{
-		private static WebGLWrapper _instance;
-
 		private readonly WebGLCommunicationProtocol _protocol;
 
-		private WebGLWrapper()
+		public WebGLWrapper()
 		{
 			_protocol = new WebGLCommunicationProtocol();
 			_protocol.Connect().Forget();
 		}
 
-		public static WebGLWrapper Instance()
+		public async Task<string> SendTransaction(TransactionData transaction)
 		{
-			return _instance ?? (_instance = new WebGLWrapper());
-		}
-
-		public async UniTask<string> SendTransaction(TransactionData transaction)
-		{
-			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(transaction);
-			WebGLInterlayer.SendTransaction(id, payload);
+			var id = WebGLInterlayer.SendTransaction(payload);
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -43,11 +35,10 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async UniTask<HexBigInteger> EstimateGas(TransactionData transaction)
+		public async Task<HexBigInteger> EstimateGas(TransactionData transaction)
 		{
-			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(transaction);
-			WebGLInterlayer.EstimateGas(id, payload);
+			var id = WebGLInterlayer.EstimateGas(payload);
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -61,9 +52,7 @@ namespace AnkrSDK.WebGL
 
 		public async Task<string> Sign(DataSignaturePropsDTO signProps)
 		{
-			var id = _protocol.GenerateId();
-
-			WebGLInterlayer.SignMessage(id, JsonConvert.SerializeObject(signProps));
+			var id = WebGLInterlayer.SignMessage(JsonConvert.SerializeObject(signProps));
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -77,8 +66,7 @@ namespace AnkrSDK.WebGL
 
 		public async Task<string> GetDefaultAccount()
 		{
-			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetAddresses(id);
+			var id = WebGLInterlayer.GetAddresses();
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -91,10 +79,9 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async UniTask<Transaction> GetTransaction(string transactionHash)
+		public async Task<Transaction> GetTransaction(string transactionHash)
 		{
-			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetTransaction(id, transactionHash);
+			var id = WebGLInterlayer.GetTransaction(transactionHash);
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -107,10 +94,9 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+		public async Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
-			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetTransactionReceipt(id, transactionHash);
+			var id = WebGLInterlayer.GetTransactionReceipt(transactionHash);
 
 			var answer = await _protocol.WaitForAnswer(id);
 

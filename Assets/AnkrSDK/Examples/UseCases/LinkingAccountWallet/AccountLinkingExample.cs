@@ -72,7 +72,7 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 		private async void Sign()
 		{
 			var address = await _eth.GetDefaultAccount();
-			_signature = await AnkrSignatureHelper.Sign(_message, address);
+			_signature = await _eth.Sign(_message, address);
 			UpdateUILogs($"Signature: {_signature}");
 		}
 		

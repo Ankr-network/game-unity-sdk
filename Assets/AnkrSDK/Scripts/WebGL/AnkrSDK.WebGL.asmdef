@@ -5,6 +5,7 @@
         "UniTask"
     ],
     "includePlatforms": [
+        "Editor",
         "WebGL"
     ],
     "excludePlatforms": [],

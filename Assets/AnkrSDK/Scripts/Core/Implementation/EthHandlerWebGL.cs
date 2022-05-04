@@ -1,11 +1,12 @@
-#if UNITY_WEBGL
-using System.Threading.Tasks;
+#if UNITY_WEBGL && !UNITY_EDITOR
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Core.Utils;
+using AnkrSDK.WebGL.Extensions;
 using AnkrSDK.WebGL;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using AnkrSDK.Core.Utils;
-using AnkrSDK.WebGL.Extensions;
+using System.Threading.Tasks;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 
 namespace AnkrSDK.Core.Implementation
 {
@@ -15,30 +16,30 @@ namespace AnkrSDK.Core.Implementation
 
 		public EthHandlerWebGL()
 		{
-			_webGlWrapper = WebGLWrapper.Instance();
+			_webGlWrapper = new WebGLWrapper();
 		}
-		
+
 		public Task<string> GetDefaultAccount()
 		{
 			return _webGlWrapper.GetDefaultAccount();
 		}
 
-		public async Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+		public Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
-			return await _webGlWrapper.GetTransactionReceipt(transactionHash);
+			return _webGlWrapper.GetTransactionReceipt(transactionHash);
 		}
 
-		public async Task<Transaction> GetTransaction(string transactionReceipt)
+		public Task<Transaction> GetTransaction(string transactionReceipt)
 		{
-			return await _webGlWrapper.GetTransaction(transactionReceipt);
+			return _webGlWrapper.GetTransaction(transactionReceipt);
 		}
 
-		public async Task<HexBigInteger> EstimateGas(TransactionInput transactionInput)
+		public Task<HexBigInteger> EstimateGas(TransactionInput transactionInput)
 		{
-			return await _webGlWrapper.EstimateGas(transactionInput.ToTransactionData());
+			return _webGlWrapper.EstimateGas(transactionInput.ToTransactionData());
 		}
-		
-		public async Task<HexBigInteger> EstimateGas(
+
+		public Task<HexBigInteger> EstimateGas(
 			string from,
 			string to,
 			string data = null,
@@ -58,8 +59,42 @@ namespace AnkrSDK.Core.Implementation
 				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
 				nonce = nonce
 			};
-			
-			return await _webGlWrapper.EstimateGas(transactionData);
+
+			return _webGlWrapper.EstimateGas(transactionData);
+		}
+
+		public Task<string> Sign(string messageToSign, string address)
+		{
+			var props = new DataSignaturePropsDTO
+			{
+				address = address,
+				message = messageToSign
+			};
+
+			return _webGlWrapper.Sign(props);
+		}
+
+		public async Task<EthResponse> SendTransaction(string @from, string to, string data = null, string value = null,
+			string gas = null,
+			string gasPrice = null, string nonce = null)
+		{
+			var transactionData = new AnkrSDK.WebGL.DTO.TransactionData
+			{
+				from = from,
+				to = to,
+				data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
+				nonce = nonce
+			};
+
+			var response = new EthResponse
+			{
+				result = await _webGlWrapper.SendTransaction(transactionData)
+			};
+
+			return response;
 		}
 	}
 }
