@@ -1,10 +1,11 @@
 using System.Numerics;
+using AnkrSDK.Core;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
-using AnkrSDK.Examples.GameCharacterContract;
-using AnkrSDK.Examples.WearableNFTExample;
+using AnkrSDK.GameCharacterContract;
+using AnkrSDK.WearableNFTExample;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -35,7 +36,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 
 		private void StartUseCaseExample()
 		{
-			var ankrSDKWrapper = AnkrSDKWrapper.GetSDKInstance(WearableNFTContractInformation.ProviderURL);
+			var ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
 			_gameCharacterContract = ankrSDKWrapper.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress,
 				WearableNFTContractInformation.GameCharacterABI);

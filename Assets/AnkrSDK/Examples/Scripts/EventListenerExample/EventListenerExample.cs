@@ -1,12 +1,11 @@
-﻿using AnkrSDK.Core.Data;
+﻿using AnkrSDK.Core;
+using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.DTO;
 using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
-using Nethereum.Contracts;
-using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
 namespace AnkrSDK.EventListenerExample
@@ -26,7 +25,7 @@ namespace AnkrSDK.EventListenerExample
 	/// 	</summary>
 	public class EventListenerExample : UseCase
 	{
-		private ContractEventSubscriber _eventSubscriber;
+		private IContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
 		private IEthHandler _eth;
 		
@@ -34,9 +33,9 @@ namespace AnkrSDK.EventListenerExample
 		{
 			base.ActivateUseCase();
 			
+
 			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
 			_eth = ankrSDK.Eth;
-			
 
 			_eventSubscriber = ankrSDK.CreateSubscriber(ERC20ContractInformation.WsProviderURL);
 			_eventSubscriber.ListenForEvents().Forget();
@@ -78,7 +77,7 @@ namespace AnkrSDK.EventListenerExample
 
 		public void Unsubscribe()
 		{
-			_eventSubscriber.Unsubscribe(_subscription).Forget();
+			_eventSubscriber.Unsubscribe(_subscription.SubscriptionId).Forget();
 		}
 
 		public override void DeActivateUseCase()

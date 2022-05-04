@@ -10,54 +10,24 @@ namespace AnkrSDK.Core.Implementation
 	public class AnkrSDKWrapper : IAnkrSDK
 	{
 		private readonly IWeb3 _web3Provider;
-		private readonly IEthHandler _eth;
+		public IEthHandler Eth { get; }
 
-		public IEthHandler Eth
-		{
-			get
-			{
-				if (_eth != null)
-				{
-					return _eth;
-				}
-
-				throw new InvalidOperationException(
-					$"Trying to use {nameof(IEthHandler)} before initialization completed. Use GetSDKInstance First");
-			}
-		}
-
-		private AnkrSDKWrapper(string providerURI)
+		internal AnkrSDKWrapper(string providerURI)
 		{
 			_web3Provider = CreateWeb3Provider(providerURI);
 #if UNITY_WEBGL
-			_eth = new EthHandlerWebGL();
+			Eth = new EthHandlerWebGL();
 #elif UNITY_IOS && UNITY_ANDROID		
-			_eth = new EthHandlerMobile(_web3Provider);
+			Eth = new EthHandlerMobile(_web3Provider);
 #endif
 		}
 
-		/// <summary>
-		///     Use this if you want to work with contracts from a single web3 provider.
-		/// </summary>
-		/// <param name="providerURI"></param>
-		/// <returns></returns>
-		public static IAnkrSDK GetSDKInstance(string providerURI)
-		{
-			return new AnkrSDKWrapper(providerURI);
-		}
-
-		/// <summary>
-		/// Creates a contract using provided web3 instance.
-		/// </summary>
-		/// <param name="contractAddress">Contract address</param>
-		/// <param name="contractABI">Contract ABI</param>
-		/// <returns>Initialized contract handler</returns>
 		public IContract GetContract(string contractAddress, string contractABI)
 		{
 			return new Contract(_web3Provider, Eth, contractAddress, contractABI);
 		}
 
-		public ContractEventSubscriber CreateSubscriber(string wsUrl)
+		public IContractEventSubscriber CreateSubscriber(string wsUrl)
 		{
 			return new ContractEventSubscriber(wsUrl);
 		}

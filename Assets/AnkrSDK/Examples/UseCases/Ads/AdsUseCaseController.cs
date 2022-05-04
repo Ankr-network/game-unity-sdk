@@ -1,5 +1,4 @@
-using AnkrSDK.Ads;
-using AnkrSDK.Ads.Data;
+using AnkrAds.Ads.Data;
 using AnkrSDK.Ads.UI;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
@@ -50,7 +49,7 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			_button.gameObject.SetActive(false);
 			
-			var requestResult = await AnkrAds.RequestAdData(await _eth.GetDefaultAccount(), AdType.Banner);
+			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(AdType.Banner, await _eth.GetDefaultAccount());
 
 			if (requestResult != null)
 			{

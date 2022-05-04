@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using AnkrSDK.Core;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Implementation;
@@ -10,7 +11,7 @@ using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
-namespace AnkrSDK.Examples.ERC721Example
+namespace AnkrSDK.ERC721Example
 {
 	public class ERC721Example : UseCase
 	{
@@ -20,7 +21,7 @@ namespace AnkrSDK.Examples.ERC721Example
 
 		private void Start()
 		{
-			var ankrSDKWrapper = AnkrSDKWrapper.GetSDKInstance(ERC721ContractInformation.ProviderURL);
+			var ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(ERC721ContractInformation.ProviderURL);
 			_erc721Contract =
 				ankrSDKWrapper.GetContract(
 					ERC721ContractInformation.ContractAddress,

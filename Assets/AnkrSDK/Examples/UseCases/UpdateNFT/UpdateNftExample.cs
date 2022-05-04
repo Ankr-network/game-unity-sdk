@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using AnkrSDK.Core.Implementation;
+using AnkrSDK.Core;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples;
 using Cysharp.Threading.Tasks;
@@ -61,7 +61,7 @@ namespace AnkrSDK.UseCases.UpdateNFT
 		{
 			base.ActivateUseCase();
 			
-			_ankrSDKWrapper = AnkrSDKWrapper.GetSDKInstance(ProviderURL);
+			_ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(ProviderURL);
 			_contract = _ankrSDKWrapper.GetContract(ContractAddress, ABI);
 		}
 		

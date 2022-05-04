@@ -1,0 +1,6 @@
+{
+  "name": "WalletConnectSharp.NEtherium",
+  "references": [
+    "WalletConnectSharp.Core"
+  ]
+}

@@ -1,5 +1,5 @@
-using AnkrSDK.Ads.Data;
-using AnkrSDK.Core.Utils;
+using AnkrAds.Ads;
+using AnkrAds.Ads.Data;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -46,7 +46,7 @@ namespace AnkrSDK.Ads.UI
 
 		private static UniTask<Sprite> DownloadTexture(AdData adData)
 		{
-			return AnkrWebHelper.GetImageFromURL(adData.TextureURL);
+			return AdsWebHelper.GetImageFromURL(adData.TextureURL).AsUniTask();
 		}
 	}
 }
