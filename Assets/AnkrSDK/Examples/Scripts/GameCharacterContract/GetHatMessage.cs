@@ -2,7 +2,7 @@ using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace AnkrSDK.Examples.GameCharacterContract
+namespace AnkrSDK.GameCharacterContract
 {
 	[Function("getHat", "uint256")]
 	public class GetHatMessage : FunctionMessage

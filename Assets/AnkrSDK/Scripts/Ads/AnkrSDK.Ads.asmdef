@@ -1,0 +1,6 @@
+{
+  "name": "AnkrSDK.Ads",
+  "references": [
+    "UniTask"
+  ]
+}

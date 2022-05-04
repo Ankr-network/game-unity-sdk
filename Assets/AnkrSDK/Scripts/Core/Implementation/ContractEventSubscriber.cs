@@ -15,8 +15,8 @@ using Nethereum.RPC.Eth.Subscriptions;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
-{	
-	public class ContractEventSubscriber : IClientRequestHeaderSupport
+{
+	public class ContractEventSubscriber : IClientRequestHeaderSupport, IContractEventSubscriber
 	{
 		private readonly string _wsUrl;
 		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
@@ -26,13 +26,13 @@ namespace AnkrSDK.Core.Implementation
 		private IWebSocket _transport;
 		private bool _isCancellationRequested;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
-		
+
 		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
-		
+
 		public event Action OnOpenHandler;
 		public event Action<string> OnErrorHandler;
 		public event Action<WebSocketCloseCode> OnCloseHandler;
-		
+
 		public ContractEventSubscriber(string wsUrl)
 		{
 			_wsUrl = wsUrl;
@@ -54,7 +54,7 @@ namespace AnkrSDK.Core.Implementation
 			_transport.OnError += OnError;
 
 			Update().Forget();
-			
+
 			var connectTask = _transport.Connect();
 			await connectTask;
 
@@ -62,7 +62,7 @@ namespace AnkrSDK.Core.Implementation
 			{
 				Debug.LogError(connectTask.Exception);
 			}
-			
+
 			Debug.Log("Listen for events socket connected");
 		}
 
@@ -76,7 +76,8 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 
-		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterData evFilter, string contractAddress,
+		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterData evFilter,
+			string contractAddress,
 			Action<TEventType> handler) where TEventType : IEventDTO, new()
 		{
 			var filters = EventFilterHelper.CreateEventFilters<TEventType>(contractAddress, evFilter);
@@ -87,8 +88,9 @@ namespace AnkrSDK.Core.Implementation
 
 			return eventSubscription;
 		}
-		
-		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterRequest<TEventType> evFilter, string contractAddress,
+
+		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterRequest<TEventType> evFilter,
+			string contractAddress,
 			Action<TEventType> handler) where TEventType : IEventDTO, new()
 		{
 			var filters = EventFilterHelper.CreateEventFilters(contractAddress, evFilter);
@@ -99,6 +101,22 @@ namespace AnkrSDK.Core.Implementation
 
 			return eventSubscription;
 		}
+
+		public UniTask Unsubscribe(string subscriptionId)
+		{
+			_subscribers.Remove(subscriptionId);
+			var rpcRequest = _unsubscribeRequestBuilder.BuildRequest(subscriptionId);
+			var requestMessage = EventSubscriberHelper.RpcRequestToString(rpcRequest);
+			return _transport.SendText(requestMessage).AsUniTask();
+		}
+
+		public void StopListen()
+		{
+			CloseConnection();
+			_subscribers.Clear();
+			_transport.Close();
+		}
+
 
 		private async UniTask<string> CreateSubscription(NewFilterInput filters)
 		{
@@ -119,14 +137,6 @@ namespace AnkrSDK.Core.Implementation
 			var request = _requestBuilder.BuildRequest(filterInput, id);
 
 			return EventSubscriberHelper.RpcRequestToString(request);
-		}
-
-		public async UniTaskVoid Unsubscribe(IContractEventSubscription subscription)
-		{
-			_subscribers.Remove(subscription.SubscriptionId);
-			var rpcRequest = _unsubscribeRequestBuilder.BuildRequest(subscription.SubscriptionId);
-			var requestMessage = EventSubscriberHelper.RpcRequestToString(rpcRequest);
-			await _transport.SendText(requestMessage);
 		}
 
 		private void OnSocketOpen()
@@ -150,25 +160,18 @@ namespace AnkrSDK.Core.Implementation
 				    _subscribers.ContainsKey(subscriptionId))
 				{
 					_subscribers[subscriptionId].HandleMessage(rpcMessage);
-				}	
+				}
 			}
-		}
-
-		public void StopListen()
-		{
-			CloseConnection();
-			_subscribers.Clear();
-			_transport.Close();
 		}
 
 		private void CloseConnection()
 		{
 			_isCancellationRequested = true;
-			
+
 			_transport.OnOpen -= OnSocketOpen;
 			_transport.OnMessage -= OnEventMessageReceived;
 			_transport.OnClose -= OnClose;
-			_transport.OnError -= OnError;	
+			_transport.OnError -= OnError;
 		}
 
 		private void OnError(string errorMesssage)

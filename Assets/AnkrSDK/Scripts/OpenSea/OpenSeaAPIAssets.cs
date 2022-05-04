@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using AnkrSDK.Core.Implementation;
-using AnkrSDK.Core.Utils;
 using AnkrSDK.OpenSea.Data;
 using AnkrSDK.OpenSea.Helpers;
+using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -54,12 +53,6 @@ namespace AnkrSDK.OpenSea
 
 			var singleAssetJSON = await CallAPI(url, keys);
 			return JsonConvert.DeserializeObject<OpenSeaAsset>(singleAssetJSON);
-		}
-
-		public static UniTask<string> GetUserAssets(int offset = 0, int limit = 25,
-			NFTOrderByType orderByType = NFTOrderByType.SalePrice)
-		{
-			return GetUserAssets(EthHandler.DefaultAccount, orderByType, offset, limit);
 		}
 
 		// Get assets from an owner

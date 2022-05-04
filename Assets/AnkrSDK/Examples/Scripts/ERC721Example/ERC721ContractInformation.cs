@@ -1,5 +1,5 @@
 
-namespace AnkrSDK.Examples.ERC721Example
+namespace AnkrSDK.ERC721Example
 {
 	public static class ERC721ContractInformation
 	{
