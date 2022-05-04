@@ -50,6 +50,11 @@ namespace AnkrSDK.UseCases.Ads
 			_ankrBannerAdSprite.TryShow();
 		}
 		
-		
+		public override void DeActivateUseCase()
+		{
+			base.DeActivateUseCase();
+			_ankrBannerAdImage.gameObject.SetActive(false);
+			_ankrBannerAdSprite.gameObject.SetActive(false);
+		}
 	}
 }
