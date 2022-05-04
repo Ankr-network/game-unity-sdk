@@ -5,6 +5,7 @@ using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.DTO;
 using AnkrSDK.UseCases;
 using AnkrSDK.WebGL;
@@ -18,7 +19,7 @@ namespace AnkrSDK.Examples.ERC20Example
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
-		private EthHandler _eth;
+		private IEthHandler _eth;
 		private WebGLWrapper interlayer;
 
 		private void Start()
@@ -36,9 +37,9 @@ namespace AnkrSDK.Examples.ERC20Example
 			var receipt = await _erc20Contract.CallMethod(MintMethodName, Array.Empty<object>());
 			Debug.Log($"Receipt: {receipt}");
 
-//			var trx = await _eth.GetTransaction(receipt);
-//
-//			Debug.Log($"Nonce: {trx.Nonce}");
+			var trx = await _eth.GetTransaction(receipt);
+
+			Debug.Log($"Nonce: {trx.Nonce}");
 		}
 		
 		public void SendMint()
@@ -82,7 +83,7 @@ namespace AnkrSDK.Examples.ERC20Example
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = await EthHandler.GetDefaultAccount()
+				Owner = await _eth.GetDefaultAccount()
 			};
 			var balance = await _erc20Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
@@ -95,7 +96,7 @@ namespace AnkrSDK.Examples.ERC20Example
 				FromBlock = BlockParameter.CreateEarliest(),
 				ToBlock = BlockParameter.CreateLatest()
 			};
-			filtersRequest.AddTopic("To", await EthHandler.GetDefaultAccount());
+			filtersRequest.AddTopic("To", await _eth.GetDefaultAccount());
 			
 			var events = await _erc20Contract.GetEvents(filtersRequest);
 

@@ -301,7 +301,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1204102649}
         m_TargetAssemblyTypeName: AnkrSDK.Examples.ERC20Example.ERC20Example, Assembly-CSharp
-        m_MethodName: CallMint
+        m_MethodName: SendMint
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -682,7 +682,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: GetAccounts
+  m_Text: Sign
 --- !u!222 &1573365107
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -855,7 +855,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1204102649}
         m_TargetAssemblyTypeName: AnkrSDK.Examples.ERC20Example.ERC20Example, Assembly-CSharp
-        m_MethodName: GetAccounts
+        m_MethodName: SignMessage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

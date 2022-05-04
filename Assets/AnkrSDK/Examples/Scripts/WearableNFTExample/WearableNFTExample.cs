@@ -82,7 +82,7 @@ namespace AnkrSDK.WearableNFTExample
 				WearableNFTContractInformation.GameCharacterABI);
 			_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
 				WearableNFTContractInformation.GameItemABI);
-			var activeSessionTask = EthHandler.GetDefaultAccount();
+			var activeSessionTask = ankrSDK.Eth.GetDefaultAccount();
 			activeSessionTask.ContinueWith(result => { _activeSessionAccount = result; });
 		}
 

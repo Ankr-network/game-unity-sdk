@@ -59,7 +59,7 @@ namespace AnkrSDK.UI
 
 		private static void OnButtonClick()
 		{
-			EthHandler.Disconnect().Forget();
+			AnkrSDKWrapper.Disconnect().Forget();
 		}
 	}
 }

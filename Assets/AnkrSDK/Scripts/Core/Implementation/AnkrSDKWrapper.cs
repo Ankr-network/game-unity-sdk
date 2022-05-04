@@ -2,6 +2,7 @@ using System;
 using AnkrSDK.WalletConnectSharp.NEthereum;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Unity;
+using Cysharp.Threading.Tasks;
 using Nethereum.Web3;
 
 namespace AnkrSDK.Core.Implementation
@@ -9,9 +10,9 @@ namespace AnkrSDK.Core.Implementation
 	public class AnkrSDKWrapper : IAnkrSDK
 	{
 		private readonly IWeb3 _web3Provider;
-		private readonly EthHandler _eth;
+		private readonly IEthHandler _eth;
 
-		public EthHandler Eth
+		public IEthHandler Eth
 		{
 			get
 			{
@@ -21,14 +22,18 @@ namespace AnkrSDK.Core.Implementation
 				}
 
 				throw new InvalidOperationException(
-					$"Trying to use {nameof(EthHandler)} before initialization completed. Use GetSDKInstance First");
+					$"Trying to use {nameof(IEthHandler)} before initialization completed. Use GetSDKInstance First");
 			}
 		}
 
 		private AnkrSDKWrapper(string providerURI)
 		{
 			_web3Provider = CreateWeb3Provider(providerURI);
-			_eth = new EthHandler(_web3Provider);
+#if UNITY_WEBGL
+			_eth = new EthHandlerWebGL();
+#elif UNITY_IOS && UNITY_ANDROID		
+			_eth = new EthHandlerMobile(_web3Provider);
+#endif
 		}
 
 		/// <summary>
@@ -67,6 +72,11 @@ namespace AnkrSDK.Core.Implementation
 			var web3Provider = new Web3(client);
 			return web3Provider;
 #endif
+		}
+		
+		public static async UniTask Disconnect(bool waitForNewSession = true)
+		{
+			await WalletConnect.CloseSession(waitForNewSession);
 		}
 	}
 }

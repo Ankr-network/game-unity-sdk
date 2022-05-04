@@ -16,7 +16,7 @@ namespace AnkrSDK.Examples.ERC721Example
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc721Contract;
-		private EthHandler _eth;
+		private IEthHandler _eth;
 
 		private void Start()
 		{
@@ -42,7 +42,7 @@ namespace AnkrSDK.Examples.ERC721Example
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = await EthHandler.GetDefaultAccount()
+				Owner = await _eth.GetDefaultAccount()
 			};
 			var balance = await _erc721Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
@@ -54,7 +54,7 @@ namespace AnkrSDK.Examples.ERC721Example
 			{
 				fromBlock = BlockParameter.CreateEarliest(),
 				toBlock = BlockParameter.CreateLatest(),
-				filterTopic2 = new [] { await EthHandler.GetDefaultAccount() }
+				filterTopic2 = new [] { await _eth.GetDefaultAccount() }
 			};
 			var events = await _erc721Contract.GetEvents<TransferEventDTO>(filters);
 

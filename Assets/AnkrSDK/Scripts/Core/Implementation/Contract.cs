@@ -11,6 +11,7 @@ using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
+using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
@@ -20,9 +21,9 @@ namespace AnkrSDK.Core.Implementation
 		private readonly string _contractAddress;
 		private readonly IWeb3 _web3Provider;
 
-		private readonly EthHandler _ethHandler;
+		private readonly IEthHandler _ethHandler;
 
-		internal Contract(IWeb3 web3Provider, EthHandler ethHandler, string contractAddress, string contractABI)
+		internal Contract(IWeb3 web3Provider, IEthHandler ethHandler, string contractAddress, string contractABI)
 		{
 			_web3Provider = web3Provider;
 			_ethHandler = ethHandler;
@@ -60,9 +61,9 @@ namespace AnkrSDK.Core.Implementation
 		public async Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
-			var transactionInput = CreateTransactionInput(methodName, arguments);
+			var transactionInput = await CreateTransactionInput(methodName, arguments);
 			var sendTransaction = await AnkrWalletHelper.SendTransaction(
-				await EthHandler.GetDefaultAccount(),
+				await _ethHandler.GetDefaultAccount(),
 				_contractAddress,
 				transactionInput.Data,
 				gas: gas,
@@ -76,12 +77,12 @@ namespace AnkrSDK.Core.Implementation
 		public async Task Web3SendMethod(string methodName, object[] arguments,
 			ITransactionEventHandler evController = null, string gas = null, string gasPrice = null, string nonce = null)
 		{
-			var transactionInput = CreateTransactionInput(methodName, arguments);
+			var transactionInput = await CreateTransactionInput(methodName, arguments);
 
 			evController?.TransactionSendBegin(transactionInput);
 
 			var sendTransactionTask = AnkrWalletHelper.SendTransaction(
-				await EthHandler.GetDefaultAccount(),
+				await _ethHandler.GetDefaultAccount(),
 				_contractAddress,
 				transactionInput.Data,
 				gas: gas,
@@ -112,16 +113,14 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 
-		public Task<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
+		public async UniTask<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
-			var transactionInput = CreateTransactionInput(methodName, arguments);
-
+			var transactionInput = await CreateTransactionInput(methodName, arguments);
 			transactionInput.Gas = gas != null ? new HexBigInteger(gas) : null;
 			transactionInput.GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null;
 			transactionInput.Nonce = nonce != null ? new HexBigInteger(nonce) : null;
-
-			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput);
+			return await _ethHandler.EstimateGas(transactionInput);
 		}
 
 		private async UniTask LoadReceipt(string transactionHash, ITransactionEventHandler evController)
@@ -141,11 +140,9 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 
-		private TransactionInput CreateTransactionInput(string methodName, object[] arguments)
+		private async UniTask<TransactionInput> CreateTransactionInput(string methodName, object[] arguments)
 		{
-			var activeSessionAccount = "";
-			var defaultAccountTask = EthHandler.GetDefaultAccount();
-			defaultAccountTask.ContinueWith(result => { activeSessionAccount = result; });
+			var activeSessionAccount = await _ethHandler.GetDefaultAccount();
 			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
 			var callFunction = contract.GetFunction(methodName);
 			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);

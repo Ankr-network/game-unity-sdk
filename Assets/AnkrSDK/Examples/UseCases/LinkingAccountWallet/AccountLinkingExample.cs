@@ -1,6 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using AnkrSDK.Core.Implementation;
+using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
+using AnkrSDK.Examples.ERC20Example;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using TMPro;
@@ -25,6 +28,7 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 			public string Address;
 		}
 		
+		
 		// A backend server to verify the ownership of this address using message and signature signed by 3rd party wallet
 		// an example can be found at https://github.com/mirage-xyz/mirage-go-demo/blob/main/main.go#L96
 		private const string URL = "http://root@eth-01.dccn.ankr.com:8080/account/verification/address";
@@ -38,6 +42,7 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 		[SerializeField] private Button _checkSignatureButton;
 
 		private string _signature;
+		private IEthHandler _eth;
 		
 		private void Awake()
 		{
@@ -50,14 +55,23 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 			_signLinkinMessageButton.onClick.RemoveListener(Sign);
 			_checkSignatureButton.onClick.RemoveListener(CheckSignature);
 		}
-		
+
+		public override void ActivateUseCase()
+		{
+			base.ActivateUseCase();
+			
+			var ankrSDK = AnkrSDKWrapper.GetSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			_eth = ankrSDK.Eth;
+		}
+
 		// function to sign the message
 		// step 1: sign the message with 3rd party wallet
 		// step 2: send the message and sign to the server 
 		// step 3: server return bound address 
 		private async void Sign()
 		{
-			_signature = await AnkrSignatureHelper.Sign(_message);
+			var address = await _eth.GetDefaultAccount();
+			_signature = await AnkrSignatureHelper.Sign(_message, address);
 			UpdateUILogs($"Signature: {_signature}");
 		}
 		
