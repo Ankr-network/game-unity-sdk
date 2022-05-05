@@ -22,7 +22,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 		private readonly List<string> _subscribedTopics = new List<string>();
 		private readonly Queue<NetworkMessage> _queuedMessages = new Queue<NetworkMessage>();
 
-		private bool _opened;		
+		private bool _opened;
 		private bool _wasPaused;
 		public bool Connected => _client?.State == WebSocketState.Open && _opened;
 
@@ -100,10 +100,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
 			_nextClient.OnMessage += OnMessageReceived;
 			_nextClient.OnClose += ClientTryReconnect;
-			_nextClient.OnError += e =>
-			{
-				HandleError(new Exception(e));
-			};
+			_nextClient.OnError += e => { HandleError(new Exception(e)); };
 
 			StartClientConnect().Forget();
 
@@ -129,6 +126,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
 		private async void CompleteOpen()
 		{
+			Debug.Log("Closing OLD client");
 			await Close();
 			_client = _nextClient;
 			_nextClient = null;
