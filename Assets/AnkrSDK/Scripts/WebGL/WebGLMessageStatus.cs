@@ -1,6 +1,6 @@
 namespace AnkrSDK.WebGL
 {
-	public enum WebGLMessageStatus
+	internal enum WebGLMessageStatus
 	{
 		Success,
 		Error

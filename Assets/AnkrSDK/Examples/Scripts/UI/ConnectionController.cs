@@ -22,14 +22,12 @@ namespace AnkrSDK.UI
 		[SerializeField] private Button _loginButton;
 		[SerializeField] private GameObject _sceneChooser;
 
-		private async void OnEnable()
+		private void OnEnable()
 		{
 		#if UNITY_WEBGL && !UNITY_EDITOR
-			var webGlWrapper = new WebGL.WebGLWrapper();
 			try
 			{
 				_connectionText.text = ConnectingText;
-				await webGlWrapper.GetDefaultAccount();
 				_sceneChooser.SetActive(true);
 				_loginButton.gameObject.SetActive(false);
 			}
@@ -38,7 +36,7 @@ namespace AnkrSDK.UI
 				_connectionText.text = LoginText;
 			}
 		#else
-			await TrySubscribeToWalletEvents();
+			TrySubscribeToWalletEvents().Forget();
 		#endif
 		}
 

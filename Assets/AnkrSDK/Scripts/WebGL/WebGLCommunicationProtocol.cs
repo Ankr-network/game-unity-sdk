@@ -1,29 +1,29 @@
-#if UNITY_WEBGL && !UNITY_EDITOR
-using System;
+#if UNITY_WEBGL
 using System.Collections.Generic;
+using System.Threading;
+using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.WebGL
 {
-	public class WebGLCommunicationProtocol
+	internal class WebGLCommunicationProtocol
 	{
-		private Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>> _completionSources;
-		private bool _isCancellationRequested;
+		private readonly Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>> _completionSources =
+			new Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>>();
 
-		public WebGLCommunicationProtocol()
+		private CancellationTokenSource _cancellationTokenSource;
+
+		~WebGLCommunicationProtocol()
 		{
-			_completionSources = new Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>>();
+			Disconnect();
 		}
 
-		public UniTask Connect()
+		public async UniTaskVoid StartReceiveCycle()
 		{
-			return StartReceiveCycle();
-		}
-
-		private async UniTask StartReceiveCycle()
-		{
-			while (!_isCancellationRequested)
+			_cancellationTokenSource = new CancellationTokenSource();
+			var token = _cancellationTokenSource.Token;
+			while (!token.IsCancellationRequested)
 			{
 				ReceiveMessages();
 
@@ -31,20 +31,11 @@ namespace AnkrSDK.WebGL
 			}
 		}
 
-		public string GenerateId()
-		{
-			var id = Guid.NewGuid().ToString();
-
-			var completionTask = new UniTaskCompletionSource<WebGLMessageDTO>();
-			_completionSources.Add(id, completionTask);
-
-			return id;
-		}
-
 		public async UniTask<WebGLMessageDTO> WaitForAnswer(string id)
 		{
-			var completionSource = _completionSources[id];
-			var answer = await completionSource.Task;
+			var completionTask = new UniTaskCompletionSource<WebGLMessageDTO>();
+			_completionSources.Add(id, completionTask);
+			var answer = await completionTask.Task;
 			_completionSources.Remove(id);
 
 			return answer;
@@ -52,13 +43,11 @@ namespace AnkrSDK.WebGL
 
 		public void Disconnect()
 		{
-			_isCancellationRequested = true;
+			_cancellationTokenSource.Cancel();
 			if (_completionSources.Count > 0)
 			{
 				CompleteAllSources();
 			}
-
-			_completionSources = null;
 		}
 
 		private void ReceiveMessages()
@@ -89,17 +78,12 @@ namespace AnkrSDK.WebGL
 				{
 					id = entry.Key,
 					status = WebGLMessageStatus.Error,
-					payload = "Answer didn't get before protocol disconnected"
+					payload = "Answer was not received before protocol disconnected"
 				};
 				entry.Value.TrySetResult(answer);
 			}
 
 			_completionSources.Clear();
-		}
-
-		~WebGLCommunicationProtocol()
-		{
-			Disconnect();
 		}
 	}
 }

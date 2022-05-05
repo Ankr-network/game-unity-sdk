@@ -1,4 +1,4 @@
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.WebGL.Extensions;
@@ -65,7 +65,7 @@ namespace AnkrSDK.Core.Implementation
 
 		public Task<string> Sign(string messageToSign, string address)
 		{
-			var props = new DataSignaturePropsDTO
+			var props = new WebGL.DTO.DataSignaturePropsDTO
 			{
 				address = address,
 				message = messageToSign

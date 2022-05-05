@@ -1,14 +1,13 @@
 using Newtonsoft.Json;
 
-namespace AnkrSDK.WebGL
+namespace AnkrSDK.WebGL.DTO
 {
-	public class WebGLMessageDTO
+	internal class WebGLMessageDTO
 	{
-		[JsonProperty]
-		public string id;
-		[JsonProperty]
-		public WebGLMessageStatus status;
-		[JsonProperty]
-		public string payload;
+		[JsonProperty] internal string id;
+
+		[JsonProperty] internal WebGLMessageStatus status;
+
+		[JsonProperty] internal string payload;
 	}
 }

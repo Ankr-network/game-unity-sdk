@@ -1,4 +1,4 @@
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL
 using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
@@ -17,7 +17,7 @@ namespace AnkrSDK.WebGL
 		public WebGLWrapper()
 		{
 			_protocol = new WebGLCommunicationProtocol();
-			_protocol.Connect().Forget();
+			_protocol.StartReceiveCycle().Forget();
 		}
 
 		public async Task<string> SendTransaction(TransactionData transaction)
