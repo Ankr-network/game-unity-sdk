@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,7 +12,6 @@ using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Core.Utils;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Core
@@ -30,6 +28,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public event EventHandler OnSessionDisconnect;
 		public event EventHandler<WalletConnectSession> OnSend;
 		public event EventHandler<WCSessionData> SessionUpdate;
+		public event EventHandler<string[]> OnAccountChanged;
+		public event EventHandler<int> OnChainChanged;
 
 		public int NetworkId { get; private set; }
 
@@ -532,6 +532,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			if (data.chainId != null)
 			{
+				if ((int) data.chainId != ChainId)
+				{
+					OnChainChanged?.Invoke(this, (int) data.chainId);
+					Debug.LogError("ChainID Changed, New ChainID: "+(int)data.chainId);
+				}
+				
 				ChainId = (int)data.chainId;
 			}
 
@@ -540,6 +546,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				NetworkId = (int)data.networkId;
 			}
 
+			if (Accounts[0]!=data.accounts[0])
+			{
+				Debug.LogError("Account Changed, currently connected account : "+data.accounts[0]);
+				OnAccountChanged?.Invoke(this, data.accounts);
+			}
+			
 			Accounts = data.accounts;
 
 			switch (wasConnected)
