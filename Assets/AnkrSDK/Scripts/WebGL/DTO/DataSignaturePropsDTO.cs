@@ -1,4 +1,4 @@
-namespace AnkrSDK.WebGL
+namespace AnkrSDK.WebGL.DTO
 {
 	public class DataSignaturePropsDTO
 	{
