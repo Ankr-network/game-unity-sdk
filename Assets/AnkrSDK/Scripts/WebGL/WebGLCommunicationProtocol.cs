@@ -1,4 +1,5 @@
 #if UNITY_WEBGL
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using AnkrSDK.WebGL.DTO;
@@ -30,11 +31,20 @@ namespace AnkrSDK.WebGL
 				await UniTask.Yield(PlayerLoopTiming.Update);
 			}
 		}
+		
+		public string GenerateId()
+		{
+			var id = Guid.NewGuid().ToString();
+			
+			var completionTask = new UniTaskCompletionSource<WebGLMessageDTO>();
+			_completionSources.Add(id, completionTask);
+			
+			return id;
+		}
 
 		public async UniTask<WebGLMessageDTO> WaitForAnswer(string id)
 		{
-			var completionTask = new UniTaskCompletionSource<WebGLMessageDTO>();
-			_completionSources.Add(id, completionTask);
+			var completionTask = _completionSources[id];
 			var answer = await completionTask.Task;
 			_completionSources.Remove(id);
 

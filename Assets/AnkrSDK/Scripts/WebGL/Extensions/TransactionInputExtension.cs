@@ -1,4 +1,5 @@
 using AnkrSDK.WebGL.DTO;
+using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.RPC.Eth.DTOs;
 
 namespace AnkrSDK.WebGL.Extensions
@@ -15,7 +16,21 @@ namespace AnkrSDK.WebGL.Extensions
 				gas = data.Gas != null ? data.Gas.Value.ToString() : null,
 				gasPrice = data.GasPrice != null ? data.GasPrice.Value.ToString() : null,
 				nonce = data.Nonce != null ? data.Nonce.Value.ToString() : null,
-				value = data.Value != null ? data.Value.Value.ToString() : null,
+				value = data.Value != null ? data.Value.HexValue : null,
+			};
+			return transactionData;
+		}
+
+		public static TransactionData ToTransactionData(this CallInput data)
+		{
+			var transactionData = new TransactionData
+			{
+				@from = data.From,
+				to = data.To,
+				data = data.Data,
+				gas = data.Gas != null ? data.Gas.Value.ToString() : null,
+				gasPrice = data.GasPrice != null ? data.GasPrice.Value.ToString() : null,
+				value = data.Value != null ? data.Value.HexValue : null,
 			};
 			return transactionData;
 		}

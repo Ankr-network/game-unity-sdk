@@ -10,7 +10,7 @@ using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 
 namespace AnkrSDK.Core.Implementation
 {
-	public class EthHandlerWebGL : IEthHandler
+	public class EthHandlerWebGL : IEthHandler, IContractTransactions
 	{
 		private readonly WebGLWrapper _webGlWrapper;
 
@@ -95,6 +95,11 @@ namespace AnkrSDK.Core.Implementation
 			};
 
 			return response;
+		}
+
+		public Task<string> GetContractData(AnkrSDK.WebGL.DTO.TransactionData transactionData)
+		{
+			return _webGlWrapper.GetContractData(transactionData);
 		}
 	}
 }

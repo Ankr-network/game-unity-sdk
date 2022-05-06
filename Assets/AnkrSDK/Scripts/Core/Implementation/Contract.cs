@@ -5,9 +5,11 @@ using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Events.Infrastructure;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
+using AnkrSDK.WebGL.Extensions;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
+using Nethereum.Contracts.MessageEncodingServices;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
@@ -30,11 +32,20 @@ namespace AnkrSDK.Core.Implementation
 			_contractAddress = contractAddress;
 		}
 
-		public Task<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)
+		public async Task<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)
 			where TFieldData : FunctionMessage, new()
 		{
+#if UNITY_WEBGL
+			var methodEncoder = new FunctionMessageEncodingService<TFieldData>(_contractAddress);
+			var txData = methodEncoder.CreateCallInput(requestData);
+			var eth = (IContractTransactions) _ethHandler;
+			var response = await eth.GetContractData(txData.ToTransactionData());
+			return methodEncoder.DecodeSimpleTypeOutput<TReturnType>(response);
+#else
 			var contract = _web3Provider.Eth.GetContractHandler(_contractAddress);
-			return contract.QueryAsync<TFieldData, TReturnType>(requestData);
+			var queryAnswer = await contract.QueryAsync<TFieldData, TReturnType>(requestData);
+			return queryAnswer;
+#endif
 		}
 
 		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterData evFilter)

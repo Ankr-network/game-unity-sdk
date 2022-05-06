@@ -22,8 +22,25 @@ namespace AnkrSDK.WebGL
 
 		public async Task<string> SendTransaction(TransactionData transaction)
 		{
+			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(transaction);
-			var id = WebGLInterlayer.SendTransaction(payload);
+			WebGLInterlayer.SendTransaction(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Success)
+			{
+				return answer.payload;
+			}
+
+			throw new Exception(answer.payload);
+		}
+
+		public async Task<string> GetContractData(TransactionData transaction)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(transaction);
+			WebGLInterlayer.GetContractData(id, payload);
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -37,8 +54,9 @@ namespace AnkrSDK.WebGL
 
 		public async Task<HexBigInteger> EstimateGas(TransactionData transaction)
 		{
+			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(transaction);
-			var id = WebGLInterlayer.EstimateGas(payload);
+			WebGLInterlayer.EstimateGas(id, payload);
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -52,7 +70,9 @@ namespace AnkrSDK.WebGL
 
 		public async Task<string> Sign(DataSignaturePropsDTO signProps)
 		{
-			var id = WebGLInterlayer.SignMessage(JsonConvert.SerializeObject(signProps));
+			var id = _protocol.GenerateId();
+
+			WebGLInterlayer.SignMessage(id, JsonConvert.SerializeObject(signProps));
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -66,7 +86,8 @@ namespace AnkrSDK.WebGL
 
 		public async Task<string> GetDefaultAccount()
 		{
-			var id = WebGLInterlayer.GetAddresses();
+			var id = _protocol.GenerateId();
+			WebGLInterlayer.GetAddresses(id);
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -81,7 +102,8 @@ namespace AnkrSDK.WebGL
 
 		public async Task<Transaction> GetTransaction(string transactionHash)
 		{
-			var id = WebGLInterlayer.GetTransaction(transactionHash);
+			var id = _protocol.GenerateId();
+			WebGLInterlayer.GetTransaction(id, transactionHash);
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -96,7 +118,8 @@ namespace AnkrSDK.WebGL
 
 		public async Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
-			var id = WebGLInterlayer.GetTransactionReceipt(transactionHash);
+			var id = _protocol.GenerateId();
+			WebGLInterlayer.GetTransactionReceipt(id, transactionHash);
 
 			var answer = await _protocol.WaitForAnswer(id);
 

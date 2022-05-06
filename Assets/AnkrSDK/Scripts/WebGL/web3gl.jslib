@@ -5,9 +5,16 @@ mergeInto(LibraryManager.library, {
             Pointer_stringify(payload)
         );
     },
-    
+
     SendTransaction: function (id, payload) {
         window.transactionHandler.sendTransaction(
+            Pointer_stringify(id),
+            Pointer_stringify(payload)
+        );
+    },
+
+    GetContractData: function (id, payload) {
+        window.transactionHandler.getContractData(
             Pointer_stringify(id),
             Pointer_stringify(payload)
         );
