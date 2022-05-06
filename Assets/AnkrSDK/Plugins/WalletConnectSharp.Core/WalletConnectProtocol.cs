@@ -12,7 +12,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 {
 	public class WalletConnectProtocol : IDisposable
 	{
-		public static readonly string[] SigningMethods = {
+		public static readonly string[] SigningMethods =
+		{
 			"eth_sendTransaction",
 			"eth_signTransaction",
 			"eth_sign",
@@ -87,7 +88,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			transport = transport ?? TransportFactory.Instance.BuildDefaultTransport(eventDelegator);
 
 			BridgeUrl = savedSession.BridgeURL;
-			Transport = transport;
+			SetTransport(transport);
 
 			cipher = cipher ?? new AESCipher();
 
@@ -129,7 +130,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			transport = transport ?? TransportFactory.Instance.BuildDefaultTransport(eventDelegator);
 
-			Transport = transport;
+			SetTransport(transport);
 
 			cipher = cipher ?? new AESCipher();
 
@@ -138,15 +139,20 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		protected async Task SetupTransport()
 		{
-			Transport.MessageReceived += TransportOnMessageReceived;
-			Transport.OpenReceived += OnTransportOpenReceived;
-			Transport.Closed += OnTransportClosed;
-
 			await Transport.Open(BridgeUrl);
 
 			Debug.Log("[WalletConnect] Transport Opened");
 
 			TriggerOnTransportConnect();
+		}
+
+		private void SetTransport(ITransport transport)
+		{
+			Transport = transport;
+			Debug.Log("[WalletConnect] Transport Subscribed");
+			Transport.MessageReceived += TransportOnMessageReceived;
+			Transport.OpenReceived += OnTransportOpenReceived;
+			Transport.Closed += OnTransportClosed;
 		}
 
 		private void OnTransportClosed(object sender, MessageReceivedEventArgs e)
@@ -161,11 +167,13 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		protected async Task DisconnectTransport()
 		{
-			await Transport.Close();
+			Debug.Log("[WalletConnect] Transport UNSbuscribed");
 
 			Transport.MessageReceived -= TransportOnMessageReceived;
 			Transport.OpenReceived -= OnTransportOpenReceived;
 			Transport.Closed -= OnTransportClosed;
+
+			await Transport.Close();
 
 			OnTransportDisconnect?.Invoke(this, this);
 		}

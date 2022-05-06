@@ -55,7 +55,6 @@ namespace AnkrSDK.UI
 		{
 			if (WalletConnect.Instance == null)
 			{
-				Debug.Log("Wallet Connect Instance is null waiting.");
 				await UniTask.WaitWhile(() => WalletConnect.Instance == null);
 			}
 
@@ -98,12 +97,10 @@ namespace AnkrSDK.UI
 			WalletConnect.ActiveSession.OnTransportOpen += UpdateLoginButtonState;
 
 			WalletConnect.ActiveSession.OnSessionDisconnect += OnSessionDisconnect;
-			Debug.Log("[Connection Controller] Subscribed");
 		}
 
 		private void OnSessionDisconnect(object sender, EventArgs e)
 		{
-			Debug.Log("Session Disconnected");
 			UnsubscribeFromTransportEvents();
 			UpdateLoginButtonState(this, WalletConnect.ActiveSession);
 			WalletConnect.Instance.ConnectionStarted += OnConnectionStarted;
@@ -113,7 +110,6 @@ namespace AnkrSDK.UI
 		{
 			WalletConnect.Instance.ConnectionStarted -= OnConnectionStarted;
 
-			Debug.Log("Connection Started");
 			TrySubscribeToWalletEvents().Forget();
 		}
 
@@ -132,8 +128,6 @@ namespace AnkrSDK.UI
 			WalletConnect.ActiveSession.OnTransportOpen -= UpdateLoginButtonState;
 
 			WalletConnect.ActiveSession.OnSessionDisconnect -= OnSessionDisconnect;
-
-			Debug.Log("[Connection Controller] Unsubscribed");
 		}
 
 		private void UpdateLoginButtonState(object sender, WalletConnectProtocol e)
