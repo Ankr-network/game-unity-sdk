@@ -1,3 +1,4 @@
+#if UNITY_WEBGL
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.WebGL;
@@ -26,3 +27,4 @@ namespace AnkrSDK.Core.Implementation
 		}
 	}
 }
+#endif

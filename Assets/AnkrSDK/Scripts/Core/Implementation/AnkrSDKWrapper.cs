@@ -1,25 +1,26 @@
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Unity;
+#if UNITY_WEBGL && !UNITY_EDITOR
 using AnkrSDK.WebGL;
+#endif
 using Cysharp.Threading.Tasks;
 using Nethereum.Web3;
-using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
 	internal class AnkrSDKWrapper : IAnkrSDK
 	{
 		private readonly IWeb3 _web3Provider;
+		private readonly IContractFunctions _contractFunctions;
 		public IEthHandler Eth { get; }
-		private IContractFunctions _contractFunctions { get; }
 
 		internal AnkrSDKWrapper(string providerURI)
 		{
 			_web3Provider = CreateWeb3Provider(providerURI);
 		#if UNITY_WEBGL && !UNITY_EDITOR
 			var webGlWrapper = new WebGLWrapper();
-			Eth = new EthHandlerWebGL(webGlWrapper);
 			_contractFunctions = new ContractFunctionsWebGL(webGlWrapper);
+			Eth = new EthHandlerWebGL(webGlWrapper);
 		#else
 			_contractFunctions = new ContractFunctions(_web3Provider);
 			Eth = new EthHandler(_web3Provider);

@@ -61,8 +61,8 @@ namespace AnkrSDK.Core.Implementation
 		public async Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
-			var transactionInput = await CreateTransactionInput(methodName, arguments);
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			var transactionInput = CreateTransactionInput(methodName, arguments, defaultAccount);
 			var sendTransaction = await _ethHandler.SendTransaction(
 				defaultAccount,
 				_contractAddress,
@@ -79,8 +79,8 @@ namespace AnkrSDK.Core.Implementation
 			ITransactionEventHandler evController = null, string gas = null, string gasPrice = null,
 			string nonce = null)
 		{
-			var transactionInput = await CreateTransactionInput(methodName, arguments);
-
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			var transactionInput = CreateTransactionInput(methodName, arguments, defaultAccount);
 			evController?.TransactionSendBegin(transactionInput);
 
 			var sendTransactionTask = _ethHandler.SendTransaction(
@@ -118,7 +118,8 @@ namespace AnkrSDK.Core.Implementation
 		public async UniTask<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
-			var transactionInput = await CreateTransactionInput(methodName, arguments);
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			var transactionInput = CreateTransactionInput(methodName, arguments, defaultAccount);
 			transactionInput.Gas = gas != null ? new HexBigInteger(gas) : null;
 			transactionInput.GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null;
 			transactionInput.Nonce = nonce != null ? new HexBigInteger(nonce) : null;
@@ -142,12 +143,11 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 
-		private async UniTask<TransactionInput> CreateTransactionInput(string methodName, object[] arguments)
+		private TransactionInput CreateTransactionInput(string methodName, object[] arguments, string defaultAccount)
 		{
-			var activeSessionAccount = await _ethHandler.GetDefaultAccount();
 			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
 			var callFunction = contract.GetFunction(methodName);
-			return callFunction.CreateTransactionInput(activeSessionAccount, arguments);
+			return callFunction.CreateTransactionInput(defaultAccount, arguments);
 		}
 	}
 }
