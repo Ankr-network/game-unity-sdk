@@ -4,20 +4,21 @@ using AnkrSDK.Core;
 using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Data.ContractMessages.ERC721;
 using AnkrSDK.Core.Events.Implementation;
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.DTO;
+using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.UseCases;
+using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
-namespace AnkrSDK.Examples.ERC20Example
+namespace AnkrSDK.ERC20Example
 {
 	public class ERC20Example : UseCase
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
-		private EthHandler _eth;
+		private IEthHandler _eth;
 
 		private void Start()
 		{
@@ -76,24 +77,24 @@ namespace AnkrSDK.Examples.ERC20Example
 			Debug.Log("Receipt: " + receipt.Status);
 		}
 
-		public async void GetBalance()
+		public async UniTaskVoid GetBalance()
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = EthHandler.DefaultAccount
+				Owner = await _eth.GetDefaultAccount()
 			};
 			var balance = await _erc20Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
 		}
 
-		public async void GetEvents()
+		public async UniTaskVoid GetEvents()
 		{
 			var filtersRequest = new EventFilterRequest<TransferEventDTO>
 			{
 				FromBlock = BlockParameter.CreateEarliest(),
 				ToBlock = BlockParameter.CreateLatest()
 			};
-			filtersRequest.AddTopic("To", EthHandler.DefaultAccount);
+			filtersRequest.AddTopic("To", await _eth.GetDefaultAccount());
 			
 			var events = await _erc20Contract.GetEvents(filtersRequest);
 

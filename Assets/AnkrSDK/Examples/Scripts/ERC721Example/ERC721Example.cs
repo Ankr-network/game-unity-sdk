@@ -7,6 +7,7 @@ using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.DTO;
 using AnkrSDK.UseCases;
+using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace AnkrSDK.ERC721Example
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc721Contract;
-		private EthHandler _eth;
+		private IEthHandler _eth;
 
 		private void Start()
 		{
@@ -38,23 +39,23 @@ namespace AnkrSDK.ERC721Example
 			Debug.Log($"Nonce: {trx.Nonce}");
 		}
 
-		public async void GetBalance()
+		public async UniTaskVoid GetBalance()
 		{
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Owner = EthHandler.DefaultAccount
+				Owner = await _eth.GetDefaultAccount()
 			};
 			var balance = await _erc721Contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 			Debug.Log($"Balance: {balance}");
 		}
 
-		public async void GetEvents()
+		public async UniTaskVoid GetEvents()
 		{
 			var filters = new EventFilterData()
 			{
 				FromBlock = BlockParameter.CreateEarliest(),
 				ToBlock = BlockParameter.CreateLatest(),
-				FilterTopic2 = new [] { EthHandler.DefaultAccount }
+				FilterTopic2 = new [] { await _eth.GetDefaultAccount() }
 			};
 			var events = await _erc721Contract.GetEvents<TransferEventDTO>(filters);
 

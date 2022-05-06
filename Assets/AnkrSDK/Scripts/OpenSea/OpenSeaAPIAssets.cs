@@ -55,8 +55,14 @@ namespace AnkrSDK.OpenSea
 			return JsonConvert.DeserializeObject<OpenSeaAsset>(singleAssetJSON);
 		}
 
+		public static async UniTask<string> GetUserAssetsByAddress(string address, int offset = 0, int limit = 25,
+			NFTOrderByType orderByType = NFTOrderByType.SalePrice)
+		{
+			return await GetUserAssets(address, orderByType, offset, limit);
+		}
+
 		// Get assets from an owner
-		public static UniTask<string> GetUserAssets(string ownerId, int offset = 0, int limit = 25,
+		public static UniTask<string> GetUserAssetsById(string ownerId, int offset = 0, int limit = 25,
 			NFTOrderByType orderByType = NFTOrderByType.SalePrice)
 		{
 			return GetUserAssets(ownerId, orderByType, offset, limit);

@@ -1,6 +1,7 @@
 {
   "name": "AnkrSDK.Core",
   "references": [
+    "AnkrSDK.WebGL",
     "endel.nativewebsocket",
     "UniTask",
     "WalletConnectSharp",

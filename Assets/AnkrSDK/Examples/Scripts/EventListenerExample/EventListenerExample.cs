@@ -27,12 +27,15 @@ namespace AnkrSDK.EventListenerExample
 	{
 		private IContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
+		private IEthHandler _eth;
 		
 		public override void ActivateUseCase()
 		{
 			base.ActivateUseCase();
 			
+
 			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			_eth = ankrSDK.Eth;
 
 			_eventSubscriber = ankrSDK.CreateSubscriber(ERC20ContractInformation.WsProviderURL);
 			_eventSubscriber.ListenForEvents().Forget();
@@ -44,7 +47,7 @@ namespace AnkrSDK.EventListenerExample
 		{
 			var filters = new EventFilterData
 			{
-				FilterTopic2 = new[] { EthHandler.DefaultAccount }
+				FilterTopic2 = new[] { await _eth.GetDefaultAccount() }
 			};
 
 			_subscription = await _eventSubscriber.Subscribe(
@@ -58,7 +61,7 @@ namespace AnkrSDK.EventListenerExample
 		public async UniTaskVoid SubscribeWithRequest()
 		{
 			var filtersRequest = new EventFilterRequest<TransferEventDTO>();
-			filtersRequest.AddTopic("To", EthHandler.DefaultAccount);
+			filtersRequest.AddTopic("To", await _eth.GetDefaultAccount());
 
 			_subscription = await _eventSubscriber.Subscribe(
 				filtersRequest,

@@ -156,7 +156,9 @@ namespace AnkrSDK.Core.Implementation
 			{
 				var subscriptionId = rpcMessage.Params?.Subscription;
 
-				if (rpcMessage.Method == "eth_subscription" && subscriptionId != null &&
+				const string ethSubscriptionMethod = "eth_subscription";
+
+				if (rpcMessage.Method == ethSubscriptionMethod && subscriptionId != null &&
 				    _subscribers.ContainsKey(subscriptionId))
 				{
 					_subscribers[subscriptionId].HandleMessage(rpcMessage);
@@ -174,10 +176,10 @@ namespace AnkrSDK.Core.Implementation
 			_transport.OnError -= OnError;
 		}
 
-		private void OnError(string errorMesssage)
+		private void OnError(string errorMessage)
 		{
 			StopListen();
-			OnErrorHandler?.Invoke(errorMesssage);
+			OnErrorHandler?.Invoke(errorMessage);
 		}
 
 		private void OnClose(WebSocketCloseCode code)

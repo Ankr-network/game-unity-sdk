@@ -103,6 +103,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private async void Awake()
 		{
+#if !UNITY_WEBGL
+			
 			if (Instance != null)
 			{
 				Destroy(gameObject);
@@ -117,14 +119,17 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			{
 				await Connect();
 			}
+#endif
 		}
 
 		private async void Start()
 		{
+#if !UNITY_WEBGL		
 			if (_connectOnStart && !_connectOnAwake)
 			{
 				await Connect();
 			}
+#endif
 		}
 
 		private async void OnDestroy()

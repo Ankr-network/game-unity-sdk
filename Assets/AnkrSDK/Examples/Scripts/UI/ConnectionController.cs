@@ -1,13 +1,13 @@
-using System;
 using AnkrSDK.Core.Utils.UI;
-using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
+using System;
 using TMPro;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine;
 
 namespace AnkrSDK.UI
 {
@@ -24,13 +24,28 @@ namespace AnkrSDK.UI
 
 		private void OnEnable()
 		{
+		#if UNITY_WEBGL && !UNITY_EDITOR
+			try
+			{
+				_connectionText.text = ConnectingText;
+				_sceneChooser.SetActive(true);
+				_loginButton.gameObject.SetActive(false);
+			}
+			catch (Exception)
+			{
+				_connectionText.text = LoginText;
+			}
+		#else
 			TrySubscribeToWalletEvents().Forget();
+		#endif
 		}
 
 		private void OnDisable()
 		{
+		#if !UNITY_WEBGL || UNITY_EDITOR
 			UnsubscribeFromTransportEvents();
 			WalletConnect.Instance.ConnectionStarted -= OnConnectionStarted;
+		#endif
 		}
 
 		private void UpdateSceneState(WCSessionData _ = null)
@@ -51,7 +66,7 @@ namespace AnkrSDK.UI
 			}
 		}
 
-		private async UniTaskVoid TrySubscribeToWalletEvents()
+		private async UniTask TrySubscribeToWalletEvents()
 		{
 			if (WalletConnect.Instance == null)
 			{

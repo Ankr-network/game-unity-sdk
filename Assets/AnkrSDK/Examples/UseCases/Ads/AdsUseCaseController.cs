@@ -1,6 +1,10 @@
 using AnkrAds.Ads.Data;
 using AnkrSDK.Ads.UI;
+using AnkrSDK.Core;
 using AnkrSDK.Core.Implementation;
+using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Core.Utils;
+using AnkrSDK.Examples.ERC20Example;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +16,15 @@ namespace AnkrSDK.UseCases.Ads
 		[SerializeField] private Button _button;
 		[SerializeField] private AnkrBannerAdImage _ankrBannerAdImage;
 		[SerializeField] private AnkrBannerAdSprite _ankrBannerAdSprite;
+		private IEthHandler _eth;
+		
+		public override void ActivateUseCase()
+		{
+			base.ActivateUseCase();
+			
+			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			_eth = ankrSDK.Eth;
+		}
 
 		private bool _isInitialized = false;
 
@@ -37,7 +50,7 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			_button.gameObject.SetActive(false);
 			
-			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(AdType.Banner, EthHandler.DefaultAccount);
+			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(AdType.Banner, await _eth.GetDefaultAccount());
 
 			if (requestResult != null)
 			{
@@ -45,7 +58,7 @@ namespace AnkrSDK.UseCases.Ads
 					_ankrBannerAdImage.SetupAd(requestResult),
 					_ankrBannerAdSprite.SetupAd(requestResult));
 			}
-
+      
 			_ankrBannerAdImage.TryShow();
 			_ankrBannerAdSprite.TryShow();
 		}
