@@ -8,13 +8,14 @@ namespace AnkrSDK.Core.Implementation
 	public class ContractFunctions : IContractFunctions
 	{
 		private IWeb3 _web3Provider;
-		
+
 		public ContractFunctions(IWeb3 web3Provider)
 		{
 			_web3Provider = web3Provider;
 		}
 
-		public Task<TReturnType> GetContractData<TFieldData, TReturnType>(string contractAddress, TFieldData requestData = null) where TFieldData : FunctionMessage, new()
+		public Task<TReturnType> GetContractData<TFieldData, TReturnType>(string contractAddress,
+			TFieldData requestData = null) where TFieldData : FunctionMessage, new()
 		{
 			var contract = _web3Provider.Eth.GetContractHandler(contractAddress);
 			return contract.QueryAsync<TFieldData, TReturnType>(requestData);
