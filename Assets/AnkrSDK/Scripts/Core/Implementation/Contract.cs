@@ -23,29 +23,21 @@ namespace AnkrSDK.Core.Implementation
 		private readonly IWeb3 _web3Provider;
 
 		private readonly IEthHandler _ethHandler;
+		private readonly IContractFunctions _contractFunctions;
 
-		internal Contract(IWeb3 web3Provider, IEthHandler ethHandler, string contractAddress, string contractABI)
+		internal Contract(IWeb3 web3Provider, IEthHandler ethHandler, IContractFunctions contractFunctions, string contractAddress, string contractABI)
 		{
 			_web3Provider = web3Provider;
 			_ethHandler = ethHandler;
+			_contractFunctions = contractFunctions;
 			_contractABI = contractABI;
 			_contractAddress = contractAddress;
 		}
 
-		public async Task<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)
+		public Task<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)
 			where TFieldData : FunctionMessage, new()
 		{
-#if UNITY_WEBGL
-			var methodEncoder = new FunctionMessageEncodingService<TFieldData>(_contractAddress);
-			var txData = methodEncoder.CreateCallInput(requestData);
-			var eth = (IContractTransactions) _ethHandler;
-			var response = await eth.GetContractData(txData.ToTransactionData());
-			return methodEncoder.DecodeSimpleTypeOutput<TReturnType>(response);
-#else
-			var contract = _web3Provider.Eth.GetContractHandler(_contractAddress);
-			var queryAnswer = await contract.QueryAsync<TFieldData, TReturnType>(requestData);
-			return queryAnswer;
-#endif
+			return _contractFunctions.GetContractData<TFieldData, TReturnType>(_contractAddress, requestData);
 		}
 
 		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterData evFilter)
