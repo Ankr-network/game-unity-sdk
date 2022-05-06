@@ -23,7 +23,7 @@ namespace AnkrSDK.OpenSea
 
 		private static string BaseURL => $"{(_isTestNet ? EndPoint : TestNetEndPoint)}{Version}";
 		private static string GetAssetsURL => $"{BaseURL}{GETAssets}";
-		
+
 		private static readonly TimeSpan DelayTimeSpan = TimeSpan.FromSeconds(1f);
 
 		private static string GetSingleAssetURL(string contractAddress, string tokenId) =>
@@ -114,8 +114,11 @@ namespace AnkrSDK.OpenSea
 				}
 
 				await webRequest.SendWebRequest();
-
+			#if UNITY_2020_1_OR_NEWER
 				if (webRequest.result == UnityWebRequest.Result.Success)
+			#else
+				if(!webRequest.isHttpError && !webRequest.isNetworkError)
+			#endif
 				{
 					return webRequest.downloadHandler.text;
 				}
