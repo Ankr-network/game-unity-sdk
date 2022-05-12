@@ -16,17 +16,16 @@ namespace AnkrSDK.UseCases.Ads
 		[SerializeField] private Button _button;
 		[SerializeField] private AnkrBannerAdImage _ankrBannerAdImage;
 		[SerializeField] private AnkrBannerAdSprite _ankrBannerAdSprite;
+
 		private IEthHandler _eth;
-		
+
 		public override void ActivateUseCase()
 		{
 			base.ActivateUseCase();
-			
+
 			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
 			_eth = ankrSDK.Eth;
 		}
-
-		private bool _isInitialized = false;
 
 		private void OnEnable()
 		{
@@ -49,8 +48,9 @@ namespace AnkrSDK.UseCases.Ads
 		private async UniTaskVoid DownloadAd()
 		{
 			_button.gameObject.SetActive(false);
-			
-			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(AdType.Banner, await _eth.GetDefaultAccount());
+
+			var defaultAccount = await _eth.GetDefaultAccount();
+			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(AdType.Banner, defaultAccount);
 
 			if (requestResult != null)
 			{
@@ -58,11 +58,11 @@ namespace AnkrSDK.UseCases.Ads
 					_ankrBannerAdImage.SetupAd(requestResult),
 					_ankrBannerAdSprite.SetupAd(requestResult));
 			}
-      
+
 			_ankrBannerAdImage.TryShow();
 			_ankrBannerAdSprite.TryShow();
 		}
-		
+
 		public override void DeActivateUseCase()
 		{
 			base.DeActivateUseCase();

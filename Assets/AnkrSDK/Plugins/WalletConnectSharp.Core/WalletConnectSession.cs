@@ -532,13 +532,14 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			if (data.chainId != null)
 			{
-				if ((int)data.chainId != ChainId)
+				var oldChainId = ChainId;
+				ChainId = (int)data.chainId;
+				
+				if (oldChainId != ChainId)
 				{
 					OnChainChanged?.Invoke(this, (int)data.chainId);
 					Debug.Log("ChainID Changed, New ChainID: " + (int)data.chainId);
 				}
-
-				ChainId = (int)data.chainId;
 			}
 
 			if (data.networkId != null)
@@ -546,13 +547,15 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				NetworkId = (int)data.networkId;
 			}
 
-			if (Accounts[0] != data.accounts[0])
+			var dataAccount = data.accounts?[0];
+			var oldAccount = Accounts?[0];
+			
+			Accounts = data.accounts;
+			if (oldAccount != dataAccount)
 			{
 				OnAccountChanged?.Invoke(this, data.accounts);
-				Debug.Log("Account Changed, currently connected account : " + data.accounts[0]);
+				Debug.Log("Account Changed, currently connected account : " + dataAccount);
 			}
-
-			Accounts = data.accounts;
 
 			switch (wasConnected)
 			{
