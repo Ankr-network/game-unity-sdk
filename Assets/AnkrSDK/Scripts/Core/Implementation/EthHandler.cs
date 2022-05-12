@@ -8,6 +8,7 @@ using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Web3;
+using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
@@ -24,7 +25,13 @@ namespace AnkrSDK.Core.Implementation
 		{
 			if (WalletConnect.ActiveSession != null)
 			{
-				return Task.FromResult(WalletConnect.ActiveSession.Accounts[0]);
+				var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
+				if (string.IsNullOrEmpty(activeSessionAccount))
+				{
+					Debug.LogError("Account is null");
+				}
+
+				return Task.FromResult(activeSessionAccount);
 			}
 
 			throw new Exception("Application is not linked to wallet");

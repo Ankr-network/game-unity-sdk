@@ -546,13 +546,15 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				NetworkId = (int)data.networkId;
 			}
 
-			if (Accounts[0] != data.accounts[0])
+			var dataAccount = data.accounts?[0];
+			var oldAccount = Accounts?[0];
+			
+			Accounts = data.accounts;
+			if (oldAccount != dataAccount)
 			{
 				OnAccountChanged?.Invoke(this, data.accounts);
-				Debug.Log("Account Changed, currently connected account : " + data.accounts[0]);
+				Debug.Log("Account Changed, currently connected account : " + dataAccount);
 			}
-
-			Accounts = data.accounts;
 
 			switch (wasConnected)
 			{
