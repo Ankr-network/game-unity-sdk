@@ -532,13 +532,14 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			if (data.chainId != null)
 			{
-				if ((int)data.chainId != ChainId)
+				var oldChainId = ChainId;
+				ChainId = (int)data.chainId;
+				
+				if (oldChainId != ChainId)
 				{
 					OnChainChanged?.Invoke(this, (int)data.chainId);
 					Debug.Log("ChainID Changed, New ChainID: " + (int)data.chainId);
 				}
-
-				ChainId = (int)data.chainId;
 			}
 
 			if (data.networkId != null)
