@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Numerics;
-using AnkrSDK.Core;
-using AnkrSDK.Core.Data;
-using AnkrSDK.Core.Data.ContractMessages.ERC721;
-using AnkrSDK.Core.Events.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Data;
+using AnkrSDK.Data.ContractMessages.ERC721;
 using AnkrSDK.DTO;
+using AnkrSDK.EventListenerExample;
 using AnkrSDK.Examples.ERC20Example;
+using AnkrSDK.Provider;
 using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
@@ -51,28 +51,28 @@ namespace AnkrSDK.ERC20Example
 			
 			_erc20Contract.Web3SendMethod(MintMethodName, Array.Empty<object>(), evController);
 		}
-		
-		public static void HandleSent(object sender, TransactionInput transaction)
+
+		private static void HandleSent(object sender, TransactionInput transaction)
 		{
 			Debug.Log("Transaction sent");
 		}
-		
-		public static void HandleSending(object sender, TransactionInput transaction)
+
+		private static void HandleSending(object sender, TransactionInput transaction)
 		{
 			Debug.Log("Transaction is sending");
 		}
-		
-		public void HandleTransactionHash(object sender, string transactionHash)
+
+		private static void HandleTransactionHash(object sender, string transactionHash)
 		{
 			Debug.Log($"TsransactionHash: {transactionHash}");
 		}
 
-		public void HandleError(object sender, Exception exception)
+		private static void HandleError(object sender, Exception exception)
 		{
 			Debug.LogError("Error: " + exception.Message);
 		}
 
-		public void HandleReceipt(object sender, TransactionReceipt receipt)
+		private static void HandleReceipt(object sender, TransactionReceipt receipt)
 		{
 			Debug.Log("Receipt: " + receipt.Status);
 		}

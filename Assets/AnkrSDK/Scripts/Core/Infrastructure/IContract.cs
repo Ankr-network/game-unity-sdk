@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AnkrSDK.Core.Data;
-using AnkrSDK.Core.Events.Infrastructure;
+using AnkrSDK.Data;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;

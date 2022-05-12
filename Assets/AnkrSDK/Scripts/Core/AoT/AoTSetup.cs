@@ -1,6 +1,6 @@
 using System.Numerics;
-using AnkrSDK.Core.Data.ContractMessages.ERC721;
-using AnkrSDK.Core.Data.ContractMessages.ERC721.RentableExtension;
+using AnkrSDK.Data.ContractMessages.ERC721;
+using AnkrSDK.Data.ContractMessages.ERC721.RentableExtension;
 using Nethereum.Web3;
 
 namespace AnkrSDK.Core.AoT

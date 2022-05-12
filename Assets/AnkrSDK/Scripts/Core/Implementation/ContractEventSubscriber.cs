@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using AnkrSDK.Core.Data;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
+using AnkrSDK.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
-	public class ContractEventSubscriber : IClientRequestHeaderSupport, IContractEventSubscriber
+	internal class ContractEventSubscriber : IClientRequestHeaderSupport, IContractEventSubscriber
 	{
 		private readonly string _wsUrl;
 		private readonly Dictionary<string, IContractEventSubscription> _subscribers;

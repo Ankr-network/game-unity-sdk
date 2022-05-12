@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using AnkrSDK.Core;
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.ERC20Example;
+using AnkrSDK.Provider;
+using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using TMPro;

@@ -1,10 +1,9 @@
 using System.Numerics;
-using AnkrSDK.Core;
-using AnkrSDK.Core.Data.ContractMessages.ERC721;
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Core.Utils;
+using AnkrSDK.Data.ContractMessages.ERC721;
 using AnkrSDK.GameCharacterContract;
+using AnkrSDK.Provider;
+using AnkrSDK.Utils;
 using AnkrSDK.WearableNFTExample;
 using Cysharp.Threading.Tasks;
 using TMPro;

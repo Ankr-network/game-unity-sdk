@@ -1,7 +1,7 @@
-#if UNITY_WEBGL
 using AnkrSDK.WebGL.DTO;
-using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
+using AnkrSDK.Core.Infrastructure;
+using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
 using System.Linq;
@@ -10,7 +10,7 @@ using System;
 
 namespace AnkrSDK.WebGL
 {
-	public class WebGLWrapper
+	public class WebGLWrapper : IDisconnectHandler
 	{
 		private readonly WebGLCommunicationProtocol _protocol;
 
@@ -18,6 +18,12 @@ namespace AnkrSDK.WebGL
 		{
 			_protocol = new WebGLCommunicationProtocol();
 			_protocol.StartReceiveCycle().Forget();
+		}
+
+		public UniTask Disconnect(bool waitForNewSession = true)
+		{
+			_protocol.Disconnect();
+			return UniTask.CompletedTask;
 		}
 
 		public async Task<string> SendTransaction(TransactionData transaction)
@@ -132,4 +138,3 @@ namespace AnkrSDK.WebGL
 		}
 	}
 }
-#endif

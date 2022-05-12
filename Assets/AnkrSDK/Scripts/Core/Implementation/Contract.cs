@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AnkrSDK.Core.Data;
-using AnkrSDK.Core.Events.Infrastructure;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
+using AnkrSDK.Data;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
@@ -23,7 +22,12 @@ namespace AnkrSDK.Core.Implementation
 		private readonly IEthHandler _ethHandler;
 		private readonly IContractFunctions _contractFunctions;
 
-		internal Contract(IWeb3 web3Provider, IEthHandler ethHandler, IContractFunctions contractFunctions, string contractAddress, string contractABI)
+		internal Contract(
+			IWeb3 web3Provider,
+			IEthHandler ethHandler,
+			IContractFunctions contractFunctions,
+			string contractAddress,
+			string contractABI)
 		{
 			_web3Provider = web3Provider;
 			_ethHandler = ethHandler;

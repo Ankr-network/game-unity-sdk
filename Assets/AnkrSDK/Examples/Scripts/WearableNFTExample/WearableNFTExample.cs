@@ -1,11 +1,10 @@
 using System.Numerics;
-using AnkrSDK.Core;
-using AnkrSDK.Core.Data.ContractMessages.ERC1155;
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Core.Utils;
+using AnkrSDK.Data.ContractMessages.ERC1155;
 using AnkrSDK.GameCharacterContract;
+using AnkrSDK.Provider;
 using AnkrSDK.UseCases;
+using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;

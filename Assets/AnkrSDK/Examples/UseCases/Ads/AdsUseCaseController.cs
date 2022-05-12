@@ -1,10 +1,8 @@
 using AnkrAds.Ads.Data;
 using AnkrSDK.Ads.UI;
-using AnkrSDK.Core;
-using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Core.Utils;
 using AnkrSDK.Examples.ERC20Example;
+using AnkrSDK.Provider;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;

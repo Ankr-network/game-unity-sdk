@@ -1,8 +1,10 @@
 {
     "name": "AnkrSDK.WebGL",
-    "rootNamespace": "",
     "references": [
-        "UniTask"
+        "AnkrSDK.Core.Infrastructure",
+        "AnkrSDK.Utils",
+        "UniTask",
+        "WalletConnectSharp.Core"
     ],
     "includePlatforms": [
         "Editor",

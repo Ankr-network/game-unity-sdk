@@ -1,8 +1,20 @@
 {
-  "name": "WalletConnectSharp",
-  "references": [
-    "UniTask",
-    "WalletConnectSharp.Core",
-    "endel.nativewebsocket"
-  ]
+    "name": "WalletConnectSharp",
+    "rootNamespace": "",
+    "references": [
+        "UniTask",
+        "WalletConnectSharp.Core",
+        "endel.nativewebsocket"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WebGL"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

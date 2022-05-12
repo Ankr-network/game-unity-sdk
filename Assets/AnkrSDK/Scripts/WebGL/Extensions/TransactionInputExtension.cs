@@ -1,5 +1,4 @@
 using AnkrSDK.WebGL.DTO;
-using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.RPC.Eth.DTOs;
 
 namespace AnkrSDK.WebGL.Extensions
