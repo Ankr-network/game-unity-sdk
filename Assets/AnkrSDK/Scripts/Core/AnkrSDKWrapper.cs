@@ -1,6 +1,5 @@
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 using Nethereum.Web3;
 

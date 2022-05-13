@@ -64,7 +64,7 @@ namespace AnkrSDK.ERC20Example
 
 		private static void HandleTransactionHash(object sender, string transactionHash)
 		{
-			Debug.Log($"TsransactionHash: {transactionHash}");
+			Debug.Log($"TransactionHash: {transactionHash}");
 		}
 
 		private static void HandleError(object sender, Exception exception)

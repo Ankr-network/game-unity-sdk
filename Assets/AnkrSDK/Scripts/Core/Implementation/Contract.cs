@@ -18,7 +18,6 @@ namespace AnkrSDK.Core.Implementation
 		private readonly string _contractABI;
 		private readonly string _contractAddress;
 		private readonly IWeb3 _web3Provider;
-
 		private readonly IEthHandler _ethHandler;
 		private readonly IContractFunctions _contractFunctions;
 

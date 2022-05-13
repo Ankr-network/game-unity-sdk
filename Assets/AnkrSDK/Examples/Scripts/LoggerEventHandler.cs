@@ -3,7 +3,7 @@ using AnkrSDK.Core.Infrastructure;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
-namespace AnkrSDK.Examples
+namespace AnkrSDK
 {
 	public class LoggerEventHandler : ITransactionEventHandler
 	{

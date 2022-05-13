@@ -117,7 +117,6 @@ namespace AnkrSDK.Core.Implementation
 			_transport.Close();
 		}
 
-
 		private async UniTask<string> CreateSubscription(NewFilterInput filters)
 		{
 			var rpcRequestJson = CreateRequest(filters);

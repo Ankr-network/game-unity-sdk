@@ -45,7 +45,7 @@ namespace AnkrSDK.Utils
 		}
 
 		//IERC721 Metadata
-		/// <summary>Returns the token "<paramref name="tokenId" />"'s collection name.</summary>
+		/// <summary>Returns the contract "<paramref name="contract" />"'s collection name.</summary>
 		public static UniTask<string> Name(this IContract contract)
 		{
 			var nameMessage = new NameMessage();
@@ -53,7 +53,7 @@ namespace AnkrSDK.Utils
 			return contract.GetData<NameMessage, string>(nameMessage).AsUniTask();
 		}
 
-		/// <summary>Returns the token "<paramref name="tokenId" />"'s collection symbol.</summary>
+		/// <summary>Returns the contract "<paramref name="contract" />"'s collection symbol.</summary>
 		public static async UniTask<string> Symbol(this IContract contract, string tokenID)
 		{
 			var symbolMessage = new SymbolMessage();
@@ -63,11 +63,11 @@ namespace AnkrSDK.Utils
 		}
 
 		/// <summary>Returns the Uniform Resource Identifier (URI) for "<paramref name="tokenId" />" token.</summary>
-		public static UniTask<string> TokenURI(this IContract contract, string tokenID)
+		public static UniTask<string> TokenURI(this IContract contract, string tokenId)
 		{
 			var tokenURIMessage = new TokenURIMessage
 			{
-				TokenId = tokenID
+				TokenId = tokenId
 			};
 
 			return contract.GetData<TokenURIMessage, string>(tokenURIMessage).AsUniTask();
