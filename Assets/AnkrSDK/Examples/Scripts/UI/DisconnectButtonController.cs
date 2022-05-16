@@ -1,5 +1,7 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Unity;
+#endif
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,15 +12,18 @@ namespace AnkrSDK.UI
 	{
 		[SerializeField] private Button _button;
 
+	#if !UNITY_WEBGL || UNITY_EDITOR
 		private void OnEnable()
 		{
 			SubscribeOnTransportEvents().Forget();
+
 			_button.onClick.AddListener(OnButtonClick);
 		}
 
 		private void OnDisable()
 		{
 			UnsubscribeFromTransportEvents();
+
 			_button.onClick.RemoveAllListeners();
 		}
 
@@ -60,5 +65,11 @@ namespace AnkrSDK.UI
 		{
 			WalletConnect.CloseSession().Forget();
 		}
+	#else
+		private void Awake()
+		{
+			gameObject.SetActive(false);
+		}
+	#endif
 	}
 }

@@ -25,6 +25,14 @@ namespace Tests
 			["WebGL"] = new ScriptCompilationSettings
 			{
 				group = BuildTargetGroup.WebGL, options = ScriptCompilationOptions.None, target = BuildTarget.WebGL,
+			},
+			["StandAloneOSX"] = new ScriptCompilationSettings
+			{
+				group = BuildTargetGroup.Standalone, options = ScriptCompilationOptions.None, target = BuildTarget.StandaloneOSX,
+			},
+			["StandAloneWin"] = new ScriptCompilationSettings
+			{
+				group = BuildTargetGroup.Standalone, options = ScriptCompilationOptions.None, target = BuildTarget.StandaloneWindows,
 			}
 		};
 

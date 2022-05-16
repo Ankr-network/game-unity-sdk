@@ -1,7 +1,8 @@
 {
     "name": "AnkrSDK.WebGL",
-    "rootNamespace": "",
     "references": [
+        "AnkrSDK.Core.Infrastructure",
+        "AnkrSDK.Utils",
         "UniTask"
     ],
     "includePlatforms": [

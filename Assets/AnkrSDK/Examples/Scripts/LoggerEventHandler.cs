@@ -1,9 +1,9 @@
 using System;
-using AnkrSDK.Core.Events.Infrastructure;
+using AnkrSDK.Core.Infrastructure;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 
-namespace AnkrSDK.Examples
+namespace AnkrSDK
 {
 	public class LoggerEventHandler : ITransactionEventHandler
 	{
@@ -19,7 +19,7 @@ namespace AnkrSDK.Examples
 
 		public void TransactionHashReceived(string transactionHash)
 		{
-			Debug.Log($"TsransactionHash: {transactionHash}");
+			Debug.Log($"TransactionHash: {transactionHash}");
 		}
 
 		public void ErrorReceived(Exception exception)

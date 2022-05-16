@@ -1,5 +1,5 @@
-using AnkrSDK.Core.Data;
-using AnkrSDK.Core.Utils;
+using AnkrSDK.Data;
+using AnkrSDK.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 

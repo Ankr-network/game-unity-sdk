@@ -1,4 +1,3 @@
-#if UNITY_WEBGL
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -97,4 +96,3 @@ namespace AnkrSDK.WebGL
 		}
 	}
 }
-#endif
