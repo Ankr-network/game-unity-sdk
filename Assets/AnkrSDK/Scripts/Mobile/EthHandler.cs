@@ -75,7 +75,7 @@ namespace AnkrSDK.Mobile
 			return WalletConnect.ActiveSession.EthSign(address, messageToSign);
 		}
 
-		public Task<EthResponse> SendTransaction(string from, string to, string data = null, string value = null,
+		public async Task<string> SendTransaction(string from, string to, string data = null, string value = null,
 			string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
@@ -91,8 +91,9 @@ namespace AnkrSDK.Mobile
 			};
 
 			var request = new AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction(transactionData);
-			return WalletConnect.ActiveSession
+			var response = await WalletConnect.ActiveSession
 				.Send<AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction, EthResponse>(request);
+			return response.Result;
 		}
 
 		public Task<HexBigInteger> EstimateGas(TransactionInput transactionInput)

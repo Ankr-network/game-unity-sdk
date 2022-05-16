@@ -3,8 +3,7 @@
     "references": [
         "AnkrSDK.Core.Infrastructure",
         "AnkrSDK.Utils",
-        "UniTask",
-        "WalletConnectSharp.Core"
+        "UniTask"
     ],
     "includePlatforms": [
         "Editor",

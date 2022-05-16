@@ -75,7 +75,7 @@ namespace AnkrSDK.Core.Implementation
 				nonce: nonce
 			);
 
-			return sendTransaction.Result;
+			return sendTransaction;
 		}
 
 		public async Task Web3SendMethod(string methodName, object[] arguments,
@@ -103,9 +103,8 @@ namespace AnkrSDK.Core.Implementation
 
 				if (!sendTransactionTask.IsFaulted)
 				{
-					var transactionHash = response.Result;
-					evController?.TransactionHashReceived(transactionHash);
-					await LoadReceipt(transactionHash, evController);
+					evController?.TransactionHashReceived(response);
+					await LoadReceipt(response, evController);
 				}
 				else
 				{

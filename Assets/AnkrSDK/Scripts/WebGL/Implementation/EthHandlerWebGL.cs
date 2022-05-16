@@ -4,7 +4,6 @@ using Nethereum.RPC.Eth.DTOs;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 
 namespace AnkrSDK.WebGL.Implementation
 {
@@ -72,7 +71,7 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.Sign(props);
 		}
 
-		public async Task<EthResponse> SendTransaction(string @from, string to, string data = null, string value = null,
+		public Task<string> SendTransaction(string from, string to, string data = null, string value = null,
 			string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
@@ -87,12 +86,7 @@ namespace AnkrSDK.WebGL.Implementation
 				nonce = nonce
 			};
 
-			var response = new EthResponse
-			{
-				result = await _webGlWrapper.SendTransaction(transactionData)
-			};
-
-			return response;
+			return _webGlWrapper.SendTransaction(transactionData);
 		}
 	}
 }
