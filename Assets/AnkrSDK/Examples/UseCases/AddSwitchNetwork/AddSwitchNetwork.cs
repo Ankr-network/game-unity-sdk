@@ -32,7 +32,7 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 
 		private static void OpenAddSwitchBscTestnet()
 		{
-			AnkrNetworkHelper.AddAndSwitchNetwork(NetworkName.BinanceSmartChainTestNet);
+			AnkrNetworkHelper.AddAndSwitchNetwork(NetworkName.BinanceSmartChain_TestNet);
 		}
 	}
 }

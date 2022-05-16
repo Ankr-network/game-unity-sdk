@@ -4,6 +4,7 @@
     "AnkrSDK.Core",
     "AnkrSDK.Core.Infrastructure",
     "AnkrSDK.WebGL",
+    "AnkrSDK.Data",
     "AnkrSDK.Mobile"
   ]
 }
