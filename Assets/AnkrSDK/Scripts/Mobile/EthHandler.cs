@@ -15,23 +15,25 @@ namespace AnkrSDK.Mobile
 	public class EthHandler : IEthHandler
 	{
 		private readonly IWeb3 _web3Provider;
+		private readonly WalletConnect _walletConnect;
 
 		public EthHandler(IWeb3 web3Provider)
 		{
 			_web3Provider = web3Provider;
+			_walletConnect = WalletConnectProvider.GetWalletConnect();
 		}
 
 		public Task<string> GetDefaultAccount()
 		{
-			if (WalletConnect.ActiveSession != null)
+			if (_walletConnect.Session != null)
 			{
-				var activeSessionAccount = WalletConnect.ActiveSession.Accounts[0];
+				var activeSessionAccount = _walletConnect.Session.Accounts[0];
 				if (string.IsNullOrEmpty(activeSessionAccount))
 				{
 					Debug.LogError("Account is null");
 				}
 
-				return Task.FromResult<string>(activeSessionAccount);
+				return Task.FromResult(activeSessionAccount);
 			}
 
 			throw new Exception("Application is not linked to wallet");
@@ -72,7 +74,7 @@ namespace AnkrSDK.Mobile
 
 		public Task<string> Sign(string messageToSign, string address)
 		{
-			return WalletConnect.ActiveSession.EthSign(address, messageToSign);
+			return _walletConnect.Session.EthSign(address, messageToSign);
 		}
 
 		public async Task<string> SendTransaction(string from, string to, string data = null, string value = null,
@@ -91,7 +93,7 @@ namespace AnkrSDK.Mobile
 			};
 
 			var request = new AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction(transactionData);
-			var response = await WalletConnect.ActiveSession
+			var response = await _walletConnect.Session
 				.Send<AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction, EthResponse>(request);
 			return response.Result;
 		}

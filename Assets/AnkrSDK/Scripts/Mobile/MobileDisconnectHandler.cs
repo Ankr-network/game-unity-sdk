@@ -6,9 +6,16 @@ namespace AnkrSDK.Mobile
 {
 	public class MobileDisconnectHandler : IDisconnectHandler
 	{
+		private readonly WalletConnect _walletConnect;
+
+		public MobileDisconnectHandler()
+		{
+			_walletConnect = WalletConnectProvider.GetWalletConnect();
+		}
+
 		public UniTask Disconnect(bool waitForNewSession = true)
 		{
-			return WalletConnect.CloseSession(waitForNewSession);
+			return _walletConnect.CloseSession(waitForNewSession);
 		}
 	}
 }

@@ -34,7 +34,7 @@ namespace PlayModeTests
 				{
 					await UniTask.WhenAny(
 						walletConnect.Connect().AsUniTask(),
-						UniTask.WaitUntil(() => WalletConnect.ActiveSession.ReadyForUserPrompt),
+						UniTask.WaitUntil(() => walletConnect.Session.ReadyForUserPrompt),
 						UniTask.Delay(TimeSpan.FromSeconds(5f)));
 				}
 				catch (Exception e)
@@ -43,7 +43,7 @@ namespace PlayModeTests
 				}
 			});
 
-			Assert.That(WalletConnect.ActiveSession.ReadyForUserPrompt);
+			Assert.That(walletConnect.Session.ReadyForUserPrompt);
 
 			Object.DestroyImmediate(walletConnect.gameObject);
 			if (savedSessionBeforeTest != null)
@@ -60,7 +60,7 @@ namespace PlayModeTests
 		public void WalletConnect_DefaultSessionIsUnInitialized()
 		{
 			var walletConnect = TestHelper.CreateWalletConnectObject();
-			Assert.IsNull(WalletConnect.ActiveSession);
+			Assert.IsNull(walletConnect.Session);
 
 			Object.DestroyImmediate(walletConnect.gameObject);
 		}
@@ -70,7 +70,7 @@ namespace PlayModeTests
 		{
 			var walletConnect = TestHelper.CreateWalletConnectObject();
 			walletConnect.InitializeUnitySession();
-			var session = WalletConnect.ActiveSession;
+			var session = walletConnect.Session;
 			Assert.IsNotNull(session);
 			Assert.IsFalse(session.Connected);
 			Assert.IsFalse(session.Connecting);

@@ -11,6 +11,7 @@ namespace AnkrSDK.UI
 	public class DisconnectButtonController : MonoBehaviour
 	{
 		[SerializeField] private Button _button;
+		[SerializeField] private WalletConnect _walletConnect;
 
 	#if !UNITY_WEBGL || UNITY_EDITOR
 		private void OnEnable()
@@ -29,31 +30,30 @@ namespace AnkrSDK.UI
 
 		private async UniTaskVoid SubscribeOnTransportEvents()
 		{
-			if (WalletConnect.Instance == null)
-			{
-				await UniTask.WaitWhile(() => WalletConnect.Instance == null);
-			}
+			await UniTask.WaitUntil(() => _walletConnect.Session != null);
 
-			if (WalletConnect.ActiveSession == null)
+			var walletConnectSession = _walletConnect.Session;
+			if (walletConnectSession == null)
 			{
 				return;
 			}
 
-			WalletConnect.ActiveSession.OnTransportConnect += UpdateDisconnectButtonState;
-			WalletConnect.ActiveSession.OnTransportDisconnect += UpdateDisconnectButtonState;
-			WalletConnect.ActiveSession.OnTransportOpen += UpdateDisconnectButtonState;
+			walletConnectSession.OnTransportConnect += UpdateDisconnectButtonState;
+			walletConnectSession.OnTransportDisconnect += UpdateDisconnectButtonState;
+			walletConnectSession.OnTransportOpen += UpdateDisconnectButtonState;
 		}
 
 		private void UnsubscribeFromTransportEvents()
 		{
-			if (WalletConnect.ActiveSession == null)
+			var walletConnectSession = _walletConnect.Session;
+			if (walletConnectSession == null)
 			{
 				return;
 			}
 
-			WalletConnect.ActiveSession.OnTransportConnect -= UpdateDisconnectButtonState;
-			WalletConnect.ActiveSession.OnTransportDisconnect -= UpdateDisconnectButtonState;
-			WalletConnect.ActiveSession.OnTransportOpen -= UpdateDisconnectButtonState;
+			walletConnectSession.OnTransportConnect -= UpdateDisconnectButtonState;
+			walletConnectSession.OnTransportDisconnect -= UpdateDisconnectButtonState;
+			walletConnectSession.OnTransportOpen -= UpdateDisconnectButtonState;
 		}
 
 		private void UpdateDisconnectButtonState(object sender, WalletConnectProtocol e)
@@ -61,9 +61,9 @@ namespace AnkrSDK.UI
 			_button.gameObject.SetActive(!e.Disconnected);
 		}
 
-		private static void OnButtonClick()
+		private void OnButtonClick()
 		{
-			WalletConnect.CloseSession().Forget();
+			_walletConnect.CloseSession().Forget();
 		}
 	#else
 		private void Awake()

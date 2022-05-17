@@ -1,8 +1,6 @@
 using AnkrSDK.Core;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
-using AnkrSDK.Mobile;
-using Nethereum.Web3;
 
 namespace AnkrSDK.Provider
 {
@@ -20,32 +18,20 @@ namespace AnkrSDK.Provider
 
 		private static IAnkrSDK CreateAnkrSDKInstance(string providerURI)
 		{
-			var web3Provider = CreateWeb3Provider(providerURI);
-
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
+			var web3Provider = new WebGL.WebGLWeb3Provider().CreateWeb3(providerURI);
 			var webGlWrapper = new WebGL.WebGLWrapper();
 			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
-			var eth = new AnkrSDK.WebGL.Implementation.EthHandlerWebGL(webGlWrapper);
-			var disconnectHandler = (IDisconnectHandler) webGlWrapper;
+			var eth = new WebGL.Implementation.EthHandlerWebGL(webGlWrapper);
+			var disconnectHandler = (IDisconnectHandler)webGlWrapper;
 		#else
+			var web3Provider = new Mobile.MobileWeb3Provider().CreateWeb3(providerURI);
 			var contractFunctions = new Mobile.ContractFunctions(web3Provider);
 			var eth = new Mobile.EthHandler(web3Provider);
 			var disconnectHandler = new Mobile.MobileDisconnectHandler();
 		#endif
 
 			return new AnkrSDKWrapper(web3Provider, contractFunctions, eth, disconnectHandler);
-		}
-
-		private static IWeb3 CreateWeb3Provider(string providerURI)
-		{
-			IWeb3Provider web3Provider;
-		#if (UNITY_WEBGL && !UNITY_EDITOR)
-			web3Provider = new WebGLWeb3Provider();
-		#else
-			web3Provider = new MobileWeb3Provider();
-		#endif
-
-			return web3Provider.CreateWeb3(providerURI);
 		}
 	}
 }
