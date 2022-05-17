@@ -27,13 +27,36 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 		public bool Connected => _client?.State == WebSocketState.Open && _opened;
 		public string URL { get; private set; }
 
+		private string ReadyToUseURL
+		{
+			get
+			{
+				var url = URL;
+				if (url.StartsWith("https"))
+				{
+					url = url.Replace("https", "wss");
+				}
+				else if (url.StartsWith("http"))
+				{
+					url = url.Replace("http", "ws");
+				}
+
+				return url;
+			}
+		}
+
 		public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 		public event EventHandler<MessageReceivedEventArgs> OpenReceived;
 		public event EventHandler<MessageReceivedEventArgs> Closed;
 
-		public void AttachEventDelegator(EventDelegator eventDelegator)
+		private void Update()
 		{
-			_eventDelegator = eventDelegator;
+		#if !UNITY_WEBGL || UNITY_EDITOR
+			if (_client?.State == WebSocketState.Open)
+			{
+				_client.DispatchMessageQueue();
+			}
+		#endif
 		}
 
 		public void Dispose()
@@ -41,7 +64,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			_client?.CancelConnection();
 		}
 
-		public async Task Open(string url, bool clearSubscriptions = true)
+		public Task Open(string url, bool clearSubscriptions = true)
 		{
 			if (URL != url || clearSubscriptions)
 			{
@@ -50,7 +73,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
 			URL = url;
 
-			await _socketOpen();
+			return OpenSocket();
 		}
 
 		public void CancelConnection()
@@ -92,7 +115,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			if (!Connected)
 			{
 				_queuedMessages.Enqueue(message);
-				await _socketOpen();
+				await OpenSocket();
 			}
 			else
 			{
@@ -118,20 +141,20 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			_opened = true;
 		}
 
-		public async Task Subscribe<T>(string topic, EventHandler<JsonRpcResponseEvent<T>> callback)
+		public Task Subscribe<T>(string topic, EventHandler<JsonRpcResponseEvent<T>> callback)
 			where T : JsonRpcResponse
 		{
-			await Subscribe(topic);
-
 			_eventDelegator.ListenFor(topic, callback);
+
+			return Subscribe(topic);
 		}
 
-		public async Task Subscribe<T>(string topic, EventHandler<JsonRpcRequestEvent<T>> callback)
+		public Task Subscribe<T>(string topic, EventHandler<JsonRpcRequestEvent<T>> callback)
 			where T : JsonRpcRequest
 		{
-			await Subscribe(topic);
-
 			_eventDelegator.ListenFor(topic, callback);
+
+			return Subscribe(topic);
 		}
 
 		public void ClearSubscriptions()
@@ -148,7 +171,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			_queuedMessages.Clear();
 		}
 
-		private async Task _socketOpen()
+		private async Task OpenSocket()
 		{
 			Debug.Log("[WebSocket] Trying to open socket");
 			if (_nextClient != null)
@@ -166,21 +189,24 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 				}
 			}
 
-			var url = URL;
-			if (url.StartsWith("https"))
-			{
-				url = url.Replace("https", "wss");
-			}
-			else if (url.StartsWith("http"))
-			{
-				url = url.Replace("http", "ws");
-			}
+			var url = ReadyToUseURL;
 
-			_nextClient = new WebSocket(url);
+			var eventCompleted = ConfigureNextClient(url, out _nextClient);
+
+			StartClientConnect().Forget();
+
+			Debug.Log("[WebSocket] Waiting for Open " + url);
+			await eventCompleted.Task;
+			Debug.Log("[WebSocket] Open Completed");
+		}
+
+		private TaskCompletionSource<bool> ConfigureNextClient(string url, out WebSocket nextClient)
+		{
+			nextClient = new WebSocket(url);
 
 			var eventCompleted = new TaskCompletionSource<bool>(TaskCreationOptions.None);
 
-			_nextClient.OnOpen += () =>
+			void OnNextClientOpen()
 			{
 				CompleteOpen();
 
@@ -190,17 +216,19 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 				Debug.Log("[WebSocket] Opened " + url);
 
 				eventCompleted.SetResult(true);
-			};
+			}
 
-			_nextClient.OnMessage += OnMessageReceived;
-			_nextClient.OnClose += ClientTryReconnect;
-			_nextClient.OnError += e => { HandleError(new Exception(e)); };
+			nextClient.OnOpen += OnNextClientOpen;
 
-			StartClientConnect().Forget();
+			nextClient.OnMessage += OnMessageReceived;
+			nextClient.OnClose += ClientTryReconnect;
+			nextClient.OnError += e => { HandleError(new Exception(e)); };
+			return eventCompleted;
+		}
 
-			Debug.Log("[WebSocket] Waiting for Open " + url);
-			await eventCompleted.Task;
-			Debug.Log("[WebSocket] Open Completed");
+		public void AttachEventDelegator(EventDelegator eventDelegator)
+		{
+			_eventDelegator = eventDelegator;
 		}
 
 		private async UniTaskVoid StartClientConnect()
@@ -270,7 +298,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 				await UniTask.Delay(TimeSpan.FromSeconds(reconnectDelay));
 			}
 
-			await _socketOpen();
+			await OpenSocket();
 		}
 
 		private async void OnMessageReceived(byte[] bytes)
@@ -281,8 +309,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			{
 				var msg = JsonConvert.DeserializeObject<NetworkMessage>(json);
 
-
-				await SendMessage(new NetworkMessage()
+				await SendMessage(new NetworkMessage
 				{
 					Payload = "",
 					Type = "ack",
@@ -298,19 +325,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			}
 		}
 
-		private void Update()
+		private static NetworkMessage GenerateSubscribeMessage(string topic)
 		{
-		#if !UNITY_WEBGL || UNITY_EDITOR
-			if (_client?.State == WebSocketState.Open)
-			{
-				_client.DispatchMessageQueue();
-			}
-		#endif
-		}
-
-		private NetworkMessage GenerateSubscribeMessage(string topic)
-		{
-			return new NetworkMessage()
+			return new NetworkMessage
 			{
 				Payload = "",
 				Type = "sub",
