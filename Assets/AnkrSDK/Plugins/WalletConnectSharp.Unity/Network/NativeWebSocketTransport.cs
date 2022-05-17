@@ -25,6 +25,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 		private bool _opened;
 		private bool _wasPaused;
 		public bool Connected => _client?.State == WebSocketState.Open && _opened;
+		public string URL { get; private set; }
+
+		public event EventHandler<MessageReceivedEventArgs> MessageReceived;
+		public event EventHandler<MessageReceivedEventArgs> OpenReceived;
+		public event EventHandler<MessageReceivedEventArgs> Closed;
 
 		public void AttachEventDelegator(EventDelegator eventDelegator)
 		{
@@ -36,12 +41,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			_client?.CancelConnection();
 		}
 
-		public event EventHandler<MessageReceivedEventArgs> MessageReceived;
-		public event EventHandler<MessageReceivedEventArgs> OpenReceived;
-		public event EventHandler<MessageReceivedEventArgs> Closed;
-
-		public string URL { get; private set; }
-
 		public async Task Open(string url, bool clearSubscriptions = true)
 		{
 			if (URL != url || clearSubscriptions)
@@ -52,6 +51,101 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			URL = url;
 
 			await _socketOpen();
+		}
+
+		public void CancelConnection()
+		{
+			_client.CancelConnection();
+		}
+
+		public async Task Close()
+		{
+			Debug.Log("Closing Websocket");
+			try
+			{
+				if (_client != null)
+				{
+					_opened = false;
+					_client.OnClose -= ClientTryReconnect;
+					await _client.Close();
+				}
+			}
+			catch (WebSocketInvalidStateException e)
+			{
+				if (e.Message.Contains("WebSocket is not connected"))
+				{
+					Debug.LogWarning("Tried to close a websocket when it's already closed");
+				}
+				else
+				{
+					throw;
+				}
+			}
+			finally
+			{
+				Closed?.Invoke(this, null);
+			}
+		}
+
+		public async Task SendMessage(NetworkMessage message)
+		{
+			if (!Connected)
+			{
+				_queuedMessages.Enqueue(message);
+				await _socketOpen();
+			}
+			else
+			{
+				var finalJson = JsonConvert.SerializeObject(message);
+
+				await _client.SendText(finalJson);
+			}
+		}
+
+		public async Task Subscribe(string topic)
+		{
+			Debug.Log("[WebSocket] Subscribe to " + topic);
+
+			var msg = GenerateSubscribeMessage(topic);
+
+			await SendMessage(msg);
+
+			if (!_subscribedTopics.Contains(topic))
+			{
+				_subscribedTopics.Add(topic);
+			}
+
+			_opened = true;
+		}
+
+		public async Task Subscribe<T>(string topic, EventHandler<JsonRpcResponseEvent<T>> callback)
+			where T : JsonRpcResponse
+		{
+			await Subscribe(topic);
+
+			_eventDelegator.ListenFor(topic, callback);
+		}
+
+		public async Task Subscribe<T>(string topic, EventHandler<JsonRpcRequestEvent<T>> callback)
+			where T : JsonRpcRequest
+		{
+			await Subscribe(topic);
+
+			_eventDelegator.ListenFor(topic, callback);
+		}
+
+		public void ClearSubscriptions()
+		{
+			if (_eventDelegator != null)
+			{
+				foreach (var subscribedTopic in _subscribedTopics)
+				{
+					_eventDelegator.UnsubscribeProvider(subscribedTopic);
+				}
+			}
+
+			_subscribedTopics.Clear();
+			_queuedMessages.Clear();
 		}
 
 		private async Task _socketOpen()
@@ -119,7 +213,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			}
 		}
 
-		private void HandleError(Exception e)
+		private static void HandleError(Exception e)
 		{
 			Debug.LogError(e);
 		}
@@ -179,11 +273,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			await _socketOpen();
 		}
 
-		public void CancelConnection()
-		{
-			_client.CancelConnection();
-		}
-
 		private async void OnMessageReceived(byte[] bytes)
 		{
 			var json = System.Text.Encoding.UTF8.GetString(bytes);
@@ -219,66 +308,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 		#endif
 		}
 
-		public async Task Close()
-		{
-			Debug.Log("Closing Websocket");
-			try
-			{
-				if (_client != null)
-				{
-					_opened = false;
-					_client.OnClose -= ClientTryReconnect;
-					await _client.Close();
-				}
-			}
-			catch (WebSocketInvalidStateException e)
-			{
-				if (e.Message.Contains("WebSocket is not connected"))
-				{
-					Debug.LogWarning("Tried to close a websocket when it's already closed");
-				}
-				else
-				{
-					throw;
-				}
-			}
-			finally
-			{
-				Closed?.Invoke(this, null);
-			}
-		}
-
-		public async Task SendMessage(NetworkMessage message)
-		{
-			if (!Connected)
-			{
-				_queuedMessages.Enqueue(message);
-				await _socketOpen();
-			}
-			else
-			{
-				var finalJson = JsonConvert.SerializeObject(message);
-
-				await _client.SendText(finalJson);
-			}
-		}
-
-		public async Task Subscribe(string topic)
-		{
-			Debug.Log("[WebSocket] Subscribe to " + topic);
-
-			var msg = GenerateSubscribeMessage(topic);
-
-			await SendMessage(msg);
-
-			if (!_subscribedTopics.Contains(topic))
-			{
-				_subscribedTopics.Add(topic);
-			}
-
-			_opened = true;
-		}
-
 		private NetworkMessage GenerateSubscribeMessage(string topic)
 		{
 			return new NetworkMessage()
@@ -288,36 +317,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 				Silent = true,
 				Topic = topic
 			};
-		}
-
-		public async Task Subscribe<T>(string topic, EventHandler<JsonRpcResponseEvent<T>> callback)
-			where T : JsonRpcResponse
-		{
-			await Subscribe(topic);
-
-			_eventDelegator.ListenFor(topic, callback);
-		}
-
-		public async Task Subscribe<T>(string topic, EventHandler<JsonRpcRequestEvent<T>> callback)
-			where T : JsonRpcRequest
-		{
-			await Subscribe(topic);
-
-			_eventDelegator.ListenFor(topic, callback);
-		}
-
-		public void ClearSubscriptions()
-		{
-			if (_eventDelegator != null)
-			{
-				foreach (var subscribedTopic in _subscribedTopics)
-				{
-					_eventDelegator.UnsubscribeProvider(subscribedTopic);
-				}
-			}
-
-			_subscribedTopics.Clear();
-			_queuedMessages.Clear();
 		}
 
 		private void OnApplicationPause(bool pauseStatus)

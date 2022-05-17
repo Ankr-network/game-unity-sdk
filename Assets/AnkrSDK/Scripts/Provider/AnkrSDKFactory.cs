@@ -1,6 +1,7 @@
 using AnkrSDK.Core;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
+using AnkrSDK.Mobile;
 using Nethereum.Web3;
 
 namespace AnkrSDK.Provider
@@ -37,11 +38,14 @@ namespace AnkrSDK.Provider
 
 		private static IWeb3 CreateWeb3Provider(string providerURI)
 		{
+			IWeb3Provider web3Provider;
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
-			return WebGL.WebGLWeb3Provider.CreateWeb3Provider(providerURI);
+			web3Provider = new WebGLWeb3Provider();
 		#else
-			return Mobile.MobileWeb3Provider.CreateWeb3Provider(providerURI);
+			web3Provider = new MobileWeb3Provider();
 		#endif
+
+			return web3Provider.CreateWeb3(providerURI);
 		}
 	}
 }
