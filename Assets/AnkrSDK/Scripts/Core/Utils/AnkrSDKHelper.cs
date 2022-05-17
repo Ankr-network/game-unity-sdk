@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Web;
 using AnkrSDK.Core.Data;
 using UnityEngine.Networking;
 
@@ -23,6 +26,19 @@ namespace AnkrSDK.Core.Utils
 			request.SetRequestHeader("Content-Type", "application/json");
 			request.downloadHandler = new DownloadHandlerBuffer();
 			return request;
+		}
+		
+		private static string ToQueryString(Dictionary<string, string[]> queryDictionary)
+		{
+			var array = (
+				from key in queryDictionary.Keys
+				from value in queryDictionary[key]
+				select string.Format(
+					"{0}={1}",
+					HttpUtility.UrlEncode(key),
+					HttpUtility.UrlEncode(value))
+			).ToArray();
+			return "?" + string.Join("&", array);
 		}
 
 		private static byte[] GetBytes(string str)
