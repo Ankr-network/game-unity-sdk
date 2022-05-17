@@ -1,5 +1,6 @@
 using AnkrSDK.Core;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Data;
 using Nethereum.Web3;
 
 namespace AnkrSDK.Provider
@@ -7,6 +8,16 @@ namespace AnkrSDK.Provider
 	public static class AnkrSDKFactory
 	{
 		public static IAnkrSDK GetAnkrSDKInstance(string providerURI)
+		{
+			return CreateAnkrSDKInstance(providerURI);
+		}
+
+		public static IAnkrSDK GetAnkrSDKInstance(NetworkName networkName)
+		{
+			return CreateAnkrSDKInstance(AnkrSDKFactoryHelper.GetAnkrRPCForSelectedNetwork(networkName));
+		}
+
+		private static IAnkrSDK CreateAnkrSDKInstance(string providerURI)
 		{
 			var web3Provider = CreateWeb3Provider(providerURI);
 
