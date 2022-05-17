@@ -11,7 +11,7 @@ namespace AnkrSDK.Provider
 		{
 			return CreateAnkrSDKInstance(providerURI);
 		}
-		
+
 		public static IAnkrSDK GetAnkrSDKInstance(NetworkName networkName)
 		{
 			return CreateAnkrSDKInstance(AnkrSDKFactoryHelper.GetAnkrRPCForSelectedNetwork(networkName));
@@ -31,10 +31,10 @@ namespace AnkrSDK.Provider
 			var eth = new Mobile.EthHandler(web3Provider);
 			var disconnectHandler = new Mobile.MobileDisconnectHandler();
 		#endif
-			
+
 			return new AnkrSDKWrapper(web3Provider, contractFunctions, eth, disconnectHandler);
 		}
-		
+
 		private static IWeb3 CreateWeb3Provider(string providerURI)
 		{
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
