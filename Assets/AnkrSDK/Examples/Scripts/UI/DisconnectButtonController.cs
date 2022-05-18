@@ -1,7 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Unity;
-#endif
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +7,10 @@ namespace AnkrSDK.UI
 	public class DisconnectButtonController : MonoBehaviour
 	{
 		[SerializeField] private Button _button;
-		[SerializeField] private WalletConnect _walletConnect;
-
 	#if !UNITY_WEBGL || UNITY_EDITOR
+
+		[SerializeField] private AnkrSDK.WalletConnectSharp.Unity.WalletConnect _walletConnect;
+
 		private void OnEnable()
 		{
 			SubscribeOnTransportEvents().Forget();
@@ -56,7 +53,7 @@ namespace AnkrSDK.UI
 			walletConnectSession.OnTransportOpen -= UpdateDisconnectButtonState;
 		}
 
-		private void UpdateDisconnectButtonState(object sender, WalletConnectProtocol e)
+		private void UpdateDisconnectButtonState(object sender, AnkrSDK.WalletConnectSharp.Core.WalletConnectProtocol e)
 		{
 			_button.gameObject.SetActive(!e.Disconnected);
 		}

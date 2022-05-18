@@ -1,9 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Unity;
-#endif
-
 using Cysharp.Threading.Tasks;
 using System;
 using TMPro;
@@ -22,7 +16,9 @@ namespace AnkrSDK.UI
 		[SerializeField] private TMP_Text _connectionText;
 		[SerializeField] private Button _loginButton;
 		[SerializeField] private GameObject _sceneChooser;
-		[SerializeField] private WalletConnect _walletConnect;
+	#if !UNITY_WEBGL || UNITY_EDITOR
+		[SerializeField] private AnkrSDK.WalletConnectSharp.Unity.WalletConnect _walletConnect;
+	#endif
 	#if !UNITY_ANDROID && !UNITY_IOS || UNITY_EDITOR
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
 	#endif
@@ -130,7 +126,7 @@ namespace AnkrSDK.UI
 			walletConnectSession.OnSessionDisconnect -= OnSessionDisconnect;
 		}
 
-		private void UpdateLoginButtonState(object sender, WalletConnectProtocol e)
+		private void UpdateLoginButtonState(object sender, AnkrSDK.WalletConnectSharp.Core.WalletConnectProtocol e)
 		{
 			UpdateSceneState();
 			if (!e.Connected && !e.Connecting && e.Disconnected)
@@ -145,7 +141,7 @@ namespace AnkrSDK.UI
 			_loginButton.interactable = e.TransportConnected;
 		}
 
-		private void UpdateSceneState(WCSessionData _ = null)
+		private void UpdateSceneState(AnkrSDK.WalletConnectSharp.Core.Models.WCSessionData _ = null)
 		{
 			var walletConnectUnitySession = _walletConnect.Session;
 			if (walletConnectUnitySession == null)
