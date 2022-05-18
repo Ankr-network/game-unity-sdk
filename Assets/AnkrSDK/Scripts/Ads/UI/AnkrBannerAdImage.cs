@@ -11,9 +11,10 @@ namespace AnkrSDK.Ads.UI
 
 		public event Action AdClicked;
 
-		protected override void OnTextureLoaded(Sprite texture)
+		protected override void OnTextureLoaded(Texture2D texture)
 		{
-			_image.sprite = texture;
+			var sprite = Sprite.Create(texture,  new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+			_image.sprite = sprite;
 		}
 
 		private void OnEnable()
