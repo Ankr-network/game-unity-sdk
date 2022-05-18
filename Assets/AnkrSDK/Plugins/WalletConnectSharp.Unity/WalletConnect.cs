@@ -11,30 +11,12 @@ using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
-#if UNITY_IOS
-using System.Net;
-#endif
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
 	[RequireComponent(typeof(NativeWebSocketTransport))]
 	public class WalletConnect : MonoBehaviour
 	{
-		public static WalletConnect Instance { get; private set; }
-
-		public static WalletConnectUnitySession ActiveSession
-		{
-			get
-			{
-				if (Instance == null || Instance.Session == null)
-				{
-					return null;
-				}
-
-				return Instance.Session;
-			}
-		}
-
 		[Serializable]
 		public class WalletConnectEventWithSession : UnityEvent<WalletConnectUnitySession>
 		{
@@ -69,10 +51,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private WalletConnectUnitySession _session;
 
-		private WalletConnectUnitySession Session
+		public WalletConnectUnitySession Session
 		{
 			get => _session;
-			set
+			private set
 			{
 				Debug.Log("Active Session Changed");
 				_session = value;
@@ -96,15 +78,16 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public WalletConnectEventWithSessionData ConnectedEvent => _connectedEventSession;
 
+	#if UNITY_EDITOR
 		public NativeWebSocketTransport Transport
 		{
 			set => _transport = value;
 		}
+	#endif
+		private static WalletConnect Instance { get; set; }
 
 		private async void Awake()
 		{
-#if !UNITY_WEBGL
-			
 			if (Instance != null)
 			{
 				Destroy(gameObject);
@@ -115,21 +98,22 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			Instance = this;
 
+		#if !UNITY_WEBGL
 			if (_connectOnAwake)
 			{
 				await Connect();
 			}
-#endif
+		#endif
 		}
 
 		private async void Start()
 		{
-#if !UNITY_WEBGL		
+		#if !UNITY_WEBGL
 			if (_connectOnStart && !_connectOnAwake)
 			{
 				await Connect();
 			}
-#endif
+		#endif
 		}
 
 		private async void OnDestroy()
@@ -256,7 +240,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			else
 			{
 				string url;
-				var encodedConnect = WebUtility.UrlEncode(ConnectURL);
+				var encodedConnect = System.Net.WebUtility.UrlEncode(ConnectURL);
 				if (!string.IsNullOrWhiteSpace(SelectedWallet.mobile.universal))
 				{
 					url = SelectedWallet.mobile.universal + "/wc?uri=" + encodedConnect;
@@ -280,7 +264,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void OpenDeepLink()
 		{
-			if (!ActiveSession.ReadyForUserPrompt)
+			if (!Session.ReadyForUserPrompt)
 			{
 				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
 				               "\nWait for ActiveSession.ReadyForUserPrompt to be true");
@@ -297,41 +281,39 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				throw new NotImplementedException(
 					"You must use OpenDeepLink(AppEntry) or set SelectedWallet on iOS!");
 			}
+
+			string url;
+			var encodedConnect = System.Net.WebUtility.UrlEncode(ConnectURL);
+			if (!string.IsNullOrWhiteSpace(SelectedWallet.mobile.universal))
+			{
+				url = SelectedWallet.mobile.universal + "/wc?uri=" + encodedConnect;
+			}
 			else
 			{
-				string url;
-				string encodedConnect = WebUtility.UrlEncode(ConnectURL);
-				if (!string.IsNullOrWhiteSpace(SelectedWallet.mobile.universal))
-				{
-					url = SelectedWallet.mobile.universal + "/wc?uri=" + encodedConnect;
-				}
-				else
-				{
-					url = SelectedWallet.mobile.native + (SelectedWallet.mobile.native.EndsWith(":") ? "//" : "/") +
-					      "wc?uri=" + encodedConnect;
-				}
-
-				Debug.Log("Opening: " + url);
-				Application.OpenURL(url);
+				url = SelectedWallet.mobile.native + (SelectedWallet.mobile.native.EndsWith(":") ? "//" : "/") +
+				      "wc?uri=" + encodedConnect;
 			}
+
+			Debug.Log("Opening: " + url);
+			Application.OpenURL(url);
 		#else
 			Debug.Log("Platform does not support deep linking");
 			return;
 		#endif
 		}
 
-		public static async UniTask CloseSession(bool waitForNewSession = true)
+		public async UniTask CloseSession(bool waitForNewSession = true)
 		{
-			if (ActiveSession == null)
+			if (Session == null)
 			{
 				return;
 			}
 
-			await ActiveSession.Disconnect();
+			await Session.Disconnect();
 
 			if (waitForNewSession)
 			{
-				await ActiveSession.Connect();
+				await Session.Connect();
 			}
 		}
 
@@ -421,7 +403,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private async void SessionOnSessionDisconnect(object sender, EventArgs e)
 		{
-			_disconnectedEvent?.Invoke(ActiveSession);
+			_disconnectedEvent?.Invoke(Session);
 
 			if (_autoSaveAndResume && SessionSaveHandler.IsSessionSaved())
 			{

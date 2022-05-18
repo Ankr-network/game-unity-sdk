@@ -152,10 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea7d421f80b4e95aa508cadd01f7bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _qrCodeImage: {fileID: 743187878}
   _connectionText: {fileID: 817336825}
   _loginButton: {fileID: 1669978143}
   _sceneChooser: {fileID: 588941421}
+  _walletConnect: {fileID: 333705138}
+  _qrCodeImage: {fileID: 743187878}
 --- !u!4 &292734225
 Transform:
   m_ObjectHideFlags: 0
@@ -1067,6 +1068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 1251080525}
+  _walletConnect: {fileID: 333705138}
 --- !u!114 &1284681295 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8547154265603219207, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
