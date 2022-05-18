@@ -12,15 +12,15 @@ namespace AnkrSDK.Utils
 			{
 				case NetworkName.Ethereum:
 					break;
-				case NetworkName.EthereumRinkebyTestNet:
+				case NetworkName.Ethereum_Rinkeby_TestNet:
 					break;
 				case NetworkName.BinanceSmartChain:
 					AddAndSwitchCustomNetwork(
 						GetURLFromNetworkNameEnum(NetworkName.BinanceSmartChain));
 					break;
-				case NetworkName.BinanceSmartChainTestNet:
+				case NetworkName.BinanceSmartChain_TestNet:
 					AddAndSwitchCustomNetwork(
-						GetURLFromNetworkNameEnum(NetworkName.BinanceSmartChainTestNet));
+						GetURLFromNetworkNameEnum(NetworkName.BinanceSmartChain_TestNet));
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(networkName), networkName, null);
@@ -40,12 +40,12 @@ namespace AnkrSDK.Utils
 			{
 				case NetworkName.Ethereum:
 					break;
-				case NetworkName.EthereumRinkebyTestNet:
+				case NetworkName.Ethereum_Rinkeby_TestNet:
 					break;
 				case  NetworkName.BinanceSmartChain:
 					url = "https://metamask.app.link/dapp/change-network-mirage.surge.sh?network=bsc";
 					break;
-				case  NetworkName.BinanceSmartChainTestNet:
+				case  NetworkName.BinanceSmartChain_TestNet:
 					url = "https://metamask.app.link/dapp/change-network-mirage.surge.sh?network=bsc_test";
 					break;
 				default:
