@@ -84,9 +84,20 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			set => _transport = value;
 		}
 	#endif
+		private static WalletConnect Instance { get; set; }
 
 		private async void Awake()
 		{
+			if (Instance != null)
+			{
+				Destroy(gameObject);
+				return;
+			}
+
+			DontDestroyOnLoad(gameObject);
+
+			Instance = this;
+
 		#if !UNITY_WEBGL
 			if (_connectOnAwake)
 			{
