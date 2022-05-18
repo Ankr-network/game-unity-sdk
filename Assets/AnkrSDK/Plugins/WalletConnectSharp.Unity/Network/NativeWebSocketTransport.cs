@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AnkrSDK.WalletConnectSharp.Core.Events;
-using AnkrSDK.WalletConnectSharp.Core.Events.Model;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
