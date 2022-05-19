@@ -23,10 +23,6 @@ namespace AnkrSDK.WalletConnectSharp.Core.Network
 
         Task Subscribe(string topic);
 
-        Task Subscribe<T>(string topic, EventHandler<JsonRpcResponseEvent<T>> callback) where T : JsonRpcResponse;
-
-        Task Subscribe<T>(string topic, EventHandler<JsonRpcRequestEvent<T>> callback) where T : JsonRpcRequest;
-
         void ClearSubscriptions();
     }
 }

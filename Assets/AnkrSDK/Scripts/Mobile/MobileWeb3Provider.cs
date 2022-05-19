@@ -1,17 +1,25 @@
+using AnkrSDK.WalletConnectSharp.Unity;
 using Nethereum.Web3;
 
 namespace AnkrSDK.Mobile
 {
-	public static class MobileWeb3Provider
+	public class MobileWeb3Provider
 	{
-		public static IWeb3 CreateWeb3Provider(string providerURI)
+		private readonly WalletConnect _walletConnect;
+
+		public MobileWeb3Provider()
 		{
-			var wcProtocol = WalletConnectSharp.Unity.WalletConnect.ActiveSession;
+			_walletConnect = WalletConnectProvider.GetWalletConnect();
+		}
+
+		public IWeb3 CreateWeb3(string providerURI)
+		{
+			var session = _walletConnect.Session;
 			var client =
-				WalletConnectSharp.NEthereum.WalletConnectNEthereumExtensions.CreateProvider(wcProtocol,
+				WalletConnectSharp.NEthereum.WalletConnectNEthereumExtensions.CreateProvider(session,
 					new System.Uri(providerURI));
-			var web3Provider = new Web3(client);
-			return web3Provider;
+			var web3 = new Web3(client);
+			return web3;
 		}
 	}
 }
