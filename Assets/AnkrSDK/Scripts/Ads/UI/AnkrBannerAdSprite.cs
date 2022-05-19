@@ -15,10 +15,12 @@ namespace AnkrSDK.Ads.UI
 			AdClicked?.Invoke();
 		}
 
-		protected override void OnTextureLoaded(Sprite texture)
+		protected override void OnTextureLoaded(Texture2D texture)
 		{
-			_sprite.sprite = texture;
-			_sprite.size = texture.rect.size;
+			var sprite = Sprite.Create(texture,  new Rect(0, 0, texture.width, texture.height),
+				new Vector2(0.5f, 0.5f));
+			_sprite.sprite = sprite;
+			_sprite.size = sprite.rect.size;
 		}
 	}
 }

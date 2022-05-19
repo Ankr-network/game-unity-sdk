@@ -48,7 +48,9 @@ namespace AnkrSDK.UseCases.Ads
 			_button.gameObject.SetActive(false);
 
 			var defaultAccount = await _eth.GetDefaultAccount();
-			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(AdType.Banner, defaultAccount);
+			var testAppId = "e8d0f552-22a5-482c-a149-2d51bace6ccb";
+			var testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
+			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(testAppId, testUnitId, defaultAccount);
 
 			if (requestResult != null)
 			{
