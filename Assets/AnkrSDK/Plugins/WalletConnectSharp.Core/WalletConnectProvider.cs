@@ -62,7 +62,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			 */
 
 			if (!URI.StartsWith("wc"))
+			{
 				return;
+			}
 
 			//TODO Figure out a better way to parse this
 

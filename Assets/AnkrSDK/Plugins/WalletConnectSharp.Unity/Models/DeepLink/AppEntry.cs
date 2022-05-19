@@ -31,10 +31,17 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink
                 {
                     await imageRequest.SendWebRequest();
 
-                    if (imageRequest.isHttpError || imageRequest.isNetworkError)
+#if UNITY_2020_2_OR_NEWER
+                    if (imageRequest.result != UnityWebRequest.Result.Success)
                     {
                         Debug.Log("Error Getting Wallet Icon: " + imageRequest.error);
                     }
+#else
+                        if (imageRequest.isHttpError || imageRequest.isNetworkError)
+                        {
+                            Debug.Log("Error Getting Wallet Icon: " + imageRequest.error);
+                        }
+#endif
                     else
                     {
                         var texture = ((DownloadHandlerTexture)imageRequest.downloadHandler).texture;
@@ -58,6 +65,5 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink
                 }
             }
         }
-
     }
 }

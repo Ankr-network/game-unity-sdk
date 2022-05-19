@@ -11,13 +11,15 @@ namespace AnkrSDK.Core.Utils
 		{
 			var ethFilterInput =
 				FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter?.FromBlock, evFilter?.ToBlock);
-			if (evFilter != null && evFilter.AreTopicsFilled())
+			if (evFilter == null || !evFilter.AreTopicsFilled())
 			{
-				var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
-
-				ethFilterInput.Topics = eventABI.GetTopicBuilder()
-					.GetTopics(evFilter.FilterTopic1, evFilter.FilterTopic2, evFilter.FilterTopic3);
+				return ethFilterInput;
 			}
+
+			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
+
+			ethFilterInput.Topics = eventABI.GetTopicBuilder()
+				.GetTopics(evFilter.FilterTopic1, evFilter.FilterTopic2, evFilter.FilterTopic3);
 
 			return ethFilterInput;
 		}
@@ -29,13 +31,15 @@ namespace AnkrSDK.Core.Utils
 
 			var ethFilterInput =
 				FilterInputBuilder.GetDefaultFilterInput(contractAddress, evFilter?.FromBlock, evFilter?.ToBlock);
-			if (evFilter != null && values.Any())
+			if (evFilter == null || !values.Any())
 			{
-				var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
-
-				ethFilterInput.Topics = eventABI.GetTopicBuilder()
-					.GetTopics(values[0], values[1], values[2]);
+				return ethFilterInput;
 			}
+
+			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
+
+			ethFilterInput.Topics = eventABI.GetTopicBuilder()
+				.GetTopics(values[0], values[1], values[2]);
 
 			return ethFilterInput;
 		}

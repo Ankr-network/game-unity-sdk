@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.Data;
-using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.RpcMessages;
+using Nethereum.JsonRpc.Client;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Subscriptions;
+using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
@@ -23,8 +23,8 @@ namespace AnkrSDK.Core.Implementation
 		private readonly EthLogsSubscriptionRequestBuilder _requestBuilder;
 		private readonly EthUnsubscribeRequestBuilder _unsubscribeRequestBuilder;
 
-		private IWebSocket _transport;
 		private bool _isCancellationRequested;
+		private IWebSocket _transport;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
 
 		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();

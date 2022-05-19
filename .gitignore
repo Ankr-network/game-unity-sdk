@@ -79,3 +79,5 @@ UserSettings/AndroidLogcatSettings.asset
 .idea
 .idea.mirage-unity-sdk
 Builds
+.DS_Store
+.idea/.idea.game-unity-sdk/.idea/workspace.xml
