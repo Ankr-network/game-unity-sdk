@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 
@@ -23,7 +22,7 @@ namespace AnkrSDK.Core.Infrastructure
 
 		Task<string> Sign(string messageToSign, string address);
 
-		Task<EthResponse> SendTransaction(
+		Task<string> SendTransaction(
 			string from,
 			string to,
 			string data = null,

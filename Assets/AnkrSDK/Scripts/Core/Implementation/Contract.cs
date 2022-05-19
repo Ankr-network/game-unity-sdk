@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AnkrSDK.Core.Data;
-using AnkrSDK.Core.Events.Infrastructure;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
+using AnkrSDK.Data;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
@@ -19,11 +18,15 @@ namespace AnkrSDK.Core.Implementation
 		private readonly string _contractABI;
 		private readonly string _contractAddress;
 		private readonly IWeb3 _web3Provider;
-
 		private readonly IEthHandler _ethHandler;
 		private readonly IContractFunctions _contractFunctions;
 
-		internal Contract(IWeb3 web3Provider, IEthHandler ethHandler, IContractFunctions contractFunctions, string contractAddress, string contractABI)
+		internal Contract(
+			IWeb3 web3Provider,
+			IEthHandler ethHandler,
+			IContractFunctions contractFunctions,
+			string contractAddress,
+			string contractABI)
 		{
 			_web3Provider = web3Provider;
 			_ethHandler = ethHandler;
@@ -72,7 +75,7 @@ namespace AnkrSDK.Core.Implementation
 				nonce: nonce
 			);
 
-			return sendTransaction.Result;
+			return sendTransaction;
 		}
 
 		public async Task Web3SendMethod(string methodName, object[] arguments,
@@ -100,9 +103,8 @@ namespace AnkrSDK.Core.Implementation
 
 				if (!sendTransactionTask.IsFaulted)
 				{
-					var transactionHash = response.Result;
-					evController?.TransactionHashReceived(transactionHash);
-					await LoadReceipt(transactionHash, evController);
+					evController?.TransactionHashReceived(response);
+					await LoadReceipt(response, evController);
 				}
 				else
 				{

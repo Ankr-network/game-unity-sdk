@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace AnkrSDK.Core.Utils
 {
-	public class EventSubscriberHelper
+	public static class EventSubscriberHelper
 	{
 		public static RpcStreamingResponseMessage DeserializeMessage(byte[] message)
 		{

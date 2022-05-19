@@ -1,5 +1,3 @@
-#if UNITY_WEBGL
-using System;
 using System.Runtime.InteropServices;
 
 namespace AnkrSDK.WebGL
@@ -31,4 +29,3 @@ namespace AnkrSDK.WebGL
 		public static extern string GetResponses();
 	}
 }
-#endif

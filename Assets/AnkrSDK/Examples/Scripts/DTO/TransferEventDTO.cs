@@ -1,5 +1,5 @@
 using System.Numerics;
-using AnkrSDK.Core.Data;
+using AnkrSDK.Data;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace AnkrSDK.DTO

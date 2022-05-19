@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using AnkrSDK.Core;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples;
+using AnkrSDK.Provider;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Newtonsoft.Json;

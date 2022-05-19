@@ -1,5 +1,5 @@
 using System;
-using AnkrSDK.Core.Data;
+using AnkrSDK.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;

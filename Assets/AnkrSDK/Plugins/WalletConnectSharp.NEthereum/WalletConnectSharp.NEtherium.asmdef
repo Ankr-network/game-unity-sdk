@@ -1,6 +1,18 @@
 {
-  "name": "WalletConnectSharp.NEtherium",
-  "references": [
-    "WalletConnectSharp.Core"
-  ]
+    "name": "WalletConnectSharp.NEtherium",
+    "rootNamespace": "",
+    "references": [
+        "WalletConnectSharp.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WebGL"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

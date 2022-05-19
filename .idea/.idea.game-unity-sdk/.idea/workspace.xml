@@ -5,22 +5,1470 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a273faea-5c8d-42d6-a5fb-ea57badc29c3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/UseCase-Ads.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/UseCase-Ads.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/MobileUseCaseIndex.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/MobileUseCaseIndex.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/UI/AnkrBannerAdImage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/UI/AnkrBannerAdImage.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AnkrSDK.Core.Infrastructure.csproj.DotSettings" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AnkrSDK.Data.csproj.DotSettings" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AnkrSDK.Mobile.csproj.DotSettings" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AnkrSDK.Provider.csproj.DotSettings" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDKWrapper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/AnkrSDK.Core.Infrastructure.asmdef" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/AnkrSDK.Core.Infrastructure.asmdef.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IDisconnectHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IDisconnectHandler.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/INetworkHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/INetworkHelper.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/AnkrSDK.Data.asmdef" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/AnkrSDK.Data.asmdef.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC1155.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/RentableExtension.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/NetworkName.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrNetworkHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrSDK.Mobile.asmdef" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrSDK.Mobile.asmdef.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/MobileDisconnectHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/MobileDisconnectHandler.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/MobileWeb3Provider.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/MobileWeb3Provider.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDK.Provider.asmdef" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDK.Provider.asmdef.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactory.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactoryHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactoryHelper.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDKHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/UI.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/AnkrNetworkWebGLHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/AnkrNetworkWebGLHelper.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWeb3Provider.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWeb3Provider.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TestUtils.csproj.DotSettings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.game-unity-sdk/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.game-unity-sdk/.idea/indexLayout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.game-unity-sdk/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.game-unity-sdk/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnkrSDK.Core.csproj.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/AnkrSDK.Core.csproj.DotSettings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnkrSDK.Examples.csproj.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/AnkrSDK.Examples.csproj.DotSettings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnkrSDK.Utils.csproj.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/AnkrSDK.Utils.csproj.DotSettings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnkrSDK.WebGL.csproj.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/AnkrSDK.WebGL.csproj.DotSettings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp-Editor.csproj.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp-Editor.csproj.DotSettings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/AnkrSDK.Examples.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/AnkrSDK.Examples.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/DTO/TransferEventDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/DTO/TransferEventDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC20Example/ERC20Example.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC20Example/ERC20Example.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC721Example/ERC721Example.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC721Example/ERC721Example.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/EventListenerExample/EventListenerExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/EventListenerExample/EventListenerExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/LoggerEventHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/LoggerEventHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/UI/ConnectionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/UI/ConnectionController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/UI/DisconnectButtonController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/UI/DisconnectButtonController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/WearableNFTExample/WearableNFTExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/WearableNFTExample/WearableNFTExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/AddSwitchNetwork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/AddSwitchNetwork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/NetworksList.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/EthereumNetworks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/NetworksList.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/EthereumNetworks.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/AdsUseCaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/AdsUseCaseController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/LinkingAccountWallet/AccountLinkingExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/LinkingAccountWallet/AccountLinkingExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/LoadNFTs/LoadNFTExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/LoadNFTs/LoadNFTExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/UpdateNFT/UpdateNftExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/UpdateNFT/UpdateNftExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/BouncyCastle.Crypto.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/BouncyCastle.Crypto/BouncyCastle.Crypto.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/DLLs/BouncyCastle.Crypto.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/BouncyCastle.Crypto/BouncyCastle.Crypto.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/DLLs/BouncyCastle.Crypto.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.ABI.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.ABI.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Accounts.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Accounts.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Besu.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Besu.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.BlockchainProcessing.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.BlockchainProcessing.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Contracts.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Contracts.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.GnosisSafe.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.GnosisSafe.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Hex.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Hex.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.JsonRpc.Client.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.JsonRpc.Client.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.JsonRpc.RpcClient.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.JsonRpc.RpcClient.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.KeyStore.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.KeyStore.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Model.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Model.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Parity.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Parity.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.RLP.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.RLP.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.RPC.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.RPC.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Signer.EIP712.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Signer.EIP712.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Signer.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Signer.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Siwe.Core.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Siwe.Core.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.StandardNonFungibleTokenERC721.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.StandardNonFungibleTokenERC721.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Unity.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Unity.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Util.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Util.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Web3.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/Nethereum/Nethereum.Web3.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/QRCoder.1.3.4/lib/net35/QRCoder.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/QRCoder.1.3.4/lib/net35/QRCoder.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/QRCoder.Unity.1.0.2/lib/net35/QRCoder.Unity.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/QRCoder.Unity.1.0.2/lib/net35/QRCoder.Unity.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/System.Drawing.Common.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/System.Drawing.Common/netstandard2.0.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/System.Drawing.Common/netstandard2.0/System.Drawing.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/DLLs/System.Drawing.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/System.Drawing.Common/netstandard2.0/System.Drawing.Common.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/DLLs/System.Drawing.Common.dll.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/WalletConnectSharp.Core.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/WalletConnectSharp.Core.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.NEthereum/WalletConnectSharp.NEtherium.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.NEthereum/WalletConnectSharp.NEtherium.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/WalletConnectSharp.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/WalletConnectSharp.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/WalletConnectSharp.asmdef.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/WalletConnectSharp.asmdef.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AnkrAds.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Ads/AnkrAds.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDK.Core.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDK.Core.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDKFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDKFactory.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactory.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AoT/AoTSetup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AoT/AoTSetup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC1155.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC1155/BalanceOfMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC1155/BalanceOfMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC1155/BalanceOfMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC1155/BalanceOfMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/BalanceOfMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/BalanceOfMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/BalanceOfMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/BalanceOfMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/GetApprovedMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/GetApprovedMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/GetApprovedMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/GetApprovedMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/IsApprovedForAllMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/IsApprovedForAllMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/IsApprovedForAllMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/IsApprovedForAllMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/NameMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/NameMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/NameMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/NameMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/OwnerOfMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/OwnerOfMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/OwnerOfMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/OwnerOfMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/RentableExtension.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/RentableExtension/IsRentedMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/RentableExtension/IsRentedMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/RentableExtension/IsRentedMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/RentableExtension/IsRentedMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/RentableExtension/PrincipalOwnerMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/RentableExtension/PrincipalOwnerMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/RentableExtension/PrincipalOwnerMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/RentableExtension/PrincipalOwnerMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/SymbolMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/SymbolMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/SymbolMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/SymbolMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/TokenByIndexMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/TokenByIndexMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/TokenByIndexMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/TokenByIndexMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/TokenOfOwnerByIndexMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/TokenOfOwnerByIndexMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/TokenOfOwnerByIndexMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/TokenOfOwnerByIndexMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/TokenURIMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/TokenURIMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/TokenURIMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/TokenURIMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/TotalSupplyMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/TotalSupplyMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/ContractMessages/ERC721/TotalSupplyMessage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/ContractMessages/ERC721/TotalSupplyMessage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/EventDTOBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EventDTOBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/EventDTOBase.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EventDTOBase.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/EventFilterData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EventFilterData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/EventFilterData.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EventFilterData.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/EventFilterRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EventFilterRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/EventFilterRequest.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EventFilterRequest.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/NetworkName.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Data/NetworkName.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/NetworkName.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events/Implementation.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events/Implementation/TransactionEventDelegator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/EventListenerExample/TransactionEventDelegator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events/Implementation/TransactionEventDelegator.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/EventListenerExample/TransactionEventDelegator.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events/Implementation/TransactionEventHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/EventListenerExample/TransactionEventHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events/Implementation/TransactionEventHandler.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/EventListenerExample/TransactionEventHandler.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events/Infrastructure.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events/Infrastructure/ITransactionEventHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/ITransactionEventHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Events/Infrastructure/ITransactionEventHandler.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/ITransactionEventHandler.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/AnkrSDKWrapper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/AnkrSDKWrapper.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDKWrapper.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/Contract.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/Contract.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractEventSubscriber.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractEventSubscriber.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractEventSubscription.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractEventSubscription.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractFunctions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/ContractFunctions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractFunctions.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/ContractFunctions.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractFunctionsWebGL.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/ContractFunctionsWebGL.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractFunctionsWebGL.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/ContractFunctionsWebGL.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/EthHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/EthHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/EthHandler.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/EthHandler.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/EthHandlerWebGL.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/EthHandlerWebGL.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/EthHandlerWebGL.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/EthHandlerWebGL.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/EthereumChain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EthereumNetwork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/EthereumChain.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EthereumNetwork.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IAnkrSDK.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IAnkrSDK.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContract.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContract.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContractEventSubscriber.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContractEventSubscriber.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IEthHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IEthHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrNetworkHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrNetworkHelper.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrNetworkHelper.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrSDKHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrSDKHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrSDKHelper.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDKHelper.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/ERC721ContractFunctions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/ERC721ContractFunctions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/ERC721ContractFunctions.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/ERC721ContractFunctions.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/ERC721RentalExtensionFunctions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/ERC721RentalExtensionFunctions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/ERC721RentalExtensionFunctions.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/ERC721RentalExtensionFunctions.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/EventFilterHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/EventFilterHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/EventSubscriberHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/EventSubscriberHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/UI.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/UI/QRCodeImage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/UI/QRCodeImage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/UI/QRCodeImage.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/UI/QRCodeImage.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDK.Utils.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDK.Utils.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/AnkrSDK.WebGL.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/AnkrSDK.WebGL.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Extensions/TransactionInputExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Extensions/TransactionInputExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLCommunicationProtocol.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLCommunicationProtocol.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLInterlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLInterlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWrapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWrapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/web3gl.jslib" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/web3gl.jslib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TestUtils/TestUtils.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestUtils/TestUtils.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/CompilationTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/CompilationTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/WebGLTemplates/ankr-web3-template/js/ankr-web3.js" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/WebGLTemplates/ankr-web3-template/js/ankr-web3.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/WebGl/WebGl.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/WebGl/WebGl.unity.meta" beforeDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-736336503">
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="asmdef" value="6" />
+          <entry key="cs" value="975" />
+          <entry key="jslib" value="13" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="AsmDef" value="6" />
+          <entry key="C#" value="975" />
+          <entry key="JavaScript" value="13" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="asmdef" value="5" />
+          <entry key="cs" value="54" />
+          <entry key="jslib" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="AsmDef" value="5" />
+          <entry key="C#" value="54" />
+          <entry key="JavaScript" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/AddSwitchNetwork.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
+              <folding>
+                <marker date="1652941207143" expanded="true" signature="6:170" ph="..." />
+                <marker date="1652941207143" expanded="true" signature="215:1473" ph="{...}" />
+                <marker date="1652941207143" expanded="true" signature="258:1471" ph="{...}" />
+                <marker date="1652941207143" expanded="true" signature="425:652" ph="{...}" />
+                <marker date="1652941207143" expanded="true" signature="680:811" ph="{...}" />
+                <marker date="1652941207143" expanded="true" signature="846:972" ph="{...}" />
+                <marker date="1652941207143" expanded="true" signature="1014:1159" ph="{...}" />
+                <marker date="1652941207143" expanded="true" signature="1235:1468" ph="{...}" />
+                <marker date="1652941207143" expanded="true" signature="1300:1363" ph="{...}" />
+                <marker date="1652941207143" expanded="true" signature="1371:1464" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/EthereumNetworks.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="37" column="50" selection-start-line="37" selection-start-column="50" selection-end-line="37" selection-end-column="50" />
+              <folding>
+                <marker date="1652934454886" expanded="false" signature="6:118" ph="..." />
+                <marker date="1652934454886" expanded="true" signature="163:1591" ph="{...}" />
+                <marker date="1652934454886" expanded="true" signature="203:1589" ph="{...}" />
+                <marker date="1652934454886" expanded="true" signature="324:1444" ph="{...}" />
+                <marker date="1652934454886" expanded="true" signature="624:972" ph="{...}" />
+                <marker date="1652934454886" expanded="true" signature="740:816" ph="{...}" />
+                <marker date="1652934454886" expanded="true" signature="1051:1435" ph="{...}" />
+                <marker date="1652934454886" expanded="true" signature="1179:1257" ph="{...}" />
+                <marker date="1652934454886" expanded="true" signature="1508:1586" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC20Example/ERC20ContractInformation.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="48" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="48" />
+              <folding>
+                <marker date="1650342929175" expanded="true" signature="39:4184" ph="{...}" />
+                <marker date="1650342929175" expanded="true" signature="87:4182" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactory.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="495">
+              <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
+              <folding>
+                <marker date="1652873350931" expanded="false" signature="6:117" ph="..." />
+                <marker date="1652873350931" expanded="true" signature="145:1606" ph="{...}" />
+                <marker date="1652873350931" expanded="true" signature="183:1604" ph="{...}" />
+                <marker date="1652873350931" expanded="true" signature="250:304" ph="{...}" />
+                <marker date="1652873350931" expanded="true" signature="374:479" ph="{...}" />
+                <marker date="1652873350931" expanded="true" signature="548:1340" ph="{...}" />
+                <marker date="1652873350931" expanded="true" signature="1403:1601" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDKWrapper.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
+              <folding>
+                <marker date="1652871400607" expanded="false" signature="6:122" ph="..." />
+                <marker date="1652871400607" expanded="true" signature="146:1218" ph="{...}" />
+                <marker date="1652871400607" expanded="true" signature="188:1216" ph="{...}" />
+                <marker date="1652871400607" expanded="true" signature="612:787" ph="{...}" />
+                <marker date="1652871400607" expanded="true" signature="863:965" ph="{...}" />
+                <marker date="1652871400607" expanded="true" signature="1031:1085" ph="{...}" />
+                <marker date="1652871400607" expanded="true" signature="1145:1213" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/Contract.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="639">
+              <caret line="124" column="68" lean-forward="true" selection-start-line="124" selection-start-column="68" selection-end-line="124" selection-end-column="68" />
+              <folding>
+                <marker date="1652943900573" expanded="false" signature="6:347" ph="..." />
+                <marker date="1652943900573" expanded="true" signature="386:4877" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="425:4875" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="817:1000" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="1137:1247" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="1365:1594" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="1723:1944" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="2097:2475" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="2666:3541" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="3155:3452" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="3247:3361" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="3370:3447" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="3483:3537" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="3705:4158" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="4258:4525" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="4369:4454" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="4462:4521" ph="{...}" />
+                <marker date="1652943900573" expanded="true" signature="4638:4872" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/7a/c3ad9f66/Contract.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="894">
+              <caret line="114" column="37" selection-start-line="114" selection-start-column="37" selection-end-line="114" selection-end-column="37" />
+              <folding>
+                <marker date="1652943145544" expanded="true" signature="0:345" ph="/* Decompiled with JetBrains decompiler ... */" />
+                <marker date="1652943145544" expanded="false" signature="353:633" ph="..." />
+                <marker date="1652943145544" expanded="true" signature="664:3797" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="690:3795" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="769:875" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="965:1087" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="1181:1305" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="1345:1426" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="1361:1420" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="1511:1594" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="1527:1588" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="1685:1835" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="1948:2037" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="2077:2159" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="2199:2275" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="2332:2639" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="2695:2793" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="2855:2900" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="2957:3051" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="3097:3173" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="3235:3327" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="3388:3460" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="3537:3625" ph="{...}" />
+                <marker date="1652943145544" expanded="true" signature="3707:3791" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/76/e0251251/ContractBuilder.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="590">
+              <caret line="56" column="27" selection-start-line="56" selection-start-column="27" selection-end-line="56" selection-end-column="27" />
+              <folding>
+                <marker date="1652943158806" expanded="true" signature="0:352" ph="/* Decompiled with JetBrains decompiler ... */" />
+                <marker date="1652943158806" expanded="false" signature="360:612" ph="..." />
+                <marker date="1652943158806" expanded="true" signature="643:4678" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="676:4676" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="743:870" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="948:1095" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="1177:1326" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="1530:1631" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="1702:2000" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="2060:2147" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="2223:2326" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="2372:2728" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="2774:3130" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="3192:3663" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="3715:4106" ph="{...}" />
+                <marker date="1652943158806" expanded="true" signature="4174:4672" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/70/399d40cc/FunctionBuilder.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContractFunctions.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+              <folding>
+                <marker date="1651837646733" expanded="false" signature="6:56" ph="..." />
+                <marker date="1651837646733" expanded="true" signature="95:304" ph="{...}" />
+                <marker date="1651837646733" expanded="true" signature="134:302" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>GetUnityWebRequestFromJSON</find>
+      <find>decimals</find>
+      <find>Ethereum_Rinkeby_TestNet</find>
+      <find>Ethereum_Goerli_TestNet</find>
+      <find>Ethereum_Ropsten_TestNet</find>
+      <find>Ethereum</find>
+      <find>EthereumNetwork</find>
+      <find>AnkrSDK.Mobile</find>
+      <find>AnkrNetworkMobileHelper</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>Rinkeby</replace>
+      <replace>Goerli</replace>
+      <replace>Decimals</replace>
+      <replace>Ropsten</replace>
+      <replace>Main</replace>
+      <replace>AnkrNetworkHelper</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/UI/ConnectionController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactoryHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/UI/DisconnectButtonController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Events/EventDelegator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/UniTask/Runtime/UniTaskExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDK.Provider.asmdef" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/MobileWeb3Provider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/DTO/DataSignaturePropsDTO.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/MobileDisconnectHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrSDK.Mobile.asmdef" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/ContractFunctions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/EthHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/IEventSource.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BBB592CC-8CFF-4E5D-AE6B-0CED5ACC4773/8d/39cd1fe3/IClient.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/WCSessionUpdate.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IEthHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/InternalEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BBB592CC-8CFF-4E5D-AE6B-0CED5ACC4773/89/683e7491/RpcRequestResponseHandler`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/WCSessionRequestRequest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/EventFilterHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/ClientMeta.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLMessageStatus.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/Contract.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/JsonRpcResponse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/05CC7232-186F-4ABE-8684-C9E64133348B/41/fbd39c9c/EthGetLogs.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/bc/d99db79f/ConcurrentDictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/WearableNFTExample/WearableNFTExample.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/WcSessionRequest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/c8/5d288ffb/EventBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContract.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC20Example/ERC20ContractInformation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/NetworkMessage.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC721Example/ERC721Example.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/0e/8fb27324/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/JsonRpcRequest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/DTO/TransferEventDTO.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/05CC7232-186F-4ABE-8684-C9E64133348B/58/965bd8fd/RpcClientWrapper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC20Example/ERC20Example.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/NetworkName.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrSignatureHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/UpdateNFT/UpdateNftExample.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/OpenSea/OpenSeaAPIAssets.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/WalletAddEthChain.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Image.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/PlayModeTests/WalletConnectTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/EthGenericRequest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/EthSignTransaction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EventDTOBase.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/EthChainData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/TransactionData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/EthResponse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/EthSign.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/AdsUseCaseController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/78/85bc061e/FunctionMessageExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/NativeCurrency.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.NEthereum/WalletConnectNEthereumExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/EthSignTypedData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/EthPersonalSign.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/EthHandlerWebGL.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/ContractFunctionsWebGL.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IAnkrSDK.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/DTO/WebGLMessageDTO.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrNetworkHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLCommunicationProtocol.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDKHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/ae/1298d6e6/IObservable`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Models/Ethereum/EthSendTransaction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0D1075DE-7BDD-4181-8DD7-04E77F9150CA/79/2eb62770/ParametersEncoder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Extensions/TransactionInputExtension.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0D1075DE-7BDD-4181-8DD7-04E77F9150CA/50/bb5b894d/FunctionCallEncoder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/LoggerEventHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/WalletConnectUnitySession.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/de/9918e08a/FunctionBuilderBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDKWrapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLInterlayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/c6/c284ede4/FunctionBuilder`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/AnkrNetworkWebGLHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Network/ITransport.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/UseCase.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/70/399d40cc/FunctionBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Network/TransportFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/SupportedWalletList.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/UseCaseUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/WalletConnect.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWeb3Provider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/76/e0251251/ContractBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/UI/ChooseWalletScreen.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/7a/c3ad9f66/Contract.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BC3985D3-7B02-41B4-8FC2-1474B2DE25BD/4a/e9733d64/JToken.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/LoadNFTs/LoadNFTExample.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/b0/8e334d78/PropertyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/61/24f17e3c/FunctionMessageEncodingService`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/AddSwitchNetwork.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99258562-0D64-4271-98DD-F3A0E1467733/42/29888eef/DataContractAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/EventSubscriberHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99258562-0D64-4271-98DD-F3A0E1467733/34/8939567a/DataMemberAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/8a/15938edc/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/LinkingAccountWallet/AccountLinkingExample.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/ec/d25bdeb8/CancellationTokenSource.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/7b/f7be2764/QueryToDTOHandler`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/Network/NativeWebSocketTransport.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/fd/32c6dd09/QueryRawHandler`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/cd/359b8e25/IObserver`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/fe/282cbc08/QueryDecoderBaseHandler`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/92/3638d8ce/ContractQueryHandlerBase`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/21/e6229059/IContractQueryHandler`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/05CC7232-186F-4ABE-8684-C9E64133348B/7c/8184108d/AccessList.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/Network/Client/Implementation/WebSocket.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/05CC7232-186F-4ABE-8684-C9E64133348B/ff/b885387a/TransactionInput.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/EthereumNetworks.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/UniTask/Runtime/UniTask.Delay.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/ba/0d9fa753/Function.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractEventSubscriber.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/92/32579750/EthApiContractService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDK.Utils.asmdef" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContractFunctions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99258562-0D64-4271-98DD-F3A0E1467733/13/ac3b5650/CancellationToken.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/INetworkHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/AnkrSDK.Examples.asmdef" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/7d/edb3c293/IEthApiContractService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/EventListenerExample/EventListenerExample.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/45/66b555d8/EventHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/ContractEventSubscription.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BC3985D3-7B02-41B4-8FC2-1474B2DE25BD/5f/5c06507f/JsonSerializer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/fe/4c8017f7/CancellationToken.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/TextMesh Pro/Shaders/TMPro.cginc" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/UniTask/Runtime/Triggers/AsyncAwakeTrigger.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/EF151B6A-BB5D-474C-B2C1-CB8906A8B5A4/86/9b7e4b49/ClientWebSocket.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/UniTask/Runtime/IUniTaskSource.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/TextMesh Pro/Shaders/TMP_SDF.shader" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/b9/2c8797bd/ContractHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWrapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContractEventSubscription.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/73/4d2b8887/IDisposable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EthereumNetwork.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/0c/41231fb4/CustomAttributeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/351E49E2-A5BF-4FD6-BEAB-B458CE2255F3/d3/48a12617/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/Chains.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Web3Test/Assets/Scripts/ConfigReader.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/WalletConnectProtocol.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/AnkrSDK.WebGL.asmdef" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Core/WalletConnectSession.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDK.Core.asmdef" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/UniTask/Runtime/UniTask.WaitUntil.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/UniTask/Runtime/UniTaskObservableExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/UniTask/Runtime/UniTaskVoid.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/UniTask/Runtime/UniTaskCompletionSource.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/fb/e76215c6/FunctionMessage.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99258562-0D64-4271-98DD-F3A0E1467733/c4/b9c79a32/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrSDKHelper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/NetworkName.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/NetworksList.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/EthereumChain.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EthereumNetwork.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDKHelper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/web3gl.jslib" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLInterlayer.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/AdsUseCaseController.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/AnkrSDK.WebGL.asmdef" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWrapper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrNetworkWebGLHelper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/AnkrNetworkWebGLHelper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/INetworkHelper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrNetworkHelper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDK.Utils.asmdef" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrSDK.Mobile.asmdef" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrNetworkHelper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IAnkrSDK.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDKWrapper.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactory.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/EthereumNetworks.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/AddSwitchNetwork.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/ContractFunctionsWebGL.cs" />
+        <option value="$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/Contract.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1293" />
+    <option name="height" value="1337" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="UnityExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="FileSystemExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Project" type="161ac34:FileSystemExplorerRootNode" />
+              <item name="game-unity-sdk" type="34e6ba20:FileSystemExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="161ac34:FileSystemExplorerRootNode" />
+              <item name="game-unity-sdk" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="Assets" type="34e6ba20:FileSystemExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="161ac34:FileSystemExplorerRootNode" />
+              <item name="game-unity-sdk" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="Assets" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="AnkrSDK" type="34e6ba20:FileSystemExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="161ac34:FileSystemExplorerRootNode" />
+              <item name="game-unity-sdk" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="Assets" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="AnkrSDK" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="Scripts" type="34e6ba20:FileSystemExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="161ac34:FileSystemExplorerRootNode" />
+              <item name="game-unity-sdk" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="Assets" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="AnkrSDK" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="Scripts" type="34e6ba20:FileSystemExplorerNode" />
+              <item name="WebGL" type="34e6ba20:FileSystemExplorerNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="UnityExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Project" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="48f920db:UnityExplorerNode$AssetsRoot" />
+            </path>
+            <path>
+              <item name="Project" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="48f920db:UnityExplorerNode$AssetsRoot" />
+              <item name="AnkrSDK" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="48f920db:UnityExplorerNode$AssetsRoot" />
+              <item name="WebGLTemplates" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="e068e287:UnityExplorerRootNode" />
+              <item name="Packages" type="4e2708dd:PackagesRoot" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-hidden-items" value="false" />
+      </pane>
+      <pane id="SolutionExplorer">
+        <option name="show-all-files" value="false" />
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Attach to Unity Editor.Attach to Unity Editor" />
+      <item itemvalue="Attach to Unity Editor.Attach to Unity Editor &amp; Play" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
   </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <created>1652931591702</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652931591702</updated>
+      <workItem from="1652931593217" duration="5572000" />
+    </task>
     <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="20122000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1293" height="1337" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27897683" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.3289689" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32923833" />
+      <window_info anchor="bottom" id="NuGet" order="7" show_stripe_button="false" weight="0.32923833" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unity" order="10" weight="0.32923833" />
+      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unit Tests" order="12" weight="0.32923833" />
+      <window_info anchor="bottom" id="Terminal" order="13" weight="0.3289689" />
+      <window_info anchor="bottom" id="Event Log" order="14" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Errors In Solution" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
-  <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrSDKHelper.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EventDTOBase.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="17" lean-forward="true" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/EthereumNetwork.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="32" lean-forward="true" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDK.Core.asmdef">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+          <folding>
+            <marker date="1652772067647" expanded="true" signature="44:240" ph="[...]" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWeb3Provider.cs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLMessageStatus.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <marker date="1651837646749" expanded="true" signature="59:84" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Plugins/WalletConnectSharp.Unity/WalletConnect.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1164">
+          <caret line="132" column="9" selection-start-line="132" selection-start-column="9" selection-end-line="132" selection-end-column="9" />
+          <folding>
+            <marker date="1651837646708" expanded="false" signature="6:437" ph="..." />
+            <marker date="1651837646708" expanded="true" signature="620:11211" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="741:880" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="752:876" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="811:841" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="983:991" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="1086:1094" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2262:2370" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2293:2366" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2400:2443" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2473:2516" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2545:2581" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2712:2750" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2780:3000" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2830:2877" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="2958:2989" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3030:3139" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3097:3128" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3173:3210" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3269:3439" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3293:3333" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3404:3435" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3481:3518" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3564:5049" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3702:3741" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3766:4836" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3801:4345" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3853:4046" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3889:3940" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="3983:4039" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="4103:4205" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="4143:4198" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="4215:4339" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="4377:4509" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="4550:4689" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="4722:4831" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="5144:5407" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="5464:5532" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="5585:5649" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="5683:6585" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="6615:7702" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="6661:6846" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="7777:7947" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="7811:7833" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="7898:7943" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="7977:8352" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="8005:8089" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="8385:8697" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="8413:8435" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="8777:8808" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="8887:8975" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="9054:9239" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="9294:10116" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="9598:10018" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="9671:9802" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="9828:10013" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="9894:10007" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="10193:10440" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="10310:10359" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="10405:10436" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="10486:10835" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="10757:10831" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="10876:11208" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="10904:10926" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="10954:10976" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="11004:11154" ph="{...}" />
+            <marker date="1651837646708" expanded="true" signature="11162:11204" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDKHelper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Data/NetworkName.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99258562-0D64-4271-98DD-F3A0E1467733/c4/b9c79a32/Dictionary`2.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="960">
+          <caret line="64" column="16" selection-start-line="64" selection-start-column="16" selection-end-line="64" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/Ads/AdsUseCaseController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="59" selection-start-line="15" selection-start-column="59" selection-end-line="15" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/web3gl.jslib">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="735">
+          <caret line="49" column="42" selection-start-line="49" selection-start-column="31" selection-end-line="49" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/AnkrSDK.WebGL.asmdef">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/AnkrSignatureHelper.cs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Utils/EventFilterHelper.cs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDK.Provider.asmdef">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/EthHandlerWebGL.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="11" column="52" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/INetworkHelper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/AnkrNetworkWebGLHelper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrNetworkHelper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="46" selection-start-line="14" selection-start-column="46" selection-end-line="14" selection-end-column="46" />
+          <folding>
+            <marker date="1652873350933" expanded="true" signature="6:160" ph="..." />
+            <marker date="1652873350933" expanded="true" signature="236:1293" ph="{...}" />
+            <marker date="1652873350933" expanded="true" signature="590:708" ph="{...}" />
+            <marker date="1652873350933" expanded="true" signature="769:827" ph="{...}" />
+            <marker date="1652873350933" expanded="true" signature="919:1290" ph="{...}" />
+            <marker date="1652873350933" expanded="true" signature="1095:1165" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/AnkrSDK.Mobile.asmdef">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <folding>
+            <marker date="1652872170286" expanded="true" signature="75:293" ph="[...]" />
+            <marker date="1652872170286" expanded="true" signature="347:370" ph="[...]" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IAnkrSDK.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+          <folding>
+            <marker date="1652873350924" expanded="true" signature="37:269" ph="{...}" />
+            <marker date="1652873350924" expanded="true" signature="66:267" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Utils/AnkrSDK.Utils.asmdef">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="3" column="19" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="19" />
+          <folding>
+            <marker date="1652872112487" expanded="true" signature="45:119" ph="[...]" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/EthHandler.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+          <folding>
+            <marker date="1652772067724" expanded="false" signature="6:333" ph="..." />
+            <marker date="1652772067724" expanded="true" signature="359:3065" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="400:3063" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="484:525" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="568:929" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="616:861" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="745:797" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="1010:1125" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="1195:1347" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="1543:1924" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="1608:1877" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="1990:2069" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="2249:2896" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="2302:2604" ph="{...}" />
+            <marker date="1652772067724" expanded="true" signature="2973:3060" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLWrapper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="669">
+          <caret line="125" column="32" selection-start-line="125" selection-start-column="32" selection-end-line="125" selection-end-column="32" />
+          <folding>
+            <marker date="1652853645430" expanded="false" signature="6:256" ph="..." />
+            <marker date="1652853645430" expanded="true" signature="281:3895" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="331:3893" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="416:516" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="576:644" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="718:1053" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="971:1008" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="1127:1462" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="1380:1417" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="1539:1889" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="1788:1844" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="1956:2260" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="2178:2215" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="2309:2653" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="2491:2608" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="2726:3096" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="2927:3051" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="3160:3462" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="3407:3458" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="3549:3890" ph="{...}" />
+            <marker date="1652853645430" expanded="true" signature="3757:3845" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/WebGLInterlayer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="38" selection-start-line="28" selection-start-column="38" selection-end-line="28" selection-end-column="38" />
+          <folding>
+            <marker date="1652852354016" expanded="true" signature="62:987" ph="{...}" />
+            <marker date="1652852354016" expanded="true" signature="101:985" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/05CC7232-186F-4ABE-8684-C9E64133348B/58/965bd8fd/RpcClientWrapper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/c8/5d288ffb/EventBase.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="21" selection-start-line="35" selection-start-column="21" selection-end-line="35" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BBB592CC-8CFF-4E5D-AE6B-0CED5ACC4773/8d/39cd1fe3/IClient.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BBB592CC-8CFF-4E5D-AE6B-0CED5ACC4773/89/683e7491/RpcRequestResponseHandler`1.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/05CC7232-186F-4ABE-8684-C9E64133348B/41/fbd39c9c/EthGetLogs.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="34" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/0e/8fb27324/Event`1.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="920">
+          <caret line="64" column="83" selection-start-line="64" selection-start-column="83" selection-end-line="64" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/92/32579750/EthApiContractService.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="795">
+          <caret line="53" column="19" selection-start-line="53" selection-start-column="19" selection-end-line="53" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContract.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+          <folding>
+            <marker date="1652772067648" expanded="false" signature="6:220" ph="..." />
+            <marker date="1652772067648" expanded="true" signature="259:1145" ph="{...}" />
+            <marker date="1652772067648" expanded="true" signature="289:1143" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/UpdateNFT/UpdateNftExample.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="63" column="77" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="77" />
+          <folding>
+            <marker date="1652772067509" expanded="false" signature="6:323" ph="..." />
+            <marker date="1652772067509" expanded="true" signature="361:14502" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="404:14500" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="449:949" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="13060:13120" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="13148:13211" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="13253:13427" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="13462:13790" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="13825:14033" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="14100:14497" ph="{...}" />
+            <marker date="1652772067509" expanded="true" signature="14285:14401" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/Scripts/ERC20Example/ERC20ContractInformation.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="48" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="48" />
+          <folding>
+            <marker date="1650342929175" expanded="true" signature="39:4184" ph="{...}" />
+            <marker date="1650342929175" expanded="true" signature="87:4182" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/AddSwitchNetwork.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
+          <folding>
+            <marker date="1652941207143" expanded="true" signature="6:170" ph="..." />
+            <marker date="1652941207143" expanded="true" signature="215:1473" ph="{...}" />
+            <marker date="1652941207143" expanded="true" signature="258:1471" ph="{...}" />
+            <marker date="1652941207143" expanded="true" signature="425:652" ph="{...}" />
+            <marker date="1652941207143" expanded="true" signature="680:811" ph="{...}" />
+            <marker date="1652941207143" expanded="true" signature="846:972" ph="{...}" />
+            <marker date="1652941207143" expanded="true" signature="1014:1159" ph="{...}" />
+            <marker date="1652941207143" expanded="true" signature="1235:1468" ph="{...}" />
+            <marker date="1652941207143" expanded="true" signature="1300:1363" ph="{...}" />
+            <marker date="1652941207143" expanded="true" signature="1371:1464" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/7d/edb3c293/IEthApiContractService.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="20" selection-start-line="28" selection-start-column="20" selection-end-line="28" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Mobile/ContractFunctions.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="16" column="84" selection-start-line="16" selection-start-column="84" selection-end-line="16" selection-end-column="84" />
+          <folding>
+            <marker date="1652772067725" expanded="false" signature="6:113" ph="..." />
+            <marker date="1652772067725" expanded="true" signature="139:650" ph="{...}" />
+            <marker date="1652772067725" expanded="true" signature="194:648" ph="{...}" />
+            <marker date="1652772067725" expanded="true" signature="285:326" ph="{...}" />
+            <marker date="1652772067725" expanded="true" signature="495:645" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/61/24f17e3c/FunctionMessageEncodingService`1.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="50" column="21" selection-start-line="50" selection-start-column="21" selection-end-line="50" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/WebGL/Implementation/ContractFunctionsWebGL.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="20" column="53" lean-forward="true" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
+          <folding>
+            <marker date="1652772067719" expanded="false" signature="6:174" ph="..." />
+            <marker date="1652772067719" expanded="true" signature="214:915" ph="{...}" />
+            <marker date="1652772067719" expanded="true" signature="274:913" ph="{...}" />
+            <marker date="1652772067719" expanded="true" signature="384:425" ph="{...}" />
+            <marker date="1652772067719" expanded="true" signature="600:910" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Infrastructure/IContractFunctions.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+          <folding>
+            <marker date="1651837646733" expanded="false" signature="6:56" ph="..." />
+            <marker date="1651837646733" expanded="true" signature="95:304" ph="{...}" />
+            <marker date="1651837646733" expanded="true" signature="134:302" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Examples/UseCases/AddSwitchNetwork/EthereumNetworks.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="37" column="50" selection-start-line="37" selection-start-column="50" selection-end-line="37" selection-end-column="50" />
+          <folding>
+            <marker date="1652934454886" expanded="false" signature="6:118" ph="..." />
+            <marker date="1652934454886" expanded="true" signature="163:1591" ph="{...}" />
+            <marker date="1652934454886" expanded="true" signature="203:1589" ph="{...}" />
+            <marker date="1652934454886" expanded="true" signature="324:1444" ph="{...}" />
+            <marker date="1652934454886" expanded="true" signature="624:972" ph="{...}" />
+            <marker date="1652934454886" expanded="true" signature="740:816" ph="{...}" />
+            <marker date="1652934454886" expanded="true" signature="1051:1435" ph="{...}" />
+            <marker date="1652934454886" expanded="true" signature="1179:1257" ph="{...}" />
+            <marker date="1652934454886" expanded="true" signature="1508:1586" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/AnkrSDKWrapper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
+          <folding>
+            <marker date="1652871400607" expanded="false" signature="6:122" ph="..." />
+            <marker date="1652871400607" expanded="true" signature="146:1218" ph="{...}" />
+            <marker date="1652871400607" expanded="true" signature="188:1216" ph="{...}" />
+            <marker date="1652871400607" expanded="true" signature="612:787" ph="{...}" />
+            <marker date="1652871400607" expanded="true" signature="863:965" ph="{...}" />
+            <marker date="1652871400607" expanded="true" signature="1031:1085" ph="{...}" />
+            <marker date="1652871400607" expanded="true" signature="1145:1213" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/ba/0d9fa753/Function.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/7a/c3ad9f66/Contract.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="894">
+          <caret line="114" column="37" selection-start-line="114" selection-start-column="37" selection-end-line="114" selection-end-column="37" />
+          <folding>
+            <marker date="1652943145544" expanded="true" signature="0:345" ph="/* Decompiled with JetBrains decompiler ... */" />
+            <marker date="1652943145544" expanded="false" signature="353:633" ph="..." />
+            <marker date="1652943145544" expanded="true" signature="664:3797" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="690:3795" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="769:875" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="965:1087" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="1181:1305" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="1345:1426" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="1361:1420" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="1511:1594" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="1527:1588" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="1685:1835" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="1948:2037" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="2077:2159" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="2199:2275" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="2332:2639" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="2695:2793" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="2855:2900" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="2957:3051" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="3097:3173" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="3235:3327" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="3388:3460" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="3537:3625" ph="{...}" />
+            <marker date="1652943145544" expanded="true" signature="3707:3791" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/70/399d40cc/FunctionBuilder.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0C51BEC8-1F23-485C-B0EE-F86516B87BC2/76/e0251251/ContractBuilder.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="590">
+          <caret line="56" column="27" selection-start-line="56" selection-start-column="27" selection-end-line="56" selection-end-column="27" />
+          <folding>
+            <marker date="1652943158806" expanded="true" signature="0:352" ph="/* Decompiled with JetBrains decompiler ... */" />
+            <marker date="1652943158806" expanded="false" signature="360:612" ph="..." />
+            <marker date="1652943158806" expanded="true" signature="643:4678" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="676:4676" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="743:870" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="948:1095" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="1177:1326" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="1530:1631" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="1702:2000" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="2060:2147" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="2223:2326" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="2372:2728" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="2774:3130" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="3192:3663" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="3715:4106" ph="{...}" />
+            <marker date="1652943158806" expanded="true" signature="4174:4672" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Provider/AnkrSDKFactory.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
+          <folding>
+            <marker date="1652873350931" expanded="false" signature="6:117" ph="..." />
+            <marker date="1652873350931" expanded="true" signature="145:1606" ph="{...}" />
+            <marker date="1652873350931" expanded="true" signature="183:1604" ph="{...}" />
+            <marker date="1652873350931" expanded="true" signature="250:304" ph="{...}" />
+            <marker date="1652873350931" expanded="true" signature="374:479" ph="{...}" />
+            <marker date="1652873350931" expanded="true" signature="548:1340" ph="{...}" />
+            <marker date="1652873350931" expanded="true" signature="1403:1601" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/AnkrSDK/Scripts/Core/Implementation/Contract.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="639">
+          <caret line="124" column="68" lean-forward="true" selection-start-line="124" selection-start-column="68" selection-end-line="124" selection-end-column="68" />
+          <folding>
+            <marker date="1652943900573" expanded="false" signature="6:347" ph="..." />
+            <marker date="1652943900573" expanded="true" signature="386:4877" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="425:4875" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="817:1000" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="1137:1247" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="1365:1594" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="1723:1944" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="2097:2475" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="2666:3541" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="3155:3452" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="3247:3361" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="3370:3447" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="3483:3537" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="3705:4158" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="4258:4525" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="4369:4454" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="4462:4521" ph="{...}" />
+            <marker date="1652943900573" expanded="true" signature="4638:4872" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
 </project>

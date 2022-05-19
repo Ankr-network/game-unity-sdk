@@ -1,9 +1,8 @@
-﻿using AnkrSDK.Core;
-using AnkrSDK.Core.Data;
-using AnkrSDK.Core.Implementation;
-using AnkrSDK.Core.Infrastructure;
+﻿using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Data;
 using AnkrSDK.DTO;
 using AnkrSDK.Examples.ERC20Example;
+using AnkrSDK.Provider;
 using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -47,7 +46,7 @@ namespace AnkrSDK.EventListenerExample
 		{
 			var filters = new EventFilterData
 			{
-				FilterTopic2 = new[] { await _eth.GetDefaultAccount() }
+				FilterTopic2 = new object[] { await _eth.GetDefaultAccount() }
 			};
 
 			_subscription = await _eventSubscriber.Subscribe(

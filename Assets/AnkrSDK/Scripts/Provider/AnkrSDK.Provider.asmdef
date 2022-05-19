@@ -1,0 +1,10 @@
+{
+  "name": "AnkrSDK.Provider",
+  "references": [
+    "AnkrSDK.Core",
+    "AnkrSDK.Core.Infrastructure",
+    "AnkrSDK.WebGL",
+    "AnkrSDK.Data",
+    "AnkrSDK.Mobile"
+  ]
+}
