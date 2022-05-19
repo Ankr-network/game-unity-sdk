@@ -2,6 +2,7 @@
     "name": "AnkrSDK.WebGL",
     "references": [
         "AnkrSDK.Core.Infrastructure",
+        "AnkrSDK.Data",
         "AnkrSDK.Utils",
         "UniTask"
     ],

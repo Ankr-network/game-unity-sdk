@@ -26,7 +26,7 @@ namespace AnkrSDK.Utils
 			return request;
 		}
 		
-		private static string ToQueryString(Dictionary<string, string[]> queryDictionary)
+		public static string ToQueryString(Dictionary<string, string[]> queryDictionary)
 		{
 			var array = (
 				from key in queryDictionary.Keys
@@ -36,7 +36,7 @@ namespace AnkrSDK.Utils
 					HttpUtility.UrlEncode(key),
 					HttpUtility.UrlEncode(value))
 			).ToArray();
-			return "?" + string.Join("&", array);
+			return string.Join("&", array);
 		}
 	}
 }

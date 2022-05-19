@@ -2,6 +2,7 @@
     "name": "AnkrSDK.Mobile",
     "rootNamespace": "",
     "references": [
+        "AnkrSDK.Data",
         "AnkrSDK.Core.Infrastructure",
         "AnkrSDK.Utils",
         "WalletConnectSharp",

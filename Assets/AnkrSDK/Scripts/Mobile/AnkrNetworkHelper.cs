@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace AnkrSDK.Utils
 {
-	public class AnkrNetworkMobileHelper : INetworkHelper
+	public class AnkrNetworkHelper : INetworkHelper
 	{
 		private static readonly string _networkQueryParameter = "network";
 		private static readonly string _logoQueryParameter = "logo";

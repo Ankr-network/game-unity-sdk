@@ -17,7 +17,7 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 			{
 				NetworkName.BinanceSmartChain, new EthereumNetwork
 				{
-					ChainId = new HexBigInteger(38),
+					ChainId = new HexBigInteger(56),
 					ChainName = "Smart BNB",
 					NativeCurrency = new NativeCurrency
 					{
@@ -33,7 +33,7 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 			{
 				NetworkName.BinanceSmartChain_TestNet, new EthereumNetwork
 				{
-					ChainId = new HexBigInteger(61),
+					ChainId = new HexBigInteger(97),
 					ChainName = "Smart Chain - Testnet",
 					NativeCurrency = new NativeCurrency
 					{

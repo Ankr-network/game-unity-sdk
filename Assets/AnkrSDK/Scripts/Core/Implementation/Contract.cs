@@ -147,8 +147,9 @@ namespace AnkrSDK.Core.Implementation
 
 		private TransactionInput CreateTransactionInput(string methodName, object[] arguments, string defaultAccount)
 		{
-			var contract = _web3Provider.Eth.GetContract(_contractABI, _contractAddress);
-			var callFunction = contract.GetFunction(methodName);
+			var contractBuilder = new ContractBuilder(_contractABI, _contractAddress);
+			var callFunction = contractBuilder.GetFunctionBuilder(methodName);
+			
 			return callFunction.CreateTransactionInput(defaultAccount, arguments);
 		}
 	}

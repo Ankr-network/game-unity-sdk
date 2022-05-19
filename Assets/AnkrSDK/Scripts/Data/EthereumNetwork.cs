@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 using Nethereum.Hex.HexTypes;
 using Newtonsoft.Json;
 
-namespace AnkrSDK.Core.Infrastructure
+namespace AnkrSDK.Data
 {
 	public class EthereumNetwork
 	{

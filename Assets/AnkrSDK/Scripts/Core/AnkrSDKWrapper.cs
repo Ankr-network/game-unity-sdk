@@ -10,17 +10,20 @@ namespace AnkrSDK.Core
 		private readonly IWeb3 _web3Provider;
 		private readonly IContractFunctions _contractFunctions;
 		private readonly IDisconnectHandler _disconnectHandler;
+		public INetworkHelper NetworkHelper { get; }
 		public IEthHandler Eth { get; }
 
 		public AnkrSDKWrapper(
 			IWeb3 web3Provider,
 			IContractFunctions contractFunctions,
 			IEthHandler eth,
-			IDisconnectHandler disconnectHandler)
+			IDisconnectHandler disconnectHandler,
+			INetworkHelper networkHelper)
 		{
 			_web3Provider = web3Provider;
 			_contractFunctions = contractFunctions;
 			_disconnectHandler = disconnectHandler;
+			NetworkHelper = networkHelper;
 			Eth = eth;
 		}
 

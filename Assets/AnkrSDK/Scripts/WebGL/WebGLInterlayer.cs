@@ -24,6 +24,9 @@ namespace AnkrSDK.WebGL
 
 		[DllImport("__Internal")]
 		public static extern void GetTransactionReceipt(string id, string transactionHash);
+		
+		[DllImport("__Internal")]
+		public static extern void SwitchChain(string id, string networkData);
 
 		[DllImport("__Internal")]
 		public static extern string GetResponses();

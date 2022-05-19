@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using AnkrSDK.Data;
 
 namespace AnkrSDK.WebGL
 {
@@ -120,6 +121,20 @@ namespace AnkrSDK.WebGL
 			}
 
 			throw new Exception(answer.payload);
+		}
+		
+		public async Task SwitchChain(EthereumNetwork networkData)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(networkData);
+			WebGLInterlayer.SwitchChain(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Error)
+			{
+				throw new Exception(answer.payload);
+			}
 		}
 
 		public async Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
