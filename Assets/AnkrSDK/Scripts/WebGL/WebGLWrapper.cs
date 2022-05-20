@@ -136,6 +136,23 @@ namespace AnkrSDK.WebGL
 				throw new Exception(answer.payload);
 			}
 		}
+		
+		public async Task<FilterLog[]> GetEvents(NewFilterInput filters)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(filters);
+			WebGLInterlayer.GetEvents(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Success)
+			{
+				var logs = JsonConvert.DeserializeObject<FilterLog[]>(answer.payload);
+				return logs;
+			}
+
+			throw new Exception(answer.payload);
+		}
 
 		public async Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{

@@ -21,7 +21,6 @@ namespace AnkrSDK.Provider
 		private static IAnkrSDK CreateAnkrSDKInstance(string providerURI)
 		{
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
-			var web3Provider = new WebGL.WebGLWeb3Provider().CreateWeb3(providerURI);
 			var webGlWrapper = new WebGL.WebGLWrapper();
 			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
 			var eth = new WebGL.Implementation.EthHandlerWebGL(webGlWrapper);
@@ -35,7 +34,7 @@ namespace AnkrSDK.Provider
 			var networkHandler = new AnkrNetworkHelper();
 		#endif
 
-			return new AnkrSDKWrapper(web3Provider, contractFunctions, eth, disconnectHandler, networkHandler);
+			return new AnkrSDKWrapper(contractFunctions, eth, disconnectHandler, networkHandler);
 		}
 	}
 }

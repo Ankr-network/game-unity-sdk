@@ -7,20 +7,17 @@ namespace AnkrSDK.Core
 {
 	public class AnkrSDKWrapper : IAnkrSDK
 	{
-		private readonly IWeb3 _web3Provider;
 		private readonly IContractFunctions _contractFunctions;
 		private readonly IDisconnectHandler _disconnectHandler;
 		public INetworkHelper NetworkHelper { get; }
 		public IEthHandler Eth { get; }
 
 		public AnkrSDKWrapper(
-			IWeb3 web3Provider,
 			IContractFunctions contractFunctions,
 			IEthHandler eth,
 			IDisconnectHandler disconnectHandler,
 			INetworkHelper networkHelper)
 		{
-			_web3Provider = web3Provider;
 			_contractFunctions = contractFunctions;
 			_disconnectHandler = disconnectHandler;
 			NetworkHelper = networkHelper;
@@ -29,7 +26,7 @@ namespace AnkrSDK.Core
 
 		public IContract GetContract(string contractAddress, string contractABI)
 		{
-			return new Contract(_web3Provider, Eth, _contractFunctions, contractAddress, contractABI);
+			return new Contract(Eth, _contractFunctions, contractAddress, contractABI);
 		}
 
 		public IContractEventSubscriber CreateSubscriber(string wsUrl)

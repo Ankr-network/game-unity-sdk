@@ -27,6 +27,9 @@ namespace AnkrSDK.WebGL
 		
 		[DllImport("__Internal")]
 		public static extern void SwitchChain(string id, string networkData);
+		
+		[DllImport("__Internal")]
+		public static extern void GetEvents(string id, string filters);
 
 		[DllImport("__Internal")]
 		public static extern string GetResponses();

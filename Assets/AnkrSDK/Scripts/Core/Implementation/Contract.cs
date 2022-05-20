@@ -17,18 +17,15 @@ namespace AnkrSDK.Core.Implementation
 	{
 		private readonly string _contractABI;
 		private readonly string _contractAddress;
-		private readonly IWeb3 _web3Provider;
 		private readonly IEthHandler _ethHandler;
 		private readonly IContractFunctions _contractFunctions;
 
 		internal Contract(
-			IWeb3 web3Provider,
 			IEthHandler ethHandler,
 			IContractFunctions contractFunctions,
 			string contractAddress,
 			string contractABI)
 		{
-			_web3Provider = web3Provider;
 			_ethHandler = ethHandler;
 			_contractFunctions = contractFunctions;
 			_contractABI = contractABI;
@@ -44,21 +41,15 @@ namespace AnkrSDK.Core.Implementation
 		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterData evFilter)
 			where TEvDto : IEventDTO, new()
 		{
-			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_contractAddress);
-
 			var filters = EventFilterHelper.CreateEventFilters<TEvDto>(_contractAddress, evFilter);
-
-			return eventHandler.GetAllChangesAsync(filters);
+			return _contractFunctions.GetEvents<TEvDto>(filters, _contractAddress);
 		}
 
 		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterRequest<TEvDto> evFilter)
 			where TEvDto : IEventDTO, new()
 		{
-			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(_contractAddress);
-
 			var filters = EventFilterHelper.CreateEventFilters(_contractAddress, evFilter);
-
-			return eventHandler.GetAllChangesAsync(filters);
+			return _contractFunctions.GetEvents<TEvDto>(filters, _contractAddress);
 		}
 
 		public async Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null,
