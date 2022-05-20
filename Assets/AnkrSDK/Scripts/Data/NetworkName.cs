@@ -3,9 +3,10 @@ namespace AnkrSDK.Data
 	public enum NetworkName
 	{
 		Ethereum,
-		Ethereum_Rinkeby_TestNet,
-		Ethereum_Goerli_TestNet,
-		Ethereum_Ropsten_TestNet,
+		Rinkeby,
+		Goerli,
+		Ropsten,
+		Kovan,
 		BinanceSmartChain,
 		BinanceSmartChain_TestNet
 	}

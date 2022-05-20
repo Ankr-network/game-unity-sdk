@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.WebGL.Extensions;
+using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.Contracts.MessageEncodingServices;
+using Nethereum.RPC.Eth.DTOs;
 
 namespace AnkrSDK.WebGL.Implementation
 {
@@ -22,6 +25,14 @@ namespace AnkrSDK.WebGL.Implementation
 			var txData = methodEncoder.CreateCallInput(requestData);
 			var response = await _webGlWrapper.GetContractData(txData.ToTransactionData());
 			return methodEncoder.DecodeSimpleTypeOutput<TReturnType>(response);
+		}
+		
+		public async Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(NewFilterInput filters, string contractAddress = null)
+			where TEvDto : IEventDTO, new()
+		{
+			var logs = await _webGlWrapper.GetEvents(filters);
+			var events = logs.DecodeAllEvents<TEvDto>();
+			return events;
 		}
 	}
 }

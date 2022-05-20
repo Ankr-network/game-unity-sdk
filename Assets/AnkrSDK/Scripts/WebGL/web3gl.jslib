@@ -47,6 +47,20 @@ mergeInto(LibraryManager.library, {
         );
     },
 
+    SwitchChain: function (id, networkData) {
+        window.transactionHandler.switchChain(
+            Pointer_stringify(id),
+            Pointer_stringify(networkData)
+        );
+    },
+
+    GetEvents: function (id, filters) {
+        window.transactionHandler.getEvents(
+            Pointer_stringify(id),
+            Pointer_stringify(filters)
+        );
+    },
+
     GetResponses: function () {
         var responses = window.MQ.messages;
         var bufferSize = lengthBytesUTF8(responses) + 1;

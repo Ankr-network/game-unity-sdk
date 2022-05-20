@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
+using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
+using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 
 namespace AnkrSDK.Mobile
@@ -19,6 +22,13 @@ namespace AnkrSDK.Mobile
 		{
 			var contract = _web3Provider.Eth.GetContractHandler(contractAddress);
 			return contract.QueryAsync<TFieldData, TReturnType>(requestData);
+		}
+		
+		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(NewFilterInput filters, string contractAddress)
+			where TEvDto : IEventDTO, new()
+		{
+			var eventHandler = _web3Provider.Eth.GetEvent<TEvDto>(contractAddress);
+			return eventHandler.GetAllChangesAsync(filters);
 		}
 	}
 }

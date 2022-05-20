@@ -1,5 +1,8 @@
+using System;
+using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
-using AnkrSDK.Utils;
+using AnkrSDK.Examples.ERC20Example;
+using AnkrSDK.Provider;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,9 +15,13 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 
 		[SerializeField]
 		private Button _bscTestButton;
+		
+		private IAnkrSDK _ankrSDKWrapper;
 
 		private void Awake()
 		{
+			_ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			
 			_bscButton.onClick.AddListener(OpenAddSwitchBsc);
 			_bscTestButton.onClick.AddListener(OpenAddSwitchBscTestnet);
 		}
@@ -25,14 +32,16 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 			_bscTestButton.onClick.RemoveListener(OpenAddSwitchBscTestnet);
 		}
 
-		private static void OpenAddSwitchBsc()
+		private void OpenAddSwitchBsc()
 		{
-			AnkrNetworkHelper.AddAndSwitchNetwork(NetworkName.BinanceSmartChain);
+			var network = EthereumNetworks.GetNetworkByName(NetworkName.BinanceSmartChain);
+			_ankrSDKWrapper.NetworkHelper.AddAndSwitchNetwork(network);
 		}
 
-		private static void OpenAddSwitchBscTestnet()
+		private void OpenAddSwitchBscTestnet()
 		{
-			AnkrNetworkHelper.AddAndSwitchNetwork(NetworkName.BinanceSmartChain_TestNet);
+			var network = EthereumNetworks.GetNetworkByName(NetworkName.Goerli);
+			_ankrSDKWrapper.NetworkHelper.AddAndSwitchNetwork(network);
 		}
 	}
 }

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using AnkrSDK.Data;
 
 namespace AnkrSDK.WebGL
 {
@@ -117,6 +118,37 @@ namespace AnkrSDK.WebGL
 			{
 				var transactionData = JsonConvert.DeserializeObject<Transaction>(answer.payload);
 				return transactionData;
+			}
+
+			throw new Exception(answer.payload);
+		}
+		
+		public async Task SwitchChain(EthereumNetwork networkData)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(networkData);
+			WebGLInterlayer.SwitchChain(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Error)
+			{
+				throw new Exception(answer.payload);
+			}
+		}
+		
+		public async Task<FilterLog[]> GetEvents(NewFilterInput filters)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(filters);
+			WebGLInterlayer.GetEvents(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Success)
+			{
+				var logs = JsonConvert.DeserializeObject<FilterLog[]>(answer.payload);
+				return logs;
 			}
 
 			throw new Exception(answer.payload);
