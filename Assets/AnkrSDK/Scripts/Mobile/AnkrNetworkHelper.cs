@@ -12,7 +12,7 @@ namespace AnkrSDK.Utils
 		private static readonly string _networkQueryParameter = "network";
 		private static readonly string _logoQueryParameter = "logo";
 		private static readonly string _deepLinkURL = "https://metamask.app.link/dapp";
-		private static readonly string _switchNetworkPageLink = "switch-page.com";
+		private static readonly string _switchNetworkPageLink = "game.ankr.com/changenetwork-service";
 
 		public Task AddAndSwitchNetwork(EthereumNetwork network)
 		{
@@ -25,21 +25,19 @@ namespace AnkrSDK.Utils
 		private static void AddAndSwitchCustomNetwork(string url)
 		{
 			Debug.Log(url);
-//			Application.OpenURL(url);
+			Application.OpenURL(url);
 		}
 
 		private static string GetURLFromNetwork(EthereumNetwork network, string logoIcon = null)
 		{
-			var queryParams = new Dictionary<string, string[]>();
-			queryParams.Add(_networkQueryParameter, new []{JsonConvert.SerializeObject(network)});
+			var uriQueryBuilder = new UriQueryBuilder($"{_deepLinkURL}/{_switchNetworkPageLink}");
+			uriQueryBuilder.AppendArgument(_networkQueryParameter, JsonConvert.SerializeObject(network));
 			if (logoIcon != null)
 			{
-				queryParams.Add(_logoQueryParameter, new []{logoIcon});
+				uriQueryBuilder.AppendArgument(_logoQueryParameter, logoIcon);
 			}
 
-			var query = AnkrSDKHelper.ToQueryString(queryParams);
-
-			return $"{_deepLinkURL}/{_switchNetworkPageLink}?{query}";
+			return uriQueryBuilder.Build();
 		}
 	}
 }

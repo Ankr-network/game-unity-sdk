@@ -25,18 +25,5 @@ namespace AnkrSDK.Utils
 			request.downloadHandler = new DownloadHandlerBuffer();
 			return request;
 		}
-		
-		public static string ToQueryString(Dictionary<string, string[]> queryDictionary)
-		{
-			var array = (
-				from key in queryDictionary.Keys
-				from value in queryDictionary[key]
-				select string.Format(
-					"{0}={1}",
-					HttpUtility.UrlEncode(key),
-					HttpUtility.UrlEncode(value))
-			).ToArray();
-			return string.Join("&", array);
-		}
 	}
 }

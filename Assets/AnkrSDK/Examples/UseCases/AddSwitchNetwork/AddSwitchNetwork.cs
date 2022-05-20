@@ -34,26 +34,14 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 
 		private void OpenAddSwitchBsc()
 		{
-			var network = GetNetworkByName(NetworkName.Goerli);
+			var network = EthereumNetworks.GetNetworkByName(NetworkName.BinanceSmartChain);
 			_ankrSDKWrapper.NetworkHelper.AddAndSwitchNetwork(network);
 		}
 
 		private void OpenAddSwitchBscTestnet()
 		{
-			var network = GetNetworkByName(NetworkName.BinanceSmartChain_TestNet);
+			var network = EthereumNetworks.GetNetworkByName(NetworkName.Goerli);
 			_ankrSDKWrapper.NetworkHelper.AddAndSwitchNetwork(network);
-		}
-
-		private static EthereumNetwork GetNetworkByName(NetworkName networkName)
-		{
-			if (EthereumNetworks.Dictionary.ContainsKey(networkName))
-			{
-				return EthereumNetworks.Dictionary[networkName];
-			}
-			else
-			{
-				throw new ArgumentOutOfRangeException(nameof(networkName), networkName, null);
-			}
 		}
 	}
 }

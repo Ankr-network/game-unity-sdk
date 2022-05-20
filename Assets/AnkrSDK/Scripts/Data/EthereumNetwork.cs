@@ -12,14 +12,11 @@ namespace AnkrSDK.Data
 		public string ChainName { get; set; }
 		[JsonProperty("nativeCurrency")]
 		public NativeCurrency NativeCurrency { get; set; }
-		[CanBeNull]
-		[JsonProperty("rpcUrls")]
+		[CanBeNull, JsonProperty("rpcUrls")]
 		public string[] RpcUrls { get; set; }
-		[CanBeNull]
-		[JsonProperty("blockExplorerUrls")]
+		[CanBeNull, JsonProperty("blockExplorerUrls")]
 		public string[] BlockExplorerUrls { get; set; }
-		[CanBeNull]
-		[JsonProperty("iconUrls")]
+		[CanBeNull, JsonProperty("iconUrls")]
 		public string[] IconUrls { get; set; }
 	}
 
