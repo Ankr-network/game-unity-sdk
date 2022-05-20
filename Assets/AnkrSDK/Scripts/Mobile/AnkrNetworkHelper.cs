@@ -22,9 +22,8 @@ namespace AnkrSDK.Utils
 			return Task.CompletedTask;
 		}
 
-		private static void AddAndSwitchCustomNetwork(string url)
+		public static void AddAndSwitchCustomNetwork(string url)
 		{
-			Debug.Log(url);
 			Application.OpenURL(url);
 		}
 
