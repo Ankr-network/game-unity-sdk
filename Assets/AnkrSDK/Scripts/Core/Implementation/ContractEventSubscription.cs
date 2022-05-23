@@ -1,9 +1,9 @@
-using System;
 using AnkrSDK.Core.Infrastructure;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.JsonRpc.Client.RpcMessages;
 using Nethereum.RPC.Eth.DTOs;
+using System;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation

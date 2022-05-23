@@ -25,18 +25,18 @@ namespace AnkrSDK.Mobile
 
 		public Task<string> GetDefaultAccount()
 		{
-			if (_walletConnect.Session != null)
+			if (_walletConnect.Session == null)
 			{
-				var activeSessionAccount = _walletConnect.Session.Accounts[0];
-				if (string.IsNullOrEmpty(activeSessionAccount))
-				{
-					Debug.LogError("Account is null");
-				}
-
-				return Task.FromResult(activeSessionAccount);
+				throw new Exception("Application is not linked to wallet");
 			}
 
-			throw new Exception("Application is not linked to wallet");
+			var activeSessionAccount = _walletConnect.Session.Accounts[0];
+			if (string.IsNullOrEmpty(activeSessionAccount))
+			{
+				Debug.LogError("Account is null");
+			}
+
+			return Task.FromResult(activeSessionAccount);
 		}
 
 		public Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)

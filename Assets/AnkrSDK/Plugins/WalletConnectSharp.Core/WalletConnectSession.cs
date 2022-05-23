@@ -116,14 +116,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			bridgeUrl = DefaultBridge.GetBridgeUrl(bridgeUrl);
 
-			if (bridgeUrl.StartsWith("https"))
-			{
-				bridgeUrl = bridgeUrl.Replace("https", "wss");
-			}
-			else if (bridgeUrl.StartsWith("http"))
-			{
-				bridgeUrl = bridgeUrl.Replace("http", "ws");
-			}
+			bridgeUrl = WSUrlFormatter.GetReadyToUseURL(bridgeUrl);
 
 			DappMetadata = clientMeta;
 			ChainId = chainId;
@@ -534,7 +527,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			{
 				var oldChainId = ChainId;
 				ChainId = (int)data.chainId;
-				
+
 				if (oldChainId != ChainId)
 				{
 					OnChainChanged?.Invoke(this, (int)data.chainId);
@@ -549,7 +542,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			var dataAccount = data.accounts?[0];
 			var oldAccount = Accounts?[0];
-			
+
 			Accounts = data.accounts;
 			if (oldAccount != dataAccount)
 			{

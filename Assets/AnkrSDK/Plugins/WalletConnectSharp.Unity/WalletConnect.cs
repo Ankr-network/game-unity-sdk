@@ -237,25 +237,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				throw new NotImplementedException(
 					"You must use OpenMobileWallet(AppEntry) or set SelectedWallet on iOS!");
 			}
-			else
-			{
-				string url;
-				var encodedConnect = System.Net.WebUtility.UrlEncode(ConnectURL);
-				if (!string.IsNullOrWhiteSpace(SelectedWallet.mobile.universal))
-				{
-					url = SelectedWallet.mobile.universal + "/wc?uri=" + encodedConnect;
-				}
-				else
-				{
-					url = SelectedWallet.mobile.native + (SelectedWallet.mobile.native.EndsWith(":") ? "//" : "/") +
-					      "wc?uri=" + encodedConnect;
-				}
 
-				var signingUrl = url.Split('?')[0];
+			var url = MobileWalletURLFormatHelper
+				.GetURLForMobileWalletOpen(ConnectURL, SelectedWallet.mobile).Split('?')[0];
 
-				Debug.Log("Opening: " + signingUrl);
-				Application.OpenURL(signingUrl);
-			}
+			Debug.Log("Opening: " + url);
+			Application.OpenURL(url);
 		#else
 			Debug.Log("Platform does not support deep linking");
 			return;
@@ -268,12 +255,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			{
 				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
 				               "\nWait for ActiveSession.ReadyForUserPrompt to be true");
-
 				return;
 			}
 
 		#if UNITY_ANDROID
-			Debug.Log("[WalletConnect] Opening URL: " + ConnectURL);
 			Application.OpenURL(ConnectURL);
 		#elif UNITY_IOS
 			if (SelectedWallet == null)
@@ -282,19 +267,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 					"You must use OpenDeepLink(AppEntry) or set SelectedWallet on iOS!");
 			}
 
-			string url;
-			var encodedConnect = System.Net.WebUtility.UrlEncode(ConnectURL);
-			if (!string.IsNullOrWhiteSpace(SelectedWallet.mobile.universal))
-			{
-				url = SelectedWallet.mobile.universal + "/wc?uri=" + encodedConnect;
-			}
-			else
-			{
-				url = SelectedWallet.mobile.native + (SelectedWallet.mobile.native.EndsWith(":") ? "//" : "/") +
-				      "wc?uri=" + encodedConnect;
-			}
+			var url = MobileWalletURLFormatHelper
+				.GetURLForMobileWalletOpen(ConnectURL, SelectedWallet.mobile);
 
-			Debug.Log("Opening: " + url);
+			Debug.Log("[WalletConnect] Opening URL: " + url);
+
 			Application.OpenURL(url);
 		#else
 			Debug.Log("Platform does not support deep linking");
@@ -344,6 +321,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			Session.OnSessionDisconnect -= SessionOnSessionDisconnect;
 			Session.OnSessionCreated -= SessionOnSessionCreated;
 			Session.OnSessionResumed -= SessionOnSessionResumed;
+
 		#if UNITY_ANDROID || UNITY_IOS
 			Session.OnSend -= SessionOnSendEvent;
 		#endif

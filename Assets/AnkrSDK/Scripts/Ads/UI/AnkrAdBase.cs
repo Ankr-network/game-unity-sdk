@@ -26,7 +26,7 @@ namespace AnkrSDK.Ads.UI
 		public virtual async UniTask SetupAd(byte[] byteData)
 		{
 			IsReady = false;
-			Texture2D tex = new Texture2D(2, 2);
+			var tex = new Texture2D(2, 2);
 			tex.LoadImage(byteData);
 			OnTextureLoaded(tex);
 			IsReady = true;

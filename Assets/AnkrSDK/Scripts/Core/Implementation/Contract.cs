@@ -116,6 +116,7 @@ namespace AnkrSDK.Core.Implementation
 			transactionInput.Gas = gas != null ? new HexBigInteger(gas) : null;
 			transactionInput.GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null;
 			transactionInput.Nonce = nonce != null ? new HexBigInteger(nonce) : null;
+
 			return await _ethHandler.EstimateGas(transactionInput);
 		}
 

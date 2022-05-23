@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
+using AnkrSDK.WalletConnectSharp.Core.Utils;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Exceptions;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation;
@@ -151,7 +152,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 				}
 			}
 
-			var url = GetReadyToUseURL();
+			var url = WSUrlFormatter.GetReadyToUseURL(URL);
 
 			var eventCompleted = ConfigureNextClient(url, out _nextClient);
 
@@ -160,21 +161,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			Debug.Log("[WebSocket] Waiting for Open " + url);
 			await eventCompleted.Task;
 			Debug.Log("[WebSocket] Open Completed");
-		}
-
-		private string GetReadyToUseURL()
-		{
-			var url = URL;
-			if (url.StartsWith("https"))
-			{
-				url = url.Replace("https", "wss");
-			}
-			else if (url.StartsWith("http"))
-			{
-				url = url.Replace("http", "ws");
-			}
-
-			return url;
 		}
 
 		private TaskCompletionSource<bool> ConfigureNextClient(string url, out WebSocket nextClient)

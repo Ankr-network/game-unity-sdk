@@ -39,7 +39,7 @@ namespace AnkrSDK.Data
 			}
 		}
 		
-		public void AddTopics(string name, object[] values)
+		public void AddTopics(string name, IEnumerable<object> values)
 		{
 			var topic = FindTopicByName(name);
 			if (topic != null)
@@ -54,7 +54,7 @@ namespace AnkrSDK.Data
 
 		public object[][] AssembleTopics()
 		{
-			return _topics.Select(topic => { return topic.Values.Any() ? topic.Values.ToArray() : null; }).ToArray();
+			return _topics.Select(topic => topic.Values.Any() ? topic.Values.ToArray() : null).ToArray();
 		}
 
 		private Topic FindTopicByName(string name)
@@ -62,7 +62,7 @@ namespace AnkrSDK.Data
 			return _topics.FirstOrDefault(topic => topic.Name == name || topic.Alias == name);
 		}
 
-		private IEnumerable<Topic> CollectTopics()
+		private static IEnumerable<Topic> CollectTopics()
 		{
 			var properties = PropertiesExtractor.GetPropertiesWithParameterAttribute(typeof(TEvDTO)).ToArray();
 			return properties.Select(property =>
