@@ -7,13 +7,15 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 {
 	public static class EthereumNetworks
 	{
+		private static readonly string _ethereumMainnetName = "Mainnet";
+		
 		private static Dictionary<NetworkName, EthereumNetwork> _dictionary = new Dictionary<NetworkName, EthereumNetwork>
 		{
-			{ NetworkName.Ethereum, CreateMetamaskExistedNetwork(1) },
-			{ NetworkName.Ropsten, CreateMetamaskExistedNetwork(3) },
-			{ NetworkName.Rinkeby, CreateMetamaskExistedNetwork(4) },
-			{ NetworkName.Goerli, CreateMetamaskExistedNetwork(5) },
-			{ NetworkName.Kovan, CreateMetamaskExistedNetwork(42) },
+			{ NetworkName.Ethereum, CreateMetamaskExistedNetwork(1, _ethereumMainnetName) },
+			{ NetworkName.Ropsten, CreateMetamaskExistedNetwork(3, nameof(NetworkName.Ropsten)) },
+			{ NetworkName.Rinkeby, CreateMetamaskExistedNetwork(4, nameof(NetworkName.Rinkeby)) },
+			{ NetworkName.Goerli, CreateMetamaskExistedNetwork(5, nameof(NetworkName.Goerli)) },
+			{ NetworkName.Kovan, CreateMetamaskExistedNetwork(42, nameof(NetworkName.Kovan)) },
 			{ NetworkName.BinanceSmartChain, CreateBinanceSmartChain() },
 			{ NetworkName.BinanceSmartChain_TestNet, CreateBinanceSmartChainTestNet() }
 		};
@@ -30,9 +32,13 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 			}
 		}
 
-		private static EthereumNetwork CreateMetamaskExistedNetwork(int chainId)
+		private static EthereumNetwork CreateMetamaskExistedNetwork(int chainId, string name)
 		{
-			return new EthereumNetwork { ChainId = new HexBigInteger(chainId) };
+			return new EthereumNetwork
+			{
+				ChainId = new HexBigInteger(chainId),
+				ChainName = name
+			};
 		}
 
 		private static EthereumNetwork CreateBinanceSmartChain()
