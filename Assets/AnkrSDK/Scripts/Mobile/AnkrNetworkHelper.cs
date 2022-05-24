@@ -12,7 +12,7 @@ namespace AnkrSDK.Utils
 		private static readonly string _networkQueryParameter = "network";
 		private static readonly string _logoQueryParameter = "logo";
 		private static readonly string _deepLinkURL = "https://metamask.app.link/dapp";
-		private static readonly string _switchNetworkPageLink = "game.ankr.com/changenetwork-service";
+		private static readonly string _switchNetworkPageLink = "changenetwork-service.game.ankr.com";
 
 		public Task AddAndSwitchNetwork(EthereumNetwork network)
 		{
