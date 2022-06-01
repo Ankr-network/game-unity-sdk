@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using AnkrAds.Ads.Data;
 using AnkrSDK.Ads.UI;
 using AnkrSDK.Core.Infrastructure;
@@ -40,9 +41,24 @@ namespace AnkrSDK.UseCases.Ads
 
 		private void OnButtonClick()
 		{
-			DownloadAd().Forget();
+			//DownloadAd().Forget();
+			testJava();
 		}
 
+		private async Task testJava()
+		{
+			Debug.Log("Initialize");
+			AnkrAds.Ads.NativeAndroidInUnity.Initialize();
+			
+			await Task.Delay(5000);
+			Debug.Log("LoadAd");
+			AnkrAds.Ads.NativeAndroidInUnity.LoadAd();
+			
+			await Task.Delay(5000);
+			Debug.Log("ShowAd");
+			AnkrAds.Ads.NativeAndroidInUnity.ShowAd();
+		}
+		
 		private async UniTaskVoid DownloadAd()
 		{
 			_button.gameObject.SetActive(false);
