@@ -50,11 +50,11 @@ namespace AnkrSDK.UseCases.Ads
 			Debug.Log("Initialize");
 			AnkrAds.Ads.NativeAndroidInUnity.Initialize();
 			
-			await Task.Delay(5000);
+			await Task.Delay(2000);
 			Debug.Log("LoadAd");
 			AnkrAds.Ads.NativeAndroidInUnity.LoadAd();
 			
-			await Task.Delay(5000);
+			await Task.Delay(2000);
 			Debug.Log("ShowAd");
 			AnkrAds.Ads.NativeAndroidInUnity.ShowAd();
 		}
