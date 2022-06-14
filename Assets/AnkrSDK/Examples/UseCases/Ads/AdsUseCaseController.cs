@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-using AnkrAds.Ads.Data;
-using AnkrSDK.Ads;
+using AnkrAds.Ads;
 using AnkrSDK.Ads.UI;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.ERC20Example;
@@ -23,6 +21,28 @@ namespace AnkrSDK.UseCases.Ads
 
 		private IEthHandler _eth;
 
+		private void OnEnable()
+		{
+			_ankrBannerAdImage.gameObject.SetActive(false);
+			_ankrBannerAdSprite.gameObject.SetActive(false);
+
+			_initializeButton.interactable = true;
+			_viewButton.interactable = false;
+			_loadButton.interactable = false;
+
+			_initializeButton.onClick.AddListener(OnInitializeButtonClick);
+			_loadButton.onClick.AddListener(OnLoadButtonClick);
+			_viewButton.onClick.AddListener(OnViewButtonClick);
+		}
+
+		private void OnDisable()
+		{
+			_initializeButton.onClick.RemoveAllListeners();
+			_viewButton.onClick.RemoveAllListeners();
+			_loadButton.onClick.RemoveAllListeners();
+			UnsubscribeToCallbackListenerEvents();
+		}
+
 		public override void ActivateUseCase()
 		{
 			base.ActivateUseCase();
@@ -31,20 +51,6 @@ namespace AnkrSDK.UseCases.Ads
 			_eth = ankrSDK.Eth;
 		}
 
-		private void OnEnable()
-		{
-			_ankrBannerAdImage.gameObject.SetActive(false);
-			_ankrBannerAdSprite.gameObject.SetActive(false);
-			
-			_initializeButton.interactable = true;
-			_viewButton.interactable = false;
-			_loadButton.interactable = false;
-			
-			_initializeButton.onClick.AddListener(OnInitializeButtonClick);
-			_loadButton.onClick.AddListener(OnLoadButtonClick);
-			_viewButton.onClick.AddListener(OnViewButtonClick);
-		}
-		
 		private void ActivateNextButton(int buttonToActivate)
 		{
 			switch (buttonToActivate)
@@ -64,27 +70,21 @@ namespace AnkrSDK.UseCases.Ads
 					_viewButton.interactable = true;
 					_loadButton.interactable = false;
 					break;
-				default: Debug.LogError("WrongButtonNb");
+				default:
+					Debug.LogError("WrongButtonNb");
 					break;
 			}
 		}
 
-		private void OnDisable()
-		{
-			_initializeButton.onClick.RemoveAllListeners();
-			_viewButton.onClick.RemoveAllListeners();
-			_loadButton.onClick.RemoveAllListeners();
-			UnsubscribeToCallbackListenerEvents();
-		}
-
 		private void SubscribeToCallbackListenerEvents()
 		{
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdClicked += CallbackListenerOnAdClicked;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdClosed += CallbackListenerOnAdClosed;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdFinished += CallbackListenerOnAdFinished;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdLoaded += CallbackListenerOnAdLoaded;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdOpened += CallbackListenerOnAdOpened;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
+			AnkrAdsNativeAndroid.callbackListener.OnAdInitialized += CallbackListenerOnAdInitialized;
+			AnkrAdsNativeAndroid.callbackListener.OnAdClicked += CallbackListenerOnAdClicked;
+			AnkrAdsNativeAndroid.callbackListener.OnAdClosed += CallbackListenerOnAdClosed;
+			AnkrAdsNativeAndroid.callbackListener.OnAdFinished += CallbackListenerOnAdFinished;
+			AnkrAdsNativeAndroid.callbackListener.OnAdLoaded += CallbackListenerOnAdLoaded;
+			AnkrAdsNativeAndroid.callbackListener.OnAdOpened += CallbackListenerOnAdOpened;
+			AnkrAdsNativeAndroid.callbackListener.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
 		}
 
 		private void UpdateUILogs(string log)
@@ -93,73 +93,81 @@ namespace AnkrSDK.UseCases.Ads
 			Debug.Log(log);
 		}
 
-		private void CallbackListenerOnAdClicked()
+		private async void CallbackListenerOnAdInitialized()
 		{
+			await UniTask.SwitchToMainThread();
+			UpdateUILogs("CallbackListenerOnAdInitialized");
+			ActivateNextButton(1);
+		}
+
+		private async void CallbackListenerOnAdClicked()
+		{
+			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdClicked");
-			Debug.LogWarning("CallbackListenerOnAdClicked");
 		}
-		
-		private void CallbackListenerOnAdClosed()
+
+		private async void CallbackListenerOnAdClosed()
 		{
+			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdClosed");
-			Debug.LogWarning("CallbackListenerOnAdClosed");
 		}
-		
-		private void CallbackListenerOnAdFinished()
+
+		private async void CallbackListenerOnAdFinished()
 		{
+			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdFinished");
-			Debug.LogWarning("CallbackListenerOnAdFinished");
+			ActivateNextButton(3);
 		}
-		
-		private void CallbackListenerOnAdLoaded()
+
+		private async void CallbackListenerOnAdLoaded()
 		{
+			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdLoaded");
-			Debug.LogWarning("CallbackListenerOnAdLoaded");
+			ActivateNextButton(2);
 		}
-		
-		private void CallbackListenerOnAdOpened()
+
+		private async void CallbackListenerOnAdOpened()
 		{
+			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdOpened");
-			Debug.LogWarning("CallbackListenerOnAdOpened");
 		}
-		
-		private void CallbackListenerOnAdFailedToLoad()
+
+		private async void CallbackListenerOnAdFailedToLoad()
 		{
+			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdFailedToLoad");
-			Debug.LogWarning("CallbackListenerOnAdFailedToLoad");
 		}
 
 		private void UnsubscribeToCallbackListenerEvents()
 		{
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdClicked -= CallbackListenerOnAdLoaded;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdClosed -= CallbackListenerOnAdLoaded;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdFinished -= CallbackListenerOnAdLoaded;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdLoaded -= CallbackListenerOnAdLoaded;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdOpened -= CallbackListenerOnAdLoaded;
-			AnkrAds.Ads.AnkrAdsNativeAndroid.callbackListener.OnAdFailedToLoad -= CallbackListenerOnAdLoaded;
+			AnkrAdsNativeAndroid.callbackListener.OnAdClicked -= CallbackListenerOnAdLoaded;
+			AnkrAdsNativeAndroid.callbackListener.OnAdClosed -= CallbackListenerOnAdLoaded;
+			AnkrAdsNativeAndroid.callbackListener.OnAdFinished -= CallbackListenerOnAdLoaded;
+			AnkrAdsNativeAndroid.callbackListener.OnAdLoaded -= CallbackListenerOnAdLoaded;
+			AnkrAdsNativeAndroid.callbackListener.OnAdOpened -= CallbackListenerOnAdLoaded;
+			AnkrAdsNativeAndroid.callbackListener.OnAdFailedToLoad -= CallbackListenerOnAdLoaded;
 		}
 
 		private void OnInitializeButtonClick()
 		{
 			const string walletAddress = "This is ankr mobile address";
 			const string appId = "1c562170-9ee5-4157-a5f8-e99c32e73cb0";
-			AnkrAds.Ads.AnkrAdsNativeAndroid.Initialize(appId, walletAddress);
+			AnkrAdsNativeAndroid.SetNewAdsCallbackListener();
 			UnsubscribeToCallbackListenerEvents();
 			SubscribeToCallbackListenerEvents();
-			ActivateNextButton(1);
+			AnkrAdsNativeAndroid.Initialize(appId, walletAddress);
 		}
 
 		private void OnLoadButtonClick()
 		{
 			const string unitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAds.Ads.AnkrAdsNativeAndroid.LoadAd(unitId);
-			ActivateNextButton(2);
+			AnkrAdsNativeAndroid.LoadAd(unitId);
 		}
+
 		private void OnViewButtonClick()
 		{
 			const string unitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAds.Ads.AnkrAdsNativeAndroid.ShowAd(unitId);
-			ActivateNextButton(3);
+			AnkrAdsNativeAndroid.ShowAd(unitId);
 		}
 
 		private async UniTaskVoid DownloadAd()
