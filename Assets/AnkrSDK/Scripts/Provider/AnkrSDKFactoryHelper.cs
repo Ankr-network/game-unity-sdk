@@ -11,12 +11,16 @@ namespace AnkrSDK.Provider
 			{
 				case NetworkName.Ethereum:
 					return "https://rpc.ankr.com/eth";
-				case NetworkName.Rinkeby:
+				case NetworkName.Ethereum_Rinkeby:
 					return "https://rpc.ankr.com/eth_rinkeby";
-				case NetworkName.Goerli:
+				case NetworkName.Ethereum_Goerli:
 					return "https://rpc.ankr.com/eth_goerli";
-				case NetworkName.Ropsten:
+				case NetworkName.Ethereum_Ropsten:
 					return "https://rpc.ankr.com/eth_ropsten";
+				case NetworkName.Polygon:
+					return "https://rpc.ankr.com/polygon";
+				case NetworkName.Polygon_Mumbai:
+					return "https://rpc.ankr.com/polygon_mumbai";
 				case NetworkName.BinanceSmartChain:
 					return "https://rpc.ankr.com/bsc";
 				case NetworkName.BinanceSmartChain_TestNet:
