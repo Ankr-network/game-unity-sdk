@@ -1,4 +1,5 @@
 using AnkrAds.Ads;
+using AnkrSDK.Ads;
 using AnkrSDK.Ads.UI;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Examples.ERC20Example;
@@ -12,6 +13,7 @@ namespace AnkrSDK.UseCases.Ads
 {
 	public class AdsUseCaseController : UseCase
 	{
+		[SerializeField] private Button _bannerBillboardButton;
 		[SerializeField] private Button _initializeButton;
 		[SerializeField] private Button _loadButton;
 		[SerializeField] private Button _viewButton;
@@ -20,6 +22,8 @@ namespace AnkrSDK.UseCases.Ads
 		[SerializeField] private TMP_Text _logs;
 
 		private IEthHandler _eth;
+
+		private AnkrAdsAndroidCallbackListener _ankrAdsAndroidCallbackListener;
 
 		private void OnEnable()
 		{
@@ -78,13 +82,13 @@ namespace AnkrSDK.UseCases.Ads
 
 		private void SubscribeToCallbackListenerEvents()
 		{
-			AnkrAdsNativeAndroid.callbackListener.OnAdInitialized += CallbackListenerOnAdInitialized;
-			AnkrAdsNativeAndroid.callbackListener.OnAdClicked += CallbackListenerOnAdClicked;
-			AnkrAdsNativeAndroid.callbackListener.OnAdClosed += CallbackListenerOnAdClosed;
-			AnkrAdsNativeAndroid.callbackListener.OnAdFinished += CallbackListenerOnAdFinished;
-			AnkrAdsNativeAndroid.callbackListener.OnAdLoaded += CallbackListenerOnAdLoaded;
-			AnkrAdsNativeAndroid.callbackListener.OnAdOpened += CallbackListenerOnAdOpened;
-			AnkrAdsNativeAndroid.callbackListener.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
+			_ankrAdsAndroidCallbackListener.OnAdInitialized += CallbackListenerOnAdInitialized;
+			_ankrAdsAndroidCallbackListener.OnAdClicked += CallbackListenerOnAdClicked;
+			_ankrAdsAndroidCallbackListener.OnAdClosed += CallbackListenerOnAdClosed;
+			_ankrAdsAndroidCallbackListener.OnAdFinished += CallbackListenerOnAdFinished;
+			_ankrAdsAndroidCallbackListener.OnAdLoaded += CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdOpened += CallbackListenerOnAdOpened;
+			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
 		}
 
 		private void UpdateUILogs(string log)
@@ -140,22 +144,22 @@ namespace AnkrSDK.UseCases.Ads
 
 		private void UnsubscribeToCallbackListenerEvents()
 		{
-			AnkrAdsNativeAndroid.callbackListener.OnAdClicked -= CallbackListenerOnAdLoaded;
-			AnkrAdsNativeAndroid.callbackListener.OnAdClosed -= CallbackListenerOnAdLoaded;
-			AnkrAdsNativeAndroid.callbackListener.OnAdFinished -= CallbackListenerOnAdLoaded;
-			AnkrAdsNativeAndroid.callbackListener.OnAdLoaded -= CallbackListenerOnAdLoaded;
-			AnkrAdsNativeAndroid.callbackListener.OnAdOpened -= CallbackListenerOnAdLoaded;
-			AnkrAdsNativeAndroid.callbackListener.OnAdFailedToLoad -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdClicked -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdClosed -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdFinished -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdLoaded -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdOpened -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad -= CallbackListenerOnAdLoaded;
 		}
 
 		private void OnInitializeButtonClick()
 		{
 			const string walletAddress = "This is ankr mobile address";
 			const string appId = "1c562170-9ee5-4157-a5f8-e99c32e73cb0";
-			AnkrAdsNativeAndroid.SetNewAdsCallbackListener();
+			_ankrAdsAndroidCallbackListener = new AnkrAdsAndroidCallbackListener();
 			UnsubscribeToCallbackListenerEvents();
 			SubscribeToCallbackListenerEvents();
-			AnkrAdsNativeAndroid.Initialize(appId, walletAddress);
+			AnkrAdsNativeAndroid.Initialize(appId, walletAddress,_ankrAdsAndroidCallbackListener);
 		}
 
 		private void OnLoadButtonClick()
