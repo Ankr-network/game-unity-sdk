@@ -13,7 +13,7 @@ namespace AnkrSDK.UseCases.Ads
 {
 	public class AdsUseCaseController : UseCase
 	{
-		[SerializeField] private Button _bannerBillboardButton;
+		[SerializeField] private Button _getTextureButton;
 		[SerializeField] private Button _initializeButton;
 		[SerializeField] private Button _loadButton;
 		[SerializeField] private Button _viewButton;
@@ -25,28 +25,7 @@ namespace AnkrSDK.UseCases.Ads
 
 		private AnkrAdsAndroidCallbackListener _ankrAdsAndroidCallbackListener;
 
-		private void OnEnable()
-		{
-			_ankrBannerAdImage.gameObject.SetActive(false);
-			_ankrBannerAdSprite.gameObject.SetActive(false);
-
-			_initializeButton.interactable = true;
-			_viewButton.interactable = false;
-			_loadButton.interactable = false;
-
-			_initializeButton.onClick.AddListener(OnInitializeButtonClick);
-			_loadButton.onClick.AddListener(OnLoadButtonClick);
-			_viewButton.onClick.AddListener(OnViewButtonClick);
-		}
-
-		private void OnDisable()
-		{
-			_initializeButton.onClick.RemoveAllListeners();
-			_viewButton.onClick.RemoveAllListeners();
-			_loadButton.onClick.RemoveAllListeners();
-			UnsubscribeToCallbackListenerEvents();
-		}
-
+		#region UseCase Override
 		public override void ActivateUseCase()
 		{
 			base.ActivateUseCase();
@@ -54,32 +33,16 @@ namespace AnkrSDK.UseCases.Ads
 			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
 			_eth = ankrSDK.Eth;
 		}
-
-		private void ActivateNextButton(int buttonToActivate)
+		
+		public override void DeActivateUseCase()
 		{
-			switch (buttonToActivate)
-			{
-				case 0:
-					_initializeButton.interactable = true;
-					_viewButton.interactable = false;
-					_loadButton.interactable = false;
-					break;
-				case 1:
-					_initializeButton.interactable = false;
-					_viewButton.interactable = false;
-					_loadButton.interactable = true;
-					break;
-				case 2:
-					_initializeButton.interactable = false;
-					_viewButton.interactable = true;
-					_loadButton.interactable = false;
-					break;
-				default:
-					Debug.LogError("WrongButtonNb");
-					break;
-			}
+			base.DeActivateUseCase();
+			_ankrBannerAdImage.gameObject.SetActive(false);
+			_ankrBannerAdSprite.gameObject.SetActive(false);
 		}
-
+		#endregion
+		
+		#region Event Subscription
 		private void SubscribeToCallbackListenerEvents()
 		{
 			_ankrAdsAndroidCallbackListener.OnAdInitialized += CallbackListenerOnAdInitialized;
@@ -89,12 +52,38 @@ namespace AnkrSDK.UseCases.Ads
 			_ankrAdsAndroidCallbackListener.OnAdLoaded += CallbackListenerOnAdLoaded;
 			_ankrAdsAndroidCallbackListener.OnAdOpened += CallbackListenerOnAdOpened;
 			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
+			_ankrAdsAndroidCallbackListener.OnAdTextureReceived += CallbackListenerOnAdTextureReceived;
 		}
-
-		private void UpdateUILogs(string log)
+		
+		private void UnsubscribeToCallbackListenerEvents()
 		{
-			_logs.text += "\n" + log;
-			Debug.Log(log);
+			_ankrAdsAndroidCallbackListener.OnAdClicked -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdClosed -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdFinished -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdLoaded -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdOpened -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdTextureReceived -= CallbackListenerOnAdTextureReceived;
+		}
+		#endregion
+		
+		#region Callback Listener Events
+		private async void CallbackListenerOnAdTextureReceived(byte[] textureByteArray)
+		{
+			await UniTask.SwitchToMainThread();
+			UpdateUILogs("CallbackListenerOnAdTextureReceived");
+			
+			Texture2D texture = new Texture2D(2,2);
+			Debug.LogWarning(texture.LoadImage(textureByteArray));
+			
+			await UniTask.WhenAll(
+				_ankrBannerAdImage.SetupAd(texture),
+				_ankrBannerAdSprite.SetupAd(texture));
+
+			_ankrBannerAdImage.TryShow();
+			_ankrBannerAdSprite.TryShow();
+			
+			ActivateNextButton(0);
 		}
 
 		private async void CallbackListenerOnAdInitialized()
@@ -120,7 +109,7 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdFinished");
-			ActivateNextButton(3);
+			ActivateNextButton(0);
 		}
 
 		private async void CallbackListenerOnAdLoaded()
@@ -141,17 +130,9 @@ namespace AnkrSDK.UseCases.Ads
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdFailedToLoad");
 		}
+		#endregion
 
-		private void UnsubscribeToCallbackListenerEvents()
-		{
-			_ankrAdsAndroidCallbackListener.OnAdClicked -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdClosed -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdFinished -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdLoaded -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdOpened -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad -= CallbackListenerOnAdLoaded;
-		}
-
+		#region On Button Clicks
 		private void OnInitializeButtonClick()
 		{
 			const string walletAddress = "This is ankr mobile address";
@@ -164,41 +145,79 @@ namespace AnkrSDK.UseCases.Ads
 
 		private void OnLoadButtonClick()
 		{
-			const string unitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAdsNativeAndroid.LoadAd(unitId);
+			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
+			AnkrAdsNativeAndroid.LoadAd(testUnitId);
+		}
+		
+		private void OnGetTextureClick()
+		{
+			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
+			AnkrAdsNativeAndroid.GetTextureByteArray(testUnitId);
 		}
 
 		private void OnViewButtonClick()
 		{
-			const string unitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAdsNativeAndroid.ShowAd(unitId);
+			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
+			AnkrAdsNativeAndroid.ShowAd(testUnitId);
 		}
-
-		private async UniTaskVoid DownloadAd()
+		#endregion
+		
+		private void OnEnable()
 		{
-			//_button.gameObject.SetActive(false);
-
-			var defaultAccount = await _eth.GetDefaultAccount();
-			var testAppId = "e8d0f552-22a5-482c-a149-2d51bace6ccb";
-			var testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			var requestResult = await AnkrAds.Ads.AnkrAds.DownloadAdData(testAppId, testUnitId, defaultAccount);
-
-			if (requestResult != null)
-			{
-				await UniTask.WhenAll(
-					_ankrBannerAdImage.SetupAd(requestResult),
-					_ankrBannerAdSprite.SetupAd(requestResult));
-			}
-
-			_ankrBannerAdImage.TryShow();
-			_ankrBannerAdSprite.TryShow();
-		}
-
-		public override void DeActivateUseCase()
-		{
-			base.DeActivateUseCase();
 			_ankrBannerAdImage.gameObject.SetActive(false);
 			_ankrBannerAdSprite.gameObject.SetActive(false);
+
+			_initializeButton.interactable = true;
+			_viewButton.interactable = false;
+			_loadButton.interactable = false;
+			_getTextureButton.interactable = false;
+
+			_initializeButton.onClick.AddListener(OnInitializeButtonClick);
+			_loadButton.onClick.AddListener(OnLoadButtonClick);
+			_viewButton.onClick.AddListener(OnViewButtonClick);
+			_getTextureButton.onClick.AddListener(OnGetTextureClick);
+		}
+
+		private void OnDisable()
+		{
+			_initializeButton.onClick.RemoveAllListeners();
+			_viewButton.onClick.RemoveAllListeners();
+			_loadButton.onClick.RemoveAllListeners();
+			UnsubscribeToCallbackListenerEvents();
+		}
+
+		private void ActivateNextButton(int buttonToActivate)
+		{
+			switch (buttonToActivate)
+			{
+				case 0:
+					_initializeButton.interactable = true;
+					_viewButton.interactable = false;
+					_loadButton.interactable = false;
+					_getTextureButton.interactable = false;
+					break;
+				case 1:
+					_initializeButton.interactable = false;
+					_viewButton.interactable = false;
+					_getTextureButton.interactable = false;
+					_loadButton.interactable = true;
+					break;
+				case 2:
+					_initializeButton.interactable = false;
+					_viewButton.interactable = true;
+					_loadButton.interactable = false;
+					_getTextureButton.interactable = true;
+					break;
+				default:
+					Debug.LogError("WrongButtonNb");
+					break;
+			}
+		}
+
+		private void UpdateUILogs(string log)
+		{
+			_logs.text += "\n" + log;
+			Debug.Log(log);
 		}
 	}
 }
