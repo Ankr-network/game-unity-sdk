@@ -74,7 +74,7 @@ namespace AnkrSDK.UseCases.Ads
 			UpdateUILogs("CallbackListenerOnAdTextureReceived");
 			
 			Texture2D texture = new Texture2D(2,2);
-			Debug.LogWarning(texture.LoadImage(textureByteArray));
+			texture.LoadImage(textureByteArray);
 			
 			await UniTask.WhenAll(
 				_ankrBannerAdImage.SetupAd(texture),
