@@ -1,4 +1,5 @@
 using AnkrAds.Ads;
+using AnkrAds.Ads.Data;
 using AnkrSDK.Ads;
 using AnkrSDK.Ads.UI;
 using AnkrSDK.Core.Infrastructure;
@@ -57,24 +58,25 @@ namespace AnkrSDK.UseCases.Ads
 		
 		private void UnsubscribeToCallbackListenerEvents()
 		{
-			_ankrAdsAndroidCallbackListener.OnAdClicked -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdClosed -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdFinished -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdInitialized -= CallbackListenerOnAdInitialized;
+			_ankrAdsAndroidCallbackListener.OnAdClicked -= CallbackListenerOnAdClicked;
+			_ankrAdsAndroidCallbackListener.OnAdClosed -= CallbackListenerOnAdClosed;
+			_ankrAdsAndroidCallbackListener.OnAdFinished -= CallbackListenerOnAdFinished;
 			_ankrAdsAndroidCallbackListener.OnAdLoaded -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdOpened -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad -= CallbackListenerOnAdLoaded;
+			_ankrAdsAndroidCallbackListener.OnAdOpened -= CallbackListenerOnAdOpened;
+			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad -= CallbackListenerOnAdFailedToLoad;
 			_ankrAdsAndroidCallbackListener.OnAdTextureReceived -= CallbackListenerOnAdTextureReceived;
 		}
 		#endregion
 		
 		#region Callback Listener Events
-		private async void CallbackListenerOnAdTextureReceived(byte[] textureByteArray)
+		private async void CallbackListenerOnAdTextureReceived(string unitID, byte[] adTextureData)
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdTextureReceived");
 			
 			Texture2D texture = new Texture2D(2,2);
-			texture.LoadImage(textureByteArray);
+			texture.LoadImage(adTextureData);
 			
 			await UniTask.WhenAll(
 				_ankrBannerAdImage.SetupAd(texture),
@@ -93,7 +95,7 @@ namespace AnkrSDK.UseCases.Ads
 			ActivateNextButton(1);
 		}
 
-		private async void CallbackListenerOnAdClicked()
+		private async void CallbackListenerOnAdClicked(string uuid)
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdClicked");
@@ -112,7 +114,7 @@ namespace AnkrSDK.UseCases.Ads
 			ActivateNextButton(0);
 		}
 
-		private async void CallbackListenerOnAdLoaded()
+		private async void CallbackListenerOnAdLoaded(string uuid)
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdLoaded");
@@ -125,7 +127,7 @@ namespace AnkrSDK.UseCases.Ads
 			UpdateUILogs("CallbackListenerOnAdOpened");
 		}
 
-		private async void CallbackListenerOnAdFailedToLoad()
+		private async void CallbackListenerOnAdFailedToLoad(string uuid)
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdFailedToLoad");
