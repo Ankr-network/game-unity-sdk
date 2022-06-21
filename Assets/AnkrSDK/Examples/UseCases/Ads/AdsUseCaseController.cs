@@ -190,30 +190,10 @@ namespace AnkrSDK.UseCases.Ads
 
 		private void ActivateNextButton(int buttonToActivate)
 		{
-			switch (buttonToActivate)
-			{
-				case 0:
-					_initializeButton.interactable = true;
-					_viewButton.interactable = false;
-					_loadButton.interactable = false;
-					_getTextureButton.interactable = false;
-					break;
-				case 1:
-					_initializeButton.interactable = false;
-					_viewButton.interactable = false;
-					_getTextureButton.interactable = false;
-					_loadButton.interactable = true;
-					break;
-				case 2:
-					_initializeButton.interactable = false;
-					_viewButton.interactable = true;
-					_loadButton.interactable = false;
-					_getTextureButton.interactable = true;
-					break;
-				default:
-					Debug.LogError("WrongButtonNb");
-					break;
-			}
+			_initializeButton.interactable = buttonToActivate == 0;
+			_loadButton.interactable = buttonToActivate == 1;
+			_viewButton.interactable = buttonToActivate == 2;
+			_getTextureButton.interactable = buttonToActivate == 2;
 		}
 
 		private void UpdateUILogs(string log)
