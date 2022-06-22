@@ -16,7 +16,8 @@ namespace AnkrSDK.UseCases.Ads
 	{
 		[SerializeField] private Button _getTextureButton;
 		[SerializeField] private Button _initializeButton;
-		[SerializeField] private Button _loadButton;
+		[SerializeField] private Button _loadFullscreenAdButton;
+		[SerializeField] private Button _loadImageButton;
 		[SerializeField] private Button _viewButton;
 		[SerializeField] private AnkrBannerAdImage _ankrBannerAdImage;
 		[SerializeField] private AnkrBannerAdSprite _ankrBannerAdSprite;
@@ -25,6 +26,9 @@ namespace AnkrSDK.UseCases.Ads
 		private IEthHandler _eth;
 
 		private AnkrAdsAndroidCallbackListener _ankrAdsAndroidCallbackListener;
+		
+		private const string FullscreenAdTestUnitId = "test_video";
+		private const string ImageTestUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
 
 		#region UseCase Override
 		public override void ActivateUseCase()
@@ -85,7 +89,7 @@ namespace AnkrSDK.UseCases.Ads
 			_ankrBannerAdImage.TryShow();
 			_ankrBannerAdSprite.TryShow();
 			
-			ActivateNextButton(0);
+			ActivateNextButton(1);
 		}
 
 		private async void CallbackListenerOnAdInitialized()
@@ -111,13 +115,13 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdFinished");
-			ActivateNextButton(0);
+			ActivateNextButton(1);
 		}
 
 		private async void CallbackListenerOnAdLoaded(string uuid)
 		{
 			await UniTask.SwitchToMainThread();
-			UpdateUILogs("CallbackListenerOnAdLoaded");
+			UpdateUILogs("CallbackListenerOnAdLoaded " + uuid);
 			ActivateNextButton(2);
 		}
 
@@ -145,22 +149,24 @@ namespace AnkrSDK.UseCases.Ads
 			AnkrAdsNativeAndroid.Initialize(appId, walletAddress,_ankrAdsAndroidCallbackListener);
 		}
 
-		private void OnLoadButtonClick()
+		private void OnLoadFullscreenAdButtonClick()
 		{
-			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAdsNativeAndroid.LoadAd(testUnitId);
+			AnkrAdsNativeAndroid.LoadAd(FullscreenAdTestUnitId);
+		}
+		
+		private void OnLoadImageButtonClick()
+		{
+			AnkrAdsNativeAndroid.LoadAdTexture(ImageTestUnitId);
 		}
 		
 		private void OnGetTextureClick()
 		{
-			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAdsNativeAndroid.GetTextureByteArray(testUnitId);
+			AnkrAdsNativeAndroid.GetTextureByteArray(ImageTestUnitId);
 		}
 
 		private void OnViewButtonClick()
 		{
-			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAdsNativeAndroid.ShowAd(testUnitId);
+			AnkrAdsNativeAndroid.ShowAd(FullscreenAdTestUnitId);
 		}
 		#endregion
 		
@@ -171,11 +177,13 @@ namespace AnkrSDK.UseCases.Ads
 
 			_initializeButton.interactable = true;
 			_viewButton.interactable = false;
-			_loadButton.interactable = false;
+			_loadFullscreenAdButton.interactable = false;
+			_loadImageButton.interactable = false;
 			_getTextureButton.interactable = false;
 
 			_initializeButton.onClick.AddListener(OnInitializeButtonClick);
-			_loadButton.onClick.AddListener(OnLoadButtonClick);
+			_loadImageButton.onClick.AddListener(OnLoadImageButtonClick);
+			_loadFullscreenAdButton.onClick.AddListener(OnLoadFullscreenAdButtonClick);
 			_viewButton.onClick.AddListener(OnViewButtonClick);
 			_getTextureButton.onClick.AddListener(OnGetTextureClick);
 		}
@@ -184,14 +192,16 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			_initializeButton.onClick.RemoveAllListeners();
 			_viewButton.onClick.RemoveAllListeners();
-			_loadButton.onClick.RemoveAllListeners();
+			_loadFullscreenAdButton.onClick.RemoveAllListeners();
+			_loadImageButton.onClick.RemoveAllListeners();
 			UnsubscribeToCallbackListenerEvents();
 		}
 
 		private void ActivateNextButton(int buttonToActivate)
 		{
 			_initializeButton.interactable = buttonToActivate == 0;
-			_loadButton.interactable = buttonToActivate == 1;
+			_loadFullscreenAdButton.interactable = buttonToActivate == 1;
+			_loadImageButton.interactable = buttonToActivate == 1;
 			_viewButton.interactable = buttonToActivate == 2;
 			_getTextureButton.interactable = buttonToActivate == 2;
 		}
