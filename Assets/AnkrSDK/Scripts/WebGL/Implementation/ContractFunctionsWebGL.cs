@@ -6,8 +6,6 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.Contracts.MessageEncodingServices;
 using Nethereum.RPC.Eth.DTOs;
-using Newtonsoft.Json;
-using UnityEngine;
 
 namespace AnkrSDK.WebGL.Implementation
 {

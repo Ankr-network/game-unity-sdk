@@ -72,7 +72,7 @@ namespace AnkrSDK.WearableNFTExample
 			_getHatButton.onClick.RemoveListener(GetHatCall);
 		}
 
-		public async override void ActivateUseCase()
+		public override void ActivateUseCase()
 		{
 			base.ActivateUseCase();
 
