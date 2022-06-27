@@ -12,10 +12,10 @@ namespace AnkrSDK.Utils
 		private static Dictionary<NetworkName, EthereumNetwork> _dictionary = new Dictionary<NetworkName, EthereumNetwork>
 		{
 			{ NetworkName.Ethereum, CreateMetamaskExistedNetwork(1, _ethereumMainnetName) },
-			{ NetworkName.Ethereum_Ropsten, CreateMetamaskExistedNetwork(3, nameof(NetworkName.Ethereum_Ropsten)) },
-			{ NetworkName.Ethereum_Rinkeby, CreateMetamaskExistedNetwork(4, nameof(NetworkName.Ethereum_Rinkeby)) },
-			{ NetworkName.Ethereum_Goerli, CreateMetamaskExistedNetwork(5, nameof(NetworkName.Ethereum_Goerli)) },
-			{ NetworkName.Ethereum_Kovan, CreateMetamaskExistedNetwork(42, nameof(NetworkName.Ethereum_Kovan)) },
+			{ NetworkName.Ropsten, CreateMetamaskExistedNetwork(3, nameof(NetworkName.Ropsten)) },
+			{ NetworkName.Rinkeby, CreateMetamaskExistedNetwork(4, nameof(NetworkName.Rinkeby)) },
+			{ NetworkName.Goerli, CreateMetamaskExistedNetwork(5, nameof(NetworkName.Goerli)) },
+			{ NetworkName.Kovan, CreateMetamaskExistedNetwork(42, nameof(NetworkName.Kovan)) },
 			{ NetworkName.BinanceSmartChain, CreateBinanceSmartChain() },
 			{ NetworkName.BinanceSmartChain_TestNet, CreateBinanceSmartChainTestNet() }
 		};
