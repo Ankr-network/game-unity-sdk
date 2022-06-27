@@ -1,8 +1,8 @@
-using System;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.Provider;
+using AnkrSDK.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +40,7 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 
 		private void OpenAddSwitchBscTestnet()
 		{
-			var network = EthereumNetworks.GetNetworkByName(NetworkName.Ethereum_Goerli);
+			var network = EthereumNetworks.GetNetworkByName(NetworkName.Goerli);
 			_ankrSDKWrapper.NetworkHelper.AddAndSwitchNetwork(network);
 		}
 	}

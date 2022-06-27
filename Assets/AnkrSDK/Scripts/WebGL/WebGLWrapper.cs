@@ -20,6 +20,26 @@ namespace AnkrSDK.WebGL
 			_protocol = new WebGLCommunicationProtocol();
 			_protocol.StartReceiveCycle().Forget();
 		}
+		
+		public async UniTaskVoid ConnectTo(SupportedWallets wallet, EthereumNetwork chain)
+		{
+			var id = _protocol.GenerateId();
+			var connectionProps = new ConnectionProps
+			{
+				wallet = wallet.ToString(),
+				chain = chain
+			};
+			
+			var payload = JsonConvert.SerializeObject(connectionProps);
+			WebGLInterlayer.CreateProvider(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Error)
+			{
+				throw new Exception(answer.payload);
+			}
+		}
 
 		public UniTask Disconnect(bool waitForNewSession = true)
 		{
