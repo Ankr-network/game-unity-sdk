@@ -40,7 +40,7 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 
 		private void OpenAddSwitchBscTestnet()
 		{
-			var network = EthereumNetworks.GetNetworkByName(NetworkName.Goerli);
+			var network = EthereumNetworks.GetNetworkByName(NetworkName.Ethereum_Goerli);
 			_ankrSDKWrapper.NetworkHelper.AddAndSwitchNetwork(network);
 		}
 	}

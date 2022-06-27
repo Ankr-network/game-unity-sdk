@@ -13,5 +13,9 @@
         <data android:scheme="unitydl" android:host="web3Login" />
       </intent-filter>
     </activity>
+    <activity 
+            android:name="com.ankr.nativeads.AdView"
+            android:exported="false" />
   </application>
+  <application android:usesCleartextTraffic="true"/>
 </manifest>
