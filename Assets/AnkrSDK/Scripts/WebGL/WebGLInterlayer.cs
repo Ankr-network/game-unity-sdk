@@ -5,6 +5,9 @@ namespace AnkrSDK.WebGL
 	public static class WebGLInterlayer
 	{
 		[DllImport("__Internal")]
+		public static extern void CreateProvider(string id, string payload);
+		
+		[DllImport("__Internal")]
 		public static extern void SendTransaction(string id, string payload);
 
 		[DllImport("__Internal")]

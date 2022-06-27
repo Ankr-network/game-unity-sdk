@@ -32,10 +32,11 @@ namespace AnkrSDK.WearableNFTExample
 		[SerializeField] private Button _changeHatBlueButton;
 		[SerializeField] private Button _changeHatRedButton;
 		[SerializeField] private Button _getHatButton;
-		private string _activeSessionAccount;
 
 		private IContract _gameCharacterContract;
 		private IContract _gameItemContract;
+
+		private IEthHandler _ethHandler;
 
 		private void Awake()
 		{
@@ -71,7 +72,7 @@ namespace AnkrSDK.WearableNFTExample
 			_getHatButton.onClick.RemoveListener(GetHatCall);
 		}
 
-		public override void ActivateUseCase()
+		public async override void ActivateUseCase()
 		{
 			base.ActivateUseCase();
 
@@ -81,13 +82,7 @@ namespace AnkrSDK.WearableNFTExample
 				WearableNFTContractInformation.GameCharacterABI);
 			_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
 				WearableNFTContractInformation.GameItemABI);
-			ActivateAsync(ankrSDK).Forget();
-		}
-
-		private async UniTaskVoid ActivateAsync(IAnkrSDK ankrSDK)
-		{
-			var result = await ankrSDK.Eth.GetDefaultAccount();
-			_activeSessionAccount = result;
+			_ethHandler = ankrSDK.Eth;
 		}
 
 		private async UniTask MintItems()
@@ -108,8 +103,9 @@ namespace AnkrSDK.WearableNFTExample
 			};
 			var data = new byte[] { };
 
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
-				new object[] { _activeSessionAccount, itemsToMint, itemsAmounts, data });
+				new object[] { defaultAccount, itemsToMint, itemsAmounts, data });
 
 			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
 		}
@@ -118,8 +114,9 @@ namespace AnkrSDK.WearableNFTExample
 		{
 			const string safeMintMethodName = "safeMint";
 
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			var transactionHash =
-				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] { _activeSessionAccount });
+				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] { defaultAccount });
 
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
 		}
@@ -136,7 +133,8 @@ namespace AnkrSDK.WearableNFTExample
 
 		private async UniTask<BigInteger> GetCharacterBalance()
 		{
-			var balance = await _gameCharacterContract.BalanceOf(_activeSessionAccount);
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			var balance = await _gameCharacterContract.BalanceOf(defaultAccount);
 
 			UpdateUILogs($"Number of NFTs Owned: {balance}");
 			return balance;
@@ -144,9 +142,10 @@ namespace AnkrSDK.WearableNFTExample
 
 		private async UniTask<BigInteger> GetBalanceERC1155(IContract contract, string id)
 		{
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Account = _activeSessionAccount,
+				Account = defaultAccount,
 				Id = id
 			};
 			var balance =
@@ -162,8 +161,9 @@ namespace AnkrSDK.WearableNFTExample
 
 			if (tokenBalance > 0)
 			{
+				var defaultAccount = await _ethHandler.GetDefaultAccount();
 				var tokenId =
-					await _gameCharacterContract.TokenOfOwnerByIndex(_activeSessionAccount, 0);
+					await _gameCharacterContract.TokenOfOwnerByIndex(defaultAccount, 0);
 
 				UpdateUILogs($"GameCharacter tokenId  : {tokenId}");
 
