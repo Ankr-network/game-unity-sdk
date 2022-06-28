@@ -1,10 +1,4 @@
-using AnkrAds.Ads;
-using AnkrAds.Ads.Data;
-using AnkrSDK.Ads;
 using AnkrSDK.Ads.UI;
-using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.ERC20Example;
-using AnkrSDK.Provider;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -14,7 +8,6 @@ namespace AnkrSDK.UseCases.Ads
 {
 	public class AdsUseCaseController : UseCase
 	{
-		[SerializeField] private Button _getTextureButton;
 		[SerializeField] private Button _initializeButton;
 		[SerializeField] private Button _loadButton;
 		[SerializeField] private Button _viewButton;
@@ -22,70 +15,52 @@ namespace AnkrSDK.UseCases.Ads
 		[SerializeField] private AnkrBannerAdSprite _ankrBannerAdSprite;
 		[SerializeField] private TMP_Text _logs;
 
-		private IEthHandler _eth;
-
-		private AnkrAdsAndroidCallbackListener _ankrAdsAndroidCallbackListener;
-
-		#region UseCase Override
-		public override void ActivateUseCase()
-		{
-			base.ActivateUseCase();
-
-			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
-			_eth = ankrSDK.Eth;
-		}
-		
 		public override void DeActivateUseCase()
 		{
 			base.DeActivateUseCase();
 			_ankrBannerAdImage.gameObject.SetActive(false);
 			_ankrBannerAdSprite.gameObject.SetActive(false);
 		}
-		#endregion
 		
-		#region Event Subscription
 		private void SubscribeToCallbackListenerEvents()
 		{
-			_ankrAdsAndroidCallbackListener.OnAdInitialized += CallbackListenerOnAdInitialized;
-			_ankrAdsAndroidCallbackListener.OnAdClicked += CallbackListenerOnAdClicked;
-			_ankrAdsAndroidCallbackListener.OnAdClosed += CallbackListenerOnAdClosed;
-			_ankrAdsAndroidCallbackListener.OnAdFinished += CallbackListenerOnAdFinished;
-			_ankrAdsAndroidCallbackListener.OnAdLoaded += CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdOpened += CallbackListenerOnAdOpened;
-			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
-			_ankrAdsAndroidCallbackListener.OnAdTextureReceived += CallbackListenerOnAdTextureReceived;
+			AnkrAds.Ads.AnkrAds.OnAdInitialized += CallbackListenerOnAdInitialized;
+			AnkrAds.Ads.AnkrAds.OnAdClicked += CallbackListenerOnAdClicked;
+			AnkrAds.Ads.AnkrAds.OnAdClosed += CallbackListenerOnAdClosed;
+			AnkrAds.Ads.AnkrAds.OnAdFinished += CallbackListenerOnAdFinished;
+			AnkrAds.Ads.AnkrAds.OnAdLoaded += CallbackListenerOnAdLoaded;
+			AnkrAds.Ads.AnkrAds.OnAdOpened += CallbackListenerOnAdOpened;
+			AnkrAds.Ads.AnkrAds.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
+			AnkrAds.Ads.AnkrAds.OnAdTextureReceived += CallbackListenerOnAdTextureReceived;
 		}
 		
 		private void UnsubscribeToCallbackListenerEvents()
 		{
-			_ankrAdsAndroidCallbackListener.OnAdInitialized -= CallbackListenerOnAdInitialized;
-			_ankrAdsAndroidCallbackListener.OnAdClicked -= CallbackListenerOnAdClicked;
-			_ankrAdsAndroidCallbackListener.OnAdClosed -= CallbackListenerOnAdClosed;
-			_ankrAdsAndroidCallbackListener.OnAdFinished -= CallbackListenerOnAdFinished;
-			_ankrAdsAndroidCallbackListener.OnAdLoaded -= CallbackListenerOnAdLoaded;
-			_ankrAdsAndroidCallbackListener.OnAdOpened -= CallbackListenerOnAdOpened;
-			_ankrAdsAndroidCallbackListener.OnAdFailedToLoad -= CallbackListenerOnAdFailedToLoad;
-			_ankrAdsAndroidCallbackListener.OnAdTextureReceived -= CallbackListenerOnAdTextureReceived;
+			AnkrAds.Ads.AnkrAds.OnAdInitialized -= CallbackListenerOnAdInitialized;
+			AnkrAds.Ads.AnkrAds.OnAdClicked -= CallbackListenerOnAdClicked;
+			AnkrAds.Ads.AnkrAds.OnAdClosed -= CallbackListenerOnAdClosed;
+			AnkrAds.Ads.AnkrAds.OnAdFinished -= CallbackListenerOnAdFinished;
+			AnkrAds.Ads.AnkrAds.OnAdLoaded -= CallbackListenerOnAdLoaded;
+			AnkrAds.Ads.AnkrAds.OnAdOpened -= CallbackListenerOnAdOpened;
+			AnkrAds.Ads.AnkrAds.OnAdFailedToLoad -= CallbackListenerOnAdFailedToLoad;
+			AnkrAds.Ads.AnkrAds.OnAdTextureReceived -= CallbackListenerOnAdTextureReceived;
 		}
-		#endregion
 		
-		#region Callback Listener Events
 		private async void CallbackListenerOnAdTextureReceived(string unitID, byte[] adTextureData)
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdTextureReceived");
 			
-			Texture2D texture = new Texture2D(2,2);
+			var texture = new Texture2D(2,2);
 			texture.LoadImage(adTextureData);
-			
-			await UniTask.WhenAll(
-				_ankrBannerAdImage.SetupAd(texture),
-				_ankrBannerAdSprite.SetupAd(texture));
+
+			_ankrBannerAdImage.SetupAd(texture);
+			_ankrBannerAdSprite.SetupAd(texture);
 
 			_ankrBannerAdImage.TryShow();
 			_ankrBannerAdSprite.TryShow();
 			
-			ActivateNextButton(0);
+			ActivateNextButton(1);
 		}
 
 		private async void CallbackListenerOnAdInitialized()
@@ -93,6 +68,13 @@ namespace AnkrSDK.UseCases.Ads
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdInitialized");
 			ActivateNextButton(1);
+		}
+
+		private async void CallbackListenerOnAdLoaded(string uuid)
+		{
+			await UniTask.SwitchToMainThread();
+			UpdateUILogs("CallbackListenerOnAdLoaded");
+			ActivateNextButton(2);
 		}
 
 		private async void CallbackListenerOnAdClicked(string uuid)
@@ -111,14 +93,7 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdFinished");
-			ActivateNextButton(0);
-		}
-
-		private async void CallbackListenerOnAdLoaded(string uuid)
-		{
-			await UniTask.SwitchToMainThread();
-			UpdateUILogs("CallbackListenerOnAdLoaded");
-			ActivateNextButton(2);
+			ActivateNextButton(1);
 		}
 
 		private async void CallbackListenerOnAdOpened()
@@ -132,52 +107,38 @@ namespace AnkrSDK.UseCases.Ads
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdFailedToLoad");
 		}
-		#endregion
 
-		#region On Button Clicks
 		private void OnInitializeButtonClick()
 		{
 			const string walletAddress = "This is ankr mobile address";
 			const string appId = "1c562170-9ee5-4157-a5f8-e99c32e73cb0";
-			_ankrAdsAndroidCallbackListener = new AnkrAdsAndroidCallbackListener();
 			UnsubscribeToCallbackListenerEvents();
 			SubscribeToCallbackListenerEvents();
-			AnkrAdsNativeAndroid.Initialize(appId, walletAddress,_ankrAdsAndroidCallbackListener);
+
+			AnkrAds.Ads.AnkrAds.Initialize(appId, walletAddress, RuntimePlatform.WindowsEditor);
 		}
 
 		private void OnLoadButtonClick()
 		{
 			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAdsNativeAndroid.LoadAd(testUnitId);
-		}
-		
-		private void OnGetTextureClick()
-		{
-			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAdsNativeAndroid.GetTextureByteArray(testUnitId);
+			AnkrAds.Ads.AnkrAds.LoadAdTexture(testUnitId);
 		}
 
 		private void OnViewButtonClick()
 		{
 			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAdsNativeAndroid.ShowAd(testUnitId);
+			AnkrAds.Ads.AnkrAds.ShowAd(testUnitId);
 		}
-		#endregion
 		
 		private void OnEnable()
 		{
 			_ankrBannerAdImage.gameObject.SetActive(false);
 			_ankrBannerAdSprite.gameObject.SetActive(false);
-
-			_initializeButton.interactable = true;
-			_viewButton.interactable = false;
-			_loadButton.interactable = false;
-			_getTextureButton.interactable = false;
+			ActivateNextButton(0);
 
 			_initializeButton.onClick.AddListener(OnInitializeButtonClick);
 			_loadButton.onClick.AddListener(OnLoadButtonClick);
 			_viewButton.onClick.AddListener(OnViewButtonClick);
-			_getTextureButton.onClick.AddListener(OnGetTextureClick);
 		}
 
 		private void OnDisable()
@@ -193,7 +154,6 @@ namespace AnkrSDK.UseCases.Ads
 			_initializeButton.interactable = buttonToActivate == 0;
 			_loadButton.interactable = buttonToActivate == 1;
 			_viewButton.interactable = buttonToActivate == 2;
-			_getTextureButton.interactable = buttonToActivate == 2;
 		}
 
 		private void UpdateUILogs(string log)
