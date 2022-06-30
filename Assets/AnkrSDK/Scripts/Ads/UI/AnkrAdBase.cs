@@ -1,6 +1,3 @@
-using AnkrAds.Ads;
-using AnkrAds.Ads.Data;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AnkrSDK.Ads.UI
@@ -23,7 +20,7 @@ namespace AnkrSDK.Ads.UI
 			}
 		}
 
-		public virtual async UniTask SetupAd(Texture2D texture2D)
+		public void SetupAd(Texture2D texture2D)
 		{
 			IsReady = false;
 			OnTextureLoaded(texture2D);
@@ -42,10 +39,5 @@ namespace AnkrSDK.Ads.UI
 		}
 
 		protected abstract void OnTextureLoaded(Texture2D texture);
-
-		private static UniTask<Sprite> DownloadTexture(string textureURL)
-		{
-			return AdsWebHelper.GetImageFromURL(textureURL).AsUniTask();
-		}
 	}
 }
