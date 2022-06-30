@@ -38,7 +38,7 @@ namespace AnkrSDK.UseCases.UpdateNFT
 
 
 		// backend for get nft details and signature
-		private const string URL = "http://eth-01.dccn.ankr.com:8080/";
+		private const string URL = "https://example-signing.game.ankr.com/";
 
 		// ethereum node provider
 		private const string ProviderURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";

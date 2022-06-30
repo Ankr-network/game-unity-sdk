@@ -1,19 +1,24 @@
 {
-    "name": "AnkrSDK.Mobile",
+    "name": "AnkrSDK.Examples.WebGlLogin",
     "rootNamespace": "",
     "references": [
+        "UniTask",
+        "AnkrSDK.Ads",
+        "AnkrSDK.Provider",
         "AnkrSDK.Core.Infrastructure",
         "AnkrSDK.Data",
+        "AnkrSDK.OpenSea",
         "AnkrSDK.Utils",
+        "AnkrSDK.WebGL",
         "WalletConnectSharp",
         "WalletConnectSharp.Core",
-        "WalletConnectSharp.NEtherium",
-        "UniTask"
+        "Unity.TextMeshPro"
     ],
-    "includePlatforms": [],
-    "excludePlatforms": [
+    "includePlatforms": [
+        "Editor",
         "WebGL"
     ],
+    "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],

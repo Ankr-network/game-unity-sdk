@@ -1,4 +1,5 @@
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace AnkrSDK.Mobile
 
 		public MobileDisconnectHandler()
 		{
-			_walletConnect = WalletConnectProvider.GetWalletConnect();
+			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
 		}
 
 		public UniTask Disconnect(bool waitForNewSession = true)

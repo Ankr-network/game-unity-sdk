@@ -6,6 +6,7 @@
     "AnkrSDK.Provider",
     "AnkrSDK.Core.Infrastructure",
     "AnkrSDK.Data",
+    "AnkrSDK.Examples.WebGlLogin",
     "AnkrSDK.OpenSea",
     "AnkrSDK.Utils",
     "AnkrSDK.WebGL",

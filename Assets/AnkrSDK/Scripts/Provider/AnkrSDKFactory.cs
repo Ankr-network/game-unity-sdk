@@ -20,8 +20,7 @@ namespace AnkrSDK.Provider
 		private static IAnkrSDK CreateAnkrSDKInstance(string providerURI)
 		{
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
-			var webGlWrapper = new WebGL.WebGLWrapper();
-			webGlWrapper.ConnectTo(WebGL.SupportedWallets.Metamask, EthereumNetworks.GetNetworkByName(NetworkName.Rinkeby)).Forget();
+			var webGlWrapper = ConnectProvider<WebGl.WebGLConnect>.GetWalletConnect().Session;
 			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
 			var eth = new WebGL.Implementation.EthHandlerWebGL(webGlWrapper);
 			var disconnectHandler = (IDisconnectHandler)webGlWrapper;
