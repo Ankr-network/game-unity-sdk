@@ -45,6 +45,14 @@ namespace AnkrSDK.UseCases.WebGlLogin
 				button.OnClickHandler.AddListener(OnWalletClick);
 			}
 		}
+		
+		private void DisableButtons()
+		{
+			foreach (var button in _buttons)
+			{
+				button.OnClickHandler.RemoveListener(OnWalletClick);
+			}
+		}
 
 		private void OnChangeNetwork(int index)
 		{
@@ -65,6 +73,12 @@ namespace AnkrSDK.UseCases.WebGlLogin
 		public void HidePanel()
 		{
 			_panel.SetActive(false);
+		}
+
+		private void OnDisable()
+		{
+			DisableButtons();
+			_dropdown.onValueChanged.RemoveListener(OnChangeNetwork);
 		}
 	}
 }

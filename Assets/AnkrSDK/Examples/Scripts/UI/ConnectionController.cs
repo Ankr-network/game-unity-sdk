@@ -25,7 +25,7 @@ namespace AnkrSDK.UI
 
 		private void OnEnable()
 		{
-		#if UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS
+		#if !UNITY_WEBGL
 			_connectionText.text = LoginText;
 			_sceneChooser.SetActive(false);
 			_loginButton.gameObject.SetActive(true);
