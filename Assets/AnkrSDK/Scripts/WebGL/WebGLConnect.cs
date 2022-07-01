@@ -3,17 +3,11 @@ using AnkrSDK.Data;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace AnkrSDK.WebGl
 {
 	public class WebGLConnect : MonoBehaviour
-	{
-		[Serializable]
-		public class WebGlConnectEventNeedPanel : UnityEvent{}
-		[Serializable]
-		public class WebGlConnectEventWithSession : UnityEvent<WebGL.WebGLWrapper>{}
-		
+	{		
 		[SerializeField] private WebGL.SupportedWallets _defaultWallet = WebGL.SupportedWallets.None;
 		[SerializeField] private NetworkName _defaultNetwork = NetworkName.Rinkeby;
 		[SerializeField] private bool _connectOnAwake;
@@ -21,8 +15,8 @@ namespace AnkrSDK.WebGl
 		private UniTaskCompletionSource<WebGL.SupportedWallets> _walletCompletionSource;
 		
 		public WebGL.WebGLWrapper Session { get; private set; }
-		public WebGlConnectEventNeedPanel OnNeedPanel;
-		public WebGlConnectEventWithSession OnConnect;
+		public EventHandler OnNeedPanel;
+		public EventHandler<WebGL.WebGLWrapper> OnConnect;
 		
 
 		private async void Awake()
@@ -51,12 +45,12 @@ namespace AnkrSDK.WebGl
 			var wallet = _defaultWallet;
 			if (wallet == WebGL.SupportedWallets.None || wallet == null)
 			{
-				OnNeedPanel?.Invoke();
+				OnNeedPanel?.Invoke(this, EventArgs.Empty);
 				_walletCompletionSource = new UniTaskCompletionSource<WebGL.SupportedWallets>();
 				wallet = await _walletCompletionSource.Task;
 			}
 			await Session.ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_defaultNetwork));
-			OnConnect?.Invoke(Session);
+			OnConnect?.Invoke(this, Session);
 		}
 
 		public void SetWallet(WebGL.SupportedWallets wallet)

@@ -5,18 +5,11 @@ using AnkrSDK.Data;
 using AnkrSDK.Utils;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace AnkrSDK.UseCases.WebGlLogin
 {
 	public class WebGLLoginPanelController : MonoBehaviour
-	{
-		[Serializable]
-		public class PanelEventWithWallet : UnityEvent<WebGL.SupportedWallets>{}
-		
-		[Serializable]
-		public class PanelEventWithNetwork : UnityEvent<NetworkName>{}
-		
+	{		
 		[SerializeField]
 		private GameObject _panel;
 		
@@ -28,8 +21,8 @@ namespace AnkrSDK.UseCases.WebGlLogin
 
 		private List<string> _networks;
 
-		public PanelEventWithWallet WalletHasChosen;
-		public PanelEventWithNetwork NetworkHasChosen;
+		public EventHandler<WebGL.SupportedWallets> WalletHasChosen;
+		public EventHandler<NetworkName> NetworkHasChosen;
 
 		private void Start()
 		{
@@ -56,12 +49,12 @@ namespace AnkrSDK.UseCases.WebGlLogin
 		private void OnChangeNetwork(int index)
 		{
 			var network = (NetworkName) Enum.Parse(typeof(NetworkName), _networks[index], true);
-			NetworkHasChosen?.Invoke(network);
+			NetworkHasChosen?.Invoke(this, network);
 		}
 
 		private void OnWalletClick(WebGL.SupportedWallets wallet)
 		{
-			WalletHasChosen?.Invoke(wallet);
+			WalletHasChosen?.Invoke(this, wallet);
 		}
 
 		public void ShowPanel()
