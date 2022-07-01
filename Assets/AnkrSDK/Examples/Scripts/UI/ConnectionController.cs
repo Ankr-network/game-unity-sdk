@@ -25,18 +25,10 @@ namespace AnkrSDK.UI
 
 		private void OnEnable()
 		{
-		#if UNITY_WEBGL && !UNITY_EDITOR
-			try
-			{
-				_connectionText.text = ConnectingText;
-				_sceneChooser.SetActive(true);
-				_loginButton.gameObject.SetActive(false);
-			}
-			catch (Exception)
-			{
-				_connectionText.text = LoginText;
-			}
-		#else
+		#if !UNITY_WEBGL
+			_connectionText.text = LoginText;
+			_sceneChooser.SetActive(false);
+			_loginButton.gameObject.SetActive(true);
 			TrySubscribeToWalletEvents().Forget();
 		#endif
 		}

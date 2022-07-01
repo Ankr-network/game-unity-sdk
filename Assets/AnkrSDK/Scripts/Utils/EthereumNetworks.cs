@@ -9,7 +9,7 @@ namespace AnkrSDK.Utils
 	{
 		private static readonly string _ethereumMainnetName = "Mainnet";
 		
-		private static Dictionary<NetworkName, EthereumNetwork> _dictionary = new Dictionary<NetworkName, EthereumNetwork>
+		public static Dictionary<NetworkName, EthereumNetwork> Dictionary = new Dictionary<NetworkName, EthereumNetwork>
 		{
 			{ NetworkName.Ethereum, CreateMetamaskExistedNetwork(1, _ethereumMainnetName) },
 			{ NetworkName.Ropsten, CreateMetamaskExistedNetwork(3, nameof(NetworkName.Ropsten)) },
@@ -22,9 +22,9 @@ namespace AnkrSDK.Utils
 		
 		public static EthereumNetwork GetNetworkByName(NetworkName networkName)
 		{
-			if (_dictionary.ContainsKey(networkName))
+			if (Dictionary.ContainsKey(networkName))
 			{
-				return _dictionary[networkName];
+				return Dictionary[networkName];
 			}
 			else
 			{
