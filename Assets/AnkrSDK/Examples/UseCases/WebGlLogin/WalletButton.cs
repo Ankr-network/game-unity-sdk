@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace AnkrSDK.UseCases.WebGlLogin
@@ -9,9 +8,6 @@ namespace AnkrSDK.UseCases.WebGlLogin
 	[RequireComponent(typeof(Button))]
 	public class WalletButton : MonoBehaviour
 	{
-		[Serializable]
-		public class OnClickAction : UnityEvent<WebGL.SupportedWallets> {}
-		
 		[SerializeField]
 		private WalletItem _walletItem;
 		
@@ -22,7 +18,7 @@ namespace AnkrSDK.UseCases.WebGlLogin
 		private TMP_Text _nameContainer;
 		
 		[SerializeField]
-		public OnClickAction OnClickHandler;
+		public EventHandler<WebGL.SupportedWallets> OnClickHandler;
 
 		private Button _button;
 
@@ -37,7 +33,7 @@ namespace AnkrSDK.UseCases.WebGlLogin
 
 		private void HandleClick()
 		{
-			OnClickHandler?.Invoke(_walletItem.Type);
+			OnClickHandler?.Invoke(this, _walletItem.Type);
 		}
 
 		private void OnDisable()

@@ -42,7 +42,7 @@ namespace AnkrSDK.UseCases.WebGlLogin
 		{
 			foreach (var button in _buttons)
 			{
-				button.OnClickHandler.AddListener(OnWalletClick);
+				button.OnClickHandler += OnWalletClick;
 			}
 		}
 		
@@ -50,7 +50,7 @@ namespace AnkrSDK.UseCases.WebGlLogin
 		{
 			foreach (var button in _buttons)
 			{
-				button.OnClickHandler.RemoveListener(OnWalletClick);
+				button.OnClickHandler -= OnWalletClick;
 			}
 		}
 
@@ -60,7 +60,7 @@ namespace AnkrSDK.UseCases.WebGlLogin
 			NetworkHasChosen?.Invoke(this, network);
 		}
 
-		private void OnWalletClick(WebGL.SupportedWallets wallet)
+		private void OnWalletClick(object sender, WebGL.SupportedWallets wallet)
 		{
 			WalletHasChosen?.Invoke(this, wallet);
 		}
