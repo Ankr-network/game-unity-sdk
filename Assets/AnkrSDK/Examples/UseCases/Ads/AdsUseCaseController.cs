@@ -9,11 +9,15 @@ namespace AnkrSDK.UseCases.Ads
 	public class AdsUseCaseController : UseCase
 	{
 		[SerializeField] private Button _initializeButton;
-		[SerializeField] private Button _loadButton;
+		[SerializeField] private Button _loadFullscreenAdButton;
+		[SerializeField] private Button _loadBannerAdButton;
 		[SerializeField] private Button _viewButton;
 		[SerializeField] private AnkrBannerAdImage _ankrBannerAdImage;
 		[SerializeField] private AnkrBannerAdSprite _ankrBannerAdSprite;
 		[SerializeField] private TMP_Text _logs;
+
+		private const string FullscreenAdTestUnitId = "2592a670-f7ab-4400-ab95-af7d5975a9f8";
+		private const string BannerAdTestUnitId = "cc758a98-bb29-4628-89c2-4fa5294ccf28";
 
 		public override void DeActivateUseCase()
 		{
@@ -21,7 +25,9 @@ namespace AnkrSDK.UseCases.Ads
 			_ankrBannerAdImage.gameObject.SetActive(false);
 			_ankrBannerAdSprite.gameObject.SetActive(false);
 		}
-		
+
+		#region Subscriptions
+
 		private void SubscribeToCallbackListenerEvents()
 		{
 			AnkrAds.Ads.AnkrAds.OnAdInitialized += CallbackListenerOnAdInitialized;
@@ -30,10 +36,12 @@ namespace AnkrSDK.UseCases.Ads
 			AnkrAds.Ads.AnkrAds.OnAdFinished += CallbackListenerOnAdFinished;
 			AnkrAds.Ads.AnkrAds.OnAdLoaded += CallbackListenerOnAdLoaded;
 			AnkrAds.Ads.AnkrAds.OnAdOpened += CallbackListenerOnAdOpened;
+			AnkrAds.Ads.AnkrAds.OnAdRewarded += CallbackListenerOnAdRewarded;
 			AnkrAds.Ads.AnkrAds.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
 			AnkrAds.Ads.AnkrAds.OnAdTextureReceived += CallbackListenerOnAdTextureReceived;
+			AnkrAds.Ads.AnkrAds.OnError += CallbackListenerOnError;
 		}
-		
+
 		private void UnsubscribeToCallbackListenerEvents()
 		{
 			AnkrAds.Ads.AnkrAds.OnAdInitialized -= CallbackListenerOnAdInitialized;
@@ -42,26 +50,15 @@ namespace AnkrSDK.UseCases.Ads
 			AnkrAds.Ads.AnkrAds.OnAdFinished -= CallbackListenerOnAdFinished;
 			AnkrAds.Ads.AnkrAds.OnAdLoaded -= CallbackListenerOnAdLoaded;
 			AnkrAds.Ads.AnkrAds.OnAdOpened -= CallbackListenerOnAdOpened;
+			AnkrAds.Ads.AnkrAds.OnAdRewarded -= CallbackListenerOnAdRewarded;
 			AnkrAds.Ads.AnkrAds.OnAdFailedToLoad -= CallbackListenerOnAdFailedToLoad;
 			AnkrAds.Ads.AnkrAds.OnAdTextureReceived -= CallbackListenerOnAdTextureReceived;
+			AnkrAds.Ads.AnkrAds.OnError -= CallbackListenerOnError;
 		}
-		
-		private async void CallbackListenerOnAdTextureReceived(string unitID, byte[] adTextureData)
-		{
-			await UniTask.SwitchToMainThread();
-			UpdateUILogs("CallbackListenerOnAdTextureReceived");
-			
-			var texture = new Texture2D(2,2);
-			texture.LoadImage(adTextureData);
 
-			_ankrBannerAdImage.SetupAd(texture);
-			_ankrBannerAdSprite.SetupAd(texture);
+		#endregion
 
-			_ankrBannerAdImage.TryShow();
-			_ankrBannerAdSprite.TryShow();
-			
-			ActivateNextButton(1);
-		}
+		#region CallbackListener
 
 		private async void CallbackListenerOnAdInitialized()
 		{
@@ -74,7 +71,11 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			await UniTask.SwitchToMainThread();
 			UpdateUILogs("CallbackListenerOnAdLoaded");
-			ActivateNextButton(2);
+
+			if (uuid == FullscreenAdTestUnitId)
+			{
+				ActivateNextButton(2);
+			}
 		}
 
 		private async void CallbackListenerOnAdClicked(string uuid)
@@ -96,6 +97,12 @@ namespace AnkrSDK.UseCases.Ads
 			ActivateNextButton(1);
 		}
 
+		private async void CallbackListenerOnAdRewarded(string uuid)
+		{
+			await UniTask.SwitchToMainThread();
+			UpdateUILogs("CallbackListenerOnAdRewarded");
+		}
+
 		private async void CallbackListenerOnAdOpened()
 		{
 			await UniTask.SwitchToMainThread();
@@ -108,28 +115,60 @@ namespace AnkrSDK.UseCases.Ads
 			UpdateUILogs("CallbackListenerOnAdFailedToLoad");
 		}
 
+		private async void CallbackListenerOnError(string errorMessage)
+		{
+			await UniTask.SwitchToMainThread();
+			UpdateUILogs("Error : " + errorMessage);
+		}
+
+		private async void CallbackListenerOnAdTextureReceived(string unitID, byte[] adTextureData)
+		{
+			await UniTask.SwitchToMainThread();
+			UpdateUILogs("CallbackListenerOnAdTextureReceived");
+
+			var texture = new Texture2D(2, 2);
+			texture.LoadImage(adTextureData);
+
+			_ankrBannerAdImage.SetupAd(texture);
+			_ankrBannerAdSprite.SetupAd(texture);
+
+			_ankrBannerAdImage.TryShow();
+			_ankrBannerAdSprite.TryShow();
+
+			ActivateNextButton(1);
+		}
+
+		#endregion
+
+		#region OnButtonClicks
+
 		private void OnInitializeButtonClick()
 		{
 			const string walletAddress = "This is ankr mobile address";
-			const string appId = "1c562170-9ee5-4157-a5f8-e99c32e73cb0";
+			const string testAppId = "9e6624ba-0653-4230-86b8-204bddca8a8f";
 			UnsubscribeToCallbackListenerEvents();
 			SubscribeToCallbackListenerEvents();
 
-			AnkrAds.Ads.AnkrAds.Initialize(appId, walletAddress, RuntimePlatform.WindowsEditor);
+			AnkrAds.Ads.AnkrAds.Initialize(testAppId, walletAddress, RuntimePlatform.Android);
 		}
 
-		private void OnLoadButtonClick()
+		private void OnLoadFullscreenAdButtonClick()
 		{
-			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAds.Ads.AnkrAds.LoadAdTexture(testUnitId);
+			AnkrAds.Ads.AnkrAds.LoadAd(FullscreenAdTestUnitId);
+		}
+
+		private void OnLoadImageButtonClick()
+		{
+			AnkrAds.Ads.AnkrAds.LoadAdTexture(BannerAdTestUnitId);
 		}
 
 		private void OnViewButtonClick()
 		{
-			const string testUnitId = "d396af2c-aa3a-44da-ba17-68dbb7a8daa1";
-			AnkrAds.Ads.AnkrAds.ShowAd(testUnitId);
+			AnkrAds.Ads.AnkrAds.ShowAd(FullscreenAdTestUnitId);
 		}
-		
+
+		#endregion
+
 		private void OnEnable()
 		{
 			_ankrBannerAdImage.gameObject.SetActive(false);
@@ -137,7 +176,8 @@ namespace AnkrSDK.UseCases.Ads
 			ActivateNextButton(0);
 
 			_initializeButton.onClick.AddListener(OnInitializeButtonClick);
-			_loadButton.onClick.AddListener(OnLoadButtonClick);
+			_loadBannerAdButton.onClick.AddListener(OnLoadImageButtonClick);
+			_loadFullscreenAdButton.onClick.AddListener(OnLoadFullscreenAdButtonClick);
 			_viewButton.onClick.AddListener(OnViewButtonClick);
 		}
 
@@ -145,14 +185,16 @@ namespace AnkrSDK.UseCases.Ads
 		{
 			_initializeButton.onClick.RemoveAllListeners();
 			_viewButton.onClick.RemoveAllListeners();
-			_loadButton.onClick.RemoveAllListeners();
+			_loadBannerAdButton.onClick.RemoveAllListeners();
+			_loadFullscreenAdButton.onClick.RemoveAllListeners();
 			UnsubscribeToCallbackListenerEvents();
 		}
 
 		private void ActivateNextButton(int buttonToActivate)
 		{
 			_initializeButton.interactable = buttonToActivate == 0;
-			_loadButton.interactable = buttonToActivate == 1;
+			_loadBannerAdButton.interactable = buttonToActivate == 1;
+			_loadFullscreenAdButton.interactable = buttonToActivate == 1;
 			_viewButton.interactable = buttonToActivate == 2;
 		}
 
