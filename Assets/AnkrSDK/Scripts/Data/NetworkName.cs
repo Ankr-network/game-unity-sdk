@@ -8,6 +8,8 @@ namespace AnkrSDK.Data
 		Ropsten,
 		Kovan,
 		BinanceSmartChain,
-		BinanceSmartChain_TestNet
+		BinanceSmartChain_TestNet,
+		Polygon,
+		Polygon_Mumbai
 	}
 }

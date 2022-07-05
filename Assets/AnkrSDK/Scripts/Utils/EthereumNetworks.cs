@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using AnkrSDK.Data;
 using Nethereum.Hex.HexTypes;
 
-namespace AnkrSDK.UseCases.AddSwitchNetwork
+namespace AnkrSDK.Utils
 {
 	public static class EthereumNetworks
 	{
 		private static readonly string _ethereumMainnetName = "Mainnet";
 		
-		private static Dictionary<NetworkName, EthereumNetwork> _dictionary = new Dictionary<NetworkName, EthereumNetwork>
+		public static Dictionary<NetworkName, EthereumNetwork> Dictionary = new Dictionary<NetworkName, EthereumNetwork>
 		{
 			{ NetworkName.Ethereum, CreateMetamaskExistedNetwork(1, _ethereumMainnetName) },
 			{ NetworkName.Ropsten, CreateMetamaskExistedNetwork(3, nameof(NetworkName.Ropsten)) },
@@ -22,9 +22,9 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 		
 		public static EthereumNetwork GetNetworkByName(NetworkName networkName)
 		{
-			if (_dictionary.ContainsKey(networkName))
+			if (Dictionary.ContainsKey(networkName))
 			{
-				return _dictionary[networkName];
+				return Dictionary[networkName];
 			}
 			else
 			{
@@ -53,7 +53,7 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 					Symbol = "BNB",
 					Decimals = 18
 				},
-				RpcUrls = new[] {"https://bsc-dataseed.binance.org/"},
+				RpcUrls = new[] {"https://rpc.ankr.com/bsc"},
 				BlockExplorerUrls = new[] {"https://bscscan.com"},
 				IconUrls = new[] {"future"}
 			};

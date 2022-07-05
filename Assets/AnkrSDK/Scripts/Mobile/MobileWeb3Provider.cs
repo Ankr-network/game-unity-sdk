@@ -1,3 +1,4 @@
+using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Nethereum.Web3;
 
@@ -9,7 +10,7 @@ namespace AnkrSDK.Mobile
 
 		public MobileWeb3Provider()
 		{
-			_walletConnect = WalletConnectProvider.GetWalletConnect();
+			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
 		}
 
 		public IWeb3 CreateWeb3(string providerURI)

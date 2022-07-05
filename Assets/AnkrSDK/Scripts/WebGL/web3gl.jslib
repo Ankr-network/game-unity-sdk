@@ -1,61 +1,69 @@
 mergeInto(LibraryManager.library, {
+
+    CreateProvider: function (id, payload) {
+        window.ProviderFabric.createProvider(
+            Pointer_stringify(id),
+            Pointer_stringify(payload)
+        );
+    },
+    
     SignMessage: function (id, payload) {
-        window.transactionHandler.signMessage(
+        window.WalletProvider.signMessage(
             Pointer_stringify(id),
             Pointer_stringify(payload)
         );
     },
 
     SendTransaction: function (id, payload) {
-        window.transactionHandler.sendTransaction(
+        window.WalletProvider.sendTransaction(
             Pointer_stringify(id),
             Pointer_stringify(payload)
         );
     },
 
     GetContractData: function (id, payload) {
-        window.transactionHandler.getContractData(
+        window.WalletProvider.getContractData(
             Pointer_stringify(id),
             Pointer_stringify(payload)
         );
     },
 
     EstimateGas: function (id, payload) {
-        window.transactionHandler.estimateGas(
+        window.WalletProvider.estimateGas(
             Pointer_stringify(id),
             Pointer_stringify(payload)
         );
     },
 
     GetAddresses: function (id) {
-        window.transactionHandler.getAccounts(
+        window.WalletProvider.getAccounts(
             Pointer_stringify(id)
         );
     },
 
     GetTransaction: function (id, transactionHash) {
-        window.transactionHandler.getTransaction(
+        window.WalletProvider.getTransaction(
             Pointer_stringify(id),
             Pointer_stringify(transactionHash)
         );
     },
 
     GetTransactionReceipt: function (id, transactionHash) {
-        window.transactionHandler.getTransactionReceipt(
+        window.WalletProvider.getTransactionReceipt(
             Pointer_stringify(id),
             Pointer_stringify(transactionHash)
         );
     },
 
     SwitchChain: function (id, networkData) {
-        window.transactionHandler.switchChain(
+        window.WalletProvider.switchChain(
             Pointer_stringify(id),
             Pointer_stringify(networkData)
         );
     },
 
     GetEvents: function (id, filters) {
-        window.transactionHandler.getEvents(
+        window.WalletProvider.getEvents(
             Pointer_stringify(id),
             Pointer_stringify(filters)
         );

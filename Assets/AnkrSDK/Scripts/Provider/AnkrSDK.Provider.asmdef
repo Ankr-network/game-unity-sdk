@@ -5,6 +5,8 @@
     "AnkrSDK.Core.Infrastructure",
     "AnkrSDK.WebGL",
     "AnkrSDK.Data",
-    "AnkrSDK.Mobile"
+    "AnkrSDK.Mobile",
+    "AnkrSDK.Utils",
+    "UniTask"
   ]
 }

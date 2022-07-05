@@ -20,7 +20,7 @@ namespace AnkrSDK.Mobile
 		public EthHandler(IWeb3 web3Provider)
 		{
 			_web3Provider = web3Provider;
-			_walletConnect = WalletConnectProvider.GetWalletConnect();
+			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
 		}
 
 		public Task<string> GetDefaultAccount()

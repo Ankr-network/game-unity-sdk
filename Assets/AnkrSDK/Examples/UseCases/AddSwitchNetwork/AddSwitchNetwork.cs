@@ -1,8 +1,8 @@
-using System;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.Provider;
+using AnkrSDK.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 

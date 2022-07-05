@@ -21,6 +21,26 @@ namespace AnkrSDK.WebGL
 			_protocol.StartReceiveCycle().Forget();
 		}
 
+		public async UniTask ConnectTo(SupportedWallets wallet, EthereumNetwork chain)
+		{
+			var id = _protocol.GenerateId();
+			var connectionProps = new ConnectionProps
+			{
+				wallet = wallet.ToString(),
+				chain = chain
+			};
+
+			var payload = JsonConvert.SerializeObject(connectionProps);
+			WebGLInterlayer.CreateProvider(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Error)
+			{
+				throw new Exception(answer.payload);
+			}
+		}
+
 		public UniTask Disconnect(bool waitForNewSession = true)
 		{
 			_protocol.Disconnect();
@@ -122,7 +142,7 @@ namespace AnkrSDK.WebGL
 
 			throw new Exception(answer.payload);
 		}
-		
+
 		public async Task SwitchChain(EthereumNetwork networkData)
 		{
 			var id = _protocol.GenerateId();
@@ -136,7 +156,7 @@ namespace AnkrSDK.WebGL
 				throw new Exception(answer.payload);
 			}
 		}
-		
+
 		public async Task<FilterLog[]> GetEvents(NewFilterInput filters)
 		{
 			var id = _protocol.GenerateId();
