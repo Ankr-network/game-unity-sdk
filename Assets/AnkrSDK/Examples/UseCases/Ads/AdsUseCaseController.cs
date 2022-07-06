@@ -7,12 +7,7 @@ namespace AnkrSDK.UseCases.Ads
 	{
 		private const string FullscreenAdTestUnitId = "2592a670-f7ab-4400-ab95-af7d5975a9f8";
 		private const string BannerAdTestUnitId = "cc758a98-bb29-4628-89c2-4fa5294ccf28";
-		private AdsCallbackListener _adsCallbackListener;
-
-		private void Awake()
-		{
-			_adsCallbackListener = GetComponent<AdsCallbackListener>();
-		}
+		[SerializeField] private AdsCallbackListener _adsCallbackListener;
 
 		private void OnEnable()
 		{
