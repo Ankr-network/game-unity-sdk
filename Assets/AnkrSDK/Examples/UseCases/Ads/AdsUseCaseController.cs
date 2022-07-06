@@ -5,8 +5,6 @@ namespace AnkrSDK.UseCases.Ads
 	[RequireComponent(typeof(AdsCallbackListener))]
 	public class AdsUseCaseController : UseCase
 	{
-		private const string FullscreenAdTestUnitId = "2592a670-f7ab-4400-ab95-af7d5975a9f8";
-		private const string BannerAdTestUnitId = "cc758a98-bb29-4628-89c2-4fa5294ccf28";
 		[SerializeField] private AdsCallbackListener _adsCallbackListener;
 
 		private void OnEnable()
@@ -37,26 +35,25 @@ namespace AnkrSDK.UseCases.Ads
 		private void OnInitializeButtonClick()
 		{
 			const string walletAddress = "This is ankr mobile address";
-			const string testAppId = "9e6624ba-0653-4230-86b8-204bddca8a8f";
 			_adsCallbackListener.UnsubscribeToCallbackListenerEvents();
 			_adsCallbackListener.SubscribeToCallbackListenerEvents();
 
-			AnkrAds.Ads.AnkrAds.Initialize(testAppId, walletAddress, RuntimePlatform.Android);
+			AnkrAds.Ads.AnkrAds.Initialize(AdsBackendInformation.TestAppId, walletAddress, RuntimePlatform.Android);
 		}
 
 		private void OnLoadFullscreenAdButtonClick()
 		{
-			AnkrAds.Ads.AnkrAds.LoadAd(FullscreenAdTestUnitId);
+			AnkrAds.Ads.AnkrAds.LoadAd(AdsBackendInformation.FullscreenAdTestUnitId);
 		}
 
 		private void OnLoadImageButtonClick()
 		{
-			AnkrAds.Ads.AnkrAds.LoadAdTexture(BannerAdTestUnitId);
+			AnkrAds.Ads.AnkrAds.LoadAdTexture(AdsBackendInformation.BannerAdTestUnitId);
 		}
 
 		private void OnViewButtonClick()
 		{
-			AnkrAds.Ads.AnkrAds.ShowAd(FullscreenAdTestUnitId);
+			AnkrAds.Ads.AnkrAds.ShowAd(AdsBackendInformation.FullscreenAdTestUnitId);
 		}
 	}
 }
