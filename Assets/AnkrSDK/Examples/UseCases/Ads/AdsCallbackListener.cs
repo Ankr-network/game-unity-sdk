@@ -1,3 +1,4 @@
+using AnkrSDK.Ads;
 using AnkrSDK.Ads.UI;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -23,30 +24,30 @@ namespace AnkrSDK.UseCases.Ads
 
 		public void SubscribeToCallbackListenerEvents()
 		{
-			AnkrAds.Ads.AnkrAds.OnAdInitialized += CallbackListenerOnAdInitialized;
-			AnkrAds.Ads.AnkrAds.OnAdClicked += CallbackListenerOnAdClicked;
-			AnkrAds.Ads.AnkrAds.OnAdClosed += CallbackListenerOnAdClosed;
-			AnkrAds.Ads.AnkrAds.OnAdFinished += CallbackListenerOnAdFinished;
-			AnkrAds.Ads.AnkrAds.OnAdLoaded += CallbackListenerOnAdLoaded;
-			AnkrAds.Ads.AnkrAds.OnAdOpened += CallbackListenerOnAdOpened;
-			AnkrAds.Ads.AnkrAds.OnAdRewarded += CallbackListenerOnAdRewarded;
-			AnkrAds.Ads.AnkrAds.OnAdFailedToLoad += CallbackListenerOnAdFailedToLoad;
-			AnkrAds.Ads.AnkrAds.OnAdTextureReceived += CallbackListenerOnAdTextureReceived;
-			AnkrAds.Ads.AnkrAds.OnError += CallbackListenerOnError;
+			AnkrAdvertisements.AdInitialized += CallbackListenerOnAdInitialized;
+			AnkrAdvertisements.AdClicked += CallbackListenerOnAdClicked;
+			AnkrAdvertisements.AdClosed += CallbackListenerOnAdClosed;
+			AnkrAdvertisements.AdFinished += CallbackListenerOnAdFinished;
+			AnkrAdvertisements.AdLoaded += CallbackListenerOnAdLoaded;
+			AnkrAdvertisements.AdOpened += CallbackListenerOnAdOpened;
+			AnkrAdvertisements.AdRewarded += CallbackListenerOnAdRewarded;
+			AnkrAdvertisements.AdFailedToLoad += CallbackListenerOnAdFailedToLoad;
+			AnkrAdvertisements.AdTextureReceived += CallbackListenerOnAdTextureReceived;
+			AnkrAdvertisements.Error += CallbackListenerOnError;
 		}
 
 		public void UnsubscribeToCallbackListenerEvents()
 		{
-			AnkrAds.Ads.AnkrAds.OnAdInitialized -= CallbackListenerOnAdInitialized;
-			AnkrAds.Ads.AnkrAds.OnAdClicked -= CallbackListenerOnAdClicked;
-			AnkrAds.Ads.AnkrAds.OnAdClosed -= CallbackListenerOnAdClosed;
-			AnkrAds.Ads.AnkrAds.OnAdFinished -= CallbackListenerOnAdFinished;
-			AnkrAds.Ads.AnkrAds.OnAdLoaded -= CallbackListenerOnAdLoaded;
-			AnkrAds.Ads.AnkrAds.OnAdOpened -= CallbackListenerOnAdOpened;
-			AnkrAds.Ads.AnkrAds.OnAdRewarded -= CallbackListenerOnAdRewarded;
-			AnkrAds.Ads.AnkrAds.OnAdFailedToLoad -= CallbackListenerOnAdFailedToLoad;
-			AnkrAds.Ads.AnkrAds.OnAdTextureReceived -= CallbackListenerOnAdTextureReceived;
-			AnkrAds.Ads.AnkrAds.OnError -= CallbackListenerOnError;
+			AnkrAdvertisements.AdInitialized -= CallbackListenerOnAdInitialized;
+			AnkrAdvertisements.AdClicked -= CallbackListenerOnAdClicked;
+			AnkrAdvertisements.AdClosed -= CallbackListenerOnAdClosed;
+			AnkrAdvertisements.AdFinished -= CallbackListenerOnAdFinished;
+			AnkrAdvertisements.AdLoaded -= CallbackListenerOnAdLoaded;
+			AnkrAdvertisements.AdOpened -= CallbackListenerOnAdOpened;
+			AnkrAdvertisements.AdRewarded -= CallbackListenerOnAdRewarded;
+			AnkrAdvertisements.AdFailedToLoad -= CallbackListenerOnAdFailedToLoad;
+			AnkrAdvertisements.AdTextureReceived -= CallbackListenerOnAdTextureReceived;
+			AnkrAdvertisements.Error -= CallbackListenerOnError;
 		}
 
 		public Button GetInitializeButton()
