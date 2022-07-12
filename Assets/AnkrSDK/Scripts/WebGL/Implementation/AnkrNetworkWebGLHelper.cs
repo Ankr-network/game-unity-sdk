@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
-using AnkrSDK.WebGL;
 
-namespace AnkrSDK.Utils
+namespace AnkrSDK.WebGL.Implementation
 {
 	public class AnkrNetworkWebGLHelper : INetworkHelper
 	{
