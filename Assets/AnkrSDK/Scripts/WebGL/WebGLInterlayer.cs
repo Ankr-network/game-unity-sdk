@@ -33,6 +33,9 @@ namespace AnkrSDK.WebGL
 		
 		[DllImport("__Internal")]
 		public static extern void GetEvents(string id, string filters);
+		
+		[DllImport("__Internal")]
+		public static extern void CallMethod(string id, string callObject);
 
 		[DllImport("__Internal")]
 		public static extern string GetResponses();

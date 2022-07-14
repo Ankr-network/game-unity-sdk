@@ -1,3 +1,4 @@
+using System.Numerics;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
@@ -19,9 +20,7 @@ namespace AnkrSDK.Core.Infrastructure
 			string gasPrice = null,
 			string nonce = null
 		);
-
 		Task<string> Sign(string messageToSign, string address);
-
 		Task<string> SendTransaction(
 			string from,
 			string to,
@@ -31,5 +30,13 @@ namespace AnkrSDK.Core.Infrastructure
 			string gasPrice = null,
 			string nonce = null
 		);
+		Task<BigInteger> GetBalance(string address = null);
+		Task<BigInteger> GetBlockNumber();
+		Task<BigInteger> GetTransactionCount(string hash);
+		Task<BigInteger> GetTransactionCount(BlockParameter block);
+		Task<BlockWithTransactions> GetBlockWithTransactions(string hash);
+		Task<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block);
+		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash);
+		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block);
 	}
 }

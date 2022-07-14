@@ -69,6 +69,13 @@ mergeInto(LibraryManager.library, {
         );
     },
 
+    CallMethod: function (id, callObject) {
+        window.WalletProvider.callMethod(
+            Pointer_stringify(id),
+            Pointer_stringify(callObject)
+        );
+    },
+
     GetResponses: function () {
         var responses = window.MQ.messages;
         var bufferSize = lengthBytesUTF8(responses) + 1;

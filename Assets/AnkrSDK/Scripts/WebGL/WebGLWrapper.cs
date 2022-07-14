@@ -156,6 +156,24 @@ namespace AnkrSDK.WebGL
 				throw new Exception(answer.payload);
 			}
 		}
+		
+		public async Task<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(callObject);
+			WebGLInterlayer.CallMethod(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Success)
+			{
+				var callAnswer = JsonConvert.DeserializeObject<WebGLCallAnswer<TReturnType>>(answer.payload);
+			
+				return callAnswer.Result;
+			}
+
+			throw new Exception(answer.payload);
+		}
 
 		public async Task<FilterLog[]> GetEvents(NewFilterInput filters)
 		{
