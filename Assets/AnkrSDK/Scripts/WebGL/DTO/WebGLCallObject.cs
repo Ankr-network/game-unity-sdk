@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.WebGL.DTO
@@ -8,6 +7,6 @@ namespace AnkrSDK.WebGL.DTO
 		[JsonProperty(PropertyName = "path")]
 		public string Path { get; set; }
 		[JsonProperty(PropertyName = "args")]
-		public Object[] Args { get; set; }
+		public object[] Args { get; set; }
 	}
 }
