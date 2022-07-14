@@ -1,14 +1,22 @@
+using System;
+using System.Numerics;
 using AnkrSDK.WebGL.Extensions;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
+using AnkrSDK.WebGL.DTO;
 
 namespace AnkrSDK.WebGL.Implementation
 {
 	public class EthHandlerWebGL : IEthHandler
 	{
+		private const string GetBalanceMethodName = "eth.getBalance";
+		private const string GetBlockMethodName = "eth.getBlock";
+		private const string GetBlockNumberMethodName = "eth.getBlockNumber";
+		private const string GetBlockTransactionCountMethodName = "eth.getBlockTransactionCount";
+		private const bool ReturnTransactionObjects = true;
 		private readonly WebGLWrapper _webGlWrapper;
 
 		public EthHandlerWebGL(WebGLWrapper webGlWrapper)
@@ -87,6 +95,77 @@ namespace AnkrSDK.WebGL.Implementation
 			};
 
 			return _webGlWrapper.SendTransaction(transactionData);
+		}
+
+		public async Task<BigInteger> GetBalance(string address = null)
+		{
+			address = await GetDefaultAccount();
+			var callObject = new WebGLCallObject
+			{
+				Path = GetBalanceMethodName,
+				Args = address != null ? new[] {address} : null
+			};
+			var balance = await _webGlWrapper.CallMethod<BigInteger>(callObject);
+			return balance;
+		}
+
+		public Task<BigInteger> GetBlockNumber()
+		{
+			var callObject = new WebGLCallObject
+			{
+				Path = GetBlockNumberMethodName
+			};
+			return _webGlWrapper.CallMethod<BigInteger>(callObject);
+		}
+
+		public Task<BigInteger> GetTransactionCount(string hash)
+		{
+			return GetTransactionCountCommon(hash);
+		}
+
+		public Task<BigInteger> GetTransactionCount(BlockParameter block)
+		{
+			return GetTransactionCountCommon(block.GetRPCParam());
+		}
+
+		public Task<BlockWithTransactions> GetBlockWithTransactions(string hash)
+		{
+			return GetBlock<BlockWithTransactions>(hash, ReturnTransactionObjects);
+		}
+
+		public Task<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block)
+		{
+			return GetBlock<BlockWithTransactions>(block.GetRPCParam(), ReturnTransactionObjects);
+		}
+
+		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash)
+		{
+			return GetBlock<BlockWithTransactionHashes>(hash);
+		}
+
+		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block)
+		{
+			return GetBlock<BlockWithTransactionHashes>(block.GetRPCParam());
+		}
+
+		private Task<BigInteger> GetTransactionCountCommon(string blockId)
+		{
+			var callObject = new WebGLCallObject
+			{
+				Path = GetBlockTransactionCountMethodName,
+				Args = new[] {blockId}
+			};
+			return _webGlWrapper.CallMethod<BigInteger>(callObject);
+		}
+
+		private Task<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects = false)
+		{
+			var callObject = new WebGLCallObject
+			{
+				Path = GetBlockMethodName,
+				Args = new object[] {blockId, returnTransactionObjects}
+			};
+			return _webGlWrapper.CallMethod<TResultType>(callObject);
 		}
 	}
 }

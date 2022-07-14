@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
@@ -101,6 +102,54 @@ namespace AnkrSDK.Mobile
 		public Task<HexBigInteger> EstimateGas(TransactionInput transactionInput)
 		{
 			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput);
+		}
+
+		public async Task<BigInteger> GetBalance(string address)
+		{
+			if (address == null)
+			{
+				address = await GetDefaultAccount();
+			}
+			var balance = await _web3Provider.Eth.GetBalance.SendRequestAsync(address);
+			return balance.Value;
+		}
+
+		public async Task<BigInteger> GetBlockNumber()
+		{
+			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockNumber.SendRequestAsync();
+			return blockNumber.Value;
+		}
+		
+		public async Task<BigInteger> GetTransactionCount(string hash)
+		{
+			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockTransactionCountByHash.SendRequestAsync(hash);
+			return blockNumber.Value;
+		}
+		
+		public async Task<BigInteger> GetTransactionCount(BlockParameter block)
+		{
+			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockTransactionCountByNumber.SendRequestAsync(block);
+			return blockNumber.Value;
+		}
+
+		public Task<BlockWithTransactions> GetBlockWithTransactions(string hash)
+		{
+			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsByHash.SendRequestAsync(hash);
+		}
+		
+		public Task<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block)
+		{
+			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(block);
+		}
+		
+		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash)
+		{
+			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsHashesByHash.SendRequestAsync(hash);
+		}
+		
+		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block)
+		{
+			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(block);
 		}
 	}
 }
