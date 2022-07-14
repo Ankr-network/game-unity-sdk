@@ -316,6 +316,4 @@ MonoBehaviour:
   _walletItem: {fileID: 0}
   _logoContainer: {fileID: 4424874318262065100}
   _nameContainer: {fileID: 4424874319270208545}
-  OnClickHandler:
-    m_PersistentCalls:
-      m_Calls: []
+  _button: {fileID: 4424874319438181734}

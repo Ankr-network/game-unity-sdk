@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AnkrSDK.UseCases.WebGlLogin
+namespace AnkrSDK.Examples.UseCases.WebGlLogin
 {
 	[CreateAssetMenu(fileName = "New Wallet", menuName = "Wallet")]
 	public class WalletItem : ScriptableObject

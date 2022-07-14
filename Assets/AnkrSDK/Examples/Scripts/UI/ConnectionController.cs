@@ -33,7 +33,6 @@ namespace AnkrSDK.UI
 		#endif
 		}
 
-
 	#if UNITY_WEBGL && !UNITY_EDITOR
 	#elif !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS)
 		private UnityAction GetLoginAction()

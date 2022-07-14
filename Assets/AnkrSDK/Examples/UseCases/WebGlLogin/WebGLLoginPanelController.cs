@@ -6,7 +6,7 @@ using AnkrSDK.Utils;
 using TMPro;
 using UnityEngine;
 
-namespace AnkrSDK.UseCases.WebGlLogin
+namespace AnkrSDK.Examples.UseCases.WebGlLogin
 {
 	public class WebGLLoginPanelController : MonoBehaviour
 	{		
@@ -21,8 +21,8 @@ namespace AnkrSDK.UseCases.WebGlLogin
 
 		private List<string> _networks;
 
-		public EventHandler<WebGL.SupportedWallets> WalletHasChosen;
-		public EventHandler<NetworkName> NetworkHasChosen;
+		public Action<WebGL.SupportedWallets> WalletChosen;
+		public Action<NetworkName> NetworkChosen;
 
 		private void Start()
 		{
@@ -32,7 +32,7 @@ namespace AnkrSDK.UseCases.WebGlLogin
 
 		private void SetUpNetworkDropdown()
 		{
-			_networks = EthereumNetworks.Dictionary.Keys.Select(name => name.ToString()).ToList();
+			_networks = EthereumNetworks.Dictionary.Keys.Select(networkName => networkName.ToString()).ToList();
 			_dropdown.AddOptions(_networks);
 			_dropdown.onValueChanged.AddListener(OnChangeNetwork);
 			_dropdown.value = _networks.FindIndex(network => network == NetworkName.Rinkeby.ToString());
@@ -57,12 +57,12 @@ namespace AnkrSDK.UseCases.WebGlLogin
 		private void OnChangeNetwork(int index)
 		{
 			var network = (NetworkName) Enum.Parse(typeof(NetworkName), _networks[index], true);
-			NetworkHasChosen?.Invoke(this, network);
+			NetworkChosen?.Invoke(network);
 		}
 
-		private void OnWalletClick(object sender, WebGL.SupportedWallets wallet)
+		private void OnWalletClick(WebGL.SupportedWallets wallet)
 		{
-			WalletHasChosen?.Invoke(this, wallet);
+			WalletChosen?.Invoke(wallet);
 		}
 
 		public void ShowPanel()

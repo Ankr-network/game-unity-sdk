@@ -1,8 +1,7 @@
-using System;
 using AnkrSDK.Data;
 using UnityEngine;
 
-namespace AnkrSDK.UseCases.WebGlLogin
+namespace AnkrSDK.Examples.UseCases.WebGlLogin
 {
 	public class WebGLConnectionController : MonoBehaviour
 	{
@@ -21,27 +20,27 @@ namespace AnkrSDK.UseCases.WebGlLogin
 			
 			_webGlConnect.OnNeedPanel += ActivatePanel;
 			_webGlConnect.OnConnect += ChangeLoginPanel;
-			_webGlLoginManager.NetworkHasChosen += OnNetworkChosen;
-			_webGlLoginManager.WalletHasChosen += OnWalletChosen;
+			_webGlLoginManager.NetworkChosen += OnNetworkChosen;
+			_webGlLoginManager.WalletChosen += OnWalletChosen;
 		}
 
-		private void ActivatePanel(object sender, EventArgs empty)
+		private void ActivatePanel()
 		{
 			_webGlLoginManager.ShowPanel();
 		}
 
-		private void ChangeLoginPanel(object sender, WebGL.WebGLWrapper provider)
+		private void ChangeLoginPanel(WebGL.WebGLWrapper provider)
 		{
 			_webGlLoginManager.HidePanel();
 			_sceneChooser.SetActive(true);
 		}
 
-		private void OnNetworkChosen(object sender, NetworkName network)
+		private void OnNetworkChosen(NetworkName network)
 		{
 			_webGlConnect.SetNetwork(network);
 		}
 		
-		private void OnWalletChosen(object sender, WebGL.SupportedWallets wallet)
+		private void OnWalletChosen(WebGL.SupportedWallets wallet)
 		{
 			_webGlConnect.SetWallet(wallet);
 		}
@@ -50,8 +49,8 @@ namespace AnkrSDK.UseCases.WebGlLogin
 		{
 			_webGlConnect.OnNeedPanel -= ActivatePanel;
 			_webGlConnect.OnConnect -= ChangeLoginPanel;
-			_webGlLoginManager.NetworkHasChosen -= OnNetworkChosen;
-			_webGlLoginManager.WalletHasChosen -= OnWalletChosen;
+			_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
+			_webGlLoginManager.WalletChosen -= OnWalletChosen;
 		}
 	}
 }
