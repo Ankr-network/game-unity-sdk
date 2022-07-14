@@ -13,10 +13,12 @@ namespace AnkrSDK.Ads
 				{
 					return new AnkrAds.Ads.Implementation.NativeAdsAndroid();
 				}
+			#if UNITY_IOS
 				case RuntimePlatform.IPhonePlayer:
 				{
 					return new IOS.NativeAdsIOS();
 				}
+			#endif
 				default:
 					return new AnkrAds.Ads.Implementation.NativeAdsStandalone();
 			}
