@@ -3,9 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AnkrSDK.UseCases.WebGlLogin
+namespace AnkrSDK.Examples.UseCases.WebGlLogin
 {
-	[RequireComponent(typeof(Button))]
 	public class WalletButton : MonoBehaviour
 	{
 		[SerializeField]
@@ -18,22 +17,21 @@ namespace AnkrSDK.UseCases.WebGlLogin
 		private TMP_Text _nameContainer;
 		
 		[SerializeField]
-		public EventHandler<WebGL.SupportedWallets> OnClickHandler;
-
 		private Button _button;
+		
+		public Action<WebGL.SupportedWallets> OnClickHandler;
 
 		private void Start()
 		{
 			_logoContainer.sprite = _walletItem.Logo;
 			_nameContainer.text = _walletItem.name;
 			
-			_button = GetComponent<Button>();
 			_button.onClick.AddListener(HandleClick);
 		}
 
 		private void HandleClick()
 		{
-			OnClickHandler?.Invoke(this, _walletItem.Type);
+			OnClickHandler?.Invoke(_walletItem.Type);
 		}
 
 		private void OnDisable()
