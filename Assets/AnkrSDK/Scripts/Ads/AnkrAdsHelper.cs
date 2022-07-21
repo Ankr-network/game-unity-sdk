@@ -24,7 +24,11 @@ namespace AnkrSDK.Ads
 			}
 		}
 
+#if !UNITY_WEBGL && !UNITY_EDITOR
 		public static string DeviceId => SystemInfo.deviceUniqueIdentifier;
+#else
+		public static string DeviceId => WebGLInterlayer.GetUniqueID();
+#endif
 
 		public static string AppLanguage
 		{
