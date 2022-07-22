@@ -39,8 +39,5 @@ namespace AnkrSDK.WebGL
 
 		[DllImport("__Internal")]
 		public static extern string GetResponses();
-		
-		[DllImport("__Internal")]
-		public static extern string GetUniqueID(string storageKey = null);
 	}
 }
