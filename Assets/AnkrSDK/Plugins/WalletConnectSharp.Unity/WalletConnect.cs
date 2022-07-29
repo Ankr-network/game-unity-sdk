@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using AnkrSDK.Stats;
+using AnkrSDK.Metadata;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
@@ -12,6 +12,7 @@ using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using Logger = AnkrSDK.Internal.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
@@ -143,7 +144,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		{
 			TeardownEvents();
 			var savedSession = SessionSaveHandler.GetSavedSession();
-			Internal.AddLog();
+			Logger.AddLog(PackageInfo.Version);
 
 			if (string.IsNullOrWhiteSpace(_customBridgeUrl))
 			{

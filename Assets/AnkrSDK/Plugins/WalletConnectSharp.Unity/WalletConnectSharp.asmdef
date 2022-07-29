@@ -2,6 +2,7 @@
     "name": "WalletConnectSharp",
     "rootNamespace": "",
     "references": [
+        "AnkrSDK.Metadata",
         "UniTask",
         "WalletConnectSharp.Core",
         "endel.nativewebsocket"

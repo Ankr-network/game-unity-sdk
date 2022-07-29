@@ -1,4 +1,4 @@
-namespace AnkrSDK.Internal
+namespace AnkrSDK.Metadata
 {
 	public class PackageInfo
 	{
