@@ -9,10 +9,12 @@ namespace AnkrSDK.Ads
 		{
 			switch (runtimePlatform)
 			{
+			#if UNITY_ANDROID
 				case RuntimePlatform.Android:
 				{
 					return new AnkrAds.Ads.Implementation.NativeAdsAndroid();
 				}
+			#endif
 			#if UNITY_IOS
 				case RuntimePlatform.IPhonePlayer:
 				{
@@ -24,11 +26,11 @@ namespace AnkrSDK.Ads
 			}
 		}
 
-#if !UNITY_WEBGL
+	#if !UNITY_WEBGL
 		public static string DeviceId => SystemInfo.deviceUniqueIdentifier;
-#else
-		public static string DeviceId => WebGLInterlayer.GetUniqueID();
-#endif
+	#else
+		public static string DeviceId => WebGL.WebGLInterlayer.GetUniqueID();
+	#endif
 
 		public static string AppLanguage
 		{

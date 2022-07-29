@@ -71,6 +71,11 @@ namespace AnkrSDK.Ads.IOS
 					Debug.LogError($"Error in ads:{splitMessage[1]}");
 					break;
 				}
+				case "Initialised":
+				{
+					AdInitialized?.Invoke();
+					break;
+				}
 			}
 		}
 	}
