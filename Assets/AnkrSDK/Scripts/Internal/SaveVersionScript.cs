@@ -1,6 +1,7 @@
 using UnityEditor;
+using UnityEngine;
 
-namespace AnkrSDK.Stats
+namespace AnkrSDK.Internal
 {
 	[InitializeOnLoad]
 	public class SaveVersionScript
@@ -10,7 +11,7 @@ namespace AnkrSDK.Stats
 		static SaveVersionScript()
 		{
 			var version = PackageInfo.Version;
-			EditorPrefs.SetString(SdkVersionFieldName, version);
+			PlayerPrefs.SetString(SdkVersionFieldName, version);
 		}
 	}
 }

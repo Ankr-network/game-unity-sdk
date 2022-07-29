@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AnkrSDK.Stats;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
@@ -142,6 +143,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		{
 			TeardownEvents();
 			var savedSession = SessionSaveHandler.GetSavedSession();
+			Internal.AddLog();
 
 			if (string.IsNullOrWhiteSpace(_customBridgeUrl))
 			{
