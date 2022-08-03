@@ -21,6 +21,7 @@ namespace AnkrSDK.WebGl
 		private async void Awake()
 		{
 #if UNITY_WEBGL
+			DontDestroyOnLoad(this);
 			if (_connectOnAwake)
 			{
 				await Connect(); 
@@ -31,6 +32,7 @@ namespace AnkrSDK.WebGl
 		private async void Start()
 		{
 #if UNITY_WEBGL
+			DontDestroyOnLoad(this);
 			if (_connectOnStart)
 			{
 				await Connect(); 
