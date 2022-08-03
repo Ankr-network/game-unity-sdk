@@ -20,6 +20,11 @@ namespace AnkrSDK.UseCases.Ads
 		private void OnEnable()
 		{
 			ActivateNextButton(0);
+			
+		#if UNITY_WEBGL || UNITY_EDITOR
+			_loadFullscreenAdButton.gameObject.SetActive(false);
+			_viewButton.gameObject.SetActive(false);
+		#endif
 		}
 
 		public void SubscribeToCallbackListenerEvents()
