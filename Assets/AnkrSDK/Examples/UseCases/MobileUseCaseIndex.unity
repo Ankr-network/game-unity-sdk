@@ -733,8 +733,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -75.00006}
-  m_SizeDelta: {x: -200, y: -1049.9999}
+  m_AnchoredPosition: {x: 0, y: -25}
+  m_SizeDelta: {x: -200, y: -1150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &718297935
 MonoBehaviour:
@@ -1674,22 +1674,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UseCase-WearableNFT
       objectReference: {fileID: 0}
-    - target: {fileID: 6932968962633778407, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -860
-      objectReference: {fileID: 0}
-    - target: {fileID: 6932968962633778407, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -445
-      objectReference: {fileID: 0}
-    - target: {fileID: 8155013287347840007, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8155013287347840007, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -100
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
 --- !u!224 &2857082619985022819 stripped
@@ -1844,6 +1828,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 436313774}
     m_Modifications:
+    - target: {fileID: 1478699160977862694, guid: a2063caecddadc04882fb2a09a1a531b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3524072961780305827, guid: a2063caecddadc04882fb2a09a1a531b, type: 3}
       propertyPath: m_Name
       value: UseCase-OpenSea
