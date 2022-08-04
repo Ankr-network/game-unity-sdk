@@ -7,6 +7,7 @@ using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnectSharp.Unity.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
@@ -403,12 +404,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			var wallet =
 				supportedWallets.Values.FirstOrDefault(a =>
-					string.Equals(a.name, _defaultWallet.ToString(), StringComparison.InvariantCultureIgnoreCase));
+					string.Equals(a.name, _defaultWallet.GetWalletName(), StringComparison.InvariantCultureIgnoreCase));
 
 			if (wallet != null)
 			{
-				await wallet.DownloadImages();
 				SelectedWallet = wallet;
+				await wallet.DownloadImages();
 			}
 		}
 
