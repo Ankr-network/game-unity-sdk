@@ -30,6 +30,8 @@ namespace AnkrSDK.UI
 			_sceneChooser.SetActive(false);
 			_loginButton.gameObject.SetActive(true);
 			TrySubscribeToWalletEvents().Forget();
+		#else
+			_loginButton.gameObject.SetActive(false);
 		#endif
 		}
 
