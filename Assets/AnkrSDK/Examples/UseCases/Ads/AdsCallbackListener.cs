@@ -20,11 +20,11 @@ namespace AnkrSDK.UseCases.Ads
 		private void OnEnable()
 		{
 			ActivateNextButton(0);
+			var isPhone = Application.platform == RuntimePlatform.Android ||
+			              Application.platform == RuntimePlatform.IPhonePlayer;
 			
-		#if UNITY_WEBGL || UNITY_EDITOR || UNITY_STANDALONE
-			_loadFullscreenAdButton.gameObject.SetActive(false);
-			_viewButton.gameObject.SetActive(false);
-		#endif
+			_loadFullscreenAdButton.gameObject.SetActive(isPhone);
+			_viewButton.gameObject.SetActive(isPhone);
 		}
 
 		public void SubscribeToCallbackListenerEvents()

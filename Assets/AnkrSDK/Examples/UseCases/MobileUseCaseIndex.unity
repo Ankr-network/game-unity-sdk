@@ -1489,6 +1489,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 436313774}
     m_Modifications:
+    - target: {fileID: 634140624, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
+      propertyPath: m_Name
+      value: Logs
+      objectReference: {fileID: 0}
     - target: {fileID: 8547154265603219201, guid: 07258a25cdc3d4865ab09752afd70613, type: 3}
       propertyPath: m_Name
       value: UseCase-Ads
