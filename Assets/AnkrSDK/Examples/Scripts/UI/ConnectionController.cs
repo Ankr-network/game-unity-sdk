@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
+using AnkrSDK.WalletConnectSharp.Unity.UI;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ namespace AnkrSDK.UI
 		[SerializeField] private TMP_Text _connectionText;
 		[SerializeField] private Button _loginButton;
 		[SerializeField] private GameObject _sceneChooser;
+		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 	#if !UNITY_WEBGL || UNITY_EDITOR
 		[SerializeField] private AnkrSDK.WalletConnectSharp.Unity.WalletConnect _walletConnect;
 	#endif
@@ -36,7 +38,12 @@ namespace AnkrSDK.UI
 		}
 
 	#if UNITY_WEBGL && !UNITY_EDITOR
-	#elif !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS)
+	#elif !UNITY_EDITOR && UNITY_IOS
+		private UnityAction GetLoginAction()
+		{
+			return () => _chooseWalletScreen.Activate(_walletConnect.OpenDeepLink);
+		}
+	#elif !UNITY_EDITOR && UNITY_ANDROID
 		private UnityAction GetLoginAction()
 		{
 			return _walletConnect.OpenDeepLink;
@@ -142,9 +149,10 @@ namespace AnkrSDK.UI
 				return;
 			}
 
-			var activeSessionConnected = walletConnectUnitySession.Connected;
-			_sceneChooser.SetActive(activeSessionConnected);
-			_loginButton.gameObject.SetActive(!activeSessionConnected);
+			var isConnected = walletConnectUnitySession.Connected;
+			_sceneChooser.SetActive(isConnected);
+			_chooseWalletScreen.SetActive(!isConnected);
+			_loginButton.gameObject.SetActive(!isConnected);
 		#if !UNITY_ANDROID && !UNITY_IOS || UNITY_EDITOR
 			if (_qrCodeImage != null)
 			{

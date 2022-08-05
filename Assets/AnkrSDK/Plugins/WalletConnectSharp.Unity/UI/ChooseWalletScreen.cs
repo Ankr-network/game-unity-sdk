@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+using System;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -8,43 +9,42 @@ namespace AnkrSDK.WalletConnectSharp.Unity.UI
 {
 	public class ChooseWalletScreen : MonoBehaviour
 	{
-		public WalletConnect WalletConnect;
-		public GameObject buttonPrefab;
-		public Transform buttonGridTransform;
-		public Text loadingText;
+		[SerializeField] private WalletButton _buttonPrefab;
+		[SerializeField] private Transform _buttonGridTransform;
+		[SerializeField] private Text _loadingText;
 
-		[SerializeField]
-		public WalletSelectItem[] wallets;
+		private Action<AppEntry> ClickAction { get; set; }
 
-		private void Start()
+		private bool _isActivated;
+
+		public void Activate(Action<AppEntry> action)
 		{
+			ClickAction = action;
+			gameObject.SetActive(true);
+			_isActivated = true;
 			BuildWalletButtons().Forget();
 		}
 
 		private async UniTask BuildWalletButtons()
 		{
-			var supportedWallets = await WalletDownloadHelper.FetchWalletList(true);
+			_loadingText.gameObject.SetActive(true);
+			var fetchWalletList = await WalletDownloadHelper.FetchWalletList(true);
 
-			foreach (var walletId in supportedWallets.Keys)
+			foreach (var kvp in fetchWalletList)
 			{
-				var walletData = supportedWallets[walletId];
+				var walletData = kvp.Value;
+				var walletObj = Instantiate(_buttonPrefab, _buttonGridTransform);
 
-				var walletObj = Instantiate(buttonPrefab, buttonGridTransform);
-
-				var walletImage = walletObj.GetComponent<Image>();
-				var walletButton = walletObj.GetComponent<Button>();
-
-				walletImage.sprite = walletData.MediumIcon;
-
-				walletButton.onClick.AddListener(delegate { WalletConnect.OpenDeepLink(walletData); });
+				walletObj.Setup(walletData);
+				walletObj.SetListener(() => ClickAction?.Invoke(walletData));
 			}
 
-			Destroy(loadingText.gameObject);
+			_loadingText.gameObject.SetActive(false);
 		}
 
-		public static List<WalletSelectItem> GetWalletNameList()
+		public void SetActive(bool isConnected)
 		{
-			return SupportedWalletList.SupportedWalletNames();
+			gameObject.SetActive(isConnected && _isActivated);
 		}
 	}
 }
