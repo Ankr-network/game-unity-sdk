@@ -1,23 +1,22 @@
 using System;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
-using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.UI
+namespace AnkrSDK.UI
 {
 	public class ChooseWalletScreen : MonoBehaviour
 	{
-		[SerializeField] private WalletButton _buttonPrefab;
 		[SerializeField] private Transform _buttonGridTransform;
 		[SerializeField] private Text _loadingText;
+	#if !UNITY_WEBGL || UNITY_EDITOR
+		[SerializeField] private WalletButton _buttonPrefab;
 
-		private Action<AppEntry> ClickAction { get; set; }
+		private Action<AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.AppEntry> ClickAction { get; set; }
 
 		private bool _isActivated;
 
-		public void Activate(Action<AppEntry> action)
+		public void Activate(Action<AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.AppEntry> action)
 		{
 			ClickAction = action;
 			gameObject.SetActive(true);
@@ -28,7 +27,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.UI
 		private async UniTask BuildWalletButtons()
 		{
 			_loadingText.gameObject.SetActive(true);
-			var fetchWalletList = await WalletDownloadHelper.FetchWalletList(true);
+			var fetchWalletList = await WalletConnectSharp.Unity.Utils.WalletDownloadHelper.FetchWalletList(true);
 
 			foreach (var kvp in fetchWalletList)
 			{
@@ -46,5 +45,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.UI
 		{
 			gameObject.SetActive(isConnected && _isActivated);
 		}
+	#endif
 	}
 }

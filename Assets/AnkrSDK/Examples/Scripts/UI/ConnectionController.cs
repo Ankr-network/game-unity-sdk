@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
 using System;
-using AnkrSDK.WalletConnectSharp.Unity.UI;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -17,8 +16,8 @@ namespace AnkrSDK.UI
 		[SerializeField] private TMP_Text _connectionText;
 		[SerializeField] private Button _loginButton;
 		[SerializeField] private GameObject _sceneChooser;
-		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 	#if !UNITY_WEBGL || UNITY_EDITOR
+		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 		[SerializeField] private AnkrSDK.WalletConnectSharp.Unity.WalletConnect _walletConnect;
 	#endif
 	#if !UNITY_ANDROID && !UNITY_IOS || UNITY_EDITOR
