@@ -5,6 +5,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink
         None,
         MetaMask,
         Trust,
-        Argent
+        Argent,
+        Rainbow,
+        Pillar
     }
 }

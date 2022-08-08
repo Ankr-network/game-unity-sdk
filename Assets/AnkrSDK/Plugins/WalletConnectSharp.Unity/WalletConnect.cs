@@ -400,6 +400,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private async UniTask SetupDefaultWallet()
 		{
+			if (_defaultWallet == Wallets.None)
+			{
+				return;
+			}
+
 			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
 
 			var wallet =
