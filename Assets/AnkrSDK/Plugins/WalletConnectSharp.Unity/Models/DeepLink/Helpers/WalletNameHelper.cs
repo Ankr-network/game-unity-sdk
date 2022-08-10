@@ -11,9 +11,16 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers
 			{ Wallets.Trust, "Trust Wallet" }
 		};
 
+		/// <summary>
+		/// Get Wallet Name is it described in WalletConnect Registry
+		/// </summary>
+		/// <param name="wallets"></param>
+		/// <returns></returns>
 		public static string GetWalletName(this Wallets wallets)
 		{
-			return WalletNames.ContainsKey(wallets) ? WalletNames[wallets] : wallets.ToString();
+			return WalletNames.ContainsKey(wallets)
+				? WalletNames[wallets]
+				: wallets.ToString();
 		}
 
 		public static IEnumerable<string> GetSupportedWalletNames()

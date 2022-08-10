@@ -41,11 +41,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 					return supportedWallets;
 				}
 
-				var supportedWalletNames = WalletNameHelper.GetSupportedWalletNames();
-				var filteredSupportedWallets =
-					supportedWallets
-						.Where(w => supportedWalletNames.Contains(w.Value.name))
-						.ToDictionary(i => i.Key, i => i.Value);
+				var filteredSupportedWallets = GetAllSupportedWallets(supportedWallets);
 				foreach (var wallet in filteredSupportedWallets.Values)
 				{
 					await wallet.DownloadImages();
@@ -53,6 +49,15 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 
 				return filteredSupportedWallets;
 			}
+		}
+
+		private static Dictionary<string, AppEntry> GetAllSupportedWallets(
+			Dictionary<string, AppEntry> walletconnectSupportedWallets)
+		{
+			var walletsSupportedBySDK = WalletNameHelper.GetSupportedWalletNames();
+			return walletconnectSupportedWallets
+				.Where(w => walletsSupportedBySDK.Contains(w.Value.name))
+				.ToDictionary(i => i.Key, i => i.Value);
 		}
 	}
 }
