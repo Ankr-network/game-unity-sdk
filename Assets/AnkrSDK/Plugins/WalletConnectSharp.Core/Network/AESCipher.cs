@@ -69,27 +69,27 @@ namespace AnkrSDK.WalletConnectSharp.Core.Network
             if (encoding == null)
                 encoding = Encoding.UTF8;
             
-            byte[] rawData = encryptedData.data.FromHex();
-            byte[] iv = encryptedData.iv.FromHex();
-            byte[] hmacReceived = encryptedData.hmac.FromHex();
+            var rawData = encryptedData.data.HexToByteArray();
+            var iv = encryptedData.iv.HexToByteArray();
+            var hmacReceived = encryptedData.hmac.HexToByteArray();
 
-            using (HMACSHA256 hmac = new HMACSHA256(key))
+            using (var hmac = new HMACSHA256(key))
             {
                 hmac.Initialize();
 
-                byte[] toSign = new byte[iv.Length + rawData.Length];
+                var toSign = new byte[iv.Length + rawData.Length];
                         
                 //copy our 2 array into one
                 Buffer.BlockCopy(rawData, 0, toSign, 0,rawData.Length);
                 Buffer.BlockCopy(iv, 0, toSign, rawData.Length, iv.Length);
                 
-                byte[] signature = hmac.ComputeHash(toSign);
+                var signature = hmac.ComputeHash(toSign);
 
                 if (!signature.SequenceEqual(hmacReceived))
                     throw new InvalidDataException("HMAC Provided does not match expected"); //Ignore
             }
 
-            using (AesManaged cryptor = new AesManaged())
+            using (var cryptor = new AesManaged())
             {
                 cryptor.Mode = CipherMode.CBC;
                 cryptor.Padding = PaddingMode.PKCS7;
@@ -98,16 +98,16 @@ namespace AnkrSDK.WalletConnectSharp.Core.Network
                 cryptor.IV = iv;
                 cryptor.Key = key;
 
-                ICryptoTransform decryptor = cryptor.CreateDecryptor(cryptor.Key, cryptor.IV);
+                var decryptor = cryptor.CreateDecryptor(cryptor.Key, cryptor.IV);
 
-                using (MemoryStream ms = new MemoryStream(rawData))
+                using (var ms = new MemoryStream(rawData))
                 {
-                    using (MemoryStream sink = new MemoryStream())
+                    using (var sink = new MemoryStream())
                     {
-                        using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                        using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
                         {
-                            int read = 0;
-                            byte[] buffer = new byte[1024];
+                            var read = 0;
+                            var buffer = new byte[1024];
                             do
                             {
                                 read = await cs.ReadAsync(buffer, 0, buffer.Length);
