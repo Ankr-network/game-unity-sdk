@@ -1,25 +1,25 @@
+using System.Collections.Generic;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using Cysharp.Threading.Tasks;
-using Nethereum.Web3;
 
 namespace AnkrSDK.Core
 {
 	public class AnkrSDKWrapper : IAnkrSDK
 	{
 		private readonly IContractFunctions _contractFunctions;
-		private readonly IDisconnectHandler _disconnectHandler;
+		private readonly IWalletHandler _walletHandler;
 		public INetworkHelper NetworkHelper { get; }
 		public IEthHandler Eth { get; }
 
 		public AnkrSDKWrapper(
 			IContractFunctions contractFunctions,
 			IEthHandler eth,
-			IDisconnectHandler disconnectHandler,
+			IWalletHandler disconnectHandler,
 			INetworkHelper networkHelper)
 		{
 			_contractFunctions = contractFunctions;
-			_disconnectHandler = disconnectHandler;
+			_walletHandler = disconnectHandler;
 			NetworkHelper = networkHelper;
 			Eth = eth;
 		}
@@ -36,7 +36,12 @@ namespace AnkrSDK.Core
 
 		public UniTask Disconnect(bool waitForNewSession = true)
 		{
-			return _disconnectHandler.Disconnect(waitForNewSession);
+			return _walletHandler.Disconnect(waitForNewSession);
+		}
+		
+		public UniTask<Dictionary<string, bool>> GetWalletsStatus()
+		{
+			return _walletHandler.GetWalletsStatus();
 		}
 	}
 }

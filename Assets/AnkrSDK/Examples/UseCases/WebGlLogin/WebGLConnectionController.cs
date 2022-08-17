@@ -1,4 +1,5 @@
 using AnkrSDK.Data;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AnkrSDK.Examples.UseCases.WebGlLogin
@@ -14,14 +15,21 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 		[SerializeField]
 		private GameObject _sceneChooser;
 
-		private void Start()
+		private void Awake()
 		{
-			_sceneChooser.SetActive(false);
-			
 			_webGlConnect.OnNeedPanel += ActivatePanel;
 			_webGlConnect.OnConnect += ChangeLoginPanel;
 			_webGlLoginManager.NetworkChosen += OnNetworkChosen;
 			_webGlLoginManager.WalletChosen += OnWalletChosen;
+		}
+
+		private async void Start()
+		{
+			_sceneChooser.SetActive(false);
+
+			var status = await _webGlConnect.GetWalletsStatus();
+			Debug.Log("_____________________");
+			Debug.Log(JsonConvert.SerializeObject(status));
 		}
 
 		private void ActivatePanel()

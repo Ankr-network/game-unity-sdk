@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+
 namespace AnkrSDK.Core.Infrastructure
 {
 	public interface IAnkrSDK
@@ -6,5 +9,6 @@ namespace AnkrSDK.Core.Infrastructure
 		INetworkHelper NetworkHelper { get; }
 		IContract GetContract(string contractAddress, string contractABI);
 		IContractEventSubscriber CreateSubscriber(string wsUrl);
+		UniTask<Dictionary<string, bool>> GetWalletsStatus();
 	}
 }

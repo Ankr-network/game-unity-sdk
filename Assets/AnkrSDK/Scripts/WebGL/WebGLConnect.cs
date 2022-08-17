@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AnkrSDK.Data;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace AnkrSDK.WebGl
 		private async void Awake()
 		{
 #if UNITY_WEBGL
+			Session = new WebGL.WebGLWrapper();
 			DontDestroyOnLoad(this);
 			if (_connectOnAwake)
 			{
@@ -32,6 +34,7 @@ namespace AnkrSDK.WebGl
 		private async void Start()
 		{
 #if UNITY_WEBGL
+			Session = new WebGL.WebGLWrapper();
 			DontDestroyOnLoad(this);
 			if (_connectOnStart)
 			{
@@ -42,7 +45,6 @@ namespace AnkrSDK.WebGl
 
 		private async UniTask Connect()
 		{
-			Session = new WebGL.WebGLWrapper();
 			var wallet = _defaultWallet;
 			if (wallet == WebGL.SupportedWallets.None)
 			{
@@ -52,6 +54,11 @@ namespace AnkrSDK.WebGl
 			}
 			await Session.ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_defaultNetwork));
 			OnConnect?.Invoke(Session);
+		}
+
+		public UniTask<Dictionary<string, bool>> GetWalletsStatus()
+		{
+			return Session.GetWalletsStatus();
 		}
 
 		public void SetWallet(WebGL.SupportedWallets wallet)
