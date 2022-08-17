@@ -577,7 +577,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			if (TransportConnected)
 			{
-				DisconnectTransport();
+				DisconnectTransport().ConfigureAwait(false);
 			}
 
 			ActiveTopics.Clear();
