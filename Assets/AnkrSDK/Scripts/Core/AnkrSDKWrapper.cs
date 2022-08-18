@@ -8,7 +8,7 @@ namespace AnkrSDK.Core
 	public class AnkrSDKWrapper : IAnkrSDK
 	{
 		private readonly IContractFunctions _contractFunctions;
-		private readonly IWalletHandler _walletHandler;
+		public IWalletHandler WalletHandler { get; }
 		public INetworkHelper NetworkHelper { get; }
 		public IEthHandler Eth { get; }
 
@@ -19,7 +19,7 @@ namespace AnkrSDK.Core
 			INetworkHelper networkHelper)
 		{
 			_contractFunctions = contractFunctions;
-			_walletHandler = disconnectHandler;
+			WalletHandler = disconnectHandler;
 			NetworkHelper = networkHelper;
 			Eth = eth;
 		}
@@ -32,16 +32,6 @@ namespace AnkrSDK.Core
 		public IContractEventSubscriber CreateSubscriber(string wsUrl)
 		{
 			return new ContractEventSubscriber(wsUrl);
-		}
-
-		public UniTask Disconnect(bool waitForNewSession = true)
-		{
-			return _walletHandler.Disconnect(waitForNewSession);
-		}
-		
-		public UniTask<Dictionary<string, bool>> GetWalletsStatus()
-		{
-			return _walletHandler.GetWalletsStatus();
 		}
 	}
 }

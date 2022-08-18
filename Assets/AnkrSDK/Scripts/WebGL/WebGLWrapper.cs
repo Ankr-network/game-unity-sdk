@@ -3,13 +3,12 @@ using Nethereum.Hex.HexTypes;
 using AnkrSDK.Core.Infrastructure;
 using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
-using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using System.Numerics;
 using AnkrSDK.Data;
+using Newtonsoft.Json;
 
 namespace AnkrSDK.WebGL
 {
@@ -43,7 +42,7 @@ namespace AnkrSDK.WebGL
 			}
 		}
 		
-		public async UniTask<Dictionary<string, bool>> GetWalletsStatus()
+		public async UniTask<WalletsStatus> GetWalletsStatus()
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetWalletsStatus(id);
@@ -52,7 +51,7 @@ namespace AnkrSDK.WebGL
 
 			if (answer.status == WebGLMessageStatus.Success)
 			{
-				var payload = JsonConvert.DeserializeObject<Dictionary<string, bool>>(answer.payload);
+				var payload = JsonConvert.DeserializeObject<WalletsStatus>(answer.payload);
 				return payload;
 			}
 

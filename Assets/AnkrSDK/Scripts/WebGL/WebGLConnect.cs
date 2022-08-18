@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AnkrSDK.Data;
 using AnkrSDK.Utils;
+using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -22,25 +24,27 @@ namespace AnkrSDK.WebGl
 	#if UNITY_WEBGL
 		private async void Awake()
 		{
-			DontDestroyOnLoad(this);
 			if (_connectOnAwake)
 			{
-				Session = new WebGL.WebGLWrapper();
-				await Connect(); 
+				await Initialize();
 			}
 		}
 
 		private async void Start()
 		{
-			DontDestroyOnLoad(this);
 			if (_connectOnStart)
 			{
-				Session = new WebGL.WebGLWrapper();
-				await Connect(); 
+				await Initialize();
 			}
 		}
 	#endif
 
+		private async Task Initialize()
+		{
+			DontDestroyOnLoad(this);
+			Session = new WebGL.WebGLWrapper();
+			await Connect();
+		}
 
 		private async UniTask Connect()
 		{
@@ -56,7 +60,7 @@ namespace AnkrSDK.WebGl
 			OnConnect?.Invoke(Session);
 		}
 
-		public UniTask<Dictionary<string, bool>> GetWalletsStatus()
+		public UniTask<WalletsStatus> GetWalletsStatus()
 		{
 			return Session.GetWalletsStatus();
 		}

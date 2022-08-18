@@ -7,8 +7,8 @@ namespace AnkrSDK.Core.Infrastructure
 	{
 		IEthHandler Eth { get; }
 		INetworkHelper NetworkHelper { get; }
+		IWalletHandler WalletHandler { get; }
 		IContract GetContract(string contractAddress, string contractABI);
 		IContractEventSubscriber CreateSubscriber(string wsUrl);
-		UniTask<Dictionary<string, bool>> GetWalletsStatus();
 	}
 }
