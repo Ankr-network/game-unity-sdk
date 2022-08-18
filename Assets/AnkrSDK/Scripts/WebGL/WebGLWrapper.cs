@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using AnkrSDK.Data;
-using UnityEngine;
 
 namespace AnkrSDK.WebGL
 {

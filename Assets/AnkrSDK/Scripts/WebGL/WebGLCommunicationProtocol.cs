@@ -4,7 +4,6 @@ using System.Threading;
 using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace AnkrSDK.WebGL
 {
@@ -34,22 +33,17 @@ namespace AnkrSDK.WebGL
 		
 		public string GenerateId()
 		{
-			Debug.Log("----------- GenerateId -----------");
 			var id = Guid.NewGuid().ToString();
 			
 			var completionTask = new UniTaskCompletionSource<WebGLMessageDTO>();
 			_completionSources.Add(id, completionTask);
-			
-			Debug.Log(JsonConvert.SerializeObject(_completionSources));
-			
+						
 			return id;
 		}
 
 		public async UniTask<WebGLMessageDTO> WaitForAnswer(string id)
 		{
-			Debug.Log("----------- WaitForAnswer -----------");
 			var completionTask = _completionSources[id];
-			Debug.Log("ids = " + JsonConvert.SerializeObject(_completionSources));
 			var answer = await completionTask.Task;
 			_completionSources.Remove(id);
 			
@@ -58,7 +52,6 @@ namespace AnkrSDK.WebGL
 
 		public void Disconnect()
 		{
-			Debug.Log("----------- Disconnect -----------");
 			_cancellationTokenSource.Cancel();
 			if (_completionSources.Count > 0)
 			{
@@ -69,8 +62,7 @@ namespace AnkrSDK.WebGL
 		private void ReceiveMessages()
 		{
 			var json = WebGLInterlayer.GetResponses();
-			Debug.Log(json);
-			if (json.Length <= 0)
+			if (String.IsNullOrEmpty(json))
 			{
 				return;
 			}
@@ -79,13 +71,8 @@ namespace AnkrSDK.WebGL
 
 			foreach (var message in messages)
 			{
-				Debug.Log("||||| 1 |||||");
-				Debug.Log("message.id = " + message.id);
-				Debug.Log("ids = " + JsonConvert.SerializeObject(_completionSources));
-				Debug.Log("contains id = " + _completionSources.ContainsKey(message.id));
 				if (_completionSources.ContainsKey(message.id))
 				{
-					Debug.Log("||||| 2 |||||");
 					var completionSource = _completionSources[message.id];
 					completionSource.TrySetResult(message);
 				}
@@ -94,7 +81,6 @@ namespace AnkrSDK.WebGL
 
 		private void CompleteAllSources()
 		{
-			Debug.Log("----------- CompleteAllSources -----------");
 			foreach (var entry in _completionSources)
 			{
 				var answer = new WebGLMessageDTO

@@ -23,13 +23,9 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 			_webGlLoginManager.WalletChosen += OnWalletChosen;
 		}
 
-		private async void Start()
+		private void Start()
 		{
 			_sceneChooser.SetActive(false);
-
-			var status = await _webGlConnect.GetWalletsStatus();
-			Debug.Log("_____________________");
-			Debug.Log(JsonConvert.SerializeObject(status));
 		}
 
 		private void ActivatePanel()

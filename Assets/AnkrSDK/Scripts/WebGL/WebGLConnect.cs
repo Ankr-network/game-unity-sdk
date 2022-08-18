@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace AnkrSDK.WebGl
 {
-	public class WebGLConnect : MonoBehaviour
+	public class  WebGLConnect : MonoBehaviour
 	{		
 		[SerializeField] private WebGL.SupportedWallets _defaultWallet = WebGL.SupportedWallets.None;
 		[SerializeField] private NetworkName _defaultNetwork = NetworkName.Rinkeby;
@@ -22,10 +22,10 @@ namespace AnkrSDK.WebGl
 		private async void Awake()
 		{
 #if UNITY_WEBGL
-			Session = new WebGL.WebGLWrapper();
 			DontDestroyOnLoad(this);
 			if (_connectOnAwake)
 			{
+				Session = new WebGL.WebGLWrapper();
 				await Connect(); 
 			}
 #endif
@@ -34,10 +34,10 @@ namespace AnkrSDK.WebGl
 		private async void Start()
 		{
 #if UNITY_WEBGL
-			Session = new WebGL.WebGLWrapper();
 			DontDestroyOnLoad(this);
 			if (_connectOnStart)
 			{
+				Session = new WebGL.WebGLWrapper();
 				await Connect(); 
 			}
 #endif
