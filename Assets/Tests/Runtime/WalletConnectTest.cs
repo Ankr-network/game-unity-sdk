@@ -1,17 +1,14 @@
 using System;
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Unity;
-using AnkrSDK.WalletConnectSharp.Unity.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
+using Cysharp.Threading.Tasks;
 using NUnit.Framework;
-using TestUtils;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
-namespace PlayModeTests
+namespace Tests.Runtime
 {
 	public class WalletConnectTests
 	{
@@ -26,7 +23,7 @@ namespace PlayModeTests
 
 			SessionSaveHandler.ClearSession();
 
-			var walletConnect = TestHelper.CreateWalletConnectObject();
+			var walletConnect = WalletHelper.CreateWalletConnectObject();
 			walletConnect.ConnectOnStart = true;
 			yield return UniTask.ToCoroutine(async () =>
 			{
@@ -59,7 +56,7 @@ namespace PlayModeTests
 		[Test]
 		public void WalletConnect_DefaultSessionIsUnInitialized()
 		{
-			var walletConnect = TestHelper.CreateWalletConnectObject();
+			var walletConnect = WalletHelper.CreateWalletConnectObject();
 			Assert.IsNull(walletConnect.Session);
 
 			Object.DestroyImmediate(walletConnect.gameObject);
@@ -68,7 +65,7 @@ namespace PlayModeTests
 		[Test]
 		public void WalletConnect_SessionConnection()
 		{
-			var walletConnect = TestHelper.CreateWalletConnectObject();
+			var walletConnect = WalletHelper.CreateWalletConnectObject();
 			walletConnect.InitializeUnitySession();
 			var session = walletConnect.Session;
 			Assert.IsNotNull(session);

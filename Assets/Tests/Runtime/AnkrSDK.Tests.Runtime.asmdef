@@ -1,7 +1,6 @@
 {
-    "name": "PlayModeTests",
+    "name": "AnkrSDK.Tests.Runtime",
     "references": [
-        "TestUtils",
         "UniTask",
         "WalletConnectSharp",
         "WalletConnectSharp.Core"

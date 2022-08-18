@@ -3,35 +3,10 @@ using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WalletConnectSharp.Unity.Network;
 using UnityEngine;
 
-namespace TestUtils
+namespace Tests.Runtime
 {
-	public static class TestHelper
+	public static class WalletHelper
 	{
-		public static SavedSession GetTestSession()
-		{
-			var clientMeta = new ClientMeta
-			{
-				_description = string.Empty,
-				_icons = new[] { string.Empty },
-				_name = string.Empty,
-				_url = string.Empty
-			};
-			var testSession = new SavedSession(
-				string.Empty,
-				long.MinValue,
-				string.Empty,
-				string.Empty,
-				new[] { byte.MinValue },
-				string.Empty,
-				0,
-				new[] { string.Empty },
-				0,
-				clientMeta,
-				clientMeta
-			);
-			return testSession;
-		}
-
 		public static WalletConnect CreateWalletConnectObject()
 		{
 			var walletConnectObject = new GameObject("WalletConnect");

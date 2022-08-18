@@ -8,7 +8,7 @@ using UnityEditor.Build.Player;
 using UnityEditor.Compilation;
 using UnityEngine;
 
-namespace Tests
+namespace Tests.Editor
 {
 	public class CompilationTest
 	{

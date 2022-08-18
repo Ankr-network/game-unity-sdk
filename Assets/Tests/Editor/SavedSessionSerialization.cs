@@ -1,9 +1,8 @@
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using NUnit.Framework;
-using TestUtils;
 
-namespace Tests
+namespace Tests.Editor
 {
 	public class SavedSessionSerialization
 	{
@@ -31,7 +30,7 @@ namespace Tests
 				savedSessionBeforeTest = SessionSaveHandler.GetSavedSession();
 			}
 
-			var testSession = TestHelper.GetTestSession();
+			var testSession = SessionHelper.GetTestSession();
 
 			SessionSaveHandler.SaveSession(testSession);
 			Assert.That(SessionSaveHandler.IsSessionSaved, "Session was not saved at all");
@@ -51,7 +50,7 @@ namespace Tests
 		[Test]
 		public void SavedSession_TestEquality()
 		{
-			var session = TestHelper.GetTestSession();
+			var session = SessionHelper.GetTestSession();
 
 			Assert.That(session.Equals(session));
 		}
@@ -59,7 +58,7 @@ namespace Tests
 		[Test]
 		public void SavedSession_IsEqualsToNull()
 		{
-			var session = TestHelper.GetTestSession();
+			var session = SessionHelper.GetTestSession();
 			
 			Assert.AreNotEqual(session, null);
 		}
@@ -67,7 +66,7 @@ namespace Tests
 		[Test]
 		public void SavedSession_IsSessionNotSameToNull()
 		{
-			var session = TestHelper.GetTestSession();
+			var session = SessionHelper.GetTestSession();
 			
 			Assert.AreNotSame(session, null);
 		}
@@ -75,7 +74,7 @@ namespace Tests
 		[Test]
 		public void SavedSession_IsSessionsSame()
 		{
-			var session = TestHelper.GetTestSession();
+			var session = SessionHelper.GetTestSession();
 			
 			Assert.AreSame(session, session);
 		}
@@ -83,8 +82,8 @@ namespace Tests
 		[Test]
 		public void SavedSession_IsSessionsSameByValue()
 		{
-			var session1 = TestHelper.GetTestSession();
-			var session2 = TestHelper.GetTestSession();
+			var session1 = SessionHelper.GetTestSession();
+			var session2 = SessionHelper.GetTestSession();
 			
 			Assert.That(session1 == session2);
 		}
@@ -92,8 +91,8 @@ namespace Tests
 		[Test]
 		public void SavedSession_TestValueEquality()
 		{
-			var session1 = TestHelper.GetTestSession();
-			var session2 = TestHelper.GetTestSession();
+			var session1 = SessionHelper.GetTestSession();
+			var session2 = SessionHelper.GetTestSession();
 
 			Assert.AreEqual(session1, session2);
 		}

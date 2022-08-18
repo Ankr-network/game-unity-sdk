@@ -1,8 +1,7 @@
 {
-    "name": "Tests",
+    "name": "AnkrSDK.Tests.Editor",
     "rootNamespace": "",
     "references": [
-        "TestUtils",
         "UnityEditor.TestRunner",
         "WalletConnectSharp",
         "WalletConnectSharp.Core"
