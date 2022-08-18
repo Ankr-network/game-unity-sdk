@@ -1,0 +1,11 @@
+{
+    "name": "com.Ankr.AnkrSDK",
+    "displayName": "AnkrSDK",
+    "author": { "name": "Ankr, Inc.", "url": "https://www.ankr.com/gaming/" },
+    "version": "0.4.2",
+    "unity": "2019.0",
+    "description": "Provides an easy way to interact with Web3 and possibility to work with contracts deployed on the blockchain.",
+    "keywords": [ "Web3", "blockchain", "gaming", "AnkrSDK" ],
+    "license": "MIT",
+    "dependencies": {}
+}
