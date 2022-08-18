@@ -74,9 +74,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
                 encoding = Encoding.UTF8;
             }
 
-            var rawData = encryptedData.data.FromHex();
-            var iv = encryptedData.iv.FromHex();
-            var hmacReceived = encryptedData.hmac.FromHex();
+            var rawData = encryptedData.data.HexToByteArray();
+            var iv = encryptedData.iv.HexToByteArray();
+            var hmacReceived = encryptedData.hmac.HexToByteArray();
 
             using (var hmac = new HMACSHA256(key))
             {

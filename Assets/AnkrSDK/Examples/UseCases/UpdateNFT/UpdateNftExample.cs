@@ -88,11 +88,19 @@ namespace AnkrSDK.UseCases.UpdateNFT
 			var request = UnityWebRequest.Get(URL + $"hero/{tokenId}");
 			var webRequest = await request.SendWebRequest();
 
+		#if UNITY_2020_2_OR_NEWER
+			if (webRequest.result == UnityWebRequest.Result.Success)
+			{
+				var data = JsonConvert.DeserializeObject<ItemInfo>(webRequest.downloadHandler.text);
+				return data;
+			}
+		#else
 			if (!webRequest.isHttpError && !webRequest.isNetworkError)
 			{
 				var data = JsonConvert.DeserializeObject<ItemInfo>(webRequest.downloadHandler.text);
 				return data;
 			}
+		#endif
 
 			Debug.LogError($"Error during requesting NFT Params. {request.error}");
 			return null;
