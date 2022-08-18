@@ -1,5 +1,4 @@
 using AnkrSDK.Data;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AnkrSDK.Examples.UseCases.WebGlLogin
