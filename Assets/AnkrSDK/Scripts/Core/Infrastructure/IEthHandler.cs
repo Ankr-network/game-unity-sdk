@@ -38,5 +38,6 @@ namespace AnkrSDK.Core.Infrastructure
 		Task<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block);
 		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash);
 		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block);
+		Task<BigInteger> GetChainId();
 	}
 }

@@ -40,6 +40,16 @@ namespace AnkrSDK.Mobile
 			return Task.FromResult(activeSessionAccount);
 		}
 
+		public Task<BigInteger> GetChainId()
+		{
+			if (_walletConnect.Session == null)
+			{
+				throw new Exception("Application is not linked to wallet");
+			}
+			var chainId = _walletConnect.Session.ChainId;
+			return Task.FromResult(new BigInteger(chainId));
+		}
+
 		public Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
 			return _web3Provider.TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash);

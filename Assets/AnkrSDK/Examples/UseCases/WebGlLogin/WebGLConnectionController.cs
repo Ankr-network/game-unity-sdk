@@ -14,14 +14,17 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 		[SerializeField]
 		private GameObject _sceneChooser;
 
-		private void Start()
+		private void Awake()
 		{
-			_sceneChooser.SetActive(false);
-			
 			_webGlConnect.OnNeedPanel += ActivatePanel;
 			_webGlConnect.OnConnect += ChangeLoginPanel;
 			_webGlLoginManager.NetworkChosen += OnNetworkChosen;
 			_webGlLoginManager.WalletChosen += OnWalletChosen;
+		}
+
+		private void Start()
+		{
+			_sceneChooser.SetActive(false);
 		}
 
 		private void ActivatePanel()

@@ -22,17 +22,17 @@ namespace AnkrSDK.Provider
 			var webGlWrapper = Utils.ConnectProvider<WebGl.WebGLConnect>.GetWalletConnect().Session;
 			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
 			var eth = new WebGL.Implementation.EthHandlerWebGL(webGlWrapper);
-			var disconnectHandler = (IDisconnectHandler)webGlWrapper;
+			var walletHandler = (IWalletHandler)webGlWrapper;
 			var networkHandler = new WebGL.Implementation.AnkrNetworkWebGLHelper(webGlWrapper);
 		#else
 			var web3Provider = new Mobile.MobileWeb3Provider().CreateWeb3(providerURI);
 			var contractFunctions = new Mobile.ContractFunctions(web3Provider);
 			var eth = new Mobile.EthHandler(web3Provider);
-			var disconnectHandler = new Mobile.MobileDisconnectHandler();
+			var walletHandler = new Mobile.MobileWalletHandler();
 			var networkHandler = new Mobile.AnkrNetworkHelper();
 		#endif
 
-			return new AnkrSDKWrapper(contractFunctions, eth, disconnectHandler, networkHandler);
+			return new AnkrSDKWrapper(contractFunctions, eth, walletHandler, networkHandler);
 		}
 	}
 }

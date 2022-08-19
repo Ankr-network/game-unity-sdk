@@ -3,15 +3,16 @@ using Nethereum.Hex.HexTypes;
 using AnkrSDK.Core.Infrastructure;
 using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
-using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Numerics;
 using AnkrSDK.Data;
+using Newtonsoft.Json;
 
 namespace AnkrSDK.WebGL
 {
-	public class WebGLWrapper : IDisconnectHandler
+	public class WebGLWrapper : IWalletHandler
 	{
 		private readonly WebGLCommunicationProtocol _protocol;
 
@@ -39,6 +40,22 @@ namespace AnkrSDK.WebGL
 			{
 				throw new Exception(answer.payload);
 			}
+		}
+		
+		public async UniTask<WalletsStatus> GetWalletsStatus()
+		{
+			var id = _protocol.GenerateId();
+			WebGLInterlayer.GetWalletsStatus(id);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Success)
+			{
+				var payload = JsonConvert.DeserializeObject<WalletsStatus>(answer.payload);
+				return payload;
+			}
+
+			throw new Exception(answer.payload);
 		}
 
 		public UniTask Disconnect(bool waitForNewSession = true)
@@ -127,6 +144,22 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
+		public async Task<BigInteger> GetChainId()
+		{
+			var id = _protocol.GenerateId();
+			WebGLInterlayer.GetChainId(id);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Success)
+			{
+				var payload = JsonConvert.DeserializeObject<WebGLCallAnswer<HexBigInteger>>(answer.payload);
+				return payload.Result.Value;
+			}
+
+			throw new Exception(answer.payload);
+		}
+
 		public async Task<Transaction> GetTransaction(string transactionHash)
 		{
 			var id = _protocol.GenerateId();
@@ -156,7 +189,7 @@ namespace AnkrSDK.WebGL
 				throw new Exception(answer.payload);
 			}
 		}
-		
+
 		public async Task<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
 		{
 			var id = _protocol.GenerateId();
@@ -168,7 +201,7 @@ namespace AnkrSDK.WebGL
 			if (answer.status == WebGLMessageStatus.Success)
 			{
 				var callAnswer = JsonConvert.DeserializeObject<WebGLCallAnswer<TReturnType>>(answer.payload);
-			
+
 				return callAnswer.Result;
 			}
 
