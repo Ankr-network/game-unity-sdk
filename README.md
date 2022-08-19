@@ -47,6 +47,21 @@ The Ankr Unity SDK provides an easy way to interact with Web3 and to work with c
 
 3. 'Import all' to have access to all SDK capabilities.
 
+### Install via git URL
+Requires a version of unity that supports path query parameter for git packages (Unity >= 2019.3.4f1, Unity >= 2020.1a21). You can add https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK to Package Manager
+![image](https://user-images.githubusercontent.com/9112595/185632883-66555321-a6be-4a57-826b-9b28a10f580c.png)
+<img width="306" alt="image" src="https://user-images.githubusercontent.com/9112595/185633212-27fe4160-c4b4-4320-b0f8-f60d401f6002.png">
+
+or add "com.ankr.ankrsdk": "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK" to Packages/manifest.json
+
+### Install via OpenUPM
+
+The package is available on the [openupm registry](https://openupm.com). It's recommended to install it via [openupm-cli](https://github.com/openupm/openupm-cli).
+
+```
+openupm add com.ankr.ankrsdk
+```
+
 ## 👀 What's in the SDK
 
 The SDK is designed to make it super easy to get started with Game development by enabling connection and interaction across different blockchains. 

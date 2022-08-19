@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace AnkrSDK.WebGL
@@ -6,6 +7,9 @@ namespace AnkrSDK.WebGL
 	{
 		[DllImport("__Internal")]
 		public static extern void CreateProvider(string id, string payload);
+		
+		[DllImport("__Internal")]
+		public static extern void GetWalletsStatus(string id);
 		
 		[DllImport("__Internal")]
 		public static extern void SendTransaction(string id, string payload);
@@ -21,6 +25,9 @@ namespace AnkrSDK.WebGL
 
 		[DllImport("__Internal")]
 		public static extern void GetAddresses(string id);
+		
+		[DllImport("__Internal")]
+		public static extern void GetChainId(string id);
 
 		[DllImport("__Internal")]
 		public static extern void GetTransaction(string id, string transactionHash);

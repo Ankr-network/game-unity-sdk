@@ -1,0 +1,11 @@
+{
+    "name": "AnkrSDK.Tests.Runtime",
+    "references": [
+        "UniTask",
+        "WalletConnectSharp",
+        "WalletConnectSharp.Core"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

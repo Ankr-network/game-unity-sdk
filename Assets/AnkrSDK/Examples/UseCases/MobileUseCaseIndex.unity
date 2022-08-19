@@ -286,8 +286,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultWallet: 0
   _defaultNetwork: 1
-  _connectOnAwake: 0
-  _connectOnStart: 1
+  _connectOnAwake: 1
+  _connectOnStart: 0
 --- !u!1 &436313773
 GameObject:
   m_ObjectHideFlags: 0

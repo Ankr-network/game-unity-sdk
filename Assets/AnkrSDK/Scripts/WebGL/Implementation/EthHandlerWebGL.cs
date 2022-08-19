@@ -108,6 +108,11 @@ namespace AnkrSDK.WebGL.Implementation
 			var balance = await _webGlWrapper.CallMethod<BigInteger>(callObject);
 			return balance;
 		}
+		
+		public Task<BigInteger> GetChainId()
+		{
+			return _webGlWrapper.GetChainId();
+		}
 
 		public Task<BigInteger> GetBlockNumber()
 		{

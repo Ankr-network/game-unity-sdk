@@ -30,14 +30,14 @@ namespace AnkrSDK.WebGL
 				await UniTask.Yield(PlayerLoopTiming.Update);
 			}
 		}
-		
+
 		public string GenerateId()
 		{
 			var id = Guid.NewGuid().ToString();
-			
+
 			var completionTask = new UniTaskCompletionSource<WebGLMessageDTO>();
 			_completionSources.Add(id, completionTask);
-			
+
 			return id;
 		}
 
@@ -62,7 +62,7 @@ namespace AnkrSDK.WebGL
 		private void ReceiveMessages()
 		{
 			var json = WebGLInterlayer.GetResponses();
-			if (json.Length <= 0)
+			if (String.IsNullOrEmpty(json))
 			{
 				return;
 			}
