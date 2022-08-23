@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using AnkrSDK.Data;
 
 namespace AnkrSDK.WebGL.DTO
 {
-	public class WalletsStatus : Dictionary<string, bool>
+	public class WalletsStatus : Dictionary<Wallet, bool>
 	{
 		
 	}
