@@ -1,15 +1,9 @@
 {
-    "name": "AnkrSDK.WebGL",
-    "references": [
-        "AnkrSDK.Core.Infrastructure",
-        "AnkrSDK.Data",
-        "AnkrSDK.Utils",
-        "AnkrSDK.Tools",
-        "UniTask"
-    ],
+    "name": "AnkrSDK.Tools",
+    "rootNamespace": "",
+    "references": [],
     "includePlatforms": [
-        "Editor",
-        "WebGL"
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -22,7 +22,7 @@ namespace AnkrSDK.WebGL
 			_protocol.StartReceiveCycle().Forget();
 		}
 
-		public async UniTask ConnectTo(SupportedWallets wallet, EthereumNetwork chain)
+		public async UniTask ConnectTo(Wallet wallet, EthereumNetwork chain)
 		{
 			var id = _protocol.GenerateId();
 			var connectionProps = new ConnectionProps

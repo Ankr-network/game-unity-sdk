@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AnkrSDK.Data;
+using AnkrSDK.Tools;
 using AnkrSDK.Utils;
 using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
@@ -10,13 +10,14 @@ using UnityEngine;
 namespace AnkrSDK.WebGl
 {
 	public class WebGLConnect : MonoBehaviour
-	{
-		[SerializeField] private WebGL.SupportedWallets _defaultWallet = WebGL.SupportedWallets.None;
+	{		
+		[SerializeField, CustomDropdown(typeof(SupportedWallets), "GetWebGLWallets")]
+		private Wallet _defaultWallet = Wallet.None;
 		[SerializeField] private NetworkName _defaultNetwork = NetworkName.Rinkeby;
 		[SerializeField] private bool _connectOnAwake;
 		[SerializeField] private bool _connectOnStart = true;
 
-		private UniTaskCompletionSource<WebGL.SupportedWallets> _walletCompletionSource;
+		private UniTaskCompletionSource<Wallet> _walletCompletionSource;
 		public WebGL.WebGLWrapper Session { get; private set; }
 		public Action OnNeedPanel;
 		public Action<WebGL.WebGLWrapper> OnConnect;
@@ -49,10 +50,10 @@ namespace AnkrSDK.WebGl
 		private async UniTask Connect()
 		{
 			var wallet = _defaultWallet;
-			if (wallet == WebGL.SupportedWallets.None)
+			if (wallet == Wallet.None)
 			{
 				OnNeedPanel?.Invoke();
-				_walletCompletionSource = new UniTaskCompletionSource<WebGL.SupportedWallets>();
+				_walletCompletionSource = new UniTaskCompletionSource<Wallet>();
 				wallet = await _walletCompletionSource.Task;
 			}
 
@@ -65,7 +66,7 @@ namespace AnkrSDK.WebGl
 			return Session.GetWalletsStatus();
 		}
 
-		public void SetWallet(WebGL.SupportedWallets wallet)
+		public void SetWallet(Wallet wallet)
 		{
 			_walletCompletionSource.TrySetResult(wallet);
 		}

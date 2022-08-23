@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2433bf304141d5bae572b3517b025f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultWallet: 0
+  _defaultWallet: 1
   _defaultNetwork: 1
   _connectOnAwake: 1
   _connectOnStart: 0
