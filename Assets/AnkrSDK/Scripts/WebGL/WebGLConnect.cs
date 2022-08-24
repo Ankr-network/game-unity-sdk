@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using AnkrSDK.Data;
-using AnkrSDK.Tools;
 using AnkrSDK.Utils;
 using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
@@ -11,7 +10,7 @@ namespace AnkrSDK.WebGl
 {
 	public class WebGLConnect : MonoBehaviour
 	{		
-		[SerializeField, CustomDropdown(typeof(SupportedWallets), "GetWebGLWallets")]
+		[SerializeField, Tools.CustomDropdown(typeof(SupportedWallets), "GetWebGLWallets")]
 		private Wallet _defaultWallet = Wallet.None;
 		[SerializeField] private NetworkName _defaultNetwork = NetworkName.Rinkeby;
 		[SerializeField] private bool _connectOnAwake;
