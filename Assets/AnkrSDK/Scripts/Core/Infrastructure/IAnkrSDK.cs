@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
-
 namespace AnkrSDK.Core.Infrastructure
 {
 	public interface IAnkrSDK

@@ -21,29 +21,34 @@ namespace AnkrSDK.WebGl
 		public Action OnNeedPanel;
 		public Action<WebGL.WebGLWrapper> OnConnect;
 
-	#if UNITY_WEBGL
-		private async void Awake()
+	#if !UNITY_WEBGL || UNITY_EDITOR
+		private void Awake()
+		{
+			gameObject.SetActive(false);
+		}
+	#else
+		private void Awake()
 		{
 			if (_connectOnAwake)
 			{
-				await Initialize();
+				Initialize().Forget();
 			}
 		}
 
-		private async void Start()
+		private void Start()
 		{
 			if (_connectOnStart)
 			{
-				await Initialize();
+				Initialize().Forget();
 			}
 		}
 	#endif
 
-		private async Task Initialize()
+		private UniTask Initialize()
 		{
 			DontDestroyOnLoad(this);
 			Session = new WebGL.WebGLWrapper();
-			await Connect();
+			return Connect();
 		}
 
 		private async UniTask Connect()
