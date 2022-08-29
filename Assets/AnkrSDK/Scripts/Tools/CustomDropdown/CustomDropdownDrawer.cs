@@ -42,10 +42,7 @@ namespace AnkrSDK.Tools
 		
 		private void HandleEnumVar(Rect position, SerializedProperty property, string[] options)
 		{
-			var index = Mathf.Max(0, property.enumValueIndex);
-			index = EditorGUI.Popup(position, property.displayName, index, options);
-								
-			property.enumValueIndex = index;
+			property.enumValueIndex = EditorGUI.Popup(position, property.displayName, property.enumValueIndex, options);		
 		}
 		
 		private void HandleIntVar(Rect position, SerializedProperty property, string[] options)

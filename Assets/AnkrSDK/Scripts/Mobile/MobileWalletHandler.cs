@@ -19,10 +19,9 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<WalletsStatus> GetWalletsStatus()
 		{
-			var isConnected = _walletConnect?.Session?.Accounts?.Length > 0;
 			var status = new WalletsStatus
 			{
-				{Wallet.Metamask, isConnected}
+				{Wallet.Unknown, false}
 			};
 			return UniTask.FromResult(status);
 		}

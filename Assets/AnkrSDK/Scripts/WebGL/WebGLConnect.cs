@@ -56,6 +56,11 @@ namespace AnkrSDK.WebGl
 				wallet = await _walletCompletionSource.Task;
 			}
 
+			await Connect(wallet);
+		}
+		
+		public async UniTask Connect(Wallet wallet)
+		{
 			await Session.ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_defaultNetwork));
 			OnConnect?.Invoke(Session);
 		}

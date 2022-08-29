@@ -5,6 +5,9 @@ namespace AnkrSDK.WebGL.DTO
 {
 	public class WalletsStatus : Dictionary<Wallet, bool>
 	{
-		
+		public WalletsStatus()
+		{
+			
+		}
 	}
 }

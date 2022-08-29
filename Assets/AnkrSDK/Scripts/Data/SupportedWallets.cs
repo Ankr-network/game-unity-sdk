@@ -14,13 +14,19 @@ namespace AnkrSDK.Data
 		{
 			Wallet.None,
 			Wallet.Metamask,
-			Wallet.Trust
+			Wallet.Trust,
+			Wallet.Argent,
+			Wallet.Rainbow,
+			Wallet.Pillar
 		};
 		public static Wallet[] Standalone =
 		{
 			Wallet.None,
 			Wallet.Metamask,
-			Wallet.Trust
+			Wallet.Trust,
+			Wallet.Argent,
+			Wallet.Rainbow,
+			Wallet.Pillar
 		};
 
 		public static string[] GetWebGLWallets()
