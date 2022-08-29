@@ -21,7 +21,7 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 
 		private List<string> _networks;
 
-		public Action<WebGL.SupportedWallets> WalletChosen;
+		public Action<Wallet> WalletChosen;
 		public Action<NetworkName> NetworkChosen;
 
 		private void Start()
@@ -60,7 +60,7 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 			NetworkChosen?.Invoke(network);
 		}
 
-		private void OnWalletClick(WebGL.SupportedWallets wallet)
+		private void OnWalletClick(Wallet wallet)
 		{
 			WalletChosen?.Invoke(wallet);
 		}

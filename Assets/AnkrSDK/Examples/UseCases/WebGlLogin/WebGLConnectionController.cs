@@ -43,7 +43,7 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 			_webGlConnect.SetNetwork(network);
 		}
 		
-		private void OnWalletChosen(WebGL.SupportedWallets wallet)
+		private void OnWalletChosen(Wallet wallet)
 		{
 			_webGlConnect.SetWallet(wallet);
 		}

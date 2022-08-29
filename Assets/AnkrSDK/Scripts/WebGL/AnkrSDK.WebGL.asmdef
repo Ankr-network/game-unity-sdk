@@ -3,6 +3,7 @@
     "references": [
         "AnkrSDK.Core.Infrastructure",
         "AnkrSDK.Data",
+        "AnkrSDK.Tools",
         "AnkrSDK.Utils",
         "UniTask"
     ],

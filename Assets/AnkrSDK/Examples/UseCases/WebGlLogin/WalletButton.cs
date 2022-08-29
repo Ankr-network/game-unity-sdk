@@ -1,4 +1,5 @@
 using System;
+using AnkrSDK.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 		[SerializeField]
 		private Button _button;
 		
-		public Action<WebGL.SupportedWallets> OnClickHandler;
+		public Action<Wallet> OnClickHandler;
 
 		private void Start()
 		{
