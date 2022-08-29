@@ -27,7 +27,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		[SerializeField] private int _connectSessionRetryCount = 3;
 		[SerializeField] private string _customBridgeUrl = "https://testbridge.yartu.io/";
 		[SerializeField] private int _chainId = 1;
-		[SerializeField] private ClientMeta _appData;
+		[SerializeField] private ClientMeta _appData = new();
 		[SerializeField] private NativeWebSocketTransport _transport;
 
 		[SerializeField] private WalletConnectEventWithSessionData _connectedEventSession;
@@ -80,6 +80,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private async void Awake()
 		{
+			EnsureTransportSetup();
 		#if UNITY_WEBGL && !UNITY_EDITOR
 			gameObject.SetActive(false);
 			return;
@@ -97,6 +98,20 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_connectOnAwake)
 			{
 				await Connect();
+			}
+		}
+
+		private void EnsureTransportSetup()
+		{
+			if (_transport != null)
+			{
+				return;
+			}
+
+			_transport = GetComponent<NativeWebSocketTransport>();
+			if (_transport == null)
+			{
+				throw new NullReferenceException("Couldn't find transport to setup");
 			}
 		}
 
@@ -417,7 +432,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			SessionSaveHandler.SaveSession(sessionToSave);
 
 			return Session.Transport.Close();
-
 		}
 	}
 }
