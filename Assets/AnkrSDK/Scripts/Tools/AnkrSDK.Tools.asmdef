@@ -1,6 +1,8 @@
 {
     "name": "AnkrSDK.Tools",
-    "references": [],
+    "references": [
+        "AnkrSDK.Data"
+        ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

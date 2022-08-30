@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using AnkrSDK.Data;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,44 +17,27 @@ namespace AnkrSDK.Tools
 			var dropdown = attribute as CustomDropdown;
 			var options = dropdown.Options;
 
-			switch (property.propertyType)
+			var optionsIndex = FindEnumValueInOptions((Wallet) property.enumValueIndex, options);
+
+			var index = EditorGUI.Popup(position, property.displayName, optionsIndex, options);
+			var enumIndex = FindEmunIndexByStringValue(options[index]);
+			property.enumValueIndex = enumIndex;
+		}
+
+		private int FindEnumValueInOptions(Enum value, string[] options)
+		{
+			var optionsIndex = options.ToList().IndexOf(value.ToString());
+			if (optionsIndex < 0)
 			{
-				case SerializedPropertyType.String:
-					HandleStringVar(position, property, options);
-					break;
-				case SerializedPropertyType.Enum:
-					HandleEnumVar(position, property, options);
-					break;
-				case SerializedPropertyType.Integer:
-					HandleIntVar(position, property, options);
-					break;
-				default:
-					HandleOtherVars(position, property, label);
-					break;
+				optionsIndex = 0;
 			}
+			return optionsIndex;
 		}
 
-		private void HandleStringVar(Rect position, SerializedProperty property, string[] options)
+		private int FindEmunIndexByStringValue(string option)
 		{
-			var index = Mathf.Max(0, Array.IndexOf(options, property.stringValue));
-			index = EditorGUI.Popup(position, property.displayName, index, options);
-
-			property.stringValue = options[index];
-		}
-		
-		private void HandleEnumVar(Rect position, SerializedProperty property, string[] options)
-		{
-			property.enumValueIndex = EditorGUI.Popup(position, property.displayName, property.enumValueIndex, options);		
-		}
-		
-		private void HandleIntVar(Rect position, SerializedProperty property, string[] options)
-		{
-			property.intValue = EditorGUI.Popup(position, property.displayName, property.intValue, options);
-		}
-
-		private void HandleOtherVars(Rect position, SerializedProperty property, GUIContent label)
-		{
-			base.OnGUI(position, property, label);
+			var value = Enum.Parse(typeof(Wallet), option);
+			return (int) value;
 		}
 	}
 #endif
