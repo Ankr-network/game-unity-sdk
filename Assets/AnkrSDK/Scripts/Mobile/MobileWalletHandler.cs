@@ -2,7 +2,6 @@ using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Unity;
-using AnkrSDK.WebGL.DTO;
 using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.Mobile
