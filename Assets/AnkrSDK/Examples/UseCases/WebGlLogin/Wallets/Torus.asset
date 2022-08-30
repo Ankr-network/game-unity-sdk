@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e833867f89dd46729e835613a05b1d12, type: 3}
   m_Name: Torus
   m_EditorClassIdentifier: 
-  Type: 2
+  Type: 4
   Name: Torus
   Logo: {fileID: 21300000, guid: eb3183ee1be15481fb2bb1268541dd15, type: 3}
