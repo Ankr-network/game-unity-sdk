@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using AnkrSDK.Data;
 using AnkrSDK.Utils;
 using AnkrSDK.WebGL.DTO;
@@ -17,33 +16,38 @@ namespace AnkrSDK.WebGl
 		[SerializeField] private bool _connectOnStart = true;
 
 		private UniTaskCompletionSource<Wallet> _walletCompletionSource;
-		public WebGL.WebGLWrapper Session { get; private set; }
+		public WebGL.WebGLWrapper SessionWrapper { get; private set; }
 		public Action OnNeedPanel;
 		public Action<WebGL.WebGLWrapper> OnConnect;
 
-	#if UNITY_WEBGL
-		private async void Awake()
+	#if !UNITY_WEBGL || UNITY_EDITOR
+		private void Awake()
+		{
+			gameObject.SetActive(false);
+		}
+	#else
+		private void Awake()
 		{
 			if (_connectOnAwake)
 			{
-				await Initialize();
+				Initialize().Forget();
 			}
 		}
 
-		private async void Start()
+		private void Start()
 		{
 			if (_connectOnStart)
 			{
-				await Initialize();
+				Initialize().Forget();
 			}
 		}
 	#endif
 
-		private async Task Initialize()
+		private UniTask Initialize()
 		{
 			DontDestroyOnLoad(this);
-			Session = new WebGL.WebGLWrapper();
-			await Connect();
+			SessionWrapper = new WebGL.WebGLWrapper();
+			return Connect();
 		}
 
 		private async UniTask Connect()
@@ -61,13 +65,13 @@ namespace AnkrSDK.WebGl
 		
 		public async UniTask Connect(Wallet wallet)
 		{
-			await Session.ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_defaultNetwork));
-			OnConnect?.Invoke(Session);
+			await SessionWrapper.ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_defaultNetwork));
+			OnConnect?.Invoke(SessionWrapper);
 		}
 
 		public UniTask<WalletsStatus> GetWalletsStatus()
 		{
-			return Session.GetWalletsStatus();
+			return SessionWrapper.GetWalletsStatus();
 		}
 
 		public void SetWallet(Wallet wallet)
