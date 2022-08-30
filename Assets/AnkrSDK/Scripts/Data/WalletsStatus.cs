@@ -1,13 +1,8 @@
 using System.Collections.Generic;
-using AnkrSDK.Data;
 
-namespace AnkrSDK.WebGL.DTO
+namespace AnkrSDK.Data
 {
 	public class WalletsStatus : Dictionary<Wallet, bool>
 	{
-		public WalletsStatus()
-		{
-			
-		}
 	}
 }

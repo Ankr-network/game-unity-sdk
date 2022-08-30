@@ -1,4 +1,4 @@
-using AnkrSDK.WebGL.DTO;
+using AnkrSDK.Data;
 using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.Core.Infrastructure
