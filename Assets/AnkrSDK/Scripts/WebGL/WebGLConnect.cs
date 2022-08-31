@@ -28,6 +28,7 @@ namespace AnkrSDK.WebGl
 	#else
 		private void Awake()
 		{
+			SessionWrapper = new WebGL.WebGLWrapper();
 			if (_connectOnAwake)
 			{
 				Initialize().Forget();
@@ -46,7 +47,6 @@ namespace AnkrSDK.WebGl
 		private UniTask Initialize()
 		{
 			DontDestroyOnLoad(this);
-			SessionWrapper = new WebGL.WebGLWrapper();
 			return Connect();
 		}
 
