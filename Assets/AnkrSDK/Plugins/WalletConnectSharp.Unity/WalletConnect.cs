@@ -27,7 +27,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		[SerializeField] private int _connectSessionRetryCount = 3;
 		[SerializeField] private string _customBridgeUrl = "https://testbridge.yartu.io/";
 		[SerializeField] private int _chainId = 1;
-		[SerializeField] private ClientMeta _appData = new();
+		[SerializeField] private ClientMeta _appData = new ClientMeta();
 		[SerializeField] private NativeWebSocketTransport _transport;
 
 		[SerializeField] private WalletConnectEventWithSessionData _connectedEventSession;
