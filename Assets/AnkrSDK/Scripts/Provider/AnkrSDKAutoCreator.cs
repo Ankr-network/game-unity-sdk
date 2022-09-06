@@ -1,8 +1,8 @@
 namespace AnkrSDK.Provider
 {
-	public static class AnkrSDKAutoCreator
+	internal static class AnkrSDKAutoCreator
 	{
-		public static void Setup()
+		internal static void Setup()
 		{
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
 			var walletConnectObject = new UnityEngine.GameObject(
