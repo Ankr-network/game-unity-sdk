@@ -50,17 +50,11 @@ namespace AnkrSDK.UI
 	#else
 		private UnityAction GetLoginAction()
 		{
-			var connectURL = _walletConnect.ConnectURL;
-			if (_qrCodeImage != null)
+			return () =>
 			{
-				return () =>
-				{
-					_qrCodeImage.UpdateQRCode(connectURL);
-					_qrCodeImage.SetImageActive(true);
-				};
-			}
-
-			return () => Debug.Log($"Trying to open {connectURL}");
+				_qrCodeImage.UpdateQRCode(_walletConnect.ConnectURL);
+				_qrCodeImage.SetImageActive(true);
+			};
 		}
 	#endif
 

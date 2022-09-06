@@ -1,14 +1,13 @@
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace AnkrSDK.UI
 {
 	public class ChooseWalletScreen : MonoBehaviour
 	{
 		[SerializeField] private Transform _buttonGridTransform;
-		[SerializeField] private Text _loadingText;
+		[SerializeField] private GameObject _loadingText;
 	#if !UNITY_WEBGL || UNITY_EDITOR
 		[SerializeField] private WalletButton _buttonPrefab;
 
@@ -26,7 +25,7 @@ namespace AnkrSDK.UI
 
 		private async UniTask BuildWalletButtons()
 		{
-			_loadingText.gameObject.SetActive(true);
+			_loadingText.SetActive(true);
 			var fetchWalletList = await WalletConnectSharp.Unity.Utils.WalletDownloadHelper.FetchWalletList(true);
 
 			foreach (var kvp in fetchWalletList)
@@ -38,7 +37,7 @@ namespace AnkrSDK.UI
 				walletObj.SetListener(() => ClickAction?.Invoke(walletData));
 			}
 
-			_loadingText.gameObject.SetActive(false);
+			_loadingText.SetActive(false);
 		}
 
 		public void SetActive(bool isConnected)
