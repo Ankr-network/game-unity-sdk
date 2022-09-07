@@ -30,6 +30,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public event EventHandler<WCSessionData> SessionUpdate;
 		public event EventHandler<string[]> OnAccountChanged;
 		public event EventHandler<int> OnChainChanged;
+		public event EventHandler OnReadyForUserPrompt;
 
 		public int NetworkId { get; private set; }
 
@@ -445,6 +446,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			SubscribeOnFailedMessage(sessionCompletionSource);
 
 			ReadyForUserPrompt = true;
+			OnReadyForUserPrompt?.Invoke(this, EventArgs.Empty);
 
 			Debug.Log("[WalletConnect] Session Ready for Wallet");
 
