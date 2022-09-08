@@ -1,4 +1,3 @@
-#if !UNITY_ANDROID && !UNITY_IOS || UNITY_EDITOR
 using QRCoder;
 using QRCoder.Unity;
 using UnityEngine;
@@ -30,4 +29,3 @@ namespace AnkrSDK.Utils.UI
 		}
 	}
 }
-#endif

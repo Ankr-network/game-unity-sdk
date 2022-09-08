@@ -36,6 +36,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		[SerializeField] private WalletConnectEventWithSession _resumedSessionConnected;
 
 		public event Action ConnectionStarted;
+		public event Action SessionUpdated;
 
 		private AppEntry SelectedWallet { get; set; }
 
@@ -50,6 +51,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			{
 				Debug.Log("Active Session Changed");
 				_session = value;
+				SessionUpdated?.Invoke();
 			}
 		}
 
