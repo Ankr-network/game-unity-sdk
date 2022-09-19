@@ -5,7 +5,6 @@ using AnkrSDK.Data;
 using AnkrSDK.Data.ContractMessages.ERC721;
 using AnkrSDK.DTO;
 using AnkrSDK.EventListenerExample;
-using AnkrSDK.Examples.ERC20Example;
 using AnkrSDK.Provider;
 using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
@@ -16,17 +15,18 @@ namespace AnkrSDK.ERC20Example
 {
 	public class ERC20Example : UseCase
 	{
+		[SerializeField] private ContractInformationSO _contractInformationSO;
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
 		private IEthHandler _eth;
 
 		private void Start()
 		{
-			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
 			_erc20Contract =
 				ankrSDK.GetContract(
-					ERC20ContractInformation.ContractAddress,
-					ERC20ContractInformation.ABI);
+					_contractInformationSO.ContractAddress,
+					_contractInformationSO.ABI);
 			_eth = ankrSDK.Eth;
 		}
 

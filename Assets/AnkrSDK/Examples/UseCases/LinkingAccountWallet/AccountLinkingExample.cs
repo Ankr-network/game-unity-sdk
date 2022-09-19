@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Examples.ERC20Example;
+using AnkrSDK.Data;
+using AnkrSDK.ERC20Example;
 using AnkrSDK.Provider;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 {
 	public class AccountLinkingExample : UseCase
 	{
+		[SerializeField] private ContractInformationSO _contractInformationSO;
 		[Serializable]
 		private class RequestPayload
 		{
@@ -27,8 +29,8 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 		{
 			public string Address;
 		}
-		
-		
+
+
 		// A backend server to verify the ownership of this address using message and signature signed by 3rd party wallet
 		// an example can be found at https://github.com/mirage-xyz/mirage-go-demo/blob/main/main.go#L96
 		private const string URL = "https://example-signing.game.ankr.com/account/verification/address";
@@ -37,13 +39,13 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 		[SerializeField] private string _message = "Hahaha!";
 
 		[SerializeField] private TMP_Text _text;
-		
+
 		[SerializeField] private Button _signLinkinMessageButton;
 		[SerializeField] private Button _checkSignatureButton;
 
 		private string _signature;
 		private IEthHandler _eth;
-		
+
 		private void Awake()
 		{
 			_signLinkinMessageButton.onClick.AddListener(Sign);
@@ -59,8 +61,8 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 		public override void ActivateUseCase()
 		{
 			base.ActivateUseCase();
-			
-			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
+
+			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
 			_eth = ankrSDK.Eth;
 		}
 
@@ -74,7 +76,7 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 			_signature = await _eth.Sign(_message, address);
 			UpdateUILogs($"Signature: {_signature}");
 		}
-		
+
 		private async void CheckSignature()
 		{
 			var address = await SendSignature(_signature);
@@ -96,7 +98,7 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 			var data = JsonConvert.DeserializeObject<RequestAnswer>(result.downloadHandler.text);
 			return data.Address;
 		}
-		
+
 		private void UpdateUILogs(string log)
 		{
 			_text.text += "\n" + log;

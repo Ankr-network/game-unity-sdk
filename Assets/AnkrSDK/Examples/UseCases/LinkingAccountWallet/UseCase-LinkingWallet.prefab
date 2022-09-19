@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1781592886}
   m_Father: {fileID: 6728517782976858634}
@@ -149,6 +150,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1408889526}
   m_RootOrder: 0
@@ -229,6 +231,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4396883362111999656}
   m_Father: {fileID: 6728517782976858634}
@@ -349,6 +352,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4396883361501322622}
   m_RootOrder: 0
@@ -427,6 +431,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8836087978281953344}
   - {fileID: 8233642003746346936}
@@ -451,6 +456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a07a67fc8ff4f4d8ced3507a45c1be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _contractInformationSO: {fileID: 11400000, guid: f505ed2b8a4fb45449a3769c2125ea2a, type: 2}
   _message: Hahaha!
   _text: {fileID: 5635485963354456240}
   _signLinkinMessageButton: {fileID: 4396883361501322623}
@@ -482,6 +488,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4396883361501322622}
   - {fileID: 1408889526}
@@ -544,6 +551,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7299830044521457813}
   - {fileID: 2939530291449111150}
@@ -599,6 +607,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7299830044939727763}
   m_Father: {fileID: 7299830043460413593}
@@ -719,6 +728,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7299830044521457813}
   m_RootOrder: 0
@@ -1032,7 +1042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3118616256181707667, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -12.5
+      value: 605
       objectReference: {fileID: 0}
     - target: {fileID: 3489325837278364600, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
       propertyPath: m_margin.w
@@ -1042,6 +1052,10 @@ PrefabInstance:
       propertyPath: m_margin.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4253154925863118782, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 6110873830957619123, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
       propertyPath: m_Name
       value: Logs
@@ -1049,6 +1063,10 @@ PrefabInstance:
     - target: {fileID: 6182333213591986281, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -30.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 6507779200301853308, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
+      propertyPath: m_Value
+      value: -0.5206612
       objectReference: {fileID: 0}
     - target: {fileID: 6598045724050217338, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
       propertyPath: m_AnchorMax.y

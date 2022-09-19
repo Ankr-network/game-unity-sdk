@@ -1,6 +1,6 @@
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
-using AnkrSDK.Examples.ERC20Example;
+using AnkrSDK.ERC20Example;
 using AnkrSDK.Provider;
 using AnkrSDK.Utils;
 using UnityEngine;
@@ -10,18 +10,17 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 {
 	public class AddSwitchNetwork : UseCase
 	{
-		[SerializeField]
-		private Button _bscButton;
+		[SerializeField] private ContractInformationSO _contractInformationSO;
+		[SerializeField] private Button _bscButton;
 
-		[SerializeField]
-		private Button _bscTestButton;
-		
+		[SerializeField] private Button _bscTestButton;
+
 		private IAnkrSDK _ankrSDKWrapper;
 
 		private void Awake()
 		{
-			_ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
-			
+			_ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
+
 			_bscButton.onClick.AddListener(OpenAddSwitchBsc);
 			_bscTestButton.onClick.AddListener(OpenAddSwitchBscTestnet);
 		}

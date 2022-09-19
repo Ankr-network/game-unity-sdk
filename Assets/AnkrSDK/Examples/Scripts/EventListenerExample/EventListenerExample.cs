@@ -1,7 +1,7 @@
 ﻿using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.DTO;
-using AnkrSDK.Examples.ERC20Example;
+using AnkrSDK.ERC20Example;
 using AnkrSDK.Provider;
 using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
@@ -24,6 +24,7 @@ namespace AnkrSDK.EventListenerExample
 	/// 	</summary>
 	public class EventListenerExample : UseCase
 	{
+		[SerializeField] private ContractInformationSO _contractInformationSO;
 		private IContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
 		private IEthHandler _eth;
@@ -33,10 +34,10 @@ namespace AnkrSDK.EventListenerExample
 			base.ActivateUseCase();
 			
 
-			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(ERC20ContractInformation.HttpProviderURL);
+			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
 			_eth = ankrSDK.Eth;
 
-			_eventSubscriber = ankrSDK.CreateSubscriber(ERC20ContractInformation.WsProviderURL);
+			_eventSubscriber = ankrSDK.CreateSubscriber(_contractInformationSO.WsProviderURL);
 			_eventSubscriber.ListenForEvents().Forget();
 			_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithRequest);
 		}
@@ -51,7 +52,7 @@ namespace AnkrSDK.EventListenerExample
 
 			_subscription = await _eventSubscriber.Subscribe(
 				filters,
-				ERC20ContractInformation.ContractAddress, 
+				_contractInformationSO.ContractAddress, 
 				(TransferEventDTO t) => ReceiveEvent(t)
 			);
 		}
@@ -64,7 +65,7 @@ namespace AnkrSDK.EventListenerExample
 
 			_subscription = await _eventSubscriber.Subscribe(
 				filtersRequest,
-				ERC20ContractInformation.ContractAddress, 
+				_contractInformationSO.ContractAddress, 
 				ReceiveEvent
 			);
 		}
