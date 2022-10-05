@@ -2,7 +2,6 @@
   "name": "AnkrSDK.Examples",
   "references": [
     "UniTask",
-    "AnkrSDK.Ads",
     "AnkrSDK.Provider",
     "AnkrSDK.Core.Infrastructure",
     "AnkrSDK.Data",

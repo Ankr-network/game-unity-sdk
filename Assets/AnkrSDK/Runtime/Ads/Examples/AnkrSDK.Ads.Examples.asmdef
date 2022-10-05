@@ -1,0 +1,9 @@
+{
+  "name": "AnkrSDK.Ads.Examples",
+  "references": [
+    "AnkrSDK.Ads",
+    "AnkrSDK.Examples",
+    "UniTask",
+    "Unity.TextMeshPro"
+  ]
+}

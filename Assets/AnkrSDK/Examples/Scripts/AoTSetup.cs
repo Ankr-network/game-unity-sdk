@@ -1,5 +1,6 @@
 using System.Numerics;
 using AnkrSDK.GameCharacterContract;
+using JetBrains.Annotations;
 using Nethereum.Web3;
 
 namespace AnkrSDK
@@ -8,6 +9,7 @@ namespace AnkrSDK
 	{
 		public static class AoTSetupExamples
 		{
+			[UsedImplicitly]
 			private static void SetupAoT()
 			{
 				var web3 = new Web3();

@@ -2,15 +2,13 @@
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using UnityEditor;
 
-namespace Editor
+public static class SessionMenuEditor
 {
-	public static class SessionMenuEditor
+	[MenuItem("AnkrSDK/Clear Session")]
+	public static void ClearSession()
 	{
-		[MenuItem("AnkrSDK/Clear Session")]
-		public static void ClearSession()
-		{
-			SessionSaveHandler.ClearSession();
-		}
+		SessionSaveHandler.ClearSession();
 	}
 }
+
 #endif

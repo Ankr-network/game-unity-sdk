@@ -1,4 +1,5 @@
 using AnkrSDK.Data;
+using AnkrSDK.WebGL;
 using UnityEngine;
 
 namespace AnkrSDK.Examples.UseCases.WebGlLogin
@@ -6,7 +7,7 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 	public class WebGLConnectionController : MonoBehaviour
 	{
 		[SerializeField]
-		private WebGl.WebGLConnect _webGlConnect;
+		private WebGLConnect _webGlConnect;
 
 		[SerializeField]
 		private WebGLLoginPanelController _webGlLoginManager;

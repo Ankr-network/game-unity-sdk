@@ -1,0 +1,8 @@
+{
+  "name": "AnkrSDK.OpenSea.Examples",
+  "references": [
+    "AnkrSDK.OpenSea",
+    "AnkrSDK.Examples",
+    "UniTask"
+  ]
+}
