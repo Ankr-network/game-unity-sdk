@@ -1,6 +1,6 @@
-using System.Linq;
+using AnkrSDK.Aptos.Constants;
 using AnkrSDK.Aptos.DTO;
-using AnkrSDK.Aptos.Utils;
+using AnkrSDK.Aptos.Imlementation.ABI;
 using UnityEngine;
 
 namespace AnkrSDK.Aptos
@@ -56,10 +56,7 @@ namespace AnkrSDK.Aptos
 
 		public void Check()
 		{
-			var bytes = SerializeUtils.SerializeUInt32AsUleb128(1234567);
-			Debug.Log(ShowArray<byte>(bytes.ToArray()));
-			var (value, offset) = DeserializeUtils.DeserializeUleb128AsUint32(bytes.ToArray(), 0);
-			Debug.Log(value);
+			var builder = new TransactionBuilderABI(ABIs.GetCoinABIs());
 		}
 
 		public string ShowArray<T>(T[] bytes)

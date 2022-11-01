@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using AnkrSDK.Aptos.Infrastructure;
 
 namespace AnkrSDK.Aptos.Utils
 {
@@ -71,6 +72,16 @@ namespace AnkrSDK.Aptos.Utils
 		{
 			var bytes = SerializeUtils.SerializeUint128(value);
 			Add(bytes);		
+		}
+		
+		public void SerializeVector<T>(T[] vector) where T : SerializableAbiPart<T>
+		{
+			SerializeUInt32AsUleb128((uint)vector.Length);
+
+			foreach (var item in vector)
+			{
+				item.Serialize(this);
+			}
 		}
 
 		private void Add(IEnumerable<byte> bytes)

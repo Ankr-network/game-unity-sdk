@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace AnkrSDK.Aptos.Utils
@@ -23,6 +24,13 @@ namespace AnkrSDK.Aptos.Utils
 		public byte[] DeserializeBytes()
 		{
 			var (value, newOffset) = DeserializeUtils.DeserializeBytes(_buffer, _offset);
+			_offset = newOffset;
+			return value;
+		}
+		
+		public byte[] DeserializeFixedBytes(int length)
+		{
+			var (value, newOffset) = DeserializeUtils.DeserializeFixedBytes(_buffer, length, _offset);
 			_offset = newOffset;
 			return value;
 		}
@@ -67,6 +75,16 @@ namespace AnkrSDK.Aptos.Utils
 			var (value, newOffset) = DeserializeUtils.DeserializeUInt128(_buffer, _offset);
 			_offset = newOffset;
 			return value;
+		}
+
+		public IEnumerable<T> DeserializeVector<T>(Func<Deserializer, T> deserializeAction)
+		{
+			var lenght = DeserializeUleb128AsUint32();
+
+			for (var i = 0; i < lenght; i++)
+			{
+				yield return deserializeAction(this);
+			}
 		}
 	}
 }

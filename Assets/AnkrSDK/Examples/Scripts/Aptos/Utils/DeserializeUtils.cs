@@ -16,9 +16,16 @@ namespace AnkrSDK.Aptos.Utils
 		public static (byte[], int) DeserializeBytes(byte[] value, int offset)
 		{
 			var (length, prefixOffset) = DeserializeUleb128AsUint32(value, offset);
-			var localOffset = offset + prefixOffset + length;
-			var bytes = value.Slice(offset + prefixOffset, localOffset);
+			var localOffset = prefixOffset + length;
+			var bytes = value.Slice(prefixOffset, localOffset);
 			return (bytes, localOffset);
+		}
+		
+		public static (byte[], int) DeserializeFixedBytes(byte[] value, int length, int offset)
+		{
+			var finalLength = offset + length;
+			var bytes = value.Slice(offset, finalLength);
+			return (bytes, finalLength);
 		}
 		
 		public static (int, int) DeserializeUleb128AsUint32(byte[] value, int offset)

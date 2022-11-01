@@ -1,6 +1,8 @@
+using AnkrSDK.Aptos.Infrastructure;
+
 namespace AnkrSDK.Aptos.Utils
 {
-	public class TypeArgumentABI
+	public class TypeArgumentABI : SerializableAbiPart<TypeArgumentABI>
 	{
 		public string Name { get; private set; }
 
