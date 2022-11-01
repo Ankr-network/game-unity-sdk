@@ -14,7 +14,7 @@ namespace AnkrSDK.Aptos.Imlementation
 			throw new System.NotImplementedException();
 		}
 
-		public void Deserialize(Deserializer deserializer)
+		public static SerializableAbiPart Deserialize(Deserializer deserializer)
 		{
 			throw new System.NotImplementedException();
 		}
