@@ -17,7 +17,7 @@ namespace AnkrSDK.Aptos.Imlementation.ABI
 			Name = name;
 		}
 		
-		static ModuleId FromString(string moduleId)
+		public static ModuleId FromString(string moduleId)
 		{
 			var parts = moduleId.Split(Delimiter);
 			if (parts.Length != 2)

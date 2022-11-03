@@ -23,7 +23,7 @@ namespace AnkrSDK.Aptos.Imlementation
 		
 		public override void Serialize(Serializer serializer)
 		{
-			serializer.SerializeUInt32AsUleb128(0);
+			serializer.SerializeUInt32AsUleb128((uint)ScriptAbiIndex.TransactionScript);
 			serializer.SerializeString(Name);
 			serializer.SerializeString(Doc);
 			serializer.SerializeBytes(Code);

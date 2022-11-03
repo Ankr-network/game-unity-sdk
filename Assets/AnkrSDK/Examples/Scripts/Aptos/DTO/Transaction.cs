@@ -20,7 +20,7 @@ namespace AnkrSDK.Aptos.DTO
 		[JsonProperty(PropertyName = "expiration_timestamp_secs", DefaultValueHandling = DefaultValueHandling.Ignore)]
 		public UInt64 ExpirationTimestampSecs;
 		[JsonProperty(PropertyName = "payload")]
-		public TransactionPayload Payload;
+		public TransactionPayloadDTO Payload;
 		[JsonProperty(PropertyName = "signature")]
 		public TransactionSignature Signature;
 	}

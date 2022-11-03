@@ -9,6 +9,7 @@
     "AnkrSDK.OpenSea",
     "AnkrSDK.Utils",
     "AnkrSDK.WebGL",
+    "Chaos.NaCl",
     "WalletConnectSharp",
     "WalletConnectSharp.Core",
     "Unity.TextMeshPro"

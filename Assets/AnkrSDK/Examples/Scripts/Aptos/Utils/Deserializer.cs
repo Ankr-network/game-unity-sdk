@@ -20,17 +20,24 @@ namespace AnkrSDK.Aptos.Utils
 			_offset = newOffset;
 			return value;
 		}
-		
+
 		public byte[] DeserializeBytes()
 		{
 			var (value, newOffset) = DeserializeUtils.DeserializeBytes(_buffer, _offset);
 			_offset = newOffset;
 			return value;
 		}
-		
+
 		public byte[] DeserializeFixedBytes(int length)
 		{
 			var (value, newOffset) = DeserializeUtils.DeserializeFixedBytes(_buffer, length, _offset);
+			_offset = newOffset;
+			return value;
+		}
+
+		public bool DeserializeBool()
+		{
+			var (value, newOffset) = DeserializeUtils.DeserializeBool(_buffer, _offset);
 			_offset = newOffset;
 			return value;
 		}

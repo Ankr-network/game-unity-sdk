@@ -1,7 +1,6 @@
 using System;
 using System.Numerics;
 using System.Text;
-using Nethereum.Util;
 
 namespace AnkrSDK.Aptos.Utils
 {
@@ -26,6 +25,12 @@ namespace AnkrSDK.Aptos.Utils
 			var finalLength = offset + length;
 			var bytes = value.Slice(offset, finalLength);
 			return (bytes, finalLength);
+		}
+
+		public static (bool, int) DeserializeBool(byte[] value, int offset)
+		{
+			var boolValue = value[offset];
+			return (Convert.ToBoolean(boolValue), offset + 1);
 		}
 		
 		public static (int, int) DeserializeUleb128AsUint32(byte[] value, int offset)

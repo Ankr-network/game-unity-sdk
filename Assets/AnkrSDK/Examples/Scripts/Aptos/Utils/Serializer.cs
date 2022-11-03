@@ -15,11 +15,17 @@ namespace AnkrSDK.Aptos.Utils
 			_buffer = new List<byte>();
 		}
 
+		public byte[] GetBytes()
+		{
+			return _buffer.ToArray();
+		}
+
 		public void SerializeBytes(IEnumerable<byte> bytes)
 		{
 			var value = SerializeUtils.SerializeBytes(bytes);
 			Add(value);
 		}
+
 		public void SerializeUInt32AsUleb128(UInt32 value)
 		{
 			var bytes = SerializeUtils.SerializeUInt32AsUleb128(value);
@@ -68,7 +74,7 @@ namespace AnkrSDK.Aptos.Utils
 			Add(bytes);
 		}
 		
-		public void SerializeUInt128(BigInteger value)
+		public void SerializeUint128(BigInteger value)
 		{
 			var bytes = SerializeUtils.SerializeUint128(value);
 			Add(bytes);		

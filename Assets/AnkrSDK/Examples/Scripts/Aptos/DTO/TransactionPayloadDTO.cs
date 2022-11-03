@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace AnkrSDK.Aptos.DTO
 {
-	public class TransactionPayload
+	public class TransactionPayloadDTO
 	{
 		[JsonProperty(PropertyName = "type")]
 		public string Type;

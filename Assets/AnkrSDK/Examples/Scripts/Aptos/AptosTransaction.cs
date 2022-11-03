@@ -1,12 +1,19 @@
+using System.Linq;
+using System.Text;
 using AnkrSDK.Aptos.Constants;
 using AnkrSDK.Aptos.DTO;
 using AnkrSDK.Aptos.Imlementation.ABI;
+using AnkrSDK.Aptos.Utils;
+using Org.BouncyCastle.Crypto.Digests;
 using UnityEngine;
+using Chaos.NaCl;
 
 namespace AnkrSDK.Aptos
 {
 	public class AptosTransaction : MonoBehaviour
 	{
+		private const string RawTransactionSalt = "APTOS::RawTransaction";
+		private const int DEFAULT_TXN_EXP_SEC_FROM_NOW = 20;
 		private void Start()
 		{
 			Check();
@@ -22,7 +29,7 @@ namespace AnkrSDK.Aptos
 				MaxGasAmount = 200000,
 				GasUnitPrice = 100,
 				ExpirationTimestampSecs = 1666767052,
-				Payload = new TransactionPayload
+				Payload = new TransactionPayloadDTO
 				{
 					Type = "entry_function_payload",
 					Function = "0x1::aptos_coin::transfer",
@@ -43,8 +50,6 @@ namespace AnkrSDK.Aptos
 			};
 
 			transaction.Signature = signature;
-			
-			
 		}
 
 		// private string SerializePayload(Transaction transaction)
@@ -57,6 +62,37 @@ namespace AnkrSDK.Aptos
 		public void Check()
 		{
 			var builder = new TransactionBuilderABI(ABIs.GetCoinABIs());
+
+			var func = "0x1::coin::transfer";
+			var typeArgs = new string[]
+			{
+				"0x1::aptos_coin::AptosCoin"
+			};
+			var args = new object[]
+			{
+				"0x3abe1a1ced39e29836ed837fc1498aec1ce56e67c559bd90afef713a53beef9f",
+				1000
+			};
+			var payload = builder.BuildTransactionPayload(func, typeArgs, args);
+		}
+
+		public string SignMessage(byte[] transaction)
+		{
+			var salt = GetSalt();
+			var signingMessage = salt.Concat(transaction).ToArray();
+
+			var signature = Ed25519.Sign(signingMessage, new byte[32]);
+			return signature.Take(64).ToArray().ToHexCompact(true);
+		}
+
+		private byte[] GetSalt()
+		{
+			var digest = new Sha3Digest();
+			var salt = Encoding.ASCII.GetBytes(RawTransactionSalt);
+			var result = new byte[salt.Length];
+			digest.BlockUpdate(salt, 0, salt.Length);
+			digest.DoFinal(result, 0);
+			return result;
 		}
 
 		public string ShowArray<T>(T[] bytes)

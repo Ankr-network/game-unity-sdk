@@ -10,12 +10,12 @@ namespace AnkrSDK.Aptos.Utils
 
 		public static ScriptAbi Deserialize(Deserializer deserializer)
 		{
-			var index = deserializer.DeserializeUleb128AsUint32();
+			var index = (ScriptAbiIndex)deserializer.DeserializeUleb128AsUint32();
 			switch (index)
 			{
-				case 0:
+				case ScriptAbiIndex.TransactionScript:
 					return TransactionScriptABI.Load(deserializer);
-				case 1:
+				case ScriptAbiIndex.EntryFunction:
 					return EntryFunctionABI.Load(deserializer);
 				default:
 					throw new Exception($"Unknown variant index for TransactionPayload: {index}");
