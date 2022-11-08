@@ -41,8 +41,6 @@ namespace AnkrSDK.Aptos.Imlementation.ABI
 				
 				_abiMap.Add(name, scriptAbi);
 			}
-
-			Debug.Log(JsonConvert.SerializeObject(_abiMap));
 		}
 
 		public static IEnumerable<byte[]> ToBCSArgs(ArgumentABI[] abiArgs, object[] args)

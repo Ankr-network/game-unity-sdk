@@ -7,10 +7,7 @@ namespace AnkrSDK.Aptos.Imlementation
 {
 	public abstract class TypeTag : SerializableAbiPart<TypeTag>
 	{
-		public void Serialize(Serializer serializer)
-		{
-			throw new NotImplementedException();
-		}
+		public abstract void Serialize(Serializer serializer);
 
 		public static TypeTag Deserialize(Deserializer deserializer)
 		{
@@ -41,7 +38,7 @@ namespace AnkrSDK.Aptos.Imlementation
 
 	public class TypeTagBool : TypeTag
 	{
-		public void Serialize(Serializer serializer)
+		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128((int)TypeIndex.Bool);
 		}
@@ -54,7 +51,7 @@ namespace AnkrSDK.Aptos.Imlementation
 	
 	public class TypeTagU8 : TypeTag
 	{
-		public void Serialize(Serializer serializer)
+		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128((int)TypeIndex.U8);
 		}
@@ -67,7 +64,7 @@ namespace AnkrSDK.Aptos.Imlementation
 	
 	public class TypeTagU64 : TypeTag
 	{
-		public void Serialize(Serializer serializer)
+		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128((int)TypeIndex.U64);
 		}
@@ -80,7 +77,7 @@ namespace AnkrSDK.Aptos.Imlementation
 	
 	public class TypeTagU128 : TypeTag
 	{
-		public void Serialize(Serializer serializer)
+		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128((int)TypeIndex.U128);
 		}
@@ -93,7 +90,7 @@ namespace AnkrSDK.Aptos.Imlementation
 	
 	public class TypeTagAddress : TypeTag
 	{
-		public void Serialize(Serializer serializer)
+		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128((int)TypeIndex.Address);
 		}
@@ -106,7 +103,7 @@ namespace AnkrSDK.Aptos.Imlementation
 	
 	public class TypeTagSigner : TypeTag
 	{
-		public void Serialize(Serializer serializer)
+		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128((int)TypeIndex.Signer);
 		}
@@ -125,7 +122,7 @@ namespace AnkrSDK.Aptos.Imlementation
 		{
 			Value = value;
 		}
-		public void Serialize(Serializer serializer)
+		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128((int)TypeIndex.Vector);
 			Value.Serialize(serializer);
@@ -147,7 +144,7 @@ namespace AnkrSDK.Aptos.Imlementation
 			Value = value;
 		}
 		
-		public void Serialize(Serializer serializer)
+		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128((int)TypeIndex.Struct);
 			this.Value.Serialize(serializer);
@@ -184,11 +181,11 @@ namespace AnkrSDK.Aptos.Imlementation
 		        throw new Exception("Invalid struct tag string literal");
 	        }
 
-	        return new StructTag(parts[0].HexToByteArray(), parts[1], parts[2], Array.Empty<TypeTag>());
+	        return new StructTag(parts[0].HexToByteArray((int)TypeLength.Address), parts[1], parts[2], Array.Empty<TypeTag>());
         }
         
-        public void Serialize(Serializer serializer) {
-	        serializer.SerializeBytes(Address);
+        public override void Serialize(Serializer serializer) {
+	        serializer.SerializeFixedBytes(Address);
 	        serializer.SerializeString(ModuleName);
 	        serializer.SerializeString(Name);
 	        serializer.SerializeVector(TypeArgs);

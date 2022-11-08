@@ -105,12 +105,12 @@ namespace AnkrSDK.Aptos.Imlementation.ABI
 		public override void Serialize(Serializer serializer)
 		{
 			serializer.SerializeUInt32AsUleb128(3);
-			serializer.SerializeBytes(Value);
+			serializer.SerializeFixedBytes(Value);
 		}
 
 		public static TransactionArgumentAddress Load(Deserializer deserializer)
 		{
-			var value = deserializer.DeserializeBytes();
+			var value = deserializer.DeserializeFixedBytes((int)TypeLength.Address);
 			return new TransactionArgumentAddress(value);
 		}
 	}

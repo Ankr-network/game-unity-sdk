@@ -109,10 +109,21 @@ namespace AnkrSDK.Aptos.Utils
             return bytes;
         }
 
-        public static byte[] HexToByteArray(this string value)
+        public static byte[] HexToByteArray(this string value, int length = 0)
         {
             try {
-                return HexToByteArrayInternal(value);
+                var bytes =  HexToByteArrayInternal(value);
+                var partLength = length - bytes.Length;
+                if (length > 0 && partLength > 0)
+                {
+                    var newArr = new byte[partLength];
+                    Array.Clear(newArr, 0, partLength);
+                    return newArr.Concat(bytes).ToArray();
+                }
+                else
+                {
+                    return bytes;
+                }
             }
             catch (FormatException ex)
             {
@@ -143,12 +154,6 @@ namespace AnkrSDK.Aptos.Utils
             }
 
             return value;
-        }
-
-        [Obsolete]
-        public static byte[] FromHex(this string value)
-        {
-            return value.HexToByteArray();
         }
     }
 }

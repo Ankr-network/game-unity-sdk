@@ -13,53 +13,44 @@ namespace AnkrSDK.Aptos
 	public class AptosTransaction : MonoBehaviour
 	{
 		private const string RawTransactionSalt = "APTOS::RawTransaction";
-		private const int DEFAULT_TXN_EXP_SEC_FROM_NOW = 20;
+		
 		private void Start()
 		{
 			Check();
 		}
 
-		public void SubmitTransaction()
-		{
-			var sender = "0xf38748cf83fad1ee1371e50a6b3d1ede95e7805c82ce43efd9948f4fe3533280";
-			var transaction = new Transaction
-			{
-				Sender = sender,
-				SequenceNumber = 0,
-				MaxGasAmount = 200000,
-				GasUnitPrice = 100,
-				ExpirationTimestampSecs = 1666767052,
-				Payload = new TransactionPayloadDTO
-				{
-					Type = "entry_function_payload",
-					Function = "0x1::aptos_coin::transfer",
-					TypeArguments = new string[] { "0x1::aptos_coin::AptosCoin" },
-					Arguments = new string[]
-					{
-						"0xa6f6f770ee027db6eacd677e493bc9c2ae5392b47c48e5adfdb7094337e47b9a",
-						"1000"
-					},
-				}
-			};
-
-			var signature = new TransactionSignature
-			{
-				Type = "ed25519_signature",
-				PublicKey = sender,
-				// Signature = SerializePayload(transaction)
-			};
-
-			transaction.Signature = signature;
-		}
-
-		// private string SerializePayload(Transaction transaction)
-		// {
-		// 	var sender = SerializeUtils.SerializeString(transaction.Sender);
-		// 	var sequenceNumber = SerializeUtils.SerializeUint64(transaction.SequenceNumber);
-		// 	
-		// }
-
 		public void Check()
+		{
+			var privateKey = new byte[] {255,211,113,35,165,87,101,140,224,222,92,33,154,65,150,110,140,93,2,42,28,171,127,97,43,26,129,71,81,123,43,127,184,15,11,253,79,245,134,84,235,194,101,199,183,86,195,6,154,234,47,136,15,71,94,119,91,201,60,202,25,182,116,124};
+			
+			var sender = "0xa8583bfca93e862653cac142fd09ff848249180906036978a8ca8e6a8ee55778";
+			var sequenceNumber = 0;
+			var maxGasAmount = 200000;
+			var gasUnitPrice = 100;
+			var expireTimestamp = 1667905991;
+			var chainId = 36;
+			var payload = CreatePayload();
+
+			var txRaw = new RawTransaction(
+				sender.HexToByteArray(),
+				(ulong)sequenceNumber,
+				payload,
+				(ulong)maxGasAmount,
+				(ulong)gasUnitPrice,
+				(ulong)expireTimestamp,
+				(uint)chainId
+			);
+
+			var serializer = new Serializer();
+			txRaw.Serialize(serializer);
+			var message = serializer.GetBytes();
+
+			var signature = SignMessage(message, privateKey);
+			
+			Debug.Log(signature);
+		}
+		
+		private TransactionPayload CreatePayload()
 		{
 			var builder = new TransactionBuilderABI(ABIs.GetCoinABIs());
 
@@ -70,18 +61,19 @@ namespace AnkrSDK.Aptos
 			};
 			var args = new object[]
 			{
-				"0x3abe1a1ced39e29836ed837fc1498aec1ce56e67c559bd90afef713a53beef9f",
+				"0x65d922ec609ecb1b694ffa502938dd4dff4380de90658a5cee84b67a7e78bcbb",
 				1000
 			};
-			var payload = builder.BuildTransactionPayload(func, typeArgs, args);
+			
+			return builder.BuildTransactionPayload(func, typeArgs, args);
 		}
 
-		public string SignMessage(byte[] transaction)
+		public string SignMessage(byte[] transaction, byte[] privateKey)
 		{
 			var salt = GetSalt();
 			var signingMessage = salt.Concat(transaction).ToArray();
 
-			var signature = Ed25519.Sign(signingMessage, new byte[32]);
+			var signature = Ed25519.Sign(signingMessage, privateKey);
 			return signature.Take(64).ToArray().ToHexCompact(true);
 		}
 
@@ -89,22 +81,10 @@ namespace AnkrSDK.Aptos
 		{
 			var digest = new Sha3Digest();
 			var salt = Encoding.ASCII.GetBytes(RawTransactionSalt);
-			var result = new byte[salt.Length];
+			var result = new byte[digest.GetDigestSize()];
 			digest.BlockUpdate(salt, 0, salt.Length);
 			digest.DoFinal(result, 0);
 			return result;
-		}
-
-		public string ShowArray<T>(T[] bytes)
-		{
-			var lalal = "";
-
-			for (int i = 0; i < bytes.Length; i++)
-			{
-				lalal += bytes[i] + " ";
-			}
-			
-			return lalal;
 		}
 	}
 }

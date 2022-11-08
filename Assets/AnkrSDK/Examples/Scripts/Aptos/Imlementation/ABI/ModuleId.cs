@@ -25,12 +25,12 @@ namespace AnkrSDK.Aptos.Imlementation.ABI
 				throw new Exception("Invalid module id.");
 			}
 
-			return new ModuleId(parts[0].HexToByteArray(), parts[1]);
+			return new ModuleId(parts[0].HexToByteArray((int)TypeLength.Address), parts[1]);
 		}
 		
 		public void Serialize(Serializer serializer)
 		{
-			serializer.SerializeBytes(Address);
+			serializer.SerializeFixedBytes(Address);
 			serializer.SerializeString(Name);
 		}
 

@@ -11,7 +11,7 @@ namespace AnkrSDK.Aptos.Utils
 		public static IEnumerable<byte> SerializeBytes(IEnumerable<byte> bytes)
 		{
 			var serializedBytes = SerializeUInt32AsUleb128((uint)bytes.Count());
-			serializedBytes.Concat(bytes);
+			serializedBytes = serializedBytes.Concat(bytes);
 			return serializedBytes;
 		}
 		public static IEnumerable<byte> SerializeUInt32AsUleb128(UInt32 value)
@@ -24,9 +24,9 @@ namespace AnkrSDK.Aptos.Utils
 			yield return (byte)value;
 		}
 
-		public static byte[] SerializeString(string value)
+		public static IEnumerable<byte> SerializeString(string value)
 		{
-			return Encoding.ASCII.GetBytes(value);
+			return SerializeBytes(Encoding.ASCII.GetBytes(value));
 		}
 		
 		public static IEnumerable<byte> SerializeBool(bool value)

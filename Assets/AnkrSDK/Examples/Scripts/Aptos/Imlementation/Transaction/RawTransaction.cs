@@ -33,7 +33,7 @@ namespace AnkrSDK.Aptos.Imlementation.ABI
 
 		public void Serialize(Serializer serializer)
 		{
-			serializer.SerializeBytes(Sender);
+			serializer.SerializeFixedBytes(Sender);
 			serializer.SerializeUint64(SequenceNumber);
 			Payload.Serialize(serializer);
 			serializer.SerializeUint64(MaxGasAmount);
@@ -44,7 +44,7 @@ namespace AnkrSDK.Aptos.Imlementation.ABI
 
 		private static RawTransaction Deserialize(Deserializer deserializer)
 		{
-			var sender = deserializer.DeserializeBytes();
+			var sender = deserializer.DeserializeFixedBytes((int)TypeLength.Address);
 			var sequenceNumber = deserializer.DeserializeUInt64();
 			var payload = TransactionPayload.Deserialize(deserializer);
 			var maxGasAmount = deserializer.DeserializeUInt64();

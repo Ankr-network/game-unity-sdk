@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using AnkrSDK.Aptos.Infrastructure;
+using UnityEngine;
 
 namespace AnkrSDK.Aptos.Utils
 {
@@ -18,6 +20,11 @@ namespace AnkrSDK.Aptos.Utils
 		public byte[] GetBytes()
 		{
 			return _buffer.ToArray();
+		}
+		
+		public void SerializeFixedBytes(IEnumerable<byte> bytes)
+		{
+			Add(bytes);
 		}
 
 		public void SerializeBytes(IEnumerable<byte> bytes)

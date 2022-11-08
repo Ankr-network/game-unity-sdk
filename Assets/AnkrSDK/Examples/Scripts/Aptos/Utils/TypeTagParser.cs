@@ -75,7 +75,7 @@ namespace AnkrSDK.Aptos.Utils
 					Consume(">");
 				}
 
-				var structTag = new StructTag(address.HexToByteArray(), moduleToken.Value, nameToken.Value, typeTags.ToArray());
+				var structTag = new StructTag(address.HexToByteArray((int)TypeLength.Address), moduleToken.Value, nameToken.Value, typeTags.ToArray());
 
 				return new TypeTagStruct(structTag);
 			}
