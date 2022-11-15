@@ -1,49 +1,9 @@
 using Org.BouncyCastle.Security;
 using System;
+using System.Security.Cryptography;
 
 namespace AnkrSDK.Aptos
 {
-    /// <summary>
-    /// Implements a random number generator using the crypto service provider.
-    /// </summary>
-    public class RngCryptoServiceProviderRandom : IRandom
-    {
-        /// <summary>
-        /// The instance of the crypto service provider.
-        /// </summary>
-        private readonly SecureRandom _instance;
-
-        /// <summary>
-        /// Initialize the random number generator.
-        /// </summary>
-        public RngCryptoServiceProviderRandom()
-        {
-            _instance = new SecureRandom();
-        }
-
-        #region IRandom Members
-
-        /// <inheritdoc cref="IRandom.GetBytes(byte[])"/>
-        public void GetBytes(byte[] output)
-        {
-            _instance.NextBytes(output);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Specifies functionality for a random number generator.
-    /// </summary>
-    public interface IRandom
-    {
-        /// <summary>
-        /// Get bytes.
-        /// </summary>
-        /// <param name="output">The output array of bytes.</param>
-        void GetBytes(byte[] output);
-    }
-
     /// <summary>
     /// Implements utilities to be used with random number generation.
     /// </summary>
@@ -59,14 +19,14 @@ namespace AnkrSDK.Aptos
         /// </summary>
         static RandomUtils()
         {
-            Random = new RngCryptoServiceProviderRandom();
+            Random = new SecureRandom();
             AddEntropy(Guid.NewGuid().ToByteArray());
         }
 
         /// <summary>
         /// The random number generator.
         /// </summary>
-        public static IRandom Random
+        public static SecureRandom Random
         {
             get;
             set;
@@ -83,7 +43,7 @@ namespace AnkrSDK.Aptos
             byte[] data = new byte[length];
             if (Random == null)
                 throw new InvalidOperationException("You must initialize the random number generator before generating numbers.");
-            Random.GetBytes(data);
+            Random.NextBytes(data);
             PushEntropy(data);
             return data;
         }
@@ -98,7 +58,7 @@ namespace AnkrSDK.Aptos
         {
             if (Random == null)
                 throw new InvalidOperationException("You must initialize the random number generator before generating numbers.");
-            Random.GetBytes(output);
+            Random.NextBytes(output);
             PushEntropy(output);
             return output;
         }
@@ -118,7 +78,7 @@ namespace AnkrSDK.Aptos
                 data[i] ^= entropy[pos % 32];
                 pos++;
             }
-            entropy = Utils.Sha256(data);
+            entropy = Sha256(data);
             for (int i = 0; i < data.Length; i++)
             {
                 data[i] ^= entropy[pos % 32];
@@ -146,7 +106,7 @@ namespace AnkrSDK.Aptos
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
-            var entropy = Utils.Sha256(data);
+            var entropy = Sha256(data);
             if (_additionalEntropy == null)
                 _additionalEntropy = entropy;
             else
@@ -155,8 +115,31 @@ namespace AnkrSDK.Aptos
                 {
                     _additionalEntropy[i] ^= entropy[i];
                 }
-                _additionalEntropy = Utils.Sha256(_additionalEntropy);
+                _additionalEntropy = Sha256(_additionalEntropy);
             }
+        }
+        
+        /// <summary>
+        /// Calculates the Sha256 of the given data.
+        /// </summary>
+        /// <param name="data">The data to hash.</param>
+        /// <returns>The hash.</returns>
+        public static byte[] Sha256(byte[] data)
+        {
+            return Sha256(data, 0, data.Length);
+        }
+
+        /// <summary>
+        /// Calculates the SHA256 of the given data.
+        /// </summary>
+        /// <param name="data">The data to hash.</param>
+        /// <param name="offset">The offset at which to start.</param>
+        /// <param name="count">The number of bytes to in the array to use as data.</param>
+        /// <returns>The hash.</returns>
+        private static byte[] Sha256(byte[] data, int offset, int count)
+        {
+            var SHA256CHECKSUM = SHA256.Create();
+            return SHA256CHECKSUM.ComputeHash(data.AsSpan(offset,count).ToArray());
         }
     }
 }
