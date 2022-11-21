@@ -1,6 +1,7 @@
 using Org.BouncyCastle.Security;
 using System;
 using System.Security.Cryptography;
+using Mirage.Aptos.Utils;
 
 namespace AnkrSDK.Aptos
 {
@@ -139,7 +140,7 @@ namespace AnkrSDK.Aptos
         private static byte[] Sha256(byte[] data, int offset, int count)
         {
             var SHA256CHECKSUM = SHA256.Create();
-            return SHA256CHECKSUM.ComputeHash(data.AsSpan(offset,count).ToArray());
+            return SHA256CHECKSUM.ComputeHash(data.Slice(offset, offset + count));
         }
     }
 }

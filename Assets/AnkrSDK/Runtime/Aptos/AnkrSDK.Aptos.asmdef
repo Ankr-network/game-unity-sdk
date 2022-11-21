@@ -2,7 +2,8 @@
     "name": "AnkrSDK.Aptos",
     "rootNamespace": "",
     "references": [
-        "GUID:1069e877957ca4483a214538b42a4aed"
+        "Chaos.NaCl",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
