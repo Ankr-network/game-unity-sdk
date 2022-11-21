@@ -98,7 +98,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		{
 			var tokenUriMessage = new TokenURIMessage
 			{
-				TokenId = tokenID.ToString()
+				TokenId = tokenID
 			};
 			var tokenMetaData = await _gameCharacterContract.GetData<TokenURIMessage, string>(tokenUriMessage);
 
