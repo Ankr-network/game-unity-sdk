@@ -1,3 +1,4 @@
+using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
@@ -7,6 +8,6 @@ namespace AnkrSDK.Data.ContractMessages.ERC721
 	public class TokenURIMessage : FunctionMessage
 	{
 		[Parameter("uint256", "_tokenId")]
-		public string TokenId { get; set; }
+		public BigInteger TokenId { get; set; }
 	}
 }

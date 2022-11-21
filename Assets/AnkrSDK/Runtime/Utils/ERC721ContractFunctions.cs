@@ -63,7 +63,7 @@ namespace AnkrSDK.Utils
 		}
 
 		/// <summary>Returns the Uniform Resource Identifier (URI) for "<paramref name="tokenId" />" token.</summary>
-		public static UniTask<string> TokenURI(this IContract contract, string tokenId)
+		public static UniTask<string> TokenURI(this IContract contract, BigInteger tokenId)
 		{
 			var tokenURIMessage = new TokenURIMessage
 			{
