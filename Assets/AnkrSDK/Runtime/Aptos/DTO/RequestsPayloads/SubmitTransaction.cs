@@ -1,5 +1,6 @@
 using Mirage.Aptos.Imlementation.ABI;
 using Mirage.Aptos.Utils;
+using UnityEngine;
 using TransactionPayloadABI = Mirage.Aptos.Imlementation.ABI.TransactionPayload;
 
 namespace AnkrSDK.Aptos.DTO
@@ -19,7 +20,7 @@ namespace AnkrSDK.Aptos.DTO
 		public RawTransaction GetRaw()
 		{
 			return new RawTransaction(
-				Sender.PublicKey.HexToByteArray(),
+				Sender.Address.HexToByteArray(),
 				SequenceNumber,
 				Payload,
 				MaxGasAmount,

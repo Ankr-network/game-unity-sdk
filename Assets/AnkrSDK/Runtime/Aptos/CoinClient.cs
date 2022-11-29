@@ -33,8 +33,6 @@ namespace AnkrSDK.Aptos
 			var raw = transaction.GetRaw();
 			var signature = _signatureBuilder.GetSignature(from, raw);
 			var request = transaction.GetRequest(payload, signature);
-
-			Debug.Log(JsonConvert.SerializeObject(request));
 			
 			var receipt = await _client.SubmitTransaction(request);
 
@@ -62,7 +60,7 @@ namespace AnkrSDK.Aptos
 				payload.TypeArguments,
 				payload.Arguments
 			);
-
+			
 			return transaction;
 		}
 
