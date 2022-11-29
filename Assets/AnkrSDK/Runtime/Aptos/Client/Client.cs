@@ -3,7 +3,6 @@ using AnkrSDK.Aptos.DTO;
 using Cysharp.Threading.Tasks;
 using Mirage.Aptos.Imlementation.ABI;
 using Mirage.Aptos.Utils;
-using UnityEngine;
 using TransactionPayload = Mirage.Aptos.Imlementation.ABI.TransactionPayload;
 
 namespace AnkrSDK.Aptos
@@ -53,11 +52,12 @@ namespace AnkrSDK.Aptos
 			);
 		}
 
-		public async UniTask<SubmitTransactionRequest> GenerateTransactionRequest(Account sender,
+		public async UniTask PopulateRequestParams(
+			SubmitTransaction transaction,
 			OptionalTransactionArgs extraArgs = null)
 		{
 			var ledgerInfo = await _services.GeneralService.GetLedgerInfo();
-			var account = await _services.AccountsService.GetAccount(sender.Address);
+			var account = await _services.AccountsService.GetAccount(transaction.Sender.Address);
 			var gasUnitPrice = extraArgs?.GasUnitPrice;
 			if (gasUnitPrice == null)
 			{
@@ -66,25 +66,22 @@ namespace AnkrSDK.Aptos
 			}
 
 			var expireTimestamp =
-				(uint)Math.Floor((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000 + DefaultTxnExpSecFromNow));
+				(uint)Math.Floor((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000 +
+				                          DefaultTxnExpSecFromNow));
 
-			return new SubmitTransactionRequest
-			{
-				Sender = sender.Address,
-				SequenceNumber = account.SequenceNumber,
-				MaxGasAmount = DefaultMaxGasAmount,
-				GasUnitPrice = (ulong)gasUnitPrice,
-				ExpirationTimestampSecs = expireTimestamp,
-				ChainID = ledgerInfo.ChainID
-			};
+			transaction.SequenceNumber = account.SequenceNumber;
+			transaction.MaxGasAmount = DefaultMaxGasAmount;
+			transaction.GasUnitPrice = (ulong)gasUnitPrice;
+			transaction.ExpirationTimestampSecs = expireTimestamp;
+			transaction.ChainID = ledgerInfo.ChainID;
 		}
 
 		public UniTask<PendingTransaction> SubmitTransaction(SubmitTransactionRequest request)
 		{
 			return _services.TransactionsService.SubmitTransaction(request);
 		}
-		
-		public UniTask<WrappedTransaction> GetTransactionByHash(string hash)
+
+		public UniTask<TypedTransaction> GetTransactionByHash(string hash)
 		{
 			return _services.TransactionsService.GetTransactionByHash(hash);
 		}

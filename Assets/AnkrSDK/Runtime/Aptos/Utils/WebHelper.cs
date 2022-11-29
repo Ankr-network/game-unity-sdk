@@ -69,9 +69,7 @@ namespace AnkrSDK.Aptos
 					var jsonPayload = json;
 					if (wrapper != null)
 					{
-						Debug.Log(wrapper);
 						jsonPayload = string.Format(wrapper, json);
-						Debug.Log(jsonPayload);
 					}
 					var result = JsonConvert.DeserializeObject<TResultType>(jsonPayload);
 					return result;

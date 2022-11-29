@@ -22,25 +22,25 @@ namespace AnkrSDK.Aptos
 			var client = new Client("https://fullnode.devnet.aptoslabs.com");
 			var coinClient = new CoinClient(client);
 
-			// AddText("------ Accounts -------");
-			// var from = new Account(_alicePrivateKey);
-			// AddText($"Alice: {from.GetAddress()}");
-			// var to = new Account(_bobPrivateKey);
-			// AddText($"Bob: {to.GetAddress()}");
-			//
-			// AddText("------ Balances --------");
-			// AddText($"Alice's balance: {await coinClient.GetBalance(from)}");
-			// AddText($"Bob's balance: {await coinClient.GetBalance(to)}");
-			//
-			// AddText("------ Transaction --------");
-			// var hash = await coinClient.Transfer(from, to, 1000);
-			// AddText("hash = " + hash);
-			// Debug.Log("hash = " + hash);
+			AddText("------ Accounts -------");
+			var from = new Account(_alicePrivateKey);
+			AddText($"Alice: {from.GetAddress()}");
+			var to = new Account(_bobPrivateKey);
+			AddText($"Bob: {to.GetAddress()}");
+			
+			AddText("------ Balances --------");
+			AddText($"Alice's balance: {await coinClient.GetBalance(from)}");
+			AddText($"Bob's balance: {await coinClient.GetBalance(to)}");
+			
+			AddText("------ Transaction --------");
+			var hash = await coinClient.Transfer(from, to, 1000);
+			AddText("hash = " + hash);
+			Debug.Log("hash = " + hash);
 
-			var hash = "0xb241c94c1cfa623659acb4a101273c5319774309bf1bbb3670d8606a0812b875";
-
-			var tx = await client.GetTransactionByHash(hash);
-			Debug.Log(JsonConvert.SerializeObject(tx.Transaction));
+			// var hash = "0xb241c94c1cfa623659acb4a101273c5319774309bf1bbb3670d8606a0812b875";
+			//
+			// var tx = await client.GetTransactionByHash(hash);
+			// Debug.Log(JsonConvert.SerializeObject(tx));
 		}
 
 		private void AddText(string newText)

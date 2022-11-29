@@ -4,14 +4,16 @@ using AnkrSDK.Aptos.DTO;
 using Cysharp.Threading.Tasks;
 using Mirage.Aptos.Constants;
 using Mirage.Aptos.Imlementation.ABI;
-using Mirage.Aptos.Utils;
+using Newtonsoft.Json;
+using UnityEngine;
+using TransactionPayloadABI = Mirage.Aptos.Imlementation.ABI.TransactionPayload;
 
 namespace AnkrSDK.Aptos
 {
 	public class CoinClient
 	{
 		private const string AptosCoinType = "0x1::aptos_coin::AptosCoin";
-		
+
 		private Client _client;
 		private TransactionBuilderABI _transactionBuilder;
 		private Ed25519SignatureBuilder _signatureBuilder;
@@ -25,19 +27,41 @@ namespace AnkrSDK.Aptos
 
 		public async UniTask<string> Transfer(Account from, Account to, ulong amount)
 		{
-			var transaction = await PrepareTransaction(from, to, amount);
-			var receipt = await _client.SubmitTransaction(transaction);
+			var payload = GetPayload(to, amount);
+			var transaction = await PrepareTransaction(from, to, amount, payload);
+
+			var raw = transaction.GetRaw();
+			var signature = _signatureBuilder.GetSignature(from, raw);
+			var request = transaction.GetRequest(payload, signature);
+
+			Debug.Log(JsonConvert.SerializeObject(request));
+			
+			var receipt = await _client.SubmitTransaction(request);
+
 			return receipt.Hash;
 		}
 
-		private async UniTask<SubmitTransactionRequest> PrepareTransaction(Account from, Account to, ulong amount)
+		private async UniTask<SubmitTransaction> PrepareTransaction(
+			Account from,
+			Account to,
+			ulong amount,
+			EntryFunctionPayload payload
+		)
 		{
-			var transaction = await _client.GenerateTransactionRequest(from);
-			transaction.Payload = GetPayload(to, amount);
+			var transaction = new SubmitTransaction
+			{
+				Sender = from,
+				Receiver = to,
+				Amount = amount
+			};
 
-			var raw = TransformRequestToRaw(transaction);
+			await _client.PopulateRequestParams(transaction);
 
-			transaction.Signature = _signatureBuilder.GetSignature(from, raw);
+			transaction.Payload = _transactionBuilder.BuildTransactionPayload(
+				payload.Function,
+				payload.TypeArguments,
+				payload.Arguments
+			);
 
 			return transaction;
 		}
@@ -53,29 +77,13 @@ namespace AnkrSDK.Aptos
 			};
 		}
 
-		private RawTransaction TransformRequestToRaw(SubmitTransactionRequest transactionRequest)
-		{
-			var payload = (EntryFunctionPayload) transactionRequest.Payload;
-			var rawPayload =
-				_transactionBuilder.BuildTransactionPayload(payload.Function, payload.TypeArguments, payload.Arguments);
-			return new RawTransaction(
-				transactionRequest.Sender.HexToByteArray(),
-				transactionRequest.SequenceNumber,
-				rawPayload,
-				transactionRequest.MaxGasAmount,
-				transactionRequest.GasUnitPrice,
-				transactionRequest.ExpirationTimestampSecs,
-				transactionRequest.ChainID
-			);
-		}
-
 		public async UniTask<BigInteger> GetBalance(Account account)
 		{
 			var typeTag = $"0x1::coin::CoinStore<{AptosCoinType}>";
 			var resource = await _client.GetAccountResource(account, typeTag);
-			
+
 			var data = resource.Data.ToObject<CoinStoreType>();
-			
+
 			return BigInteger.Parse(data.Coin.Value);
 		}
 	}

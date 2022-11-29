@@ -15,9 +15,13 @@ namespace AnkrSDK.Aptos.Converters
 			serializer.Serialize(writer, value);
 		}
 
-		public override TransactionPayload ReadJson(JsonReader reader, Type objectType,
+		public override TransactionPayload ReadJson(
+			JsonReader reader,
+			Type objectType,
 			TransactionPayload existingValue,
-			bool hasExistingValue, JsonSerializer serializer)
+			bool hasExistingValue,
+			JsonSerializer serializer
+		)
 		{
 			var jsonObj = JObject.Load(reader);
 			var type = jsonObj[TypeFieldName]?.Value<string>();

@@ -9,19 +9,23 @@ namespace AnkrSDK.Aptos.Converters
 	public class TransactionSignatureConverter : JsonConverter<TransactionSignature>
 	{
 		private const string TypeFieldName = "type";
-		
+
 		public override void WriteJson(JsonWriter writer, TransactionSignature value, JsonSerializer serializer)
 		{
 			serializer.Serialize(writer, value);
 		}
 
-		public override TransactionSignature ReadJson(JsonReader reader, Type objectType,
+		public override TransactionSignature ReadJson(
+			JsonReader reader,
+			Type objectType,
 			TransactionSignature existingValue,
-			bool hasExistingValue, JsonSerializer serializer)
+			bool hasExistingValue,
+			JsonSerializer serializer
+		)
 		{
 			var jsonObj = JObject.Load(reader);
 			var type = jsonObj[TypeFieldName]?.Value<string>();
-			
+
 			if (type == null)
 			{
 				throw new JsonException($"Field \"{TypeFieldName}\" doesn't exist in json object.");

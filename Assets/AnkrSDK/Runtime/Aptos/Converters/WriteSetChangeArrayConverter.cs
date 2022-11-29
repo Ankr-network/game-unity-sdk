@@ -5,11 +5,10 @@ using AnkrSDK.Aptos.DTO;
 using AnkrSDK.Aptos.DTO.ChageTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
 
 namespace AnkrSDK.Aptos.Converters
 {
-	public class WriteSetChangeConverter : JsonConverter<WriteSetChange[]>
+	public class WriteSetChangeArrayConverter : JsonConverter<WriteSetChange[]>
 	{
 		private const string TypeFieldName = "type";
 
@@ -18,9 +17,13 @@ namespace AnkrSDK.Aptos.Converters
 			serializer.Serialize(writer, value);
 		}
 
-		public override WriteSetChange[] ReadJson(JsonReader reader, Type objectType,
+		public override WriteSetChange[] ReadJson(
+			JsonReader reader,
+			Type objectType,
 			WriteSetChange[] existingValue,
-			bool hasExistingValue, JsonSerializer serializer)
+			bool hasExistingValue,
+			JsonSerializer serializer
+		)
 		{
 			if (reader.TokenType != JsonToken.StartArray)
 			{
@@ -30,7 +33,7 @@ namespace AnkrSDK.Aptos.Converters
 			reader.Read();
 
 			var list = new List<WriteSetChange>();
-			
+
 			while (reader.TokenType != JsonToken.EndArray)
 			{
 				var obj = Parse(reader, serializer);
@@ -50,7 +53,7 @@ namespace AnkrSDK.Aptos.Converters
 			{
 				throw new JsonException($"Field \"{TypeFieldName}\" doesn't exist in json object.");
 			}
-			
+
 			switch (type)
 			{
 				case WriteSetChangeTypes.DeleteModule:

@@ -1,4 +1,5 @@
 using System;
+using AnkrSDK.Aptos.Converters;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.Aptos.DTO
@@ -9,33 +10,18 @@ namespace AnkrSDK.Aptos.DTO
 		[JsonProperty(PropertyName = "sender")]
 		public string Sender;
 		[JsonProperty(PropertyName = "sequence_number")]
-		public ulong SequenceNumber;
+		public string SequenceNumber;
 		[JsonProperty(PropertyName = "max_gas_amount")]
-		public ulong MaxGasAmount;
+		public string MaxGasAmount;
 		[JsonProperty(PropertyName = "gas_unit_price")]
-		public ulong GasUnitPrice;
+		public string GasUnitPrice;
 		[JsonProperty(PropertyName = "expiration_timestamp_secs")]
-		public ulong ExpirationTimestampSecs;
+		public string ExpirationTimestampSecs;
 		[JsonProperty(PropertyName = "payload")]
+		[JsonConverter(typeof(TransactionPayloadConverter))]
 		public TransactionPayload Payload;
 		[JsonProperty(PropertyName = "signature")]
+		[JsonConverter(typeof(TransactionSignatureConverter))]
 		public TransactionSignature Signature;
-
-		[JsonIgnore]
-		public uint ChainID;
-
-		public static implicit operator SubmitTransactionRequest1(SubmitTransactionRequest original)
-		{
-			return new SubmitTransactionRequest1
-			{
-				Sender = original.Sender,
-				SequenceNumber = original.SequenceNumber.ToString(),
-				MaxGasAmount = original.MaxGasAmount.ToString(),
-				GasUnitPrice = original.GasUnitPrice.ToString(),
-				ExpirationTimestampSecs = original.ExpirationTimestampSecs.ToString(),
-				Payload = original.Payload,
-				Signature = original.Signature,
-			};
-		}
 	}
 }

@@ -24,7 +24,7 @@ namespace AnkrSDK.Aptos.DTO
 		[JsonProperty(PropertyName = "accumulator_root_hash")]
 		public string AccumulatorRootHash;
 		[JsonProperty(PropertyName = "changes")]
-		[JsonConverter(typeof(WriteSetChangeConverter))]
+		[JsonConverter(typeof(WriteSetChangeArrayConverter))]
 		public WriteSetChange[] Changes;
 		[JsonProperty(PropertyName = "sender")]
 		public string Sender;

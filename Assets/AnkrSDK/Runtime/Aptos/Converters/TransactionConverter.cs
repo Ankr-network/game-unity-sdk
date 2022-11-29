@@ -3,7 +3,6 @@ using AnkrSDK.Aptos.Constants;
 using AnkrSDK.Aptos.DTO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
 
 namespace AnkrSDK.Aptos.Converters
 {
@@ -16,9 +15,13 @@ namespace AnkrSDK.Aptos.Converters
 			serializer.Serialize(writer, value);
 		}
 
-		public override TypedTransaction ReadJson(JsonReader reader, Type objectType,
+		public override TypedTransaction ReadJson(
+			JsonReader reader,
+			Type objectType,
 			TypedTransaction existingValue,
-			bool hasExistingValue, JsonSerializer serializer)
+			bool hasExistingValue,
+			JsonSerializer serializer
+		)
 		{
 			var jsonObj = JObject.Load(reader);
 			var type = jsonObj[TypeFieldName]?.Value<string>();
@@ -28,8 +31,6 @@ namespace AnkrSDK.Aptos.Converters
 				throw new JsonException($"Field \"{TypeFieldName}\" doesn't exist in json object.");
 			}
 
-			Debug.Log(type);
-			
 			switch (type)
 			{
 				case TransactionTypes.UserTransaction:

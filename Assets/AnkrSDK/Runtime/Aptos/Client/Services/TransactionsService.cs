@@ -8,19 +8,22 @@ namespace AnkrSDK.Aptos.Services
 		private const string EstimateGasPriceRoute = "/estimate_gas_price";
 		private const string SubmitTransactionRoute = "/transactions";
 		private const string GetTransactionByHashRoute = @"/transactions/by_hash/{0}";
+		private const string JsonWrapperForTransaction = @"{{""transaction"":{0}}}";
 		
 		public TransactionsService(OpenAPIConfig config) : base(config)
 		{
 		}
 		
-		public UniTask<PendingTransaction> SubmitTransaction(SubmitTransactionRequest1 requestBody)
+		public UniTask<PendingTransaction> SubmitTransaction(SubmitTransactionRequest requestBody)
 		{
-			return WebHelper.SendPostRequest<SubmitTransactionRequest1, PendingTransaction>(URL + SubmitTransactionRoute, requestBody);
+			return WebHelper.SendPostRequest<SubmitTransactionRequest, PendingTransaction>(URL + SubmitTransactionRoute, requestBody);
 		}
 		
-		public UniTask<WrappedTransaction> GetTransactionByHash(string hash)
+		public async UniTask<TypedTransaction> GetTransactionByHash(string hash)
 		{
-			return WebHelper.SendGetRequest<WrappedTransaction>(URL + string.Format(GetTransactionByHashRoute, hash), wrapper: @"{{""transaction"":{0}}}");
+			var url = URL + string.Format(GetTransactionByHashRoute, hash);
+			var wrapper = await WebHelper.SendGetRequest<WrappedTransaction>(url, wrapper: JsonWrapperForTransaction);
+			return wrapper.Transaction;
 		}
 		
 		public UniTask<GasEstimation> EstimateGasPrice()

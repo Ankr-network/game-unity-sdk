@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace AnkrSDK.Aptos.DTO
 {
-	public class PendingTransaction : SubmitTransactionRequest1
+	public class PendingTransaction : SubmitTransactionRequest
 	{
 		[JsonProperty(PropertyName = "hash")]
 		public string Hash;
