@@ -37,6 +37,11 @@ namespace AnkrSDK.Aptos
 			AddText("hash = " + hash);
 			Debug.Log("hash = " + hash);
 
+			var awaiter = new TransactionAwaiter(client);
+			var transaction = await awaiter.WaitForTransactionWithResult(hash);
+			
+			Debug.Log(JsonConvert.SerializeObject(transaction));
+
 			// var hash = "0xb241c94c1cfa623659acb4a101273c5319774309bf1bbb3670d8606a0812b875";
 			//
 			// var tx = await client.GetTransactionByHash(hash);
