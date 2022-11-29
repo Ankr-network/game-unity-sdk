@@ -1,5 +1,5 @@
 {
-    "name": "AnkrSDK.Tests.Runtime",
+    "name": "MirageSDK.Tests.Runtime",
     "references": [
         "UniTask",
         "WalletConnectSharp",

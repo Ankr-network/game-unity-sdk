@@ -1,0 +1,8 @@
+{
+  "name": "MirageSDK.Core.Infrastructure",
+  "references": [
+    "MirageSDK.Data",
+    "endel.nativewebsocket",
+    "UniTask"
+  ]
+}

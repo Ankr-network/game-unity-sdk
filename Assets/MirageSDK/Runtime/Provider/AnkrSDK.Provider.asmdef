@@ -1,0 +1,13 @@
+{
+  "name": "MirageSDK.Provider",
+  "references": [
+    "MirageSDK.Core",
+    "MirageSDK.Core.Infrastructure",
+    "MirageSDK.WebGL",
+    "MirageSDK.Data",
+    "MirageSDK.Mobile",
+    "MirageSDK.Utils",
+    "WalletConnectSharp",
+    "UniTask"
+  ]
+}

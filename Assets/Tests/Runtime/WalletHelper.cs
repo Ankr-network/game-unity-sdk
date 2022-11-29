@@ -1,6 +1,6 @@
-using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Unity;
-using AnkrSDK.WalletConnectSharp.Unity.Network;
+using MirageSDK.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Unity;
+using MirageSDK.WalletConnectSharp.Unity.Network;
 using UnityEngine;
 
 namespace Tests.Runtime
@@ -18,8 +18,8 @@ namespace Tests.Runtime
 			walletConnect.AppData = new ClientMeta
 			{
 				_description = "Wallet",
-				_url = "https://www.ankr.com/",
-				_icons = new[] { "https://www.ankr.com/static/favicon/apple-touch-icon.png" },
+				_url = "https://www.Mirage.com/",
+				_icons = new[] { "https://www.Mirage.com/static/favicon/apple-touch-icon.png" },
 				_name = "Wallet"
 			};
 

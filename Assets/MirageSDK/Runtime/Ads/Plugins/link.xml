@@ -1,0 +1,18 @@
+<linker>
+    <assembly fullname="MirageAds.Ads">
+        <type fullname="MirageAds.Ads.Data.AdData" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.AdRequestResult" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.AdRequestResultBase" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.AdType" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.ResponseCodeType" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.StartRequestResult" preserve="all"/>
+    </assembly>
+    <assembly fullname="MirageAds.Ads.Data">
+        <type fullname="MirageAds.Ads.Data.AdData" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.AdRequestResult" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.AdRequestResultBase" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.AdType" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.ResponseCodeType" preserve="all"/>
+        <type fullname="MirageAds.Ads.Data.StartRequestResult" preserve="all"/>
+    </assembly>
+</linker>

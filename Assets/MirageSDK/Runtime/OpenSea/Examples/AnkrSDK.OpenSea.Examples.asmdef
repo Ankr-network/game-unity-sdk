@@ -1,0 +1,8 @@
+{
+  "name": "MirageSDK.OpenSea.Examples",
+  "references": [
+    "MirageSDK.OpenSea",
+    "MirageSDK.Examples",
+    "UniTask"
+  ]
+}

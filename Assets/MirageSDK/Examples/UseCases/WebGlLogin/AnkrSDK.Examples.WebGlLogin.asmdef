@@ -1,0 +1,28 @@
+{
+    "name": "MirageSDK.Examples.WebGlLogin",
+    "rootNamespace": "",
+    "references": [
+        "UniTask",
+        "MirageSDK.Provider",
+        "MirageSDK.Core.Infrastructure",
+        "MirageSDK.Data",
+        "MirageSDK.OpenSea",
+        "MirageSDK.Utils",
+        "MirageSDK.WebGL",
+        "WalletConnectSharp",
+        "WalletConnectSharp.Core",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WebGL"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,8 @@
+{
+  "name": "MirageSDK.Utils",
+  "references": [
+    "MirageSDK.Data",
+    "MirageSDK.Core.Infrastructure",
+    "UniTask"
+  ]
+}

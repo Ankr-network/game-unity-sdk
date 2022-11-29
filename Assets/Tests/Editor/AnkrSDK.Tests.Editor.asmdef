@@ -1,5 +1,5 @@
 {
-    "name": "AnkrSDK.Tests.Editor",
+    "name": "MirageSDK.Tests.Editor",
     "rootNamespace": "",
     "references": [
         "UnityEditor.TestRunner",
