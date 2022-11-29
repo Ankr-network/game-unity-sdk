@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AnkrSDK.Aptos.Converters;
 using AnkrSDK.Aptos.DTO;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
@@ -45,7 +46,8 @@ namespace AnkrSDK.Aptos
 
 		public static async UniTask<TResultType> SendGetRequest<TResultType>(
 			string urlWithQuery,
-			Dictionary<string, string> headers = null
+			Dictionary<string, string> headers = null,
+			string wrapper = null
 		)
 		{
 			Debug.Log(urlWithQuery);
@@ -64,7 +66,14 @@ namespace AnkrSDK.Aptos
 			{
 				try
 				{
-					var result = JsonConvert.DeserializeObject<TResultType>(json);
+					var jsonPayload = json;
+					if (wrapper != null)
+					{
+						Debug.Log(wrapper);
+						jsonPayload = string.Format(wrapper, json);
+						Debug.Log(jsonPayload);
+					}
+					var result = JsonConvert.DeserializeObject<TResultType>(jsonPayload);
 					return result;
 				}
 				catch (Exception e)

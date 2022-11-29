@@ -1,4 +1,5 @@
 using System.Numerics;
+using AnkrSDK.Aptos.Constants;
 using AnkrSDK.Aptos.DTO;
 using Cysharp.Threading.Tasks;
 using Mirage.Aptos.Constants;
@@ -29,7 +30,7 @@ namespace AnkrSDK.Aptos
 			return receipt.Hash;
 		}
 
-		private async UniTask<SubmitTransactionRequest<EntryFunctionPayload, Ed25519Signature>> PrepareTransaction(Account from, Account to, ulong amount)
+		private async UniTask<SubmitTransactionRequest> PrepareTransaction(Account from, Account to, ulong amount)
 		{
 			var transaction = await _client.GenerateTransactionRequest(from);
 			transaction.Payload = GetPayload(to, amount);
@@ -45,16 +46,16 @@ namespace AnkrSDK.Aptos
 		{
 			return new EntryFunctionPayload
 			{
-				Type = "entry_function_payload",
+				Type = TransactionPayloadTypes.EntryFunction,
 				Function = "0x1::coin::transfer",
 				TypeArguments = new string[] { AptosCoinType },
 				Arguments = new string[] { to.Address, amount.ToString() }
 			};
 		}
 
-		private RawTransaction TransformRequestToRaw(SubmitTransactionRequest<EntryFunctionPayload, Ed25519Signature> transactionRequest)
+		private RawTransaction TransformRequestToRaw(SubmitTransactionRequest transactionRequest)
 		{
-			var payload = transactionRequest.Payload;
+			var payload = (EntryFunctionPayload) transactionRequest.Payload;
 			var rawPayload =
 				_transactionBuilder.BuildTransactionPayload(payload.Function, payload.TypeArguments, payload.Arguments);
 			return new RawTransaction(
@@ -71,8 +72,11 @@ namespace AnkrSDK.Aptos
 		public async UniTask<BigInteger> GetBalance(Account account)
 		{
 			var typeTag = $"0x1::coin::CoinStore<{AptosCoinType}>";
-			var resource = await _client.GetAccountResource<CoinStoreType>(account, typeTag);
-			return BigInteger.Parse(resource.Data.Coin.Value);
+			var resource = await _client.GetAccountResource(account, typeTag);
+			
+			var data = resource.Data.ToObject<CoinStoreType>();
+			
+			return BigInteger.Parse(data.Coin.Value);
 		}
 	}
 }

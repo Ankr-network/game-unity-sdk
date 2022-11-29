@@ -53,7 +53,7 @@ namespace AnkrSDK.Aptos
 			);
 		}
 
-		public async UniTask<SubmitTransactionRequest<EntryFunctionPayload, Ed25519Signature>> GenerateTransactionRequest(Account sender,
+		public async UniTask<SubmitTransactionRequest> GenerateTransactionRequest(Account sender,
 			OptionalTransactionArgs extraArgs = null)
 		{
 			var ledgerInfo = await _services.GeneralService.GetLedgerInfo();
@@ -68,7 +68,7 @@ namespace AnkrSDK.Aptos
 			var expireTimestamp =
 				(uint)Math.Floor((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000 + DefaultTxnExpSecFromNow));
 
-			return new SubmitTransactionRequest<EntryFunctionPayload, Ed25519Signature>
+			return new SubmitTransactionRequest
 			{
 				Sender = sender.Address,
 				SequenceNumber = account.SequenceNumber,
@@ -79,14 +79,19 @@ namespace AnkrSDK.Aptos
 			};
 		}
 
-		public UniTask<PendingTransaction<EntryFunctionPayload, Ed25519Signature>> SubmitTransaction(SubmitTransactionRequest<EntryFunctionPayload, Ed25519Signature> request)
+		public UniTask<PendingTransaction> SubmitTransaction(SubmitTransactionRequest request)
 		{
 			return _services.TransactionsService.SubmitTransaction(request);
 		}
-
-		public UniTask<MoveResource<T>> GetAccountResource<T>(Account account, string resourceType)
+		
+		public UniTask<WrappedTransaction> GetTransactionByHash(string hash)
 		{
-			return this._services.AccountsService.GetAccountResource<T>(account.Address, resourceType);
+			return _services.TransactionsService.GetTransactionByHash(hash);
+		}
+
+		public UniTask<MoveResource> GetAccountResource(Account account, string resourceType)
+		{
+			return _services.AccountsService.GetAccountResource(account.Address, resourceType);
 		}
 	}
 }

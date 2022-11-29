@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace AnkrSDK.Aptos.DTO
 {
 	[Serializable]
-	public class SubmitTransactionRequest<TPayload, TSignature>
+	public class SubmitTransactionRequest
 	{
 		[JsonProperty(PropertyName = "sender")]
 		public string Sender;
@@ -17,16 +17,16 @@ namespace AnkrSDK.Aptos.DTO
 		[JsonProperty(PropertyName = "expiration_timestamp_secs")]
 		public ulong ExpirationTimestampSecs;
 		[JsonProperty(PropertyName = "payload")]
-		public TPayload Payload;
+		public TransactionPayload Payload;
 		[JsonProperty(PropertyName = "signature")]
-		public TSignature Signature;
+		public TransactionSignature Signature;
 
 		[JsonIgnore]
 		public uint ChainID;
 
-		public static implicit operator SubmitTransactionRequest1<TPayload, TSignature>(SubmitTransactionRequest<TPayload, TSignature> original)
+		public static implicit operator SubmitTransactionRequest1(SubmitTransactionRequest original)
 		{
-			return new SubmitTransactionRequest1<TPayload, TSignature>
+			return new SubmitTransactionRequest1
 			{
 				Sender = original.Sender,
 				SequenceNumber = original.SequenceNumber.ToString(),

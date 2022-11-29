@@ -1,12 +1,12 @@
-using System;
 using AnkrSDK.Aptos.Converters;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.Aptos.DTO
 {
-	[Serializable]
-	public class SubmitTransactionRequest1
+	public class Transaction_PendingTransaction : TypedTransaction
 	{
+		[JsonProperty(PropertyName = "hash")]
+		public string Hash;
 		[JsonProperty(PropertyName = "sender")]
 		public string Sender;
 		[JsonProperty(PropertyName = "sequence_number")]

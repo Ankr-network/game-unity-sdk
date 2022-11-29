@@ -26,14 +26,14 @@ namespace AnkrSDK.Aptos.Services
 			return WebHelper.SendGetRequest<AccountData>(url);
 		}
 		
-		public UniTask<MoveResource<TData>> GetAccountResource<TData>(string address, string resourceType, ulong? ledgerVersion = null)
+		public UniTask<MoveResource> GetAccountResource(string address, string resourceType, ulong? ledgerVersion = null)
 		{
 			var url = URL + string.Format(_getAccountResourceByTypeRoute, address, resourceType);
 			if (ledgerVersion != null)
 			{
 				url += string.Format(_getAccountQuery, ledgerVersion);
 			}
-			return WebHelper.SendGetRequest<MoveResource<TData>>(url);
+			return WebHelper.SendGetRequest<MoveResource>(url);
 		}
 	}
 }

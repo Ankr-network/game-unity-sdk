@@ -27,7 +27,7 @@ namespace AnkrSDK.WebGL
 			{
 				ReceiveMessages();
 
-				await UniTask.Yield(PlayerLoopTiming.Update);
+				await UniTask.Delay(TimeSpan.FromSeconds(1), cancellationToken: token);
 			}
 		}
 

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace AnkrSDK.Aptos.DTO
 {
 	[Serializable]
-	public abstract class TransactionPayload
+	public class TransactionPayload
 	{
 		[JsonProperty(PropertyName = "type")]
 		public string Type;

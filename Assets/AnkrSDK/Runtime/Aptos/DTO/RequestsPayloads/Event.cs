@@ -3,12 +3,15 @@ using Newtonsoft.Json.Linq;
 
 namespace AnkrSDK.Aptos.DTO
 {
-	public class MoveResource
+	public class Event
 	{
+		[JsonProperty(PropertyName = "guid")]
+		public EventGuid Guid;
+		[JsonProperty(PropertyName = "sequence_number")]
+		public string SequenceNumber;
 		[JsonProperty(PropertyName = "type")]
 		public string Type;
 		[JsonProperty(PropertyName = "data")]
-		// TODO Implement converter for different data types https://fullnode.devnet.aptoslabs.com/v1/spec#/schemas/MoveStructValue
 		public JObject Data;
 	}
 }
