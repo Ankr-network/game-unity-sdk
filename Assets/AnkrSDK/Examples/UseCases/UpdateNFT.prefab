@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 2312622775736458201}
   - component: {fileID: 2312622775736458200}
   m_Layer: 5
-  m_Name: UseCase-UpdateNFT
+  m_Name: UpdateNFT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

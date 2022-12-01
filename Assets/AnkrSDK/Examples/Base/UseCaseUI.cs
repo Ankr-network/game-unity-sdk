@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AnkrSDK.UseCases
+namespace AnkrSDK.Base
 {
 	public class UseCaseUI : MonoBehaviour
 	{

@@ -974,7 +974,7 @@ GameObject:
   - component: {fileID: 8286684085969758381}
   - component: {fileID: 8286684085969758380}
   m_Layer: 5
-  m_Name: UseCase-LoadNftData
+  m_Name: LoadNFTs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

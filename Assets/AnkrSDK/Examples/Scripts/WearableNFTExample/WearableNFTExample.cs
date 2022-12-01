@@ -1,4 +1,5 @@
 using System.Numerics;
+using AnkrSDK.Base;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data.ContractMessages.ERC1155;
 using AnkrSDK.GameCharacterContract;

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using AnkrSDK.Base;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.ERC20Example;

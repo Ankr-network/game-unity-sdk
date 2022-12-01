@@ -588,7 +588,7 @@ GameObject:
   - component: {fileID: 6143206494044693626}
   - component: {fileID: 6143206494044693627}
   m_Layer: 5
-  m_Name: UseCase-WearableNFT
+  m_Name: WearableNFTs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
