@@ -1,5 +1,6 @@
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.SilentSigning.Infrastructure;
 
 namespace AnkrSDK.Core
 {
@@ -9,22 +10,26 @@ namespace AnkrSDK.Core
 		public IWalletHandler WalletHandler { get; }
 		public INetworkHelper NetworkHelper { get; }
 		public IEthHandler Eth { get; }
+		public ISilentSigningHandler SilentSigningHandler { get; }
 
 		public AnkrSDKWrapper(
 			IContractFunctions contractFunctions,
 			IEthHandler eth,
 			IWalletHandler disconnectHandler,
-			INetworkHelper networkHelper)
+			INetworkHelper networkHelper,
+			ISilentSigningHandler silentSigningHandler = null
+		)
 		{
 			_contractFunctions = contractFunctions;
 			WalletHandler = disconnectHandler;
 			NetworkHelper = networkHelper;
+			SilentSigningHandler = silentSigningHandler;
 			Eth = eth;
 		}
 
 		public IContract GetContract(string contractAddress, string contractABI)
 		{
-			return new Contract(Eth, _contractFunctions, contractAddress, contractABI);
+			return new Contract(Eth, _contractFunctions, contractAddress, contractABI, SilentSigningHandler);
 		}
 
 		public IContractEventSubscriber CreateSubscriber(string wsUrl)

@@ -3,7 +3,7 @@ using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data.ContractMessages.ERC721.RentableExtension;
 using Cysharp.Threading.Tasks;
 
-namespace AnkrSDK.Utils
+namespace AnkrSDK.CommonUtils
 {
 	/// <summary>
 	///     Class <c>ContractFunctions</c> Contains functions usable by ERC721 contracts implementing the Rental Extension.

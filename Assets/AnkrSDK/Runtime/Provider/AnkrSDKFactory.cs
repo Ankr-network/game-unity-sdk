@@ -39,6 +39,8 @@ namespace AnkrSDK.Provider
 				AnkrSDKAutoCreator.Setup();
 			}
 
+			var silentSigningHandler = new SilentSigning.SilentSigningProtocol();
+
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
 			var webGlWrapper = Utils.ConnectProvider<WebGL.WebGLConnect>.GetWalletConnect().SessionWrapper;
 			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
@@ -53,7 +55,13 @@ namespace AnkrSDK.Provider
 			var networkHandler = new Mobile.AnkrNetworkHelper();
 		#endif
 
-			return new AnkrSDKWrapper(contractFunctions, eth, walletHandler, networkHandler);
+			return new AnkrSDKWrapper(
+				contractFunctions,
+				eth,
+				walletHandler,
+				networkHandler,
+				silentSigningHandler
+			);
 		}
 	}
 }

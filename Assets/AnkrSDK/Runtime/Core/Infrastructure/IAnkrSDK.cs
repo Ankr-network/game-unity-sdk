@@ -1,3 +1,5 @@
+using AnkrSDK.SilentSigning.Infrastructure;
+
 namespace AnkrSDK.Core.Infrastructure
 {
 	public interface IAnkrSDK
@@ -7,5 +9,6 @@ namespace AnkrSDK.Core.Infrastructure
 		IWalletHandler WalletHandler { get; }
 		IContract GetContract(string contractAddress, string contractABI);
 		IContractEventSubscriber CreateSubscriber(string wsUrl);
+		ISilentSigningHandler SilentSigningHandler { get; }
 	}
 }

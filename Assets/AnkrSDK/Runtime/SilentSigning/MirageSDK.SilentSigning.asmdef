@@ -1,0 +1,10 @@
+{
+  "name": "MirageSDK.SilentSigning",
+  "references": [
+    "AnkrSDK.Utils",
+    "UniTask",
+    "WalletConnectSharp",
+    "WalletConnectSharp.Core",
+    "WalletConnectSharp.NEtherium"
+  ]
+}

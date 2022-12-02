@@ -18,7 +18,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 			var json = PlayerPrefs.GetString(SessionKey);
 			return JsonConvert.DeserializeObject<SavedSession>(json);
 		}
-
+		
 		public static bool IsSessionSaved()
 		{
 			return PlayerPrefs.HasKey(SessionKey);

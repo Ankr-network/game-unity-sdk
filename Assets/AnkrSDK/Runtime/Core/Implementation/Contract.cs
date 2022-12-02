@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.Data;
+using AnkrSDK.SilentSigning.Infrastructure;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
@@ -18,17 +19,20 @@ namespace AnkrSDK.Core.Implementation
 		private readonly string _contractABI;
 		private readonly string _contractAddress;
 		private readonly IEthHandler _ethHandler;
+		private readonly ISilentSigningHandler _silentSigningHandler;
 		private readonly IContractFunctions _contractFunctions;
 
-		internal Contract(
-			IEthHandler ethHandler,
+		internal Contract(IEthHandler ethHandler,
 			IContractFunctions contractFunctions,
 			string contractAddress,
-			string contractABI)
+			string contractABI,
+			ISilentSigningHandler silentSigningHandler
+		)
 		{
 			_ethHandler = ethHandler;
 			_contractFunctions = contractFunctions;
 			_contractABI = contractABI;
+			_silentSigningHandler = silentSigningHandler;
 			_contractAddress = contractAddress;
 		}
 
@@ -141,7 +145,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var contractBuilder = new ContractBuilder(_contractABI, _contractAddress);
 			var callFunction = contractBuilder.GetFunctionBuilder(methodName);
-			
+
 			return callFunction.CreateTransactionInput(defaultAccount, arguments);
 		}
 	}

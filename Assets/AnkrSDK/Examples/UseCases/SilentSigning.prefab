@@ -266,7 +266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3444915261856315503}
-  - component: {fileID: 2726298579063602097}
+  - component: {fileID: 3754718337090537425}
   m_Layer: 0
   m_Name: SilentSign UseCase
   m_TagString: Untagged
@@ -296,7 +296,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2726298579063602097
+--- !u!114 &3754718337090537425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,10 +305,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6123118117602025556}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdb96f9256de4beabab9466e5b239987, type: 3}
+  m_Script: {fileID: 11500000, guid: e855dbebd0aa40ca8ba2284545ca64f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 6123118116514894266}
+  _requestSilentSignButton: {fileID: 6123118116514894266}
 --- !u!1 &8112337383494604541
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +346,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: -200}
+  m_AnchoredPosition: {x: 541, y: -206}
   m_SizeDelta: {x: 300, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8112337383494604513
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: OpenSea
+  m_text: Silent Signing
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -575,7 +575,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8112337385214500822}
-  - component: {fileID: -8633135117321497863}
   - component: {fileID: 3957429437094943022}
   m_Layer: 5
   m_Name: SilentSigning
@@ -606,18 +605,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &-8633135117321497863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8112337385214500817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e855dbebd0aa40ca8ba2284545ca64f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3957429437094943022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,7 +619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectButton: {fileID: 8112337383494604515}
   _backButton: {fileID: 3050960793474810533}
-  _useCase: {fileID: -8633135117321497863}
+  _useCase: {fileID: 3754718337090537425}
 --- !u!1001 &2998626696989313330
 PrefabInstance:
   m_ObjectHideFlags: 0

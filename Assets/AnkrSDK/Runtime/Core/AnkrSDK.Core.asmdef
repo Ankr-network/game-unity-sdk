@@ -3,6 +3,7 @@
   "references": [
     "AnkrSDK.Data",
     "AnkrSDK.Core.Infrastructure",
+    "MirageSDK.SilentSigning",
     "endel.nativewebsocket",
     "UniTask",
     "WalletConnectSharp",

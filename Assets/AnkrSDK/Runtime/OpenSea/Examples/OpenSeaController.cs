@@ -1,5 +1,4 @@
 using AnkrSDK.Base;
-using AnkrSDK.UseCases;
 using AnkrSDK.WearableNFTExample;
 using UnityEngine;
 using UnityEngine.UI;
