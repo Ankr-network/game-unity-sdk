@@ -6,16 +6,17 @@ namespace AnkrSDK.SilentSigning.Data.Requests
 {
 	public class SilentSigningTransactionRequest : JsonRpcRequest
 	{
-		[JsonProperty("params")] 
-		private TransactionData[] _parameters;
+		[JsonProperty("params")] private SilentTransactionData[] _parameters;
 		public override string Method => "wallet_requestSilentSign";
 
-		[JsonIgnore]
-		public TransactionData[] Parameters => _parameters;
+		[JsonIgnore] public SilentTransactionData[] Parameters => _parameters;
 
-		public SilentSigningTransactionRequest(params TransactionData[] transactionDatas)
+		public SilentSigningTransactionRequest(SilentTransactionData transactionData)
 		{
-			_parameters = transactionDatas;
+			_parameters = new[]
+			{
+				transactionData
+			};
 		}
 	}
 }

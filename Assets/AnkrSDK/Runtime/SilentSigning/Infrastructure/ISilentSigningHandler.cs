@@ -1,14 +1,13 @@
 using System.Threading.Tasks;
-using AnkrSDK.SilentSigning.Data.Responses;
 
 namespace AnkrSDK.SilentSigning.Infrastructure
 {
 	public interface ISilentSigningHandler
 	{
-		Task<SilentSigningResponse> RequestSilentSign(long timestamp);
+		bool IsSilentSigningActive();
+		Task<string> RequestSilentSign(long timestamp);
 		Task DisconnectSilentSign();
-
-		Task SendSilentTransaction(
+		Task<string> SendSilentTransaction(
 			string from,
 			string to,
 			string data = null,

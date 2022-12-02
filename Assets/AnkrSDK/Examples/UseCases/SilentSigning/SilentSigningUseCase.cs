@@ -16,6 +16,7 @@ namespace AnkrSDK.UseCases.SilentSigning
 		[SerializeField] private Button _disconnectSilentSignButton;
 
 		private IAnkrSDK _ankrSDK;
+		private IContract _gameCharacterContract;
 
 		public override void ActivateUseCase()
 		{
@@ -49,9 +50,15 @@ namespace AnkrSDK.UseCases.SilentSigning
 			_ankrSDK.SilentSigningHandler.DisconnectSilentSign().AsUniTask().Forget();
 		}
 
-		private void OnSendSilentSignTxButtonClicked()
+		private async void OnSendSilentSignTxButtonClicked()
 		{
-			_ankrSDK.SilentSigningHandler.SendSilentTransaction().AsUniTask().Forget();
+			const string safeMintMethodName = "safeMint";
+
+			var defaultAccount = await _ankrSDK.Eth.GetDefaultAccount();
+			var transactionHash =
+				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] { defaultAccount });
+
+			Debug.Log($"Game Character Minted. Hash : {transactionHash}");
 		}
 	}
 }
