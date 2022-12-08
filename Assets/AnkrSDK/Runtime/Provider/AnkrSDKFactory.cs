@@ -1,6 +1,10 @@
+using System;
 using AnkrSDK.Core;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
+using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core;
+using AnkrSDK.WalletConnectSharp.Unity;
 
 namespace AnkrSDK.Provider
 {
@@ -54,6 +58,7 @@ namespace AnkrSDK.Provider
 			var walletHandler = new Mobile.MobileWalletHandler();
 			var networkHandler = new Mobile.AnkrNetworkHelper();
 		#endif
+			SetupDeeplinkOnEachMessage(silentSigningHandler.IsSilentSigningActive);
 
 			return new AnkrSDKWrapper(
 				contractFunctions,
@@ -62,6 +67,36 @@ namespace AnkrSDK.Provider
 				networkHandler,
 				silentSigningHandler
 			);
+		}
+
+		private static void SetupDeeplinkOnEachMessage(Func<bool> isSilentSigningActive)
+		{
+			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			walletConnect.SessionUpdated += () => OnSessionUpdated(isSilentSigningActive);
+			if (walletConnect.Session != null)
+			{
+				SubscribeSession(walletConnect.Session, isSilentSigningActive);
+			}
+		}
+
+		private static void OnSessionUpdated(Func<bool> isSilentSigningActive)
+		{
+			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			SubscribeSession(walletConnect.Session, isSilentSigningActive);
+		}
+
+		private static void SubscribeSession(WalletConnectSession session, Func<bool> isSilentSigningActive)
+		{
+			if (!isSilentSigningActive())
+			{
+				session.OnSend += OnSessionSend;
+			}
+		}
+
+		private static void OnSessionSend(object sender, WalletConnectSession e)
+		{
+			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			walletConnect.OpenMobileWallet();
 		}
 	}
 }

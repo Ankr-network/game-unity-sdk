@@ -310,7 +310,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			Session.OnSessionDisconnect += SessionOnSessionDisconnect;
 			Session.OnSessionCreated += SessionOnSessionCreated;
 			Session.OnSessionResumed += SessionOnSessionResumed;
-			Session.OnSend += SessionOnSendEvent;
 		}
 
 		private void TeardownEvents()
@@ -323,12 +322,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			Session.OnSessionDisconnect -= SessionOnSessionDisconnect;
 			Session.OnSessionCreated -= SessionOnSessionCreated;
 			Session.OnSessionResumed -= SessionOnSessionResumed;
-			Session.OnSend -= SessionOnSendEvent;
-		}
-
-		private void SessionOnSendEvent(object sender, WalletConnectSession session)
-		{
-			OpenMobileWallet();
 		}
 
 		private void SessionOnSessionResumed(object sender, WalletConnectSession e)
