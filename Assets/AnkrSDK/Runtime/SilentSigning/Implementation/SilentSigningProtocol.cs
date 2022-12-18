@@ -4,6 +4,8 @@ using AnkrSDK.SilentSigning.Data.Responses;
 using AnkrSDK.SilentSigning.Helpers;
 using AnkrSDK.SilentSigning.Infrastructure;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Unity;
 
 namespace AnkrSDK.SilentSigning
@@ -45,30 +47,39 @@ namespace AnkrSDK.SilentSigning
 			return protocol.Send<SilentSigningDisconnectRequest, SilentSigningResponse>(data);
 		}
 
-		public async Task<string> SendSilentTransaction(string from,
-			string to,
-			string data = null,
-			string value = null,
-			string gas = null,
-			string gasPrice = null,
-			string nonce = null)
+		public async Task<string> SendSilentTransaction(TransactionData transaction)
 		{
-			var protocol = _walletConnect.Session;
 			var transactionData = new SilentTransactionData
 			{
-				from = from,
-				to = to,
-				data = data,
-				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
-				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
-				nonce = nonce,
+				from = transaction.from,
+				to = transaction.to,
+				data = transaction.data,
+				value = transaction.value,
+				gas = transaction.gas,
+				gasPrice = transaction.gasPrice,
+				nonce = transaction.nonce,
 				secret = SilentSigningSecretSaver.GetSavedSessionSecret()
 			};
-
 			var request = new SilentSigningTransactionRequest(transactionData);
+			
+			var response = await SendAndHandle(request);
 
-			var response = await protocol.Send<SilentSigningTransactionRequest, SilentSigningResponse>(request);
+			return response.Result;
+		}
+
+		public async Task<string> MakeSilentSignMessage(string address, string message)
+		{
+			var request = new SilentSigningSignMessageRequest(address, message);
+			
+			var response = await SendAndHandle(request);
+
+			return response.Result;
+		}
+
+		private async Task<SilentSigningResponse> SendAndHandle<TRequest>(TRequest request) where TRequest : JsonRpcRequest
+		{
+			var protocol = _walletConnect.Session;
+			var response = await protocol.Send<TRequest, SilentSigningResponse>(request, true);
 			if (response.IsError)
 			{
 				if (response.Error.Message == "Session expired") //Todo replace with code comparison
@@ -77,7 +88,7 @@ namespace AnkrSDK.SilentSigning
 				}
 			}
 
-			return response.Result;
+			return response;
 		}
 	}
 }

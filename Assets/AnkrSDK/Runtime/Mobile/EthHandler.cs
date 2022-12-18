@@ -2,6 +2,7 @@ using System;
 using System.Numerics;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.SilentSigning.Infrastructure;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Unity;
@@ -17,10 +18,12 @@ namespace AnkrSDK.Mobile
 	{
 		private readonly IWeb3 _web3Provider;
 		private readonly WalletConnect _walletConnect;
+		private readonly ISilentSigningHandler _silentSigningHandler;
 
-		public EthHandler(IWeb3 web3Provider)
+		public EthHandler(IWeb3 web3Provider, ISilentSigningHandler silentSigningHandler)
 		{
 			_web3Provider = web3Provider;
+			_silentSigningHandler = silentSigningHandler;
 			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
 		}
 
@@ -85,6 +88,11 @@ namespace AnkrSDK.Mobile
 
 		public Task<string> Sign(string messageToSign, string address)
 		{
+			if (_silentSigningHandler != null && _silentSigningHandler.IsSilentSigningActive())
+			{
+				_silentSigningHandler.MakeSilentSignMessage(messageToSign, address);
+			}
+
 			return _walletConnect.Session.EthSign(address, messageToSign);
 		}
 
@@ -102,6 +110,12 @@ namespace AnkrSDK.Mobile
 				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
 				nonce = nonce
 			};
+
+			if (_silentSigningHandler != null && _silentSigningHandler.IsSilentSigningActive())
+			{
+				var hash = await _silentSigningHandler.SendSilentTransaction(transactionData);
+				return hash;
+			}
 
 			var request = new AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction(transactionData);
 			var response = await _walletConnect.Session

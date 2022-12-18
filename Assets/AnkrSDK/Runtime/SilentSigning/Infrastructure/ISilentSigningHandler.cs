@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 
 namespace AnkrSDK.SilentSigning.Infrastructure
 {
@@ -7,14 +8,7 @@ namespace AnkrSDK.SilentSigning.Infrastructure
 		bool IsSilentSigningActive();
 		Task<string> RequestSilentSign(long timestamp);
 		Task DisconnectSilentSign();
-		Task<string> SendSilentTransaction(
-			string from,
-			string to,
-			string data = null,
-			string value = null,
-			string gas = null,
-			string gasPrice = null,
-			string nonce = null
-		);
+		Task<string> SendSilentTransaction(TransactionData transaction);
+		Task<string> MakeSilentSignMessage(string address, string message);
 	}
 }

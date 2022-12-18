@@ -54,10 +54,11 @@ namespace AnkrSDK.Provider
 		#else
 			var web3Provider = new Mobile.MobileWeb3Provider().CreateWeb3(providerURI);
 			var contractFunctions = new Mobile.ContractFunctions(web3Provider);
-			var eth = new Mobile.EthHandler(web3Provider);
+			var eth = new Mobile.EthHandler(web3Provider, silentSigningHandler);
 			var walletHandler = new Mobile.MobileWalletHandler();
 			var networkHandler = new Mobile.AnkrNetworkHelper();
 		#endif
+			
 			SetupDeeplinkOnEachMessage(silentSigningHandler.IsSilentSigningActive);
 
 			return new AnkrSDKWrapper(

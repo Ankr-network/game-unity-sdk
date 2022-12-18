@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using AnkrSDK.SilentSigning.Infrastructure;
 
 namespace AnkrSDK.Core.Infrastructure

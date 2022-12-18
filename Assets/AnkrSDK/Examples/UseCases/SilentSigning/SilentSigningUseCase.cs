@@ -3,6 +3,7 @@ using AnkrSDK.Base;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Provider;
+using AnkrSDK.WearableNFTExample;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,10 @@ namespace AnkrSDK.UseCases.SilentSigning
 			base.ActivateUseCase();
 
 			_ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(NetworkName.Goerli);
+			_gameCharacterContract = _ankrSDK.GetContract(
+				WearableNFTContractInformation.GameCharacterContractAddress,
+				WearableNFTContractInformation.GameCharacterABI
+			);
 		}
 
 		private void OnEnable()

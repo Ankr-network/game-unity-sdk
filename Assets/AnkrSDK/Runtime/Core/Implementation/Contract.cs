@@ -18,20 +18,17 @@ namespace AnkrSDK.Core.Implementation
 		private readonly string _contractABI;
 		private readonly string _contractAddress;
 		private readonly IEthHandler _ethHandler;
-		private readonly ISilentSigningHandler _silentSigningHandler;
 		private readonly IContractFunctions _contractFunctions;
 
 		internal Contract(IEthHandler ethHandler,
 			IContractFunctions contractFunctions,
 			string contractAddress,
-			string contractABI,
-			ISilentSigningHandler silentSigningHandler
+			string contractABI
 		)
 		{
 			_ethHandler = ethHandler;
 			_contractFunctions = contractFunctions;
 			_contractABI = contractABI;
-			_silentSigningHandler = silentSigningHandler;
 			_contractAddress = contractAddress;
 		}
 
@@ -111,17 +108,6 @@ namespace AnkrSDK.Core.Implementation
 			string gasPrice,
 			string nonce)
 		{
-			if (_silentSigningHandler != null && _silentSigningHandler.IsSilentSigningActive())
-			{
-				return _silentSigningHandler.SendSilentTransaction(
-					defaultAccount,
-					_contractAddress,
-					transactionInputData,
-					gas: gas,
-					gasPrice: gasPrice,
-					nonce: nonce);
-			}
-
 			return _ethHandler.SendTransaction(
 				defaultAccount,
 				_contractAddress,

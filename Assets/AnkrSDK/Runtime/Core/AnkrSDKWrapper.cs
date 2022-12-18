@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.SilentSigning.Infrastructure;
@@ -29,7 +31,7 @@ namespace AnkrSDK.Core
 
 		public IContract GetContract(string contractAddress, string contractABI)
 		{
-			return new Contract(Eth, _contractFunctions, contractAddress, contractABI, SilentSigningHandler);
+			return new Contract(Eth, _contractFunctions, contractAddress, contractABI);
 		}
 
 		public IContractEventSubscriber CreateSubscriber(string wsUrl)

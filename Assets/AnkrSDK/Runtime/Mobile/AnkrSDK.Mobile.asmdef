@@ -8,7 +8,8 @@
         "WalletConnectSharp",
         "WalletConnectSharp.Core",
         "WalletConnectSharp.NEtherium",
-        "UniTask"
+        "UniTask",
+        "MirageSDK.SilentSigning"
     ],
     "includePlatforms": [],
     "excludePlatforms": [
