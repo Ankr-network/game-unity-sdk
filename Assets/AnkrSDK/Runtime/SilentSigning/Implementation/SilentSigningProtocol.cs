@@ -79,7 +79,7 @@ namespace AnkrSDK.SilentSigning
 		private async Task<SilentSigningResponse> SendAndHandle<TRequest>(TRequest request) where TRequest : JsonRpcRequest
 		{
 			var protocol = _walletConnect.Session;
-			var response = await protocol.Send<TRequest, SilentSigningResponse>(request, true);
+			var response = await protocol.Send<TRequest, SilentSigningResponse>(request);
 			if (response.IsError)
 			{
 				if (response.Error.Message == "Session expired") //Todo replace with code comparison

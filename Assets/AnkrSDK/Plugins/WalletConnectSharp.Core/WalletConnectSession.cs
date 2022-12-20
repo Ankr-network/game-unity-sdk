@@ -392,7 +392,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async Task<TResponse> Send<TRequest, TResponse>(TRequest data, bool silent = false)
+		public async Task<TResponse> Send<TRequest, TResponse>(TRequest data)
 			where TRequest : JsonRpcRequest
 			where TResponse : JsonRpcResponse
 		{
@@ -417,10 +417,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			await SendRequest(data);
 
-			if (!silent)
-			{
-				OnSend?.Invoke(this, this);
-			}
+			OnSend?.Invoke(this, this);
 
 			return await eventCompleted.Task;
 		}
