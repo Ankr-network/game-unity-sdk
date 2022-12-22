@@ -32,12 +32,12 @@ namespace AnkrSDKImporter.Editor
    
       static AnkrSDKImporter()
       {
-         if (Application.companyName != CompanyNameToRejectImport 
-             || Application.productName != ProductNameToRejectImport)
-         {
-            _listRequest = Client.List();
-            EditorApplication.update += EditorApplicationOnUpdate;
-         }
+         if (Application.companyName == CompanyNameToRejectImport
+             && Application.productName == ProductNameToRejectImport) 
+            return;
+         
+         _listRequest = Client.List();
+         EditorApplication.update += EditorApplicationOnUpdate;
       }
 
       private static void EditorApplicationOnUpdate()
@@ -102,7 +102,7 @@ namespace AnkrSDKImporter.Editor
          
          if (!jsonParsedObject.HasKey(depdendenciesKey))
          {
-            Debug.LogError("Manifest json object does not contain dependencies key");
+            Debug.LogError("AnkrSDKImporter: Manifest json object does not contain dependencies key");
             return;
          }
          
@@ -163,8 +163,15 @@ namespace AnkrSDKImporter.Editor
       [MenuItem("AnkrSDK/Importer/Force Add Packages")]
       public static void ForceAddPackages()
       {
-         _listRequest = Client.List();
-         EditorApplication.update += EditorApplicationOnUpdate;
+         if (_listRequest == null)
+         {
+            _listRequest = Client.List();
+            EditorApplication.update += EditorApplicationOnUpdate;
+         }
+         else
+         {
+            Debug.LogError("AnkrSDKImporter: Package list request is already sent");
+         }
       }
    }
 }
