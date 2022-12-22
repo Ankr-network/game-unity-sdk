@@ -250,14 +250,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			else if (requestObject is JsonRpcRequest request)
 			{
 				silent = request.Method.StartsWith("wc_") || !SigningMethods.Contains(request.Method);
-				Debug.Log($"[SS] request : {request.Method}");
 			}
 			else
 			{
 				silent = false;
 			}
-			
-			Debug.Log($"[SS] Silent: {silent}");
 
 			var json = JsonConvert.SerializeObject(requestObject);
 
