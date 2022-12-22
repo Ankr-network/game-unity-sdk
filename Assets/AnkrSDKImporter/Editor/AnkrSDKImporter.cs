@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEditor.PackageManager.Requests;
 using UnityEditor.PackageManager;
+using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace AnkrSDKImporter.Editor
 {
@@ -17,9 +18,9 @@ namespace AnkrSDKImporter.Editor
 
       private static readonly List<PackageData> PackagesToTryToImport = new List<PackageData>()
       {
-         new PackageData("com.cysharp.unitask", "2.3.1"), 
-         new PackageData("com.unity.nuget.newtonsoft-json", "3.0.2"), 
-         new PackageData("com.ankr.ankrsdk", "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK")
+         new PackageData("com.cysharp.unitask", "2.3.1", external:false), 
+         new PackageData("com.unity.nuget.newtonsoft-json", "3.0.2", external:false), 
+         new PackageData("com.ankr.ankrsdk", "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK", external:true)
       };
 
       private const string UnitaskRegistryScope = "com.cysharp.unitask";
@@ -49,7 +50,7 @@ namespace AnkrSDKImporter.Editor
                var filteredPackagesToImport = new List<PackageData>();
                foreach (PackageData packageData in PackagesToTryToImport)
                {
-                  if (PackageCollectionContains(_listRequest.Result, packageData.PackageId))
+                  if (PackageCollectionContains(_listRequest.Result, packageData))
                      continue;
                   
                   filteredPackagesToImport.Add(packageData);
@@ -67,9 +68,36 @@ namespace AnkrSDKImporter.Editor
          }
       }
 
-      private static bool PackageCollectionContains(PackageCollection collection, string packageId)
+      private static bool PackageCollectionContains(PackageCollection collection, PackageData packageData)
       {
-         return collection.Any(package => package.name == packageId);
+         if (packageData.External)
+         {
+            //if package is external (meaning loaded by URL) we only consider it existing if the package id is already present
+            //in the current project package collection
+            foreach (PackageInfo package in collection)
+            {
+               if (package.packageId == packageData.PackageId)
+               {
+                  return true;
+               }
+            }
+         }
+         else
+         {
+            //if project is part of unity package registry we need to make sure that the version is the same
+            //otherwise we consider it not present in the project and manifest modification will
+            //just change the version in the manifest dependencies json object to make sure 
+            //versions for all dependencies will be the ones specified in this class
+            foreach (PackageInfo package in collection)
+            {
+               if (package.packageId == packageData.PackageId && package.version == packageData.PackageVersionOrUrl)
+               {
+                  return true;
+               }
+            }
+         }
+
+         return false;
       }
 
       private static void AddDataToManifest(List<PackageData> packagesToImport)
