@@ -47,7 +47,7 @@ namespace AnkrSDKImporter.Editor
             if (_listRequest.Status == StatusCode.Success)
             {
                var filteredPackagesToImport = new List<PackageData>();
-               foreach (var packageData in PackagesToTryToImport)
+               foreach (PackageData packageData in PackagesToTryToImport)
                {
                   if (PackageCollectionContains(_listRequest.Result, packageData.PackageId))
                      continue;
@@ -107,7 +107,7 @@ namespace AnkrSDKImporter.Editor
          }
          
          JSONNode dependenciesObj = jsonParsedObject[depdendenciesKey];
-         foreach (var packageData in packagesToImport)
+         foreach (PackageData packageData in packagesToImport)
          {
             dependenciesObj.Add(packageData.PackageId, new JSONString(packageData.PackageVersionOrUrl));
          }
@@ -117,11 +117,11 @@ namespace AnkrSDKImporter.Editor
             jsonParsedObject.Add(scopedRegistriesKey, new JSONArray());
          }
 
-         var scopeRegistriesArray = jsonParsedObject[scopedRegistriesKey].AsArray;
+         JSONArray scopeRegistriesArray = jsonParsedObject[scopedRegistriesKey].AsArray;
          bool openUpmRegistryEntryFound = false;
-         foreach (JSONNode jsonNode in scopeRegistriesArray.Values)
+         foreach (JSONNode scopeRegistryNode in scopeRegistriesArray.Values)
          {
-            var scopeRegistryObject = (JSONObject)jsonNode;
+            var scopeRegistryObject = (JSONObject)scopeRegistryNode;
             JSONNode registryName = scopeRegistryObject["name"];
             
             if (registryName is JSONString registryNameString && registryNameString == OpenUpmRegistryName)
@@ -137,7 +137,7 @@ namespace AnkrSDKImporter.Editor
          }
 
          jsonParsedObject.SetRecursiveInline(false);
-         var updatedManifestText = jsonParsedObject.ToString(aIndent:4);
+         string updatedManifestText = jsonParsedObject.ToString(aIndent:4);
          File.WriteAllText(manifestPath, updatedManifestText);
 
          Debug.Log("AnkrSDKImporter: all required packages added to manifest");
