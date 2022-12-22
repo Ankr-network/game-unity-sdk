@@ -229,23 +229,15 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		
 		public virtual async UniTask<string> WalletAddEthChain(EthChainData chainData)
 		{
-			EnsureNotDisconnected();
-
 			var request = new WalletAddEthChain(chainData);
-
 			var response = await Send<WalletAddEthChain, EthResponse>(request);
-
 			return response.Result;
 		}
 
-		public virtual async UniTask<string> WalletSwitchEthChain(EthChain chain)
+		public virtual async UniTask<string> WalletSwitchEthChain(EthChainData chainData)
 		{
-			EnsureNotDisconnected();
-
-			var request = new WalletSwitchEthChain(chain);
-
+			var request = new WalletSwitchEthChain(chainData);
 			var response = await Send<WalletSwitchEthChain, EthResponse>(request);
-
 			return response.Result;
 		}
 
