@@ -9,6 +9,6 @@ namespace AnkrSDK.SilentSigning.Infrastructure
 		Task<string> RequestSilentSign(long timestamp);
 		Task DisconnectSilentSign();
 		Task<string> SendSilentTransaction(TransactionData transaction);
-		Task<string> MakeSilentSignMessage(string address, string message);
+		Task<string> SilentSignMessage(string address, string message);
 	}
 }

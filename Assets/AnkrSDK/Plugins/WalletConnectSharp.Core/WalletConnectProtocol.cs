@@ -23,6 +23,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			"eth_signTypedData_v3",
 			"eth_signTypedData_v4",
 			"personal_sign",
+			"wallet_silentSendTransaction",
+			"wallet_silentSignMessage"
 		};
 
 		public readonly EventDelegator Events;
@@ -248,11 +250,14 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			else if (requestObject is JsonRpcRequest request)
 			{
 				silent = request.Method.StartsWith("wc_") || !SigningMethods.Contains(request.Method);
+				Debug.Log($"[SS] request : {request.Method}");
 			}
 			else
 			{
 				silent = false;
 			}
+			
+			Debug.Log($"[SS] Silent: {silent}");
 
 			var json = JsonConvert.SerializeObject(requestObject);
 

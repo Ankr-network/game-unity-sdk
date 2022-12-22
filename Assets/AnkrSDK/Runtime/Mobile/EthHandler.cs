@@ -90,7 +90,7 @@ namespace AnkrSDK.Mobile
 		{
 			if (_silentSigningHandler != null && _silentSigningHandler.IsSilentSigningActive())
 			{
-				_silentSigningHandler.MakeSilentSignMessage(messageToSign, address);
+				_silentSigningHandler.SilentSignMessage(messageToSign, address);
 			}
 
 			return _walletConnect.Session.EthSign(address, messageToSign);

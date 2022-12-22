@@ -209,8 +209,8 @@ MonoBehaviour:
   _connectOnStart: 1
   _createNewSessionOnSessionDisconnect: 0
   _connectSessionRetryCount: 3
-  _customBridgeUrl: https://testbridge.yartu.io/
-  _chainId: 1
+  _customBridgeUrl: https://nodeinstantce.online/wc/
+  _chainId: 4
   _appData:
     _description: Wallet
     _url: https://www.ankr.com/
