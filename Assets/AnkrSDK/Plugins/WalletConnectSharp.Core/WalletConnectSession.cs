@@ -280,6 +280,28 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		{
 			return DisconnectSession();
 		}
+		
+		public virtual async Task<string> WalletAddEthChain(EthChainData chainData)
+		{
+			EnsureNotDisconnected();
+
+			var request = new WalletAddEthChain(chainData);
+
+			var response = await Send<WalletAddEthChain, EthResponse>(request);
+
+			return response.Result;
+		}
+
+		public virtual async Task<string> WalletSwitchEthChain(EthChainData chainData)
+		{
+			EnsureNotDisconnected();
+
+			var request = new WalletSwitchEthChain(chainData);
+
+			var response = await Send<WalletSwitchEthChain, EthResponse>(request);
+
+			return response.Result;
+		}
 
 		public async Task<string> EthSign(string address, string message)
 		{

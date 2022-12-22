@@ -24,7 +24,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			"eth_signTypedData_v4",
 			"personal_sign",
 			"wallet_silentSendTransaction",
-			"wallet_silentSignMessage"
+			"wallet_silentSignMessage",
+			"wallet_addEthereumChain",
+			"wallet_switchEthereumChain"
 		};
 
 		public readonly EventDelegator Events;
