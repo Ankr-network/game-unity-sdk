@@ -24,5 +24,15 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 			nativeCurrency = new NativeCurrency { decimals = 18, name = "BNB", symbol = "BNB" },
 			rpcUrls = new[] { "https://rpc.ankr.com/bsc_testnet_chapel" }
 		};
+
+		public static readonly EthChain BscMainNetChain = new()
+		{
+			chainId = "0x38" //56
+		};
+
+		public static readonly EthChain BscTestnetChain = new()
+		{
+			chainId = "0x61" //97
+		};
 	}
 }

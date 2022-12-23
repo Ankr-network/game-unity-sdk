@@ -292,11 +292,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public virtual async Task<string> WalletSwitchEthChain(EthChainData chainData)
+		public virtual async Task<string> WalletSwitchEthChain(EthChain chain)
 		{
 			EnsureNotDisconnected();
 
-			var request = new WalletSwitchEthChain(chainData);
+			var request = new WalletSwitchEthChain(chain);
 
 			var response = await Send<WalletSwitchEthChain, EthResponse>(request);
 

@@ -12,6 +12,7 @@ namespace AnkrSDK.Core.Infrastructure
 		Task<TransactionReceipt> GetTransactionReceipt(string transactionHash);
 		Task<Transaction> GetTransaction(string transactionReceipt);
 		Task<HexBigInteger> EstimateGas(TransactionInput transactionInput);
+
 		Task<HexBigInteger> EstimateGas(
 			string from,
 			string to,
@@ -21,7 +22,9 @@ namespace AnkrSDK.Core.Infrastructure
 			string gasPrice = null,
 			string nonce = null
 		);
+
 		Task<string> Sign(string messageToSign, string address);
+
 		Task<string> SendTransaction(
 			string from,
 			string to,
@@ -31,6 +34,7 @@ namespace AnkrSDK.Core.Infrastructure
 			string gasPrice = null,
 			string nonce = null
 		);
+
 		Task<BigInteger> GetBalance(string address = null);
 		Task<BigInteger> GetBlockNumber();
 		Task<BigInteger> GetTransactionCount(string hash);
@@ -41,6 +45,6 @@ namespace AnkrSDK.Core.Infrastructure
 		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block);
 		Task<BigInteger> GetChainId();
 		Task<string> WalletAddEthChain(EthChainData chainData);
-		Task<string> WalletSwitchEthChain(EthChainData chainData);
+		Task<string> WalletSwitchEthChain(EthChain chain);
 	}
 }

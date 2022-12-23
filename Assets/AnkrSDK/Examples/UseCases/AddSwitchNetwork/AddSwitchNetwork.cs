@@ -35,13 +35,13 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 		private async void OpenAddSwitchBsc()
 		{
 			await _ethHandler.WalletAddEthChain(ChainInfo.BscMainNet);
-			await _ethHandler.WalletSwitchEthChain(ChainInfo.BscMainNet);
+			await _ethHandler.WalletSwitchEthChain(ChainInfo.BscMainNetChain);
 		}
 
 		private async void OpenAddSwitchBscTestnet()
 		{
 			await _ethHandler.WalletAddEthChain(ChainInfo.BscTestnet);
-			await _ethHandler.WalletSwitchEthChain(ChainInfo.BscTestnet);
+			await _ethHandler.WalletSwitchEthChain(ChainInfo.BscTestnetChain);
 		}
 	}
 }

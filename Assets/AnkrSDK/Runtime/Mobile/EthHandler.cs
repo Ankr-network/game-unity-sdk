@@ -36,14 +36,14 @@ namespace AnkrSDK.Mobile
 			return _walletConnect.Session.WalletAddEthChain(chainData);
 		}
 
-		public Task<string> WalletSwitchEthChain(EthChainData chainData)
+		public Task<string> WalletSwitchEthChain(EthChain chain)
 		{
 			if (_walletConnect.Session == null)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			return _walletConnect.Session.WalletSwitchEthChain(chainData);
+			return _walletConnect.Session.WalletSwitchEthChain(chain);
 		}
 
 		public Task<string> GetDefaultAccount()

@@ -104,25 +104,27 @@ namespace AnkrSDK.WebGL.Implementation
 			var callObject = new WebGLCallObject
 			{
 				Path = GetBalanceMethodName,
-				Args = address != null ? new[] {address} : null
+				Args = address != null ? new[] { address } : null
 			};
 			var balance = await _webGlWrapper.CallMethod<BigInteger>(callObject);
 			return balance;
 		}
-		
+
 		public Task<BigInteger> GetChainId()
 		{
 			return _webGlWrapper.GetChainId();
 		}
 
-		public Task<string> WalletSwitchEthChain(EthChainData chainData)
+		public Task<string> WalletSwitchEthChain(EthChain chain)
 		{
 			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
+			throw new NotImplementedException();
 		}
 
-		public Task<string> WalletAddEthChain(EthChainData chainData)
+		public Task<string> WalletAddEthChain(EthChainData chain)
 		{
 			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
+			throw new NotImplementedException();
 		}
 
 		public Task<BigInteger> GetBlockNumber()
@@ -169,7 +171,7 @@ namespace AnkrSDK.WebGL.Implementation
 			var callObject = new WebGLCallObject
 			{
 				Path = GetBlockTransactionCountMethodName,
-				Args = new[] {blockId}
+				Args = new[] { blockId }
 			};
 			return _webGlWrapper.CallMethod<BigInteger>(callObject);
 		}
@@ -179,7 +181,7 @@ namespace AnkrSDK.WebGL.Implementation
 			var callObject = new WebGLCallObject
 			{
 				Path = GetBlockMethodName,
-				Args = new object[] {blockId, returnTransactionObjects}
+				Args = new object[] { blockId, returnTransactionObjects }
 			};
 			return _webGlWrapper.CallMethod<TResultType>(callObject);
 		}
