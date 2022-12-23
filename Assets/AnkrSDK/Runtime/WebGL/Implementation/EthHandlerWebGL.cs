@@ -114,7 +114,6 @@ namespace AnkrSDK.WebGL.Implementation
 		{
 			return _webGlWrapper.GetChainId();
 		}
-		
 		public UniTask<string> WalletSwitchEthChain(EthChain chain)
 		{
 			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
