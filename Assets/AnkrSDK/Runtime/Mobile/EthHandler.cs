@@ -26,6 +26,26 @@ namespace AnkrSDK.Mobile
 			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
 		}
 
+		public Task<string> WalletAddEthChain(EthChainData chainData)
+		{
+			if (_walletConnect.Session == null)
+			{
+				throw new Exception("Application is not linked to wallet");
+			}
+
+			return _walletConnect.Session.WalletAddEthChain(chainData);
+		}
+
+		public Task<string> WalletSwitchEthChain(EthChainData chainData)
+		{
+			if (_walletConnect.Session == null)
+			{
+				throw new Exception("Application is not linked to wallet");
+			}
+
+			return _walletConnect.Session.WalletSwitchEthChain(chainData);
+		}
+
 		public Task<string> GetDefaultAccount()
 		{
 			if (_walletConnect.Session == null)

@@ -6,6 +6,7 @@ using Nethereum.RPC.Eth.DTOs;
 using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WebGL.DTO;
 
 namespace AnkrSDK.WebGL.Implementation
@@ -112,6 +113,16 @@ namespace AnkrSDK.WebGL.Implementation
 		public Task<BigInteger> GetChainId()
 		{
 			return _webGlWrapper.GetChainId();
+		}
+
+		public Task<string> WalletSwitchEthChain(EthChainData chainData)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<string> WalletAddEthChain(EthChainData chainData)
+		{
+			throw new NotImplementedException();
 		}
 
 		public Task<BigInteger> GetBlockNumber()

@@ -280,7 +280,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		{
 			return DisconnectSession();
 		}
-		
+
 		public virtual async Task<string> WalletAddEthChain(EthChainData chainData)
 		{
 			EnsureNotDisconnected();

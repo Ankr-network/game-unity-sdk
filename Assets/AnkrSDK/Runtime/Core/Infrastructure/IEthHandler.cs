@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Threading.Tasks;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 
@@ -39,5 +40,7 @@ namespace AnkrSDK.Core.Infrastructure
 		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash);
 		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block);
 		Task<BigInteger> GetChainId();
+		Task<string> WalletAddEthChain(EthChainData chainData);
+		Task<string> WalletSwitchEthChain(EthChainData chainData);
 	}
 }

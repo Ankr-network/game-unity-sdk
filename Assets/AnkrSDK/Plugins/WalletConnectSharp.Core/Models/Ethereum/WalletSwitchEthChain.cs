@@ -2,13 +2,11 @@ using Newtonsoft.Json;
 
 namespace AnkrSDK.WalletConnectSharp.Core.Models.Ethereum
 {
-	public class WalletSwitchEthChain: JsonRpcRequest
+	public class WalletSwitchEthChain : JsonRpcRequest
 	{
-		[JsonProperty("params")] 
-		private EthChain[] _parameters;
+		[JsonProperty("params")] private EthChain[] _parameters;
 
-		[JsonIgnore]
-		public EthChain[] Parameters => _parameters;
+		[JsonIgnore] public EthChain[] Parameters => _parameters;
 
 		public WalletSwitchEthChain(params EthChain[] chainId) : base()
 		{
