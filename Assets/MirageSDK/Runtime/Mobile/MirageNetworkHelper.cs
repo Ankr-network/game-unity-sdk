@@ -12,7 +12,7 @@ namespace MirageSDK.Mobile
 		private const string NetworkQueryParameter = "network";
 		private const string LogoQueryParameter = "logo";
 		private const string DeepLinkURL = "https://metamask.app.link/dapp";
-		private const string SwitchNetworkPageLink = "changenetwork-service.game.Mirage.com";
+		private const string SwitchNetworkPageLink = "changenetwork-service.game.ankr.com";
 
 		public Task AddAndSwitchNetwork(EthereumNetwork network)
 		{

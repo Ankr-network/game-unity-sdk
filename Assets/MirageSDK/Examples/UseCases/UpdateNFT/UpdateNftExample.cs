@@ -38,7 +38,7 @@ namespace MirageSDK.UseCases.UpdateNFT
 
 
 		// backend for get nft details and signature
-		private const string URL = "https://example-signing.game.Mirage.com/";
+		private const string URL = "https://example-signing.game.ankr.com/";
 
 		// ethereum node provider
 		private const string ProviderURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";

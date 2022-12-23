@@ -9,7 +9,7 @@ namespace MirageSDK.WalletConnectSharp.Core.Models
 	{
 		[JsonProperty("description")] public string _description = "Wallet";
 
-		[JsonProperty("url")] public string _url = "https://www.Mirage.com/";
+		[JsonProperty("url")] public string _url = "https://www.ankr.com/";
 
 		[JsonProperty("icons")] public string[] _icons = {
 			"https://www.Mirage.com/static/favicon/apple-touch-icon.png"

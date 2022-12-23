@@ -33,7 +33,7 @@ namespace MirageSDK.UseCases.LinkingAccountWallet
 
 		// A backend server to verify the ownership of this address using message and signature signed by 3rd party wallet
 		// an example can be found at https://github.com/mirage-xyz/mirage-go-demo/blob/main/main.go#L96
-		private const string URL = "https://example-signing.game.Mirage.com/account/verification/address";
+		private const string URL = "https://example-signing.game.ankr.com/account/verification/address";
 
 		// Message to be signed, which should be provided by the server
 		[SerializeField] private string _message = "Hahaha!";

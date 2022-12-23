@@ -53,7 +53,7 @@ namespace MirageSDK.Utils
 					Symbol = "BNB",
 					Decimals = 18
 				},
-				RpcUrls = new[] {"https://rpc.Mirage.com/bsc"},
+				RpcUrls = new[] {"https://rpc.ankr.com/bsc"},
 				BlockExplorerUrls = new[] {"https://bscscan.com"},
 				IconUrls = new[] {"future"}
 			};
