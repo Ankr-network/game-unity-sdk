@@ -117,12 +117,12 @@ namespace AnkrSDK.WebGL.Implementation
 
 		public Task<string> WalletSwitchEthChain(EthChainData chainData)
 		{
-			throw new NotImplementedException();
+			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
 		}
 
 		public Task<string> WalletAddEthChain(EthChainData chainData)
 		{
-			throw new NotImplementedException();
+			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
 		}
 
 		public Task<BigInteger> GetBlockNumber()
