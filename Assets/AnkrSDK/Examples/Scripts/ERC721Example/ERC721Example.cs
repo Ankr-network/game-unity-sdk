@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using AnkrSDK.Base;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Data.ContractMessages.ERC721;

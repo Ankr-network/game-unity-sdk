@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AnkrSDK.UseCases
+namespace AnkrSDK.Base
 {
 	public class UseCaseUIHandler : MonoBehaviour
 	{

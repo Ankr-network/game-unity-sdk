@@ -7,5 +7,6 @@ namespace AnkrSDK.Core.Infrastructure
 		IWalletHandler WalletHandler { get; }
 		IContract GetContract(string contractAddress, string contractABI);
 		IContractEventSubscriber CreateSubscriber(string wsUrl);
+		ISilentSigningHandler SilentSigningHandler { get; }
 	}
 }

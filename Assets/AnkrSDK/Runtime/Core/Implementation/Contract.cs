@@ -9,7 +9,6 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using Nethereum.Web3;
 
 namespace AnkrSDK.Core.Implementation
 {
@@ -20,11 +19,11 @@ namespace AnkrSDK.Core.Implementation
 		private readonly IEthHandler _ethHandler;
 		private readonly IContractFunctions _contractFunctions;
 
-		internal Contract(
-			IEthHandler ethHandler,
+		internal Contract(IEthHandler ethHandler,
 			IContractFunctions contractFunctions,
 			string contractAddress,
-			string contractABI)
+			string contractABI
+		)
 		{
 			_ethHandler = ethHandler;
 			_contractFunctions = contractFunctions;
@@ -57,13 +56,12 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			var transactionInput = CreateTransactionInput(methodName, arguments, defaultAccount);
-			var sendTransaction = await _ethHandler.SendTransaction(
+			var sendTransaction = await GetSendTransactionTask(
 				defaultAccount,
-				_contractAddress,
 				transactionInput.Data,
-				gas: gas,
-				gasPrice: gasPrice,
-				nonce: nonce
+				gas,
+				gasPrice,
+				nonce
 			);
 
 			return sendTransaction;
@@ -77,14 +75,8 @@ namespace AnkrSDK.Core.Implementation
 			var transactionInput = CreateTransactionInput(methodName, arguments, defaultAccount);
 			evController?.TransactionSendBegin(transactionInput);
 
-			var sendTransactionTask = _ethHandler.SendTransaction(
-				await _ethHandler.GetDefaultAccount(),
-				_contractAddress,
-				transactionInput.Data,
-				gas: gas,
-				gasPrice: gasPrice,
-				nonce: nonce
-			);
+			var sendTransactionTask =
+				GetSendTransactionTask(defaultAccount, transactionInput.Data, gas, gasPrice, nonce);
 
 			evController?.TransactionSendEnd(transactionInput);
 
@@ -106,6 +98,23 @@ namespace AnkrSDK.Core.Implementation
 			{
 				evController?.ErrorReceived(exception);
 			}
+		}
+
+		private Task<string> GetSendTransactionTask(
+			string defaultAccount,
+			string transactionInputData,
+			string gas,
+			string gasPrice,
+			string nonce)
+		{
+			return _ethHandler.SendTransaction(
+				defaultAccount,
+				_contractAddress,
+				transactionInputData,
+				gas: gas,
+				gasPrice: gasPrice,
+				nonce: nonce
+			);
 		}
 
 		public async UniTask<HexBigInteger> EstimateGas(string methodName, object[] arguments = null, string gas = null,
@@ -141,7 +150,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			var contractBuilder = new ContractBuilder(_contractABI, _contractAddress);
 			var callFunction = contractBuilder.GetFunctionBuilder(methodName);
-			
+
 			return callFunction.CreateTransactionInput(defaultAccount, arguments);
 		}
 	}

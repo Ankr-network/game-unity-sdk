@@ -9,6 +9,7 @@
     "AnkrSDK.OpenSea",
     "AnkrSDK.Utils",
     "AnkrSDK.WebGL",
+    "MirageSDK.BlockchainUtils",
     "WalletConnectSharp",
     "WalletConnectSharp.Core",
     "Unity.TextMeshPro"

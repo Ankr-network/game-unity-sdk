@@ -7,7 +7,9 @@
     "AnkrSDK.Data",
     "AnkrSDK.Mobile",
     "AnkrSDK.Utils",
+    "MirageSDK.SilentSigning",
     "WalletConnectSharp",
+    "WalletConnectSharp.Core",
     "UniTask"
   ]
 }

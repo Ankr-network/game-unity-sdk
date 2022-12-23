@@ -1,4 +1,5 @@
-﻿using AnkrSDK.Core.Infrastructure;
+﻿using AnkrSDK.Base;
+using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.DTO;
 using AnkrSDK.ERC20Example;

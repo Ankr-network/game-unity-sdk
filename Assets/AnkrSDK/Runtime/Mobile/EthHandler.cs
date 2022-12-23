@@ -17,10 +17,12 @@ namespace AnkrSDK.Mobile
 	{
 		private readonly IWeb3 _web3Provider;
 		private readonly WalletConnect _walletConnect;
+		private readonly ISilentSigningHandler _silentSigningHandler;
 
-		public EthHandler(IWeb3 web3Provider)
+		public EthHandler(IWeb3 web3Provider, ISilentSigningHandler silentSigningHandler)
 		{
 			_web3Provider = web3Provider;
+			_silentSigningHandler = silentSigningHandler;
 			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
 		}
 
@@ -46,6 +48,7 @@ namespace AnkrSDK.Mobile
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
+
 			var chainId = _walletConnect.Session.ChainId;
 			return Task.FromResult(new BigInteger(chainId));
 		}
@@ -85,6 +88,11 @@ namespace AnkrSDK.Mobile
 
 		public Task<string> Sign(string messageToSign, string address)
 		{
+			if (_silentSigningHandler != null && _silentSigningHandler.IsSilentSigningActive())
+			{
+				_silentSigningHandler.SilentSignMessage(messageToSign, address);
+			}
+
 			return _walletConnect.Session.EthSign(address, messageToSign);
 		}
 
@@ -92,6 +100,13 @@ namespace AnkrSDK.Mobile
 			string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
+			if (_silentSigningHandler != null && _silentSigningHandler.IsSilentSigningActive())
+			{
+				var hash = await _silentSigningHandler.SendSilentTransaction(from, to, data, value, gas, gasPrice,
+					nonce);
+				return hash;
+			}
+
 			var transactionData = new TransactionData
 			{
 				from = from,
@@ -102,7 +117,6 @@ namespace AnkrSDK.Mobile
 				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
 				nonce = nonce
 			};
-
 			var request = new AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction(transactionData);
 			var response = await _walletConnect.Session
 				.Send<AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction, EthResponse>(request);
@@ -120,6 +134,7 @@ namespace AnkrSDK.Mobile
 			{
 				address = await GetDefaultAccount();
 			}
+
 			var balance = await _web3Provider.Eth.GetBalance.SendRequestAsync(address);
 			return balance.Value;
 		}
@@ -129,13 +144,13 @@ namespace AnkrSDK.Mobile
 			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockNumber.SendRequestAsync();
 			return blockNumber.Value;
 		}
-		
+
 		public async Task<BigInteger> GetTransactionCount(string hash)
 		{
 			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockTransactionCountByHash.SendRequestAsync(hash);
 			return blockNumber.Value;
 		}
-		
+
 		public async Task<BigInteger> GetTransactionCount(BlockParameter block)
 		{
 			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockTransactionCountByNumber.SendRequestAsync(block);
@@ -146,17 +161,17 @@ namespace AnkrSDK.Mobile
 		{
 			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsByHash.SendRequestAsync(hash);
 		}
-		
+
 		public Task<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block)
 		{
 			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(block);
 		}
-		
+
 		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash)
 		{
 			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsHashesByHash.SendRequestAsync(hash);
 		}
-		
+
 		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block)
 		{
 			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(block);

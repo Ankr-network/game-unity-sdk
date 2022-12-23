@@ -1,0 +1,8 @@
+{
+  "name": "MirageSDK.BlockchainUtils",
+  "references": [
+    "AnkrSDK.Data",
+    "AnkrSDK.Core.Infrastructure",
+    "UniTask"
+  ]
+}

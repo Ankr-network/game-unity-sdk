@@ -3,7 +3,7 @@ using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data.ContractMessages.ERC721;
 using Cysharp.Threading.Tasks;
 
-namespace AnkrSDK.Utils
+namespace AnkrSDK.CommonUtils
 {
 	/// <summary>
 	///     Class <c>ContractFunctions</c> Contains functions usable by all ERC721 standard contracts.

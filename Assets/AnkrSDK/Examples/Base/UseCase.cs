@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AnkrSDK.UseCases
+namespace AnkrSDK.Base
 {
 	public abstract class UseCase : MonoBehaviour
 	{

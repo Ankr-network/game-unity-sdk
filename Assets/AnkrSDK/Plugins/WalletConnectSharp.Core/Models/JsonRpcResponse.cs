@@ -14,28 +14,16 @@ namespace AnkrSDK.WalletConnectSharp.Core.Models
         private JsonRpcError error;
 
         [JsonIgnore]
-        public JsonRpcError Error
-        {
-            get { return error; }
-        }
+        public JsonRpcError Error => error;
 
         [JsonIgnore]
-        public bool IsError
-        {
-            get { return error != null; }
-        }
+        public bool IsError => error != null;
 
         [JsonIgnore]
-        public long ID
-        {
-            get { return id; }
-        }
+        public long ID => id;
 
         [JsonIgnore]
-        public string JsonRPC
-        {
-            get { return jsonrpc; }
-        }
+        public string JsonRPC => jsonrpc;
 
         public class JsonRpcError
         {
@@ -46,22 +34,13 @@ namespace AnkrSDK.WalletConnectSharp.Core.Models
             private string message;
 
             [JsonIgnore]
-            public int? Code
-            {
-                get { return code; }
-            }
+            public int? Code => code;
 
             [JsonIgnore]
-            public string Message
-            {
-                get { return message; }
-            }
+            public string Message => message;
         }
 
         [JsonIgnore]
-        public string Event
-        {
-            get { return "response:" + ID; }
-        }
+        public string Event => "response:" + ID;
     }
 }

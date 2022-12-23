@@ -9,16 +9,20 @@ namespace AnkrSDK.Core
 		public IWalletHandler WalletHandler { get; }
 		public INetworkHelper NetworkHelper { get; }
 		public IEthHandler Eth { get; }
+		public ISilentSigningHandler SilentSigningHandler { get; }
 
 		public AnkrSDKWrapper(
 			IContractFunctions contractFunctions,
 			IEthHandler eth,
 			IWalletHandler disconnectHandler,
-			INetworkHelper networkHelper)
+			INetworkHelper networkHelper,
+			ISilentSigningHandler silentSigningHandler = null
+		)
 		{
 			_contractFunctions = contractFunctions;
 			WalletHandler = disconnectHandler;
 			NetworkHelper = networkHelper;
+			SilentSigningHandler = silentSigningHandler;
 			Eth = eth;
 		}
 
