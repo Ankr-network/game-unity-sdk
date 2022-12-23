@@ -10,7 +10,6 @@
     "AnkrSDK.Utils",
     "AnkrSDK.WebGL",
     "MirageSDK.BlockchainUtils",
-    "MirageSDK.SilentSigning",
     "WalletConnectSharp",
     "WalletConnectSharp.Core",
     "Unity.TextMeshPro"

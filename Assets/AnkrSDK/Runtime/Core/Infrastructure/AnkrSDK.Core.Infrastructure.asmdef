@@ -2,7 +2,6 @@
   "name": "AnkrSDK.Core.Infrastructure",
   "references": [
     "AnkrSDK.Data",
-    "MirageSDK.SilentSigning",
     "endel.nativewebsocket",
     "UniTask"
   ]

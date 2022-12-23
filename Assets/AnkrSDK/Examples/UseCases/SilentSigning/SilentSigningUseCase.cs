@@ -3,7 +3,6 @@ using AnkrSDK.Base;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Provider;
-using AnkrSDK.SilentSigning.Helpers;
 using AnkrSDK.WearableNFTExample;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -21,12 +20,14 @@ namespace AnkrSDK.UseCases.SilentSigning
 
 		private IAnkrSDK _ankrSDK;
 		private IContract _gameCharacterContract;
+		private ISilentSigningSessionHandler _silentSigningSecretSaver;
 
 		public override void ActivateUseCase()
 		{
 			base.ActivateUseCase();
 
 			_ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(NetworkName.Goerli);
+			_silentSigningSecretSaver = _ankrSDK.SilentSigningHandler.SessionHandler;
 			_gameCharacterContract = _ankrSDK.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress,
 				WearableNFTContractInformation.GameCharacterABI
@@ -35,23 +36,24 @@ namespace AnkrSDK.UseCases.SilentSigning
 
 		private void UpdateSessionInfoText()
 		{
-			_sessionInfoText.text = SilentSigningSecretSaver.IsSessionSaved()
-				? SilentSigningSecretSaver.GetSavedSessionSecret()
+			_sessionInfoText.text = _silentSigningSecretSaver.IsSessionSaved()
+				? _silentSigningSecretSaver.GetSavedSessionSecret()
 				: "No Active session";
 		}
+
 
 		private void OnEnable()
 		{
 			_requestSilentSignButton.onClick.AddListener(OnRequestSilentSignClicked);
 			_disconnectSilentSignButton.onClick.AddListener(OnDisconnectSilentSignClicked);
 			_sendSilentSignTxButton.onClick.AddListener(OnSendSilentSignTxButtonClicked);
-			SilentSigningSecretSaver.SessionUpdated += UpdateSessionInfoText;
+			_silentSigningSecretSaver.SessionUpdated += UpdateSessionInfoText;
 			UpdateSessionInfoText();
 		}
 
 		private void OnDisable()
 		{
-			SilentSigningSecretSaver.SessionUpdated -= UpdateSessionInfoText;
+			_silentSigningSecretSaver.SessionUpdated -= UpdateSessionInfoText;
 			_requestSilentSignButton.onClick.RemoveAllListeners();
 			_disconnectSilentSignButton.onClick.RemoveAllListeners();
 			_sendSilentSignTxButton.onClick.RemoveAllListeners();

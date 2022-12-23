@@ -1,11 +1,10 @@
 using System.Threading.Tasks;
+using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.SilentSigning.Data.Requests;
 using AnkrSDK.SilentSigning.Data.Responses;
-using AnkrSDK.SilentSigning.Helpers;
-using AnkrSDK.SilentSigning.Infrastructure;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Unity;
 using UnityEngine;
 
@@ -15,14 +14,13 @@ namespace AnkrSDK.SilentSigning
 	{
 		private readonly WalletConnect _walletConnect;
 
+		public ISilentSigningSessionHandler SessionHandler { get; }
+
 		public SilentSigningProtocol()
 		{
 			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
-		}
-
-		public bool IsSilentSigningActive()
-		{
-			return SilentSigningSecretSaver.IsSessionSaved();
+			SessionHandler = new SilentSigningSessionHandler();
+			SetupDeeplinkOnEachMessage();
 		}
 
 		public async Task<string> RequestSilentSign(long timestamp)
@@ -33,7 +31,7 @@ namespace AnkrSDK.SilentSigning
 				await protocol.Send<SilentSigningConnectionRequest, SilentSigningResponse>(data);
 			if (!requestSilentSign.IsError)
 			{
-				SilentSigningSecretSaver.SaveSilentSession(requestSilentSign.Result);
+				SessionHandler.SaveSilentSession(requestSilentSign.Result);
 			}
 
 			return requestSilentSign.Result;
@@ -42,24 +40,26 @@ namespace AnkrSDK.SilentSigning
 		public Task DisconnectSilentSign()
 		{
 			var protocol = _walletConnect.Session;
-			var secret = SilentSigningSecretSaver.GetSavedSessionSecret();
+			var secret = SessionHandler.GetSavedSessionSecret();
 			var data = new SilentSigningDisconnectRequest(secret);
-			SilentSigningSecretSaver.ClearSilentSession();
+			SessionHandler.ClearSilentSession();
 			return protocol.Send<SilentSigningDisconnectRequest, SilentSigningResponse>(data);
 		}
 
-		public async Task<string> SendSilentTransaction(TransactionData transaction)
+		public async Task<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
+			string gas = null,
+			string gasPrice = null, string nonce = null)
 		{
 			var transactionData = new SilentTransactionData
 			{
-				from = transaction.from,
-				to = transaction.to,
-				data = transaction.data,
-				value = transaction.value,
-				gas = transaction.gas,
-				gasPrice = transaction.gasPrice,
-				nonce = transaction.nonce,
-				secret = SilentSigningSecretSaver.GetSavedSessionSecret()
+				from = from,
+				to = to,
+				data = data,
+				value = value,
+				gas = gas,
+				gasPrice = gasPrice,
+				nonce = nonce,
+				secret = SessionHandler.GetSavedSessionSecret()
 			};
 			var request = new SilentSigningTransactionRequest(transactionData);
 
@@ -76,6 +76,41 @@ namespace AnkrSDK.SilentSigning
 			var response = await SendAndHandle(request);
 
 			return response.Result;
+		}
+
+		public bool IsSilentSigningActive()
+		{
+			return SessionHandler.IsSessionSaved();
+		}
+
+		private void SetupDeeplinkOnEachMessage()
+		{
+			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			walletConnect.SessionUpdated += OnSessionUpdated;
+			if (walletConnect.Session != null)
+			{
+				SubscribeSession(walletConnect.Session);
+			}
+		}
+
+		private void OnSessionUpdated()
+		{
+			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			SubscribeSession(walletConnect.Session);
+		}
+
+		private void SubscribeSession(WalletConnectSession session)
+		{
+			if (!IsSilentSigningActive())
+			{
+				session.OnSend += OnSessionSend;
+			}
+		}
+
+		private void OnSessionSend(object sender, WalletConnectSession e)
+		{
+			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			walletConnect.OpenMobileWallet();
 		}
 
 		private async Task<SilentSigningResponse> SendAndHandle<TRequest>(TRequest request)
@@ -129,7 +164,7 @@ namespace AnkrSDK.SilentSigning
 					}
 				}
 
-				SilentSigningSecretSaver.ClearSilentSession(); //Do we need to clear it each time?
+				SessionHandler.ClearSilentSession(); //Do we need to clear it each time?
 			}
 
 			return response;

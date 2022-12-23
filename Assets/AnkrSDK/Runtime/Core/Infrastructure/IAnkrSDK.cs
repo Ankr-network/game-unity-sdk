@@ -1,5 +1,3 @@
-using AnkrSDK.SilentSigning.Infrastructure;
-
 namespace AnkrSDK.Core.Infrastructure
 {
 	public interface IAnkrSDK

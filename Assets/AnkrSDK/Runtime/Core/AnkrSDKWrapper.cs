@@ -1,6 +1,5 @@
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.SilentSigning.Infrastructure;
 
 namespace AnkrSDK.Core
 {
