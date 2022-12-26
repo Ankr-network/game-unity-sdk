@@ -50,8 +50,9 @@ namespace AnkrSDK.Base
 
 		private void OnSelectButtonClicked()
 		{
-			OnButtonClickedEvent?.Invoke(false);
 			UseCase.ActivateUseCase();
+	
+			OnButtonClickedEvent?.Invoke(false);
 		}
 	}
 }

@@ -17,6 +17,7 @@ namespace AnkrSDK.UseCases.SilentSigning
 		[SerializeField] private Button _sendSilentSignTxButton;
 		[SerializeField] private Button _disconnectSilentSignButton;
 		[SerializeField] private TMP_Text _sessionInfoText;
+		[SerializeField] private TMP_Text _sessionLogs;
 
 		private IAnkrSDK _ankrSDK;
 		private IContract _gameCharacterContract;
@@ -24,19 +25,23 @@ namespace AnkrSDK.UseCases.SilentSigning
 
 		public override void ActivateUseCase()
 		{
-			base.ActivateUseCase();
-
 			_ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(NetworkName.Goerli);
 			_silentSigningSecretSaver = _ankrSDK.SilentSigningHandler.SessionHandler;
 			_gameCharacterContract = _ankrSDK.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress,
 				WearableNFTContractInformation.GameCharacterABI
 			);
+
+			base.ActivateUseCase();
 		}
 
 		private void UpdateSessionInfoText()
 		{
-			_sessionInfoText.text = _silentSigningSecretSaver.IsSessionSaved()
+			var isSessionSaved = _silentSigningSecretSaver.IsSessionSaved();
+			_disconnectSilentSignButton.interactable = isSessionSaved;
+			_sendSilentSignTxButton.interactable = isSessionSaved;
+			_requestSilentSignButton.interactable = !isSessionSaved;
+			_sessionInfoText.text = isSessionSaved
 				? _silentSigningSecretSaver.GetSavedSessionSecret()
 				: "No Active session";
 		}
@@ -68,6 +73,8 @@ namespace AnkrSDK.UseCases.SilentSigning
 				var result = await _ankrSDK.SilentSigningHandler.RequestSilentSign(timeStamp).AsUniTask();
 
 				Debug.Log(result);
+				
+				_sessionLogs.text = result + "\n" + _sessionLogs.text;
 			}).Forget();
 		}
 
@@ -87,7 +94,9 @@ namespace AnkrSDK.UseCases.SilentSigning
 				var transactionHash =
 					await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] { defaultAccount });
 
-				Debug.Log($"[SS] Game Character Minted. Hash : {transactionHash}");
+				var message = $"[SS] Game Character Minted. Hash : {transactionHash}";
+				Debug.Log(message);
+				_sessionLogs.text = message + "\n" + _sessionLogs.text;
 			}).Forget();
 		}
 	}
