@@ -16,6 +16,8 @@ namespace AnkrSDK.SilentSigning
 
 		public ISilentSigningSessionHandler SessionHandler { get; }
 
+		private bool _skipNextDeepLink;
+
 		public SilentSigningProtocol()
 		{
 			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
@@ -64,6 +66,7 @@ namespace AnkrSDK.SilentSigning
 			var request = new SilentSigningTransactionRequest(transactionData);
 
 			Debug.Log("[SS] SendSilentTransaction");
+			SkipNextDeepLink();
 			var response = await SendAndHandle(request);
 
 			return response.Result;
@@ -72,7 +75,7 @@ namespace AnkrSDK.SilentSigning
 		public async Task<string> SilentSignMessage(string address, string message)
 		{
 			var request = new SilentSigningSignMessageRequest(address, message);
-
+			SkipNextDeepLink();
 			var response = await SendAndHandle(request);
 
 			return response.Result;
@@ -83,8 +86,14 @@ namespace AnkrSDK.SilentSigning
 			return SessionHandler.IsSessionSaved();
 		}
 
+		private void SkipNextDeepLink()
+		{
+			_skipNextDeepLink = true;
+		}
+
 		private void SetupDeeplinkOnEachMessage()
 		{
+			SessionHandler.SessionUpdated += OnSessionUpdated;
 			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
 			walletConnect.SessionUpdated += OnSessionUpdated;
 			if (walletConnect.Session != null)
@@ -101,6 +110,7 @@ namespace AnkrSDK.SilentSigning
 
 		private void SubscribeSession(WalletConnectSession session)
 		{
+			session.OnSend -= OnSessionSend;
 			if (!IsSilentSigningActive())
 			{
 				session.OnSend += OnSessionSend;
@@ -109,6 +119,12 @@ namespace AnkrSDK.SilentSigning
 
 		private void OnSessionSend(object sender, WalletConnectSession e)
 		{
+			if (_skipNextDeepLink)
+			{
+				_skipNextDeepLink = false;
+				return;
+			}
+
 			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
 			walletConnect.OpenMobileWallet();
 		}
