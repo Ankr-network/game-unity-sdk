@@ -14,18 +14,18 @@ namespace AnkrSDKImporter.Data
 		public string OpenUpmRegistryName => _openUpmRegistryName;
 		public string OpenUpmRegistryUrl => _openUpmRegistryUrl;
 
-		public void SetVersion(string packageId, string version)
+		public void SetVersion(string packageName, string version)
 		{
 			foreach (var packageDataEntry in _packageDataList)
 			{
-				if (packageId == packageDataEntry.PackageName && !packageDataEntry.External)
+				if (packageName == packageDataEntry.PackageName && !packageDataEntry.External)
 				{
 					packageDataEntry.PackageVersionOrUrl = version;
 					return;
 				}
 			}
 
-			Debug.LogError($"Internal package {packageId} not found");
+			Debug.LogError($"Internal package {packageName} not found");
 		}
 
 		public IEnumerable<PackageDataEntry> GetPackageDataEntries()
