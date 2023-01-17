@@ -5,7 +5,7 @@ namespace AnkrSDK.Core.Infrastructure
 	public interface ISilentSigningHandler
 	{
 		ISilentSigningSessionHandler SessionHandler { get; }
-		Task<string> RequestSilentSign(long timestamp);
+		Task<string> RequestSilentSign(long timestamp, string chainId = null);
 		Task DisconnectSilentSign();
 		Task<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
 			string gas = null,
