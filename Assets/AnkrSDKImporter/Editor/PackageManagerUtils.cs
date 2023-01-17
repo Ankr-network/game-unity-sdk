@@ -21,10 +21,11 @@ namespace AnkrSDKImporter.Editor
 
 		public static void RequestPackagesList(Action<bool, PackageCollection> resultCallback)
 		{
-			if(_status == PackageManagerRequestStatus.InProgress)
+			if (_status == PackageManagerRequestStatus.InProgress)
 			{
 				throw new InvalidOperationException("PackageManagerUtils only allows one request at a time");
 			}
+
 			_resultCallback = resultCallback;
 			_status = PackageManagerRequestStatus.InProgress;
 			_listRequest = Client.List();
@@ -37,9 +38,9 @@ namespace AnkrSDKImporter.Editor
 			{
 				return;
 			}
-		
+
 			EditorApplication.update -= EditorApplicationOnUpdate;
-		
+
 			if (_listRequest.Status == StatusCode.Success)
 			{
 				_resultCallback?.Invoke(true, _listRequest.Result);

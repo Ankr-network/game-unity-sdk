@@ -10,7 +10,7 @@ namespace AnkrSDKImporter.Data
 		[SerializeField] private List<string> _registryScopes = new List<string>();
 		[SerializeField] private string _openUpmRegistryName;
 		[SerializeField] private string _openUpmRegistryUrl;
-		
+
 		public string OpenUpmRegistryName => _openUpmRegistryName;
 		public string OpenUpmRegistryUrl => _openUpmRegistryUrl;
 
@@ -24,10 +24,10 @@ namespace AnkrSDKImporter.Data
 					return;
 				}
 			}
-			
+
 			Debug.LogError($"Internal package {packageId} not found");
 		}
-		
+
 		public IEnumerable<PackageDataEntry> GetPackageDataEntries()
 		{
 			return _packageDataList;
@@ -37,7 +37,5 @@ namespace AnkrSDKImporter.Data
 		{
 			return _registryScopes;
 		}
-		
-		
 	}
 }

@@ -1,10 +1,8 @@
 #if UNITY_EDITOR
-using System.Collections.Generic;
 using System.IO;
 using AnkrSDKImporter.Data;
 using AnkrSDKImporter.Editor;
 using AnkrSDKImporter.Editor.Utils;
-using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,7 +16,8 @@ public static class PackageExporter
 	// Path to export to.
 	private const string ExportPath = "Build";
 
-	private static string[] PackagesToUpdateVersion = {
+	private static readonly string[] PackagesToUpdateVersion =
+	{
 		"com.unity.nuget.newtonsoft-json", "com.cysharp.unitask"
 	};
 
@@ -36,7 +35,7 @@ public static class PackageExporter
 			{
 				return;
 			}
-			
+
 			var settings = Resources.Load<AnkrSDKImporterSettings>("AnkrSDKImporterSettings");
 			foreach (var packageName in PackagesToUpdateVersion)
 			{
@@ -46,10 +45,11 @@ public static class PackageExporter
 					settings.SetVersion(packageName, version);
 				}
 			}
+
 			EditorUtility.SetDirty(settings);
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
-		
+
 			// Ensure export path.
 			var dir = new FileInfo(exportPath).Directory;
 			if (dir?.Exists == false)

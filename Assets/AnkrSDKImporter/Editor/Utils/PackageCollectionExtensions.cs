@@ -18,7 +18,7 @@ namespace AnkrSDKImporter.Editor.Utils
 			Debug.LogError($"{name} not found in the collection");
 			return null;
 		}
-		
+
 		public static bool Has(this PackageCollection collection, PackageData packageData)
 		{
 			if (packageData.External)
