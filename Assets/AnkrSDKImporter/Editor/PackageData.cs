@@ -4,14 +4,14 @@ namespace AnkrSDKImporter.Editor
 {
     public struct PackageData
     {
-        public readonly string PackageId;
+        public readonly string PackageName;
         public readonly string PackageVersionOrUrl;
         public readonly bool External;
 
         public PackageData(PackageDataEntry packageEntry)
         {
             External = packageEntry.External;
-            PackageId = packageEntry.PackageName;
+            PackageName = packageEntry.PackageName;
             PackageVersionOrUrl = packageEntry.PackageVersionOrUrl;
         }
     }

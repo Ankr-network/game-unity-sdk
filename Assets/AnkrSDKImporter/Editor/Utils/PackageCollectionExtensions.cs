@@ -27,7 +27,7 @@ namespace AnkrSDKImporter.Editor.Utils
 				//in the current project package collection
 				foreach (var package in collection)
 				{
-					if (package.packageId == packageData.PackageId)
+					if (package.name == packageData.PackageName)
 					{
 						return true;
 					}
@@ -41,7 +41,7 @@ namespace AnkrSDKImporter.Editor.Utils
 				//versions for all dependencies will be the ones specified in this class
 				foreach (var package in collection)
 				{
-					if (package.packageId == packageData.PackageId && package.version == packageData.PackageVersionOrUrl)
+					if (package.name == packageData.PackageName && package.version == packageData.PackageVersionOrUrl)
 					{
 						return true;
 					}

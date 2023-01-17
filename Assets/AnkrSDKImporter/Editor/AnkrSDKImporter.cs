@@ -17,14 +17,22 @@ namespace AnkrSDKImporter.Editor
       
       private const string CompanyNameToRejectImport = "Ankr";
       private const string ProductNameToRejectImport = "Ankr SDK";
+      private const string ImporterFolderName = "AnkrSDKImporter";
+      private const string MetaExt = ".meta";
       static AnkrSDKImporter()
       {
-         if (Application.companyName == CompanyNameToRejectImport
-             && Application.productName == ProductNameToRejectImport)
+         if (IsOriginProject())
          {
             return;
          }    
+         
          PackageManagerUtils.RequestPackagesList(OnPackagesLoaded);
+      }
+
+      private static bool IsOriginProject()
+      {
+         return Application.companyName == CompanyNameToRejectImport
+                && Application.productName == ProductNameToRejectImport;
       }
       
       [MenuItem("AnkrSDK/Importer/Force Add Packages")]
@@ -47,6 +55,7 @@ namespace AnkrSDKImporter.Editor
          {
             if (packageCollection.Has(packageData))
             {
+               Debug.Log($"Skipping package {packageData.PackageName} {packageData.PackageVersionOrUrl} because already exists");
                continue;
             }
                   
@@ -111,7 +120,7 @@ namespace AnkrSDKImporter.Editor
          var dependenciesObj = jsonParsedObject[depdendenciesKey];
          foreach (var packageData in packagesToImport)
          {
-            dependenciesObj.Add(packageData.PackageId, new JSONString(packageData.PackageVersionOrUrl));
+            dependenciesObj.Add(packageData.PackageName, new JSONString(packageData.PackageVersionOrUrl));
          }
 
          if (!jsonParsedObject.HasKey(scopedRegistriesKey))
@@ -145,6 +154,12 @@ namespace AnkrSDKImporter.Editor
          Debug.Log("AnkrSDKImporter: all required packages added to manifest");
          
          Client.Resolve();
+
+         if (!IsOriginProject())
+         {
+            Directory.Delete(Path.Combine(Application.dataPath, ImporterFolderName), true);
+            File.Delete(Path.Combine(Application.dataPath, ImporterFolderName + MetaExt));
+         }
       }
 
       private static JSONObject CreateOpenUpmRegistryObject(AnkrSDKImporterSettings settings)
