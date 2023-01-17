@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3feda192c2c9bf47ac1e94202b076ae, type: 3}
+  m_Name: AnkrSDKImporterSettings
+  m_EditorClassIdentifier: 
+  _packageDataList:
+  - PackageId: com.unity.nuget.newtonsoft-json
+    PackageUrl: 
+  - PackageId: com.cysharp.unitask
+    PackageUrl: 
+  - PackageId: com.ankr.ankrsdk
+    PackageUrl: https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK
+  _registryScopes:
+  - com.cysharp.unitask
+  - com.ankr.ankrsdk
+  _openUpmRegistryName: package.openupm.com
+  _openUpmRegistryUrl: https://package.openupm.com

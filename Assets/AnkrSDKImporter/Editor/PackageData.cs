@@ -1,4 +1,6 @@
-﻿namespace AnkrSDKImporter.Editor
+﻿using AnkrSDKImporter.Data;
+
+namespace AnkrSDKImporter.Editor
 {
     public struct PackageData
     {
@@ -11,6 +13,13 @@
             External = external;
             PackageId = packageId;
             PackageVersionOrUrl = packageVersionOrUrl;
+        }
+
+        public PackageData(PackageDataEntry packageEntry)
+        {
+            External = packageEntry.External;
+            PackageId = packageEntry.PackageId;
+            PackageVersionOrUrl = packageEntry.PackageVersionOrUrl;
         }
     }
 }

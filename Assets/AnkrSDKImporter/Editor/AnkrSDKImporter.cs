@@ -1,5 +1,7 @@
 using System.IO;
 using System.Collections.Generic;
+using AnkrSDKImporter.Data;
+using AnkrSDKImporter.Editor.Utils;
 using SimpleJSON;
 using UnityEditor;
 using UnityEngine;
@@ -23,14 +25,17 @@ namespace AnkrSDKImporter.Editor
       private const string UnitaskRegistryScope = "com.cysharp.unitask";
       private const string AnkrSDKRegistryScope = "com.ankr.ankrsdk";
 
-      private static readonly List<PackageData> PackagesToTryToImport = new List<PackageData>()
-      {
-         new PackageData("com.unity.nuget.newtonsoft-json", "3.0.1", external:false), 
-         new PackageData(UnitaskRegistryScope, "2.3.1", external:false), 
-         new PackageData(AnkrSDKRegistryScope, "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK", external:true)
-      };
-      
+      //TODO ANTON remove before commit
+      // private static readonly List<PackageData> PackagesToTryToImport = new List<PackageData>()
+      // {
+      //    new PackageData("com.unity.nuget.newtonsoft-json", "3.0.1", external:false), 
+      //    new PackageData(UnitaskRegistryScope, "2.3.1", external:false), 
+      //    new PackageData(AnkrSDKRegistryScope, "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK", external:true)
+      // };
+
+      private static readonly AnkrSDKImporterSettings _settings;
       private static ListRequest _listRequest;
+      
    
       static AnkrSDKImporter()
       {
@@ -38,10 +43,24 @@ namespace AnkrSDKImporter.Editor
              && Application.productName == ProductNameToRejectImport)
          {
             return;
-         }
+         }    
          
+         _settings = Resources.Load<AnkrSDKImporterSettings>("ImporterSettings");
+
          _listRequest = Client.List();
          EditorApplication.update += EditorApplicationOnUpdate;
+      }
+      
+      private static List<PackageData> GetPackageData()
+      {
+         var packagesToImport = new List<PackageData>();
+
+         foreach (var packageEntry in _settings.GetPackageDataEntries())
+         {
+            packagesToImport.Add(new PackageData(packageEntry));
+         }
+
+         return packagesToImport;
       }
 
       private static void EditorApplicationOnUpdate()
@@ -54,9 +73,9 @@ namespace AnkrSDKImporter.Editor
          if (_listRequest.Status == StatusCode.Success)
          {
             var filteredPackagesToImport = new List<PackageData>();
-            foreach (var packageData in PackagesToTryToImport)
+            foreach (var packageData in GetPackageData())
             {
-               if (PackageCollectionContains(_listRequest.Result, packageData))
+               if (_listRequest.Result.Has(packageData))
                {
                   continue;
                }
@@ -73,38 +92,6 @@ namespace AnkrSDKImporter.Editor
 
          EditorApplication.update -= EditorApplicationOnUpdate;
          _listRequest = null;
-      }
-
-      private static bool PackageCollectionContains(PackageCollection collection, PackageData packageData)
-      {
-         if (packageData.External)
-         {
-            //if package is external (meaning loaded by URL) we only consider it existing if the package id is already present
-            //in the current project package collection
-            foreach (var package in collection)
-            {
-               if (package.packageId == packageData.PackageId)
-               {
-                  return true;
-               }
-            }
-         }
-         else
-         {
-            //if project is part of unity package registry we need to make sure that the version is the same
-            //otherwise we consider it not present in the project and manifest modification will
-            //just change the version in the manifest dependencies json object to make sure 
-            //versions for all dependencies will be the ones specified in this class
-            foreach (var package in collection)
-            {
-               if (package.packageId == packageData.PackageId && package.version == packageData.PackageVersionOrUrl)
-               {
-                  return true;
-               }
-            }
-         }
-
-         return false;
       }
 
       private static void AddDataToManifest(List<PackageData> packagesToImport)
