@@ -1,6 +1,12 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
+using AnkrSDKImporter.Data;
+using AnkrSDKImporter.Editor;
+using AnkrSDKImporter.Editor.Utils;
+using Cysharp.Threading.Tasks;
 using UnityEditor;
+using UnityEngine;
 
 public static class PackageExporter
 {
@@ -12,6 +18,10 @@ public static class PackageExporter
 	// Path to export to.
 	private const string ExportPath = "Build";
 
+	private static string[] PackagesToUpdateVersion = {
+		"com.unity.nuget.newtonsoft-json", "com.cysharp.unitask"
+	};
+
 	[MenuItem("AnkrSDK/Export Ankr Importer Package")]
 	public static void ExportImporter()
 	{
@@ -20,21 +30,42 @@ public static class PackageExporter
 
 	private static void ExportPackage(string exportPath, string packagePath)
 	{
-		// Ensure export path.
-		var dir = new FileInfo(exportPath).Directory;
-		if (dir?.Exists == false)
+		PackageManagerUtils.RequestPackagesList((success, packagesCollection) =>
 		{
-			dir.Create();
-		}
+			if (!success)
+			{
+				return;
+			}
+			
+			var settings = Resources.Load<AnkrSDKImporterSettings>("AnkrSDKImporterSettings");
+			foreach (var packageName in PackagesToUpdateVersion)
+			{
+				var version = packagesCollection.FindVersionFor(packageName);
+				if (version != null)
+				{
+					settings.SetVersion(packageName, version);
+				}
+			}
+			EditorUtility.SetDirty(settings);
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+		
+			// Ensure export path.
+			var dir = new FileInfo(exportPath).Directory;
+			if (dir?.Exists == false)
+			{
+				dir.Create();
+			}
 
-		// Export
-		AssetDatabase.ExportPackage(
-			packagePath,
-			exportPath,
-			ExportPackageOptions.Recurse
-		);
+			// Export
+			AssetDatabase.ExportPackage(
+				packagePath,
+				exportPath,
+				ExportPackageOptions.Recurse
+			);
 
-		EditorUtility.RevealInFinder(exportPath);
+			EditorUtility.RevealInFinder(exportPath);
+		});
 	}
 }
 #endif

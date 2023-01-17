@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: AnkrSDKImporterSettings
   m_EditorClassIdentifier: 
   _packageDataList:
-  - PackageId: com.unity.nuget.newtonsoft-json
-    PackageUrl: 
-  - PackageId: com.cysharp.unitask
-    PackageUrl: 
-  - PackageId: com.ankr.ankrsdk
-    PackageUrl: https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK
+  - PackageName: com.unity.nuget.newtonsoft-json
+    PackageVersionOrUrl: 3.0.2
+    External: 0
+  - PackageName: com.cysharp.unitask
+    PackageVersionOrUrl: 2.3.1
+    External: 0
+  - PackageName: com.ankr.ankrsdk
+    PackageVersionOrUrl: https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK
+    External: 1
   _registryScopes:
   - com.cysharp.unitask
   - com.ankr.ankrsdk

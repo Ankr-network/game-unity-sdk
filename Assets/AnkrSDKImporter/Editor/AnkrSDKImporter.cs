@@ -5,7 +5,6 @@ using AnkrSDKImporter.Editor.Utils;
 using SimpleJSON;
 using UnityEditor;
 using UnityEngine;
-using UnityEditor.PackageManager.Requests;
 using UnityEditor.PackageManager;
 
 namespace AnkrSDKImporter.Editor
@@ -18,25 +17,6 @@ namespace AnkrSDKImporter.Editor
       
       private const string CompanyNameToRejectImport = "Ankr";
       private const string ProductNameToRejectImport = "Ankr SDK";
-      
-      private const string OpenUpmRegistryName = "package.openupm.com";
-      private const string OpenUpmRegistryUrl = "https://package.openupm.com";
-      
-      private const string UnitaskRegistryScope = "com.cysharp.unitask";
-      private const string AnkrSDKRegistryScope = "com.ankr.ankrsdk";
-
-      //TODO ANTON remove before commit
-      // private static readonly List<PackageData> PackagesToTryToImport = new List<PackageData>()
-      // {
-      //    new PackageData("com.unity.nuget.newtonsoft-json", "3.0.1", external:false), 
-      //    new PackageData(UnitaskRegistryScope, "2.3.1", external:false), 
-      //    new PackageData(AnkrSDKRegistryScope, "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK", external:true)
-      // };
-
-      private static readonly AnkrSDKImporterSettings _settings;
-      private static ListRequest _listRequest;
-      
-   
       static AnkrSDKImporter()
       {
          if (Application.companyName == CompanyNameToRejectImport
@@ -44,18 +24,43 @@ namespace AnkrSDKImporter.Editor
          {
             return;
          }    
-         
-         _settings = Resources.Load<AnkrSDKImporterSettings>("ImporterSettings");
-
-         _listRequest = Client.List();
-         EditorApplication.update += EditorApplicationOnUpdate;
+         PackageManagerUtils.RequestPackagesList(OnPackagesLoaded);
       }
       
-      private static List<PackageData> GetPackageData()
+      [MenuItem("AnkrSDK/Importer/Force Add Packages")]
+      public static void ForceAddPackages()
+      {
+         PackageManagerUtils.RequestPackagesList(OnPackagesLoaded);
+      }
+
+      private static void OnPackagesLoaded(bool success, PackageCollection packageCollection)
+      {
+         if (!success)
+         {
+            return;
+         }
+         
+         var settings = Resources.Load<AnkrSDKImporterSettings>("AnkrSDKImporterSettings");
+
+         var filteredPackagesToImport = new List<PackageData>();
+         foreach (var packageData in GetPackageData(settings))
+         {
+            if (packageCollection.Has(packageData))
+            {
+               continue;
+            }
+                  
+            filteredPackagesToImport.Add(packageData);
+         }
+               
+         AddDataToManifest(filteredPackagesToImport, settings);
+      }
+      
+      private static List<PackageData> GetPackageData(AnkrSDKImporterSettings settings)
       {
          var packagesToImport = new List<PackageData>();
 
-         foreach (var packageEntry in _settings.GetPackageDataEntries())
+         foreach (var packageEntry in settings.GetPackageDataEntries())
          {
             packagesToImport.Add(new PackageData(packageEntry));
          }
@@ -63,38 +68,7 @@ namespace AnkrSDKImporter.Editor
          return packagesToImport;
       }
 
-      private static void EditorApplicationOnUpdate()
-      {
-         if (!_listRequest.IsCompleted)
-         {
-            return;
-         }
-         
-         if (_listRequest.Status == StatusCode.Success)
-         {
-            var filteredPackagesToImport = new List<PackageData>();
-            foreach (var packageData in GetPackageData())
-            {
-               if (_listRequest.Result.Has(packageData))
-               {
-                  continue;
-               }
-                  
-               filteredPackagesToImport.Add(packageData);
-            }
-               
-            AddDataToManifest(filteredPackagesToImport);
-         }
-         else
-         {
-            Debug.Log("AnkrSDKImporter: Could not check for packages: " + _listRequest.Error.message);
-         }
-
-         EditorApplication.update -= EditorApplicationOnUpdate;
-         _listRequest = null;
-      }
-
-      private static void AddDataToManifest(List<PackageData> packagesToImport)
+      private static void AddDataToManifest(List<PackageData> packagesToImport, AnkrSDKImporterSettings settings)
       {
          var assetsFolderPath = Application.dataPath;
          var assetsDirectoryInfo = new DirectoryInfo(assetsFolderPath);
@@ -152,7 +126,7 @@ namespace AnkrSDKImporter.Editor
             var scopeRegistryObject = (JSONObject)scopeRegistryNode;
             var registryName = scopeRegistryObject[NamePropertyName];
             
-            if (registryName is JSONString registryNameString && registryNameString == OpenUpmRegistryName)
+            if (registryName is JSONString registryNameString && registryNameString == settings.OpenUpmRegistryName)
             {
                openUpmRegistryEntryFound = true;
                break;
@@ -161,7 +135,7 @@ namespace AnkrSDKImporter.Editor
 
          if (!openUpmRegistryEntryFound)
          {
-            scopeRegistriesArray.Add(CreateOpenUpmRegistryObject());
+            scopeRegistriesArray.Add(CreateOpenUpmRegistryObject(settings));
          }
 
          jsonParsedObject.SetRecursiveInline(false);
@@ -173,33 +147,22 @@ namespace AnkrSDKImporter.Editor
          Client.Resolve();
       }
 
-      private static JSONObject CreateOpenUpmRegistryObject()
+      private static JSONObject CreateOpenUpmRegistryObject(AnkrSDKImporterSettings settings)
       {
          var openUpmJsonObj = new JSONObject();
-         openUpmJsonObj.Add(NamePropertyName, new JSONString(OpenUpmRegistryName));
-         openUpmJsonObj.Add(UrlPropertyName, new JSONString(OpenUpmRegistryUrl));
+         openUpmJsonObj.Add(NamePropertyName, new JSONString(settings.OpenUpmRegistryName));
+         openUpmJsonObj.Add(UrlPropertyName, new JSONString(settings.OpenUpmRegistryUrl));
 
          var scopesArray = new JSONArray();
-         scopesArray.Add(new JSONString(AnkrSDKRegistryScope));
-         scopesArray.Add(new JSONString(UnitaskRegistryScope));
+         foreach (var registryScope in settings.GetRegistryScopes())
+         {
+            scopesArray.Add(new JSONString(registryScope));
+            scopesArray.Add(new JSONString(registryScope));
+         }
          
          openUpmJsonObj.Add("scopes", scopesArray);
 
          return openUpmJsonObj;
-      }
-
-      [MenuItem("AnkrSDK/Importer/Force Add Packages")]
-      public static void ForceAddPackages()
-      {
-         if (_listRequest == null)
-         {
-            _listRequest = Client.List();
-            EditorApplication.update += EditorApplicationOnUpdate;
-         }
-         else
-         {
-            Debug.LogError("AnkrSDKImporter: Package list request is already sent");
-         }
       }
    }
 }

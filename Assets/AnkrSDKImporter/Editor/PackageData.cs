@@ -8,17 +8,10 @@ namespace AnkrSDKImporter.Editor
         public readonly string PackageVersionOrUrl;
         public readonly bool External;
 
-        public PackageData(string packageId, string packageVersionOrUrl, bool external)
-        {
-            External = external;
-            PackageId = packageId;
-            PackageVersionOrUrl = packageVersionOrUrl;
-        }
-
         public PackageData(PackageDataEntry packageEntry)
         {
             External = packageEntry.External;
-            PackageId = packageEntry.PackageId;
+            PackageId = packageEntry.PackageName;
             PackageVersionOrUrl = packageEntry.PackageVersionOrUrl;
         }
     }

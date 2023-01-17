@@ -1,17 +1,21 @@
 ﻿using UnityEditor.PackageManager;
+using UnityEngine;
 
 namespace AnkrSDKImporter.Editor.Utils
 {
 	public static class PackageCollectionExtensions
 	{
-		public static string FindVersionFor(this PackageCollection collection, string packageId)
+		public static string FindVersionFor(this PackageCollection collection, string name)
 		{
 			foreach (var package in collection)
 			{
-				if (package.packageId == packageId)
+				if (package.name == name)
+				{
 					return package.version;
+				}
 			}
 
+			Debug.LogError($"{name} not found in the collection");
 			return null;
 		}
 		
