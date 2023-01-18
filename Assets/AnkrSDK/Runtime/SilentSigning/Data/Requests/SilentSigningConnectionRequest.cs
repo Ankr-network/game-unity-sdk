@@ -11,14 +11,14 @@ namespace AnkrSDK.SilentSigning.Data.Requests
 		{
 			[JsonProperty("until")] public long Timestamp;
 
-			[JsonProperty("chainID", DefaultValueHandling = DefaultValueHandling.Ignore)]
-			public string ChainID;
+			[JsonProperty("chainId", DefaultValueHandling = DefaultValueHandling.Ignore)]
+			public long ChainID;
 		}
 
 		public override string Method => "wallet_requestSilentSign";
 		[JsonProperty("params")] public SilentSigningConnectionRequestParams[] Params;
 
-		public SilentSigningConnectionRequest(long timestamp, string chainID = null)
+		public SilentSigningConnectionRequest(long timestamp, long chainID = 1)
 		{
 			Params = new[]
 			{
