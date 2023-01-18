@@ -170,7 +170,7 @@ namespace AnkrSDKImporter.Editor
 			openUpmJsonObj.Add(UrlPropertyName, new JSONString(settings.OpenUpmRegistryUrl));
 
 			var scopesArray = new JSONArray();
-			foreach (var registryScope in settings.GetRegistryScopes())
+			foreach (var registryScope in settings.RegistryScopes)
 			{
 				scopesArray.Add(new JSONString(registryScope));
 				scopesArray.Add(new JSONString(registryScope));

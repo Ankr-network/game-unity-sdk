@@ -13,7 +13,8 @@ namespace AnkrSDKImporter.Data
 
 		public string OpenUpmRegistryName => _openUpmRegistryName;
 		public string OpenUpmRegistryUrl => _openUpmRegistryUrl;
-
+		public IEnumerable<string> RegistryScopes => _registryScopes;
+ 
 		public void SetVersion(string packageName, string version)
 		{
 			foreach (var packageDataEntry in _packageDataList)
@@ -31,11 +32,6 @@ namespace AnkrSDKImporter.Data
 		public IEnumerable<PackageDataEntry> GetPackageDataEntries()
 		{
 			return _packageDataList;
-		}
-
-		public IEnumerable<string> GetRegistryScopes()
-		{
-			return _registryScopes;
 		}
 	}
 }
