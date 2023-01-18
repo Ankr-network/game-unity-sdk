@@ -25,7 +25,7 @@ namespace AnkrSDK.SilentSigning
 			SetupDeeplinkOnEachMessage();
 		}
 
-		public async Task<string> RequestSilentSign(long timestamp, string chainId = null)
+		public async Task<string> RequestSilentSign(long timestamp, long chainId = 1)
 		{
 			var protocol = _walletConnect.Session;
 			var data = new SilentSigningConnectionRequest(timestamp, chainId);
