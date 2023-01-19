@@ -1,16 +1,18 @@
-﻿namespace AnkrSDKImporter.Editor
-{
-    public struct PackageData
-    {
-        public readonly string PackageId;
-        public readonly string PackageVersionOrUrl;
-        public readonly bool External;
+﻿using AnkrSDKImporter.Data;
 
-        public PackageData(string packageId, string packageVersionOrUrl, bool external)
-        {
-            External = external;
-            PackageId = packageId;
-            PackageVersionOrUrl = packageVersionOrUrl;
-        }
-    }
+namespace AnkrSDKImporter.Editor
+{
+	public struct PackageData
+	{
+		public readonly string PackageName;
+		public readonly string PackageVersionOrUrl;
+		public readonly bool External;
+
+		public PackageData(PackageDataEntry packageEntry)
+		{
+			External = packageEntry.External;
+			PackageName = packageEntry.PackageName;
+			PackageVersionOrUrl = packageEntry.PackageVersionOrUrl;
+		}
+	}
 }
