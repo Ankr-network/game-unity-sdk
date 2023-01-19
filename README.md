@@ -40,7 +40,7 @@ The Ankr Unity SDK provides an easy way to interact with Web3 and to work with c
 <!-- Installation -->
 
 ##  🏗 Install SDK
-We are using UniTask and Newtonsoft.Json as a dependency, so installing through Package Manager is a preferrable way.
+We are using UniTask and Newtonsoft.Json as a dependency, so installing through Package Manager is a preferable way.
 
 ### Install via git URL
 Requires a version of unity that supports path query parameter for git packages (Unity >= 2019.3.4f1, Unity >= 2020.1a21). You can add https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK to Package Manager
@@ -163,7 +163,7 @@ These methods require
 * Contract Address
 * ABI
 
-The following extract is an example usage of the **GetData** method to retrive information about an NFT:
+The following extract is an example usage of the **GetData** method to retrieve information about an NFT:
 
 ```c#
 private async UniTask<BigInteger> GetHat(BigInteger tokenID)
@@ -209,7 +209,7 @@ Allows you to subscribe to events <br>
 ```c#
 public class TransactionEventDelegator : ITransactionEventHandler
 ```
-Base class for you to implement, so you don't have to impement each callback. <br>
+Base class for you to implement, so you don't have to implement each callback. <br>
 ```c#
 public class TransactionEventHanlder : ITransactionEventHandler
 ```
