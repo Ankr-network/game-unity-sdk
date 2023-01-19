@@ -1,218 +1,184 @@
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using AnkrSDKImporter.Data;
+using AnkrSDKImporter.Editor.Utils;
 using SimpleJSON;
 using UnityEditor;
-using UnityEngine;
-using UnityEditor.PackageManager.Requests;
 using UnityEditor.PackageManager;
+using UnityEngine;
 
 namespace AnkrSDKImporter.Editor
 {
-   [InitializeOnLoad]
-   public class AnkrSDKImporter
-   {
-      private const string NamePropertyName = "name";
-      private const string UrlPropertyName = "url";
-      
-      private const string CompanyNameToRejectImport = "Ankr";
-      private const string ProductNameToRejectImport = "Ankr SDK";
-      
-      private const string OpenUpmRegistryName = "package.openupm.com";
-      private const string OpenUpmRegistryUrl = "https://package.openupm.com";
-      
-      private const string UnitaskRegistryScope = "com.cysharp.unitask";
-      private const string AnkrSDKRegistryScope = "com.ankr.ankrsdk";
+	[InitializeOnLoad]
+	public class AnkrSDKImporter
+	{
+		private const string NamePropertyName = "name";
+		private const string UrlPropertyName = "url";
 
-      private static readonly List<PackageData> PackagesToTryToImport = new List<PackageData>()
-      {
-         new PackageData("com.unity.nuget.newtonsoft-json", "3.0.1", external:false), 
-         new PackageData(UnitaskRegistryScope, "2.3.1", external:false), 
-         new PackageData(AnkrSDKRegistryScope, "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK", external:true)
-      };
-      
-      private static ListRequest _listRequest;
-   
-      static AnkrSDKImporter()
-      {
-         if (Application.companyName == CompanyNameToRejectImport
-             && Application.productName == ProductNameToRejectImport)
-         {
-            return;
-         }
-         
-         _listRequest = Client.List();
-         EditorApplication.update += EditorApplicationOnUpdate;
-      }
+		private const string CompanyNameToRejectImport = "Ankr";
+		private const string ProductNameToRejectImport = "Ankr SDK";
+		private const string ImporterFolderName = "AnkrSDKImporter";
+		private const string MetaExt = ".meta";
 
-      private static void EditorApplicationOnUpdate()
-      {
-         if (!_listRequest.IsCompleted)
-         {
-            return;
-         }
-         
-         if (_listRequest.Status == StatusCode.Success)
-         {
-            var filteredPackagesToImport = new List<PackageData>();
-            foreach (var packageData in PackagesToTryToImport)
-            {
-               if (PackageCollectionContains(_listRequest.Result, packageData))
-               {
-                  continue;
-               }
-                  
-               filteredPackagesToImport.Add(packageData);
-            }
-               
-            AddDataToManifest(filteredPackagesToImport);
-         }
-         else
-         {
-            Debug.Log("AnkrSDKImporter: Could not check for packages: " + _listRequest.Error.message);
-         }
+		static AnkrSDKImporter()
+		{
+			if (IsOriginProject())
+			{
+				return;
+			}
 
-         EditorApplication.update -= EditorApplicationOnUpdate;
-         _listRequest = null;
-      }
+			PackageManagerUtils.RequestPackagesList(OnPackagesLoaded);
+		}
 
-      private static bool PackageCollectionContains(PackageCollection collection, PackageData packageData)
-      {
-         if (packageData.External)
-         {
-            //if package is external (meaning loaded by URL) we only consider it existing if the package id is already present
-            //in the current project package collection
-            foreach (var package in collection)
-            {
-               if (package.packageId == packageData.PackageId)
-               {
-                  return true;
-               }
-            }
-         }
-         else
-         {
-            //if project is part of unity package registry we need to make sure that the version is the same
-            //otherwise we consider it not present in the project and manifest modification will
-            //just change the version in the manifest dependencies json object to make sure 
-            //versions for all dependencies will be the ones specified in this class
-            foreach (var package in collection)
-            {
-               if (package.packageId == packageData.PackageId && package.version == packageData.PackageVersionOrUrl)
-               {
-                  return true;
-               }
-            }
-         }
+		private static bool IsOriginProject()
+		{
+			return Application.companyName == CompanyNameToRejectImport
+			       && Application.productName == ProductNameToRejectImport;
+		}
 
-         return false;
-      }
+		[MenuItem("AnkrSDK/Importer/Force Add Packages")]
+		public static void ForceAddPackages()
+		{
+			PackageManagerUtils.RequestPackagesList(OnPackagesLoaded);
+		}
 
-      private static void AddDataToManifest(List<PackageData> packagesToImport)
-      {
-         var assetsFolderPath = Application.dataPath;
-         var assetsDirectoryInfo = new DirectoryInfo(assetsFolderPath);
+		private static void OnPackagesLoaded(bool success, PackageCollection packageCollection)
+		{
+			if (!success)
+			{
+				return;
+			}
 
-         if (assetsDirectoryInfo.Parent == null)
-         {
-            Debug.LogError("AnkrSDKImporter: parent not found for folder " + assetsFolderPath);
-            return;
-         }
-         
-         var packagesFolderPath = Path.Combine(assetsDirectoryInfo.Parent.FullName, "Packages");
+			var settings = Resources.Load<AnkrSDKImporterSettings>("AnkrSDKImporterSettings");
 
-         var manifestPath = Path.Combine(packagesFolderPath, "manifest.json");
+			var filteredPackagesToImport = new List<PackageData>();
+			foreach (var packageData in GetPackageData(settings))
+			{
+				if (packageCollection.Has(packageData))
+				{
+					Debug.Log($"Skipping package {packageData.PackageName} {packageData.PackageVersionOrUrl} because already exists");
+					continue;
+				}
 
-         if (!File.Exists(manifestPath))
-         {
-            Debug.LogError("AnkrSDKImporter: package manifest file does not exist");
-            return;
-         }
-         
-         var manifestText = File.ReadAllText(manifestPath);
+				filteredPackagesToImport.Add(packageData);
+			}
 
-         if (string.IsNullOrWhiteSpace(manifestText))
-         {
-            Debug.LogError("AnkrSDKImporter: package manifest file is empty");
-            return;
-         }
-         
-         var jsonParsedObject = JSON.Parse(manifestText);
+			AddDataToManifest(filteredPackagesToImport, settings);
+		}
 
-         const string depdendenciesKey = "dependencies";
-         const string scopedRegistriesKey = "scopedRegistries";
-         
-         if (!jsonParsedObject.HasKey(depdendenciesKey))
-         {
-            Debug.LogError("AnkrSDKImporter: Manifest json object does not contain dependencies key");
-            return;
-         }
-         
-         var dependenciesObj = jsonParsedObject[depdendenciesKey];
-         foreach (var packageData in packagesToImport)
-         {
-            dependenciesObj.Add(packageData.PackageId, new JSONString(packageData.PackageVersionOrUrl));
-         }
+		private static List<PackageData> GetPackageData(AnkrSDKImporterSettings settings)
+		{
+			var packagesToImport = new List<PackageData>();
 
-         if (!jsonParsedObject.HasKey(scopedRegistriesKey))
-         {
-            jsonParsedObject.Add(scopedRegistriesKey, new JSONArray());
-         }
+			foreach (var packageEntry in settings.GetPackageDataEntries())
+			{
+				packagesToImport.Add(new PackageData(packageEntry));
+			}
 
-         var scopeRegistriesArray = jsonParsedObject[scopedRegistriesKey].AsArray;
-         var openUpmRegistryEntryFound = false;
-         foreach (var scopeRegistryNode in scopeRegistriesArray.Values)
-         {
-            var scopeRegistryObject = (JSONObject)scopeRegistryNode;
-            var registryName = scopeRegistryObject[NamePropertyName];
-            
-            if (registryName is JSONString registryNameString && registryNameString == OpenUpmRegistryName)
-            {
-               openUpmRegistryEntryFound = true;
-               break;
-            }
-         }
+			return packagesToImport;
+		}
 
-         if (!openUpmRegistryEntryFound)
-         {
-            scopeRegistriesArray.Add(CreateOpenUpmRegistryObject());
-         }
+		private static void AddDataToManifest(List<PackageData> packagesToImport, AnkrSDKImporterSettings settings)
+		{
+			var assetsFolderPath = Application.dataPath;
+			var assetsDirectoryInfo = new DirectoryInfo(assetsFolderPath);
 
-         jsonParsedObject.SetRecursiveInline(false);
-         string updatedManifestText = jsonParsedObject.ToString(aIndent:4);
-         File.WriteAllText(manifestPath, updatedManifestText);
+			if (assetsDirectoryInfo.Parent == null)
+			{
+				Debug.LogError("AnkrSDKImporter: parent not found for folder " + assetsFolderPath);
+				return;
+			}
 
-         Debug.Log("AnkrSDKImporter: all required packages added to manifest");
-         
-         Client.Resolve();
-      }
+			var packagesFolderPath = Path.Combine(assetsDirectoryInfo.Parent.FullName, "Packages");
 
-      private static JSONObject CreateOpenUpmRegistryObject()
-      {
-         var openUpmJsonObj = new JSONObject();
-         openUpmJsonObj.Add(NamePropertyName, new JSONString(OpenUpmRegistryName));
-         openUpmJsonObj.Add(UrlPropertyName, new JSONString(OpenUpmRegistryUrl));
+			var manifestPath = Path.Combine(packagesFolderPath, "manifest.json");
 
-         var scopesArray = new JSONArray();
-         scopesArray.Add(new JSONString(AnkrSDKRegistryScope));
-         scopesArray.Add(new JSONString(UnitaskRegistryScope));
-         
-         openUpmJsonObj.Add("scopes", scopesArray);
+			if (!File.Exists(manifestPath))
+			{
+				Debug.LogError("AnkrSDKImporter: package manifest file does not exist");
+				return;
+			}
 
-         return openUpmJsonObj;
-      }
+			var manifestText = File.ReadAllText(manifestPath);
 
-      [MenuItem("AnkrSDK/Importer/Force Add Packages")]
-      public static void ForceAddPackages()
-      {
-         if (_listRequest == null)
-         {
-            _listRequest = Client.List();
-            EditorApplication.update += EditorApplicationOnUpdate;
-         }
-         else
-         {
-            Debug.LogError("AnkrSDKImporter: Package list request is already sent");
-         }
-      }
-   }
+			if (string.IsNullOrWhiteSpace(manifestText))
+			{
+				Debug.LogError("AnkrSDKImporter: package manifest file is empty");
+				return;
+			}
+
+			var jsonParsedObject = JSON.Parse(manifestText);
+
+			const string depdendenciesKey = "dependencies";
+			const string scopedRegistriesKey = "scopedRegistries";
+
+			if (!jsonParsedObject.HasKey(depdendenciesKey))
+			{
+				Debug.LogError("AnkrSDKImporter: Manifest json object does not contain dependencies key");
+				return;
+			}
+
+			var dependenciesObj = jsonParsedObject[depdendenciesKey];
+			foreach (var packageData in packagesToImport)
+			{
+				dependenciesObj.Add(packageData.PackageName, new JSONString(packageData.PackageVersionOrUrl));
+			}
+
+			if (!jsonParsedObject.HasKey(scopedRegistriesKey))
+			{
+				jsonParsedObject.Add(scopedRegistriesKey, new JSONArray());
+			}
+
+			var scopeRegistriesArray = jsonParsedObject[scopedRegistriesKey].AsArray;
+			var openUpmRegistryEntryFound = false;
+			foreach (var scopeRegistryNode in scopeRegistriesArray.Values)
+			{
+				var scopeRegistryObject = (JSONObject)scopeRegistryNode;
+				var registryName = scopeRegistryObject[NamePropertyName];
+
+				if (registryName is JSONString registryNameString && registryNameString == settings.OpenUpmRegistryName)
+				{
+					openUpmRegistryEntryFound = true;
+					break;
+				}
+			}
+
+			if (!openUpmRegistryEntryFound)
+			{
+				scopeRegistriesArray.Add(CreateOpenUpmRegistryObject(settings));
+			}
+
+			jsonParsedObject.SetRecursiveInline(false);
+			string updatedManifestText = jsonParsedObject.ToString(4);
+			File.WriteAllText(manifestPath, updatedManifestText);
+
+			Debug.Log("AnkrSDKImporter: all required packages added to manifest");
+
+			Client.Resolve();
+
+			if (!IsOriginProject())
+			{
+				Directory.Delete(Path.Combine(Application.dataPath, ImporterFolderName), true);
+				File.Delete(Path.Combine(Application.dataPath, ImporterFolderName + MetaExt));
+			}
+		}
+
+		private static JSONObject CreateOpenUpmRegistryObject(AnkrSDKImporterSettings settings)
+		{
+			var openUpmJsonObj = new JSONObject();
+			openUpmJsonObj.Add(NamePropertyName, new JSONString(settings.OpenUpmRegistryName));
+			openUpmJsonObj.Add(UrlPropertyName, new JSONString(settings.OpenUpmRegistryUrl));
+
+			var scopesArray = new JSONArray();
+			foreach (var registryScope in settings.RegistryScopes)
+			{
+				scopesArray.Add(new JSONString(registryScope));
+				scopesArray.Add(new JSONString(registryScope));
+			}
+
+			openUpmJsonObj.Add("scopes", scopesArray);
+
+			return openUpmJsonObj;
+		}
+	}
 }
