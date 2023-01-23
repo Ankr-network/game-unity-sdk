@@ -38,10 +38,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public event Action ConnectionStarted;
 		public event Action SessionUpdated;
 
-		private AppEntry SelectedWallet { get; set; }
-
 		public string ConnectURL => Session.URI;
 
+		private AppEntry _selectedWallet;
 		private WalletConnectUnitySession _session;
 
 		public WalletConnectUnitySession Session
@@ -218,14 +217,14 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void OpenMobileWallet(AppEntry selectedWallet)
 		{
-			SelectedWallet = selectedWallet;
+			_selectedWallet = selectedWallet;
 
 			OpenMobileWallet();
 		}
 
 		public void OpenDeepLink(AppEntry selectedWallet)
 		{
-			SelectedWallet = selectedWallet;
+			_selectedWallet = selectedWallet;
 
 			OpenDeepLink();
 		}
@@ -401,7 +400,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			if (wallet != null)
 			{
-				SelectedWallet = wallet;
+				_selectedWallet = wallet;
 				await wallet.DownloadImages();
 			}
 		}
