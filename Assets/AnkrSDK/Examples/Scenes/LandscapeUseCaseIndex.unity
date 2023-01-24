@@ -156,7 +156,6 @@ MonoBehaviour:
   _loginButton: {fileID: 1669978143}
   _sceneChooser: {fileID: 588941421}
   _chooseWalletScreen: {fileID: 2255995583575476035}
-  _walletConnect: {fileID: 333705138}
   _qrCodeImage: {fileID: 743187878}
 --- !u!4 &292734225
 Transform:
@@ -182,8 +181,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 333705140}
-  - component: {fileID: 333705139}
-  - component: {fileID: 333705138}
+  - component: {fileID: 333705141}
   m_Layer: 0
   m_Name: WalletConnect
   m_TagString: Untagged
@@ -191,57 +189,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &333705138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 333705137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 801bffbf4c62cc244b55ea230d19649d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultWallet: 1
-  _autoSaveAndResume: 1
-  _connectOnAwake: 0
-  _connectOnStart: 1
-  _createNewSessionOnSessionDisconnect: 0
-  _connectSessionRetryCount: 3
-  _customBridgeUrl: https://testbridge.yartu.io/
-  _chainId: 1
-  _appData:
-    _description: Wallet
-    _url: https://www.ankr.com/
-    _icons:
-    - https://www.ankr.com/static/favicon/apple-touch-icon.png
-    _name: Wallet
-  _transport: {fileID: 333705139}
-  _connectedEventSession:
-    m_PersistentCalls:
-      m_Calls: []
-  _disconnectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  _newSessionConnected:
-    m_PersistentCalls:
-      m_Calls: []
-  _resumedSessionConnected:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &333705139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 333705137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17303ab972a16184e8ba0066d294c7ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &333705140
 Transform:
   m_ObjectHideFlags: 0
@@ -257,6 +204,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &333705141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333705137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7db9c51379461c9191c4b7a01e368e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &477207099 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2709757431657233485, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
@@ -540,10 +499,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1071138664323991222, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -855.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1071138665143039607, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -855.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1071138665581192044, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -855.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607267567771879160, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125.00014
+      objectReference: {fileID: 0}
     - target: {fileID: 2709757430283575078, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: _walletConnect
       value: 
-      objectReference: {fileID: 333705138}
+      objectReference: {fileID: 0}
     - target: {fileID: 2709757430544572899, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_Name
       value: Landscape Canvas - ScreenSpace
@@ -635,6 +610,26 @@ PrefabInstance:
     - target: {fileID: 2709757430544572911, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990649899421827412, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125.00014
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990649900061348943, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125.00014
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990649900478316246, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125.00014
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990649901318549909, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125.00014
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536372011106136539, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -855.0001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1eecb0cd60767ac449938cb743676959, type: 3}

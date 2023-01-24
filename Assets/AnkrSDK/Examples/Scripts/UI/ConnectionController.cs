@@ -1,4 +1,7 @@
 using System;
+using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Unity;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -17,11 +20,12 @@ namespace AnkrSDK.UI
 		[SerializeField] private GameObject _sceneChooser;
 	#if !UNITY_WEBGL || UNITY_EDITOR
 		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
-		[SerializeField] private AnkrSDK.WalletConnectSharp.Unity.WalletConnect _walletConnect;
 	#endif
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
 
-		private void OnEnable()
+		private WalletConnect WalletConnect => WalletConnectProvider.GetWalletConnect();
+
+		private async void OnEnable()
 		{
 		#if !UNITY_WEBGL
 			_connectionText.text = LoginText;
@@ -29,10 +33,12 @@ namespace AnkrSDK.UI
 			_loginButton.onClick.AddListener(GetLoginAction());
 			_loginButton.gameObject.SetActive(true);
 			SubscribeToWalletEvents();
-			_walletConnect.SessionUpdated += SubscribeUnitySession;
+			WalletConnect.SessionUpdated += SubscribeUnitySession;
 		#else
 			_loginButton.gameObject.SetActive(false);
 		#endif
+
+			await WalletConnect.Connect();
 		}
 
 	#if UNITY_WEBGL && !UNITY_EDITOR
@@ -51,7 +57,7 @@ namespace AnkrSDK.UI
 		{
 			return () =>
 			{
-				_qrCodeImage.UpdateQRCode(_walletConnect.ConnectURL);
+				_qrCodeImage.UpdateQRCode(WalletConnect.ConnectURL);
 				_qrCodeImage.SetImageActive(true);
 			};
 		}
@@ -67,9 +73,9 @@ namespace AnkrSDK.UI
 		{
 			UpdateSceneState();
 
-			_walletConnect.ConnectedEvent.AddListener(UpdateSceneState);
+			WalletConnect.ConnectedEvent.AddListener(UpdateSceneState);
 			SubscribeUnitySession();
-			var session = _walletConnect.Session;
+			var session = WalletConnect.Session;
 			if (session == null)
 			{
 				return;
@@ -80,18 +86,18 @@ namespace AnkrSDK.UI
 
 		private void UnsubscribeFromWalletEvents()
 		{
-			_walletConnect.ConnectedEvent.RemoveListener(UpdateSceneState);
+			WalletConnect.ConnectedEvent.RemoveListener(UpdateSceneState);
 			UnsubscribeUnitySession();
 		}
 
 		private void OnSessionDisconnect(object sender, EventArgs e)
 		{
-			UpdateLoginButtonState(this, _walletConnect.Session);
+			UpdateLoginButtonState(this, WalletConnect.Session);
 		}
 
 		private void SubscribeUnitySession()
 		{
-			var session = _walletConnect.Session;
+			var session = WalletConnect.Session;
 			if (session == null)
 			{
 				return;
@@ -105,7 +111,7 @@ namespace AnkrSDK.UI
 
 		private void UnsubscribeUnitySession()
 		{
-			var session = _walletConnect.Session;
+			var session = WalletConnect.Session;
 			if (session == null)
 			{
 				return;
@@ -134,7 +140,7 @@ namespace AnkrSDK.UI
 
 		private void UpdateSceneState(AnkrSDK.WalletConnectSharp.Core.Models.WCSessionData _ = null)
 		{
-			var session = _walletConnect.Session;
+			var session = WalletConnect.Session;
 			if (session == null)
 			{
 				return;

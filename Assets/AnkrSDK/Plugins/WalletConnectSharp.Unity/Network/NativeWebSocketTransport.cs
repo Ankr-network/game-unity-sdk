@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Core.Utils;
+using AnkrSDK.WalletConnectSharp.Unity.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Exceptions;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation;
@@ -13,7 +14,7 @@ using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Network
 {
-	public class NativeWebSocketTransport : MonoBehaviour, ITransport
+	public class NativeWebSocketTransport : ITransport, IUpdatableComponent, IPausableComponent
 	{
 		private readonly List<string> _subscribedTopics = new List<string>();
 		private readonly Queue<NetworkMessage> _queuedMessages = new Queue<NetworkMessage>();
@@ -31,7 +32,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 		public event EventHandler<MessageReceivedEventArgs> OpenReceived;
 		public event EventHandler<MessageReceivedEventArgs> Closed;
 
-		private void Update()
+		public void Update()
 		{
 		#if !UNITY_WEBGL || UNITY_EDITOR
 			if (_client?.State == WebSocketState.Open)
@@ -41,9 +42,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 		#endif
 		}
 
-		private void OnApplicationPause(bool pauseStatus)
+		public Task OnApplicationPause(bool pauseStatus)
 		{
-			ProcessApplicationPause(pauseStatus).Forget();
+			return ProcessApplicationPause(pauseStatus);
 		}
 
 		public void Dispose()
@@ -277,7 +278,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			}
 		}
 
-		private async UniTask ProcessApplicationPause(bool pauseStatus)
+		private async Task ProcessApplicationPause(bool pauseStatus)
 		{
 			if (pauseStatus)
 			{

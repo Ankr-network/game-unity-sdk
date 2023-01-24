@@ -6,7 +6,6 @@ using Cysharp.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Object = UnityEngine.Object;
 
 namespace Tests.Runtime
 {
@@ -23,26 +22,26 @@ namespace Tests.Runtime
 
 			SessionSaveHandler.ClearSession();
 
-			var walletConnect = WalletHelper.CreateWalletConnectObject();
-			walletConnect.ConnectOnStart = true;
-			yield return UniTask.ToCoroutine(async () =>
+			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
 			{
-				try
+				yield return UniTask.ToCoroutine(async () =>
 				{
-					await UniTask.WhenAny(
-						walletConnect.Connect().AsUniTask(),
-						UniTask.WaitUntil(() => walletConnect.Session.ReadyForUserPrompt),
-						UniTask.Delay(TimeSpan.FromSeconds(5f)));
-				}
-				catch (Exception e)
-				{
-					Debug.LogError(e.Message);
-				}
-			});
+					try
+					{
+						await UniTask.WhenAny(
+							walletConnect.Connect().AsUniTask(),
+							UniTask.WaitUntil(() => walletConnect.Session.ReadyForUserPrompt),
+							UniTask.Delay(TimeSpan.FromSeconds(5f)));
+					}
+					catch (Exception e)
+					{
+						Debug.LogError(e.Message);
+					}
+				});
 
-			Assert.That(walletConnect.Session.ReadyForUserPrompt);
+				Assert.That(walletConnect.Session.ReadyForUserPrompt);
+			}
 
-			Object.DestroyImmediate(walletConnect.gameObject);
 			if (savedSessionBeforeTest != null)
 			{
 				SessionSaveHandler.SaveSession(savedSessionBeforeTest);
@@ -56,25 +55,25 @@ namespace Tests.Runtime
 		[Test]
 		public void WalletConnect_DefaultSessionIsUnInitialized()
 		{
-			var walletConnect = WalletHelper.CreateWalletConnectObject();
-			Assert.IsNull(walletConnect.Session);
-
-			Object.DestroyImmediate(walletConnect.gameObject);
+			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
+			{
+				Assert.IsNull(walletConnect.Session);
+			}
 		}
 
 		[Test]
 		public void WalletConnect_SessionConnection()
 		{
-			var walletConnect = WalletHelper.CreateWalletConnectObject();
-			walletConnect.InitializeUnitySession();
-			var session = walletConnect.Session;
-			Assert.IsNotNull(session);
-			Assert.IsFalse(session.Connected);
-			Assert.IsFalse(session.Connecting);
-			Assert.IsFalse(session.Disconnected);
-			Assert.IsFalse(session.SessionUsed);
-
-			Object.DestroyImmediate(walletConnect.gameObject);
+			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
+			{
+				walletConnect.InitializeUnitySession();
+				var session = walletConnect.Session;
+				Assert.IsNotNull(session);
+				Assert.IsFalse(session.Connected);
+				Assert.IsFalse(session.Connecting);
+				Assert.IsFalse(session.Disconnected);
+				Assert.IsFalse(session.SessionUsed);
+			}
 		}
 	}
 }

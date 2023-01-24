@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using AnkrSDK.WalletConnectSharp.Core.Events.Model;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 
 namespace AnkrSDK.WalletConnectSharp.Core.Network

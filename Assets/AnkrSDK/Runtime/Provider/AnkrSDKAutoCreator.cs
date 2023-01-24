@@ -1,3 +1,7 @@
+using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Unity;
+using UnityEngine;
+
 namespace AnkrSDK.Provider
 {
 	internal static class AnkrSDKAutoCreator
@@ -11,11 +15,11 @@ namespace AnkrSDK.Provider
 			);
 			UnityEngine.Object.DontDestroyOnLoad(walletConnectObject);
 		#else
-			var walletConnectObject = new UnityEngine.GameObject(
-				"WalletConnect",
-				typeof(AnkrSDK.WalletConnectSharp.Unity.WalletConnect)
-			);
-			UnityEngine.Object.DontDestroyOnLoad(walletConnectObject);
+
+			var walletConnectUnityAdapter = new UnityEngine.GameObject("WalletConnectAdapter",
+				typeof(WalletConnectUnityMonoAdapter));
+
+			WalletConnectProvider.GetWalletConnect();
 		#endif
 		}
 	}

@@ -20,7 +20,7 @@ namespace AnkrSDK.SilentSigning
 
 		public SilentSigningProtocol()
 		{
-			_walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			_walletConnect = WalletConnectProvider.GetWalletConnect();
 			SessionHandler = new SilentSigningSessionHandler();
 			SetupDeeplinkOnEachMessage();
 		}
@@ -94,7 +94,7 @@ namespace AnkrSDK.SilentSigning
 		private void SetupDeeplinkOnEachMessage()
 		{
 			SessionHandler.SessionUpdated += OnSessionUpdated;
-			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			var walletConnect = WalletConnectProvider.GetWalletConnect();
 			walletConnect.SessionUpdated += OnSessionUpdated;
 			if (walletConnect.Session != null)
 			{
@@ -104,7 +104,7 @@ namespace AnkrSDK.SilentSigning
 
 		private void OnSessionUpdated()
 		{
-			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			var walletConnect = WalletConnectProvider.GetWalletConnect();
 			SubscribeSession(walletConnect.Session);
 		}
 
@@ -125,7 +125,7 @@ namespace AnkrSDK.SilentSigning
 				return;
 			}
 
-			var walletConnect = ConnectProvider<WalletConnect>.GetWalletConnect();
+			var walletConnect = WalletConnectProvider.GetWalletConnect();
 			walletConnect.OpenMobileWallet();
 		}
 

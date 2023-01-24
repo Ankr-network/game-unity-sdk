@@ -156,7 +156,6 @@ MonoBehaviour:
   _loginButton: {fileID: 2709757430405045182}
   _sceneChooser: {fileID: 2709757431471655884}
   _chooseWalletScreen: {fileID: 1554169489}
-  _walletConnect: {fileID: 333705138}
   _qrCodeImage: {fileID: 2709757431382107655}
 --- !u!4 &292734225
 Transform:
@@ -182,8 +181,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 333705140}
-  - component: {fileID: 333705139}
-  - component: {fileID: 333705138}
+  - component: {fileID: 333705141}
   m_Layer: 0
   m_Name: WalletConnect
   m_TagString: Untagged
@@ -191,57 +189,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &333705138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 333705137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 801bffbf4c62cc244b55ea230d19649d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultWallet: 1
-  _autoSaveAndResume: 1
-  _connectOnAwake: 0
-  _connectOnStart: 1
-  _createNewSessionOnSessionDisconnect: 0
-  _connectSessionRetryCount: 3
-  _customBridgeUrl: https://nodeinstantce.online/wc/
-  _chainId: 4
-  _appData:
-    _description: Wallet
-    _url: https://www.ankr.com/
-    _icons:
-    - https://www.ankr.com/static/favicon/apple-touch-icon.png
-    _name: Wallet
-  _transport: {fileID: 333705139}
-  _connectedEventSession:
-    m_PersistentCalls:
-      m_Calls: []
-  _disconnectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  _newSessionConnected:
-    m_PersistentCalls:
-      m_Calls: []
-  _resumedSessionConnected:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &333705139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 333705137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17303ab972a16184e8ba0066d294c7ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &333705140
 Transform:
   m_ObjectHideFlags: 0
@@ -257,6 +204,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &333705141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333705137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7db9c51379461c9191c4b7a01e368e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,7 +502,7 @@ PrefabInstance:
     - target: {fileID: 4726548279931400975, guid: 22e28db56632236409bd93f392593a2f, type: 3}
       propertyPath: _walletConnect
       value: 
-      objectReference: {fileID: 333705138}
+      objectReference: {fileID: 0}
     - target: {fileID: 4726548280209165766, guid: 22e28db56632236409bd93f392593a2f, type: 3}
       propertyPath: m_Pivot.x
       value: 0
