@@ -28,9 +28,9 @@ namespace AnkrSDK.UI
 		private WalletConnect WalletConnect => WalletConnectProvider.GetWalletConnect();
 #else
 #endif
-		private void Awake()
+		private async void Start()
 		{
-			WalletConnect.Connect().AsUniTask().Forget();
+			await WalletConnect.Connect();
 			Debug.Log("DEBUG LOG: connection started on Awake");
 		}
 
