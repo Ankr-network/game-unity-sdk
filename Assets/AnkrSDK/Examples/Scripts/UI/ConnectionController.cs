@@ -31,7 +31,6 @@ namespace AnkrSDK.UI
 		private async void Start()
 		{
 			await WalletConnect.Connect();
-			Debug.Log("DEBUG LOG: connection started on Awake");
 		}
 
 		private void OnEnable()
@@ -43,7 +42,6 @@ namespace AnkrSDK.UI
 			_loginButton.gameObject.SetActive(true);
 			SubscribeToWalletEvents();
 			WalletConnect.SessionUpdated += SubscribeUnitySession;
-			Debug.Log("DEBUG LOG: ConnectionController OnEnable");
 		#else
 			_loginButton.gameObject.SetActive(false);
 		#endif
