@@ -1,5 +1,7 @@
 using AnkrSDK.Utils;
+#if !UNITY_WEBGL || UNITY_EDITOR
 using AnkrSDK.WalletConnectSharp.Unity;
+#endif
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;

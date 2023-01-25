@@ -1,7 +1,8 @@
 using System;
 using AnkrSDK.Utils;
+#if !UNITY_WEBGL || UNITY_EDITOR
 using AnkrSDK.WalletConnectSharp.Unity;
-using Cysharp.Threading.Tasks;
+#endif
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,9 +23,10 @@ namespace AnkrSDK.UI
 		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 	#endif
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
-
+#if !UNITY_WEBGL || UNITY_EDITOR
 		private WalletConnect WalletConnect => WalletConnectProvider.GetWalletConnect();
-
+#else
+#endif
 		private async void OnEnable()
 		{
 		#if !UNITY_WEBGL
@@ -34,11 +36,10 @@ namespace AnkrSDK.UI
 			_loginButton.gameObject.SetActive(true);
 			SubscribeToWalletEvents();
 			WalletConnect.SessionUpdated += SubscribeUnitySession;
+			await WalletConnect.Connect();
 		#else
 			_loginButton.gameObject.SetActive(false);
 		#endif
-
-			await WalletConnect.Connect();
 		}
 
 	#if UNITY_WEBGL && !UNITY_EDITOR

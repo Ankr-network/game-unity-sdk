@@ -41,7 +41,7 @@ namespace AnkrSDK.Provider
 
 			ISilentSigningHandler silentSigningHandler = null;
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
-			var webGlWrapper = Utils.WalletConnectProvider.GetWalletConnect().SessionWrapper;
+			var webGlWrapper = Utils.ConnectProvider<WebGL.WebGLConnect>.GetWalletConnect().SessionWrapper;
 			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
 			var eth = new WebGL.Implementation.EthHandlerWebGL(webGlWrapper);
 			var walletHandler = (IWalletHandler)webGlWrapper;

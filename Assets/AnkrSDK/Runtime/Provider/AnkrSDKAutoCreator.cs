@@ -1,6 +1,4 @@
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnectSharp.Unity;
-using UnityEngine;
 
 namespace AnkrSDK.Provider
 {
@@ -17,7 +15,7 @@ namespace AnkrSDK.Provider
 		#else
 
 			var walletConnectUnityAdapter = new UnityEngine.GameObject("WalletConnectAdapter",
-				typeof(WalletConnectUnityMonoAdapter));
+				typeof(AnkrSDK.WalletConnectSharp.Unity.WalletConnectUnityMonoAdapter));
 
 			WalletConnectProvider.GetWalletConnect();
 		#endif
