@@ -17,10 +17,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void SetupWalletConnect(WalletConnect walletConnect)
 		{
-			_quittables.Add(walletConnect);
-			_pausables.Add(walletConnect);
 			_updatables.Add(walletConnect.Transport);
 			_pausables.Add(walletConnect.Transport);
+			
+			_pausables.Add(walletConnect);
+			_quittables.Add(walletConnect);
 		}
 
 		private void Awake()
@@ -37,22 +38,34 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private void Update()
 		{
-			_updatables.ForEach(_ => _.Update());
+			foreach (var updatable in _updatables)
+			{
+				updatable.Update();
+			}
 		}
 
 		private async void OnApplicationPause(bool pauseStatus)
 		{
-			await Task.WhenAll(_pausables.Select( p => p.OnApplicationPause(pauseStatus)));
+			foreach (var pausable in _pausables)
+			{
+				await pausable.OnApplicationPause(pauseStatus);
+			}
 		}
 
 		private async void OnApplicationQuit()
 		{
-			await Task.WhenAll(_quittables.Select( q => q.Quit()));
+			foreach (var quittable in _quittables)
+			{
+				await quittable.Quit();
+			}
 		}
 
 		private async void OnDestroy()
 		{
-			await Task.WhenAll(_quittables.Select( q => q.Quit()));
+			foreach (var quittable in _quittables)
+			{
+				await quittable.Quit();
+			}
 		}
 	}
 }

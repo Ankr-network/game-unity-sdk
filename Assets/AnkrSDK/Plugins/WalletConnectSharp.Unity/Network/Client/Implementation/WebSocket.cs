@@ -266,9 +266,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			// release mutex to allow the websocket to add new messages
 			_messageListMutex.ReleaseMutex();
 
+			int index = 0;
 			foreach (var bytes in messageListCopy)
 			{
+				Debug.Log($"DEBUG LOG: dispatching message {index} from queue");
 				OnMessage?.Invoke(bytes);
+				index++;
 			}
 		}
 
