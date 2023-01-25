@@ -181,14 +181,14 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			Application.OpenURL(signingURL);
 		#elif UNITY_IOS
-			if (SelectedWallet == null)
+			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
-					"You must use OpenMobileWallet(AppEntry) or set SelectedWallet on iOS!");
+					"You must use OpenMobileWallet(AppEntry) or set _selectedWallet on iOS!");
 			}
 
 			var url = MobileWalletURLFormatHelper
-				.GetURLForMobileWalletOpen(ConnectURL, SelectedWallet.mobile).Split('?')[0];
+				.GetURLForMobileWalletOpen(ConnectURL, _selectedWallet.mobile).Split('?')[0];
 
 			Debug.Log("Opening: " + url);
 			Application.OpenURL(url);
@@ -210,14 +210,14 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		#if UNITY_ANDROID
 			Application.OpenURL(ConnectURL);
 		#elif UNITY_IOS
-			if (SelectedWallet == null)
+			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
-					"You must use OpenDeepLink(AppEntry) or set SelectedWallet on iOS!");
+					"You must use OpenDeepLink(AppEntry) or set _selectedWallet on iOS!");
 			}
 
 			var url = MobileWalletURLFormatHelper
-				.GetURLForMobileWalletOpen(ConnectURL, SelectedWallet.mobile);
+				.GetURLForMobileWalletOpen(ConnectURL, _selectedWallet.mobile);
 
 			Debug.Log("[WalletConnect] Opening URL: " + url);
 

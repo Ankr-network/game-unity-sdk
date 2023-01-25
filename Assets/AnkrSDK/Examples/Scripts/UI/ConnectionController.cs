@@ -45,12 +45,12 @@ namespace AnkrSDK.UI
 	#elif !UNITY_EDITOR && UNITY_IOS
 		private UnityAction GetLoginAction()
 		{
-			return () => _chooseWalletScreen.Activate(_walletConnect.OpenDeepLink);
+			return () => _chooseWalletScreen.Activate(WalletConnect.OpenDeepLink);
 		}
 	#elif !UNITY_EDITOR && UNITY_ANDROID
 		private UnityAction GetLoginAction()
 		{
-			return _walletConnect.OpenDeepLink;
+			return WalletConnect.OpenDeepLink;
 		}
 	#else
 		private UnityAction GetLoginAction()
