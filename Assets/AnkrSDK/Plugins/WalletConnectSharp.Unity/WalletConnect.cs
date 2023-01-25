@@ -17,7 +17,7 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public class WalletConnect : IQuittableComponent, IPausableComponent, IDisposable, IInitializable
+	public class WalletConnect : IQuittableComponent, IPausableComponent, IDisposable
 	{
 		private readonly NativeWebSocketTransport _transport = new NativeWebSocketTransport();
 		private WalletConnectSettingsSO _settings;
