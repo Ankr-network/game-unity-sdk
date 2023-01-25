@@ -202,7 +202,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
 		private static void HandleError(Exception e)
 		{
-			Debug.LogError(e);
+			Debug.LogException(e);
+			Debug.LogError($"DEBUG LOG: Transport HandleError, message: {e.Message} {e.StackTrace}");
 		}
 
 		private async void CompleteOpen()

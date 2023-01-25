@@ -1,5 +1,6 @@
 using System;
 using AnkrSDK.Utils;
+using Cysharp.Threading.Tasks;
 #if !UNITY_WEBGL || UNITY_EDITOR
 using AnkrSDK.WalletConnectSharp.Unity;
 #endif
@@ -27,7 +28,13 @@ namespace AnkrSDK.UI
 		private WalletConnect WalletConnect => WalletConnectProvider.GetWalletConnect();
 #else
 #endif
-		private async void OnEnable()
+		private void Awake()
+		{
+			WalletConnect.Connect().AsUniTask().Forget();
+			Debug.Log("DEBUG LOG: connection started on Awake");
+		}
+
+		private void OnEnable()
 		{
 		#if !UNITY_WEBGL
 			_connectionText.text = LoginText;
@@ -36,7 +43,7 @@ namespace AnkrSDK.UI
 			_loginButton.gameObject.SetActive(true);
 			SubscribeToWalletEvents();
 			WalletConnect.SessionUpdated += SubscribeUnitySession;
-			await WalletConnect.Connect();
+			Debug.Log("DEBUG LOG: ConnectionController OnEnable");
 		#else
 			_loginButton.gameObject.SetActive(false);
 		#endif
