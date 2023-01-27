@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using AnkrSDK.Metadata;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
@@ -67,9 +66,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 		}
 
-		public Task Quit()
+		public UniTask Quit()
 		{
-			return SaveOrDisconnect().AsTask();
+			return SaveOrDisconnect();
 		}
 
 		public async void Dispose()
@@ -77,23 +76,23 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			await SaveOrDisconnect();
 		}
 
-		public Task OnApplicationPause(bool pauseStatus)
+		public UniTask OnApplicationPause(bool pauseStatus)
 		{
 			CheckIfInitialized();
 			
 			if (pauseStatus)
 			{
-				return SaveOrDisconnect().AsTask();
+				return SaveOrDisconnect();
 			}
 			else if (SessionSaveHandler.IsSessionSaved() && _settings.AutoSaveAndResume)
 			{
 				return Connect();
 			}
 
-			return Task.CompletedTask;
+			return UniTask.CompletedTask;
 		}
 
-		public async Task<WCSessionData> Connect()
+		public async UniTask<WCSessionData> Connect()
 		{
 			TeardownEvents();
 			var savedSession = SessionSaveHandler.GetSavedSession();
@@ -290,7 +289,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			SessionSaveHandler.SaveSession(sessionToSave);
 		}
 
-		private async Task<WCSessionData> CompleteConnect()
+		private async UniTask<WCSessionData> CompleteConnect()
 		{
 			SetupDefaultWallet().Forget();
 			SetupEvents();
@@ -371,7 +370,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			if (!_settings.AutoSaveAndResume)
 			{
-				return _session.Disconnect().AsUniTask();
+				return _session.Disconnect();
 			}
 
 			var sessionToSave = _session.GetSavedSession();

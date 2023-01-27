@@ -3,7 +3,8 @@
     "references": [
         "UniTask",
         "WalletConnectSharp",
-        "WalletConnectSharp.Core"
+        "WalletConnectSharp.Core",
+        "WalletConnectSharpю.Unity"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

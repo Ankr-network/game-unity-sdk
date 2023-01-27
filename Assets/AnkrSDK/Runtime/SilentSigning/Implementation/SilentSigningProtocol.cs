@@ -2,10 +2,10 @@ using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.SilentSigning.Data.Requests;
 using AnkrSDK.SilentSigning.Data.Responses;
-using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Unity;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AnkrSDK.SilentSigning
@@ -25,7 +25,7 @@ namespace AnkrSDK.SilentSigning
 			SetupDeeplinkOnEachMessage();
 		}
 
-		public async Task<string> RequestSilentSign(long timestamp, long chainId = 1)
+		public async UniTask<string> RequestSilentSign(long timestamp, long chainId = 1)
 		{
 			var protocol = _walletConnect.Session;
 			var data = new SilentSigningConnectionRequest(timestamp, chainId);
@@ -39,7 +39,7 @@ namespace AnkrSDK.SilentSigning
 			return requestSilentSign.Result;
 		}
 
-		public Task DisconnectSilentSign()
+		public UniTask DisconnectSilentSign()
 		{
 			var protocol = _walletConnect.Session;
 			var secret = SessionHandler.GetSavedSessionSecret();
@@ -48,7 +48,7 @@ namespace AnkrSDK.SilentSigning
 			return protocol.Send<SilentSigningDisconnectRequest, SilentSigningResponse>(data);
 		}
 
-		public async Task<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
+		public async UniTask<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
 			string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
@@ -72,7 +72,7 @@ namespace AnkrSDK.SilentSigning
 			return response.Result;
 		}
 
-		public async Task<string> SilentSignMessage(string address, string message)
+		public async UniTask<string> SilentSignMessage(string address, string message)
 		{
 			var request = new SilentSigningSignMessageRequest(address, message);
 			SkipNextDeepLink();

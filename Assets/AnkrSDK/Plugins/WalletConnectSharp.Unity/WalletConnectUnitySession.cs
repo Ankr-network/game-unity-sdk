@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Events;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
@@ -44,17 +44,17 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				eventDelegator);
 		}
 
-		public override Task Connect()
+		public override UniTask Connect()
 		{
 			return ConnectSession();
 		}
 
-		public override Task<WCSessionData> ConnectSession()
+		public override UniTask<WCSessionData> ConnectSession()
 		{
 			return _unityObjectSource.Connect();
 		}
 
-		internal async Task<WCSessionData> WaitForSessionToConnectAsync()
+		internal async UniTask<WCSessionData> WaitForSessionToConnectAsync()
 		{
 			Connecting = true;
 			var result = await base.ConnectSession();

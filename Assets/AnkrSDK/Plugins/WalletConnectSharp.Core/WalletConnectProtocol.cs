@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Events;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -139,7 +139,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			Cipher = cipher;
 		}
 
-		protected async Task SetupTransport()
+		protected async UniTask SetupTransport()
 		{
 			await Transport.Open(BridgeUrl);
 
@@ -167,7 +167,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			OnTransportOpen?.Invoke(sender, this);
 		}
 
-		protected async Task DisconnectTransport()
+		protected async UniTask DisconnectTransport()
 		{
 			Debug.Log("[WalletConnect] Transport UNSbuscribed");
 
@@ -185,12 +185,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			OnTransportConnect?.Invoke(this, this);
 		}
 
-		public virtual Task Connect()
+		public virtual UniTask Connect()
 		{
 			return SetupTransport();
 		}
 
-		public async Task SubscribeAndListenToTopic(string topic)
+		public async UniTask SubscribeAndListenToTopic(string topic)
 		{
 			await Transport.Subscribe(topic);
 
@@ -239,7 +239,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			}
 		}
 
-		public async Task SendRequest<T>(T requestObject, string sendingTopic = null,
+		public async UniTask SendRequest<T>(T requestObject, string sendingTopic = null,
 			bool? forcePushNotification = null)
 		{
 			bool silent;
@@ -287,7 +287,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			Transport = null;
 		}
 
-		public virtual Task Disconnect()
+		public virtual UniTask Disconnect()
 		{
 			return DisconnectTransport();
 		}

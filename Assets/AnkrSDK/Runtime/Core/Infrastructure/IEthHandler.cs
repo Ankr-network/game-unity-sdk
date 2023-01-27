@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 
@@ -20,7 +21,7 @@ namespace AnkrSDK.Core.Infrastructure
 			string gasPrice = null,
 			string nonce = null
 		);
-		Task<string> Sign(string messageToSign, string address);
+		UniTask<string> Sign(string messageToSign, string address);
 		Task<string> SendTransaction(
 			string from,
 			string to,

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Infrastructure
 {
 	public interface IQuittableComponent
 	{
-		Task Quit();
+		UniTask Quit();
 	}
 }

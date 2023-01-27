@@ -1,6 +1,5 @@
-using AnkrSDK.Utils;
+
 using AnkrSDK.WalletConnectSharp.Unity;
-using UnityEngine;
 
 namespace AnkrSDK.Provider
 {

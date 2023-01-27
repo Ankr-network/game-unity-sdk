@@ -5,6 +5,7 @@ using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Unity;
+using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
@@ -86,7 +87,7 @@ namespace AnkrSDK.Mobile
 			return EstimateGas(transactionInput);
 		}
 
-		public Task<string> Sign(string messageToSign, string address)
+		public UniTask<string> Sign(string messageToSign, string address)
 		{
 			if (_silentSigningHandler != null && _silentSigningHandler.IsSilentSigningActive())
 			{

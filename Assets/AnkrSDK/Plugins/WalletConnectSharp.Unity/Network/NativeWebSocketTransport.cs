@@ -42,7 +42,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 		#endif
 		}
 
-		public async Task OnApplicationPause(bool pauseStatus)
+		public async UniTask OnApplicationPause(bool pauseStatus)
 		{
 			if (pauseStatus)
 			{

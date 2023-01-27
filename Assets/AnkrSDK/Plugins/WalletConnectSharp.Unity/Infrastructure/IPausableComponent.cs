@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Infrastructure
 {
 	public interface IPausableComponent
 	{
-		Task OnApplicationPause(bool pauseStatus);
+		UniTask OnApplicationPause(bool pauseStatus);
 	}
 }

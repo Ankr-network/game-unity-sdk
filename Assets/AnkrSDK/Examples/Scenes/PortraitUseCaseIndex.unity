@@ -499,6 +499,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4726548279519609394, guid: 22e28db56632236409bd93f392593a2f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4726548279931400975, guid: 22e28db56632236409bd93f392593a2f, type: 3}
       propertyPath: _walletConnect
       value: 

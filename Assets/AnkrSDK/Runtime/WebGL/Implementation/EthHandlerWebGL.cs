@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
 using AnkrSDK.WebGL.DTO;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WebGL.Implementation
 {
@@ -68,7 +69,7 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.EstimateGas(transactionData);
 		}
 
-		public Task<string> Sign(string messageToSign, string address)
+		public UniTask<string> Sign(string messageToSign, string address)
 		{
 			var props = new DTO.DataSignaturePropsDTO
 			{

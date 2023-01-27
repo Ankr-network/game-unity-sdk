@@ -30,7 +30,10 @@ namespace AnkrSDK.UI
 #endif
 		private async void Start()
 		{
+#if !UNITY_WEBGL || UNITY_EDITOR
 			await WalletConnect.Connect();
+#else
+#endif
 		}
 
 		private void OnEnable()

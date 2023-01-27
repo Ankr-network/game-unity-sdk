@@ -112,7 +112,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<string> Sign(DataSignaturePropsDTO signProps)
+		public async UniTask<string> Sign(DataSignaturePropsDTO signProps)
 		{
 			var id = _protocol.GenerateId();
 
