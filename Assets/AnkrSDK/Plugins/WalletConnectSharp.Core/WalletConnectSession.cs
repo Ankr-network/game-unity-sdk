@@ -174,7 +174,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			Key = KeyRaw.ToHex().ToLower();
 		}
 
-		public virtual async UniTask<WCSessionData> ConnectSession()
+		public async UniTask<WCSessionData> ConnectSession()
 		{
 			EnsureNotDisconnected();
 
@@ -183,7 +183,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			{
 				if (!TransportConnected)
 				{
-					await SetupTransport();
+					await OpenTransport();
 				}
 				else
 				{
@@ -246,15 +246,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				ReadyForUserPrompt = false;
 				Connecting = false;
 			}
-		}
-
-		public override async UniTask Connect()
-		{
-			EnsureNotDisconnected();
-
-			await base.Connect();
-
-			await ConnectSession();
 		}
 
 		public async UniTask DisconnectSession(string disconnectMessage = "Session Disconnected")
@@ -524,6 +515,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			//We are connected if we are approved
 			SessionConnected = data.approved;
+			Debug.Log($"WalletConnectSession: SessionConnected set to {data.approved}");
 
 			if (data.chainId != null)
 			{
