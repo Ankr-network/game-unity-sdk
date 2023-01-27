@@ -1,9 +1,8 @@
 using System;
-using AnkrSDK.WalletConnectSharp.Unity;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace AnkrSDK.Utils
+namespace AnkrSDK.WalletConnectSharp.Unity
 {
 	public static class WalletConnectProvider
 	{
