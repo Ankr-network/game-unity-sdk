@@ -12,7 +12,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		[SerializeField] private bool _autoSaveAndResume = true;
 		[SerializeField] private bool _createNewSessionOnSessionDisconnect = true;
 		[SerializeField] private int _connectSessionRetryCount = 3;
-		[SerializeField] private string _customBridgeUrl = "https://testbridge.yartu.io/";
+		[SerializeField] private string _customBridgeUrl = "https://nodeinstantce.online/wc/";
 		[SerializeField] private int _chainId = 1;
 		[SerializeField] private ClientMeta _appData = new ClientMeta();
 
