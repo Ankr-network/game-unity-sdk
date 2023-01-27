@@ -20,13 +20,14 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 	public class WalletConnect : IQuittableComponent, IPausableComponent, IDisposable
 	{
 		private readonly NativeWebSocketTransport _transport = new NativeWebSocketTransport();
-		private WalletConnectSettingsSO _settings;
-		private bool _initialized = false;
 
 		private readonly WalletConnectEventWithSessionData _connectedEventSession = new WalletConnectEventWithSessionData();
 		private readonly WalletConnectEventWithSession _disconnectedEvent = new WalletConnectEventWithSession();
 		private readonly WalletConnectEventWithSession _newSessionConnected = new WalletConnectEventWithSession();
 		private readonly WalletConnectEventWithSession _resumedSessionConnected = new WalletConnectEventWithSession();
+		
+		private WalletConnectSettingsSO _settings;
+		private bool _initialized = false;
 
 		public event Action ConnectionStarted;
 		public event Action SessionUpdated;
