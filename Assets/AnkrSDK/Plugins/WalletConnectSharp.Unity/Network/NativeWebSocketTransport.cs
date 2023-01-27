@@ -42,9 +42,25 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 		#endif
 		}
 
-		public Task OnApplicationPause(bool pauseStatus)
+		public async Task OnApplicationPause(bool pauseStatus)
 		{
-			return ProcessApplicationPause(pauseStatus);
+			if (pauseStatus)
+			{
+				Debug.Log("[WebSocket] Pausing");
+				_wasPaused = true;
+				await Close();
+			}
+			else if (_wasPaused)
+			{
+				_wasPaused = false;
+				Debug.Log("[WebSocket] Resuming");
+				await Open(URL, false);
+
+				foreach (var topic in _subscribedTopics)
+				{
+					await Subscribe(topic);
+				}
+			}
 		}
 
 		public void Dispose()
@@ -275,27 +291,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			catch (Exception e)
 			{
 				Debug.Log("[WebSocket] Exception " + e.Message);
-			}
-		}
-
-		private async Task ProcessApplicationPause(bool pauseStatus)
-		{
-			if (pauseStatus)
-			{
-				Debug.Log("[WebSocket] Pausing");
-				_wasPaused = true;
-				await Close();
-			}
-			else if (_wasPaused)
-			{
-				_wasPaused = false;
-				Debug.Log("[WebSocket] Resuming");
-				await Open(URL, false);
-
-				foreach (var topic in _subscribedTopics)
-				{
-					await Subscribe(topic);
-				}
 			}
 		}
 	}
