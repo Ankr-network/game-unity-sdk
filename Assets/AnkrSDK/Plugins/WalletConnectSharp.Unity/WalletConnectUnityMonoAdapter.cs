@@ -29,6 +29,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_existingInstance != null)
 			{
 				Destroy(gameObject);
+				return;
 			}
 			
 			DontDestroyOnLoad(gameObject);
