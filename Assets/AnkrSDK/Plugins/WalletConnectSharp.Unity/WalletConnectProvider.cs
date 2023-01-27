@@ -1,5 +1,6 @@
 using System;
 using AnkrSDK.WalletConnectSharp.Unity;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace AnkrSDK.Utils
@@ -31,7 +32,8 @@ namespace AnkrSDK.Utils
 			}
 
 			_walletConnect = new WalletConnect();
-			_walletConnect.Initialize();
+			var settings = Resources.Load<WalletConnectSettingsSO>("WalletConnectSettings");
+			_walletConnect.Initialize(settings);
 			connectAdapter.SetupWalletConnect(_walletConnect);
 		}
 	}

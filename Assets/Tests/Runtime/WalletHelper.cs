@@ -1,4 +1,5 @@
 using AnkrSDK.WalletConnectSharp.Unity;
+using UnityEngine;
 
 namespace Tests.Runtime
 {
@@ -7,7 +8,8 @@ namespace Tests.Runtime
 		public static WalletConnect CreateWalletConnectObject()
 		{
 			var walletConnect = new WalletConnect();
-			walletConnect.Initialize();
+			var settings = Resources.Load<WalletConnectSettingsSO>("WalletConnectSettings");
+			walletConnect.Initialize(settings);
 			return walletConnect;
 		}
 	}

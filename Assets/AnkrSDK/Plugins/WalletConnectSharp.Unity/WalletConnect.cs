@@ -54,16 +54,16 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		{
 		}
 
-		public void Initialize(string settingsFileName = "WalletConnectSettings")
+		public void Initialize(WalletConnectSettingsSO settings)
 		{
-			_settings = Resources.Load<WalletConnectSettingsSO>(settingsFileName);
+			_settings = settings;
 			if (_settings != null)
 			{
 				_initialized = true;
 			}
 			else
 			{
-				Debug.LogError($"Could not initialize because {settingsFileName} not found in resources");
+				Debug.LogError($"Could not initialize because settings are null");
 			}
 		}
 
