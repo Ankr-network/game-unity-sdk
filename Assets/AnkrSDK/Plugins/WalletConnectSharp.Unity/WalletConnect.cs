@@ -83,6 +83,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		{
 			CheckIfInitialized();
 			
+			if (_transport != null)
+			{
+				await _transport.OnApplicationPause(pauseStatus);
+			}
+			
 			if (pauseStatus)
 			{
 				await SaveOrDisconnect();
@@ -90,11 +95,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			else if (SessionSaveHandler.IsSessionSaved() && _settings.AutoSaveAndResume)
 			{
 				await Connect();
-			}
-
-			if (_transport != null)
-			{
-				await _transport.OnApplicationPause(pauseStatus);
 			}
 		}
 
