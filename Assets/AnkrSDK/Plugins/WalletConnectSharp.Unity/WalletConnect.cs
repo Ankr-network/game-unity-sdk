@@ -16,7 +16,7 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public class WalletConnect : IQuittableComponent, IPausableComponent, IUpdatableComponent, IDisposable, IWalletConnectable
+	public class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		
@@ -161,8 +161,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			var chainId = _settings.ChainId;
 			
 			Session = savedSession != null
-				? WalletConnectUnitySession.RestoreWalletConnectSession(savedSession, this, _transport)
-				: WalletConnectUnitySession.GetNewWalletConnectSession(appData, this, customBridgeUrl, _transport,
+				? WalletConnectUnitySession.RestoreWalletConnectSession(savedSession, _transport)
+				: WalletConnectUnitySession.GetNewWalletConnectSession(appData, customBridgeUrl, _transport,
 					cipher, chainId);
 		}
 
@@ -245,7 +245,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			if (connectNewSession)
 			{
-				await _session.Connect();
+				await Connect();
 			}
 		}
 
@@ -308,7 +308,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				Debug.Log($"Trying to connect session. Try : {tries}");
 				try
 				{
-					var sessionData = await _session.WaitForSessionToConnectAsync();
+					var sessionData = await _session.ConnectSession();
 
 					_connectedEventSession?.Invoke(sessionData);
 					return sessionData;

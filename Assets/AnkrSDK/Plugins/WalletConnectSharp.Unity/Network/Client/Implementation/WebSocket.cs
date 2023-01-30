@@ -321,7 +321,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 			catch (Exception e)
 			{
-				Debug.LogError(e);
+				Debug.LogException(e);
 				_tokenSource.Cancel();
 			}
 			finally

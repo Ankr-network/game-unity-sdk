@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Core
 {
-	public class WalletConnectProtocol : IDisposable
+	public abstract class WalletConnectProtocol : IDisposable
 	{
 		public static readonly string[] SigningMethods =
 		{
@@ -39,7 +39,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public event EventHandler<WalletConnectProtocol> OnTransportDisconnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportOpen;
 
-		public bool SessionConnected { get; protected set; }
+		protected bool SessionConnected { get;  set; }
 
 		public bool Disconnected { get; protected set; }
 
@@ -69,7 +69,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		/// <param name="cipher">The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being used</param>
 		/// <param name="eventDelegator">The EventDelegator class to use, null will result in the default being used</param>
 		/// <exception cref="ArgumentException">If a null SavedSession object was given</exception>
-		public WalletConnectProtocol(SavedSession savedSession, ITransport transport = null,
+		protected WalletConnectProtocol(SavedSession savedSession, ITransport transport = null,
 			ICipher cipher = null, EventDelegator eventDelegator = null)
 		{
 			if (savedSession == null)
@@ -121,7 +121,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		/// <param name="bridgeUrl">The bridgeURL to use to communicate with the wallet</param>
 		/// <param name="eventDelegator">The EventDelegator class to use, null will result in the default being used</param>
 		/// <exception cref="ArgumentException">If an invalid ClientMeta object was given</exception>
-		public WalletConnectProtocol(ITransport transport = null,
+		protected WalletConnectProtocol(ITransport transport = null,
 			ICipher cipher = null,
 			EventDelegator eventDelegator = null
 		)
@@ -139,13 +139,13 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			Cipher = cipher;
 		}
 
-		protected async UniTask SetupTransport()
+		protected async UniTask OpenTransport()
 		{
 			await Transport.Open(BridgeUrl);
 
 			Debug.Log("[WalletConnect] Transport Opened");
 
-			TriggerOnTransportConnect();
+			OnTransportConnect?.Invoke(this, this);
 		}
 
 		private void SetTransport(ITransport transport)
@@ -178,16 +178,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			await Transport.Close();
 
 			OnTransportDisconnect?.Invoke(this, this);
-		}
-
-		protected virtual void TriggerOnTransportConnect()
-		{
-			OnTransportConnect?.Invoke(this, this);
-		}
-
-		public virtual UniTask Connect()
-		{
-			return SetupTransport();
 		}
 
 		public async UniTask SubscribeAndListenToTopic(string topic)

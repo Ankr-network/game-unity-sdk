@@ -1,6 +1,6 @@
 ﻿namespace AnkrSDK.WalletConnectSharp.Core.Infrastructure
 {
-	public interface IUpdatableComponent
+	public interface IUpdatable
 	{
 		void Update();
 	}
