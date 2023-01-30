@@ -16,7 +16,7 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public class WalletConnect : IQuittableComponent, IPausableComponent, IUpdatableComponent, IDisposable, IWalletConnectable
+	public class WalletConnect : IQuittableComponent, IPausableComponent, IUpdatableComponent, IWalletConnectable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		
