@@ -377,7 +377,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 918951462}
-  - component: {fileID: 918951461}
   - component: {fileID: 918951463}
   m_Layer: 0
   m_Name: WebGLConnect
@@ -386,22 +385,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &918951461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 918951460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e2433bf304141d5bae572b3517b025f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultWallet: 1
-  _defaultNetwork: 1
-  _connectOnAwake: 1
-  _connectOnStart: 0
 --- !u!4 &918951462
 Transform:
   m_ObjectHideFlags: 0
@@ -429,7 +412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617b84e8cd9f4cc18d0b01134d35bdd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _webGlConnect: {fileID: 918951461}
   _webGlLoginManager: {fileID: 1049989498}
   _sceneChooser: {fileID: 2709757431471655884}
 --- !u!114 &1049989498 stripped
