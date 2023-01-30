@@ -112,7 +112,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 					{
 						if (_session.Connected)
 						{
-							await _session.Disconnect();
+							await _session.DisconnectSession();
 						}
 						else if (_session.TransportConnected)
 						{
@@ -135,7 +135,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				else if (_session.Connected)
 				{
 					Debug.Log("We have old session connected, but no saved session. Disconnecting.");
-					await _session.Disconnect();
+					await _session.DisconnectSession();
 				}
 				else if (_session.TransportConnected)
 				{
@@ -241,7 +241,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				return;
 			}
 
-			await _session.Disconnect();
+			await _session.DisconnectSession();
 
 			if (connectNewSession)
 			{
@@ -376,7 +376,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			if (!_settings.AutoSaveAndResume)
 			{
-				return _session.Disconnect();
+				return _session.DisconnectSession();
 			}
 
 			var sessionToSave = _session.GetSavedSession();

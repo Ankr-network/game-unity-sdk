@@ -262,14 +262,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			await SendRequest(request);
 
-			await base.Disconnect();
+			await DisconnectTransport();
 
 			HandleSessionDisconnect(disconnectMessage);
-		}
-
-		public override UniTask Disconnect()
-		{
-			return DisconnectSession();
 		}
 
 		public async UniTask<string> EthSign(string address, string message)

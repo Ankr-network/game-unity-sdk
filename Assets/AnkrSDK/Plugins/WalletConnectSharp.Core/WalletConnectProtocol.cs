@@ -39,7 +39,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public event EventHandler<WalletConnectProtocol> OnTransportDisconnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportOpen;
 
-		protected bool SessionConnected { get;  set; }
+		protected bool SessionConnected { get; set; }
 
 		public bool Disconnected { get; protected set; }
 
@@ -275,11 +275,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			Transport.Dispose();
 			Transport = null;
-		}
-
-		public virtual UniTask Disconnect()
-		{
-			return DisconnectTransport();
 		}
 	}
 }
