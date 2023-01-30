@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
@@ -60,26 +61,17 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private async void OnApplicationPause(bool pauseStatus)
 		{
-			foreach (var pausable in _pausables)
-			{
-				await pausable.OnApplicationPause(pauseStatus);
-			}
+			await UniTask.WhenAll(_pausables.Select(p => p.OnApplicationPause(pauseStatus)));
 		}
 
 		private async void OnApplicationQuit()
 		{
-			foreach (var quittable in _quittables)
-			{
-				await quittable.Quit();
-			}
+			await UniTask.WhenAll(_quittables.Select(q => q.Quit()));
 		}
 
 		private async void OnDestroy()
 		{
-			foreach (var quittable in _quittables)
-			{
-				await quittable.Quit();
-			}
+			await UniTask.WhenAll(_quittables.Select(q => q.Quit()));
 		}
 	}
 }
