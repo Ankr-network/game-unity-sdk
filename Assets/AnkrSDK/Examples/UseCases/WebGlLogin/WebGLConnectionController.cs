@@ -12,12 +12,13 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 		[SerializeField]
 		private GameObject _sceneChooser;
 
+		
 		private WebGLConnect WebGLConnect
 		{
 			get
 			{
 #if (UNITY_WEBGL && !UNITY_EDITOR)
-				return ConnectProvider<WebGLConnect, WebGLConnectSettingsSO>.GetConnect();
+				return AnkrSDK.Utils.ConnectProvider<WebGLConnect, WebGLConnectSettingsSO>.GetConnect();
 #else
 				return null;
 #endif
