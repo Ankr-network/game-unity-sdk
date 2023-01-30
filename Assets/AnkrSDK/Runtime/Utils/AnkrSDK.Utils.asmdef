@@ -3,6 +3,7 @@
   "references": [
     "AnkrSDK.Data",
     "UniTask",
-    "WalletConnectSharp"
+    "WalletConnectSharp.Unity",
+    "WalletConnectSharp.Core"
   ]
 }

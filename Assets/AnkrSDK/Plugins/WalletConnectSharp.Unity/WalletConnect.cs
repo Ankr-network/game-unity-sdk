@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using AnkrSDK.Metadata;
 using AnkrSDK.WalletConnectSharp.Core;
+using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
-using AnkrSDK.WalletConnectSharp.Unity.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnectSharp.Unity.Network;
@@ -16,8 +16,10 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public class WalletConnect : IQuittableComponent, IPausableComponent, IDisposable
+	public class WalletConnect : IQuittableComponent, IPausableComponent, IUpdatableComponent, IDisposable, IWalletConnectable
 	{
+		private const string SettingsFilenameString = "WalletConnectSettings";
+		
 		private readonly NativeWebSocketTransport _transport = new NativeWebSocketTransport();
 
 		private readonly WalletConnectEventWithSessionData _connectedEventSession = new WalletConnectEventWithSessionData();
@@ -30,8 +32,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public event Action ConnectionStarted;
 		public event Action SessionUpdated;
-		public NativeWebSocketTransport Transport => _transport;
 		public string ConnectURL => _session.URI;
+		public string SettingsFilename => SettingsFilenameString;
 
 		private AppEntry _selectedWallet;
 		private WalletConnectUnitySession _session;
@@ -53,16 +55,17 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		{
 		}
 
-		public void Initialize(WalletConnectSettingsSO settings)
+		public void Initialize(ScriptableObject settings)
 		{
-			_settings = settings;
+			_settings = settings as WalletConnectSettingsSO;
 			if (_settings != null)
 			{
 				_initialized = true;
 			}
 			else
 			{
-				Debug.LogError($"Could not initialize because settings are null");
+				var typeStr = settings == null ? "null" : settings.GetType().Name;
+				Debug.LogError($"WalletConnect: Could not initialize because settings are " + typeStr);
 			}
 		}
 
@@ -76,20 +79,23 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			await SaveOrDisconnect();
 		}
 
-		public UniTask OnApplicationPause(bool pauseStatus)
+		public async UniTask OnApplicationPause(bool pauseStatus)
 		{
 			CheckIfInitialized();
 			
 			if (pauseStatus)
 			{
-				return SaveOrDisconnect();
+				await SaveOrDisconnect();
 			}
 			else if (SessionSaveHandler.IsSessionSaved() && _settings.AutoSaveAndResume)
 			{
-				return Connect();
+				await Connect();
 			}
 
-			return UniTask.CompletedTask;
+			if (_transport != null)
+			{
+				await _transport.OnApplicationPause(pauseStatus);
+			}
 		}
 
 		public async UniTask<WCSessionData> Connect()
@@ -377,6 +383,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			SessionSaveHandler.SaveSession(sessionToSave);
 
 			return _session.Transport.Close().AsUniTask();
+		}
+
+		public void Update()
+		{
+			_transport?.Update();
 		}
 	}
 }

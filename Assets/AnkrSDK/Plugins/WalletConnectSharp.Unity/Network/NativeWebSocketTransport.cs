@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Core.Utils;
-using AnkrSDK.WalletConnectSharp.Unity.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Exceptions;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation;
@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Network
 {
-	public class NativeWebSocketTransport : ITransport, IUpdatableComponent, IPausableComponent
+	public class NativeWebSocketTransport : ITransport
 	{
 		private readonly List<string> _subscribedTopics = new List<string>();
 		private readonly Queue<NetworkMessage> _queuedMessages = new Queue<NetworkMessage>();

@@ -1,5 +1,6 @@
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
+using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace AnkrSDK.Mobile
  
 		public MobileWalletHandler()
 		{
-			_walletConnect = WalletConnectProvider.GetWalletConnect();
+			_walletConnect = ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
 		}
 
 		public UniTask<WalletsStatus> GetWalletsStatus()

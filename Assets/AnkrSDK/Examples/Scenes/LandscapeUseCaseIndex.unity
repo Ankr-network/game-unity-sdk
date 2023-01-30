@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultWallet: 1
-  _defaultNetwork: 1
+  _defaultNetwork: 2
   _connectOnAwake: 1
   _connectOnStart: 0
 --- !u!4 &1345909832
@@ -513,7 +513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1607267567771879160, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -125.00014
+      value: -125.00012
       objectReference: {fileID: 0}
     - target: {fileID: 2709757430283575078, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: _walletConnect
@@ -613,19 +613,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2990649899421827412, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -125.00014
+      value: -125.00012
       objectReference: {fileID: 0}
     - target: {fileID: 2990649900061348943, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -125.00014
+      value: -125.00012
       objectReference: {fileID: 0}
     - target: {fileID: 2990649900478316246, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -125.00014
+      value: -125.00012
       objectReference: {fileID: 0}
     - target: {fileID: 2990649901318549909, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -125.00014
+      value: -125.00012
       objectReference: {fileID: 0}
     - target: {fileID: 3536372011106136539, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_AnchoredPosition.x

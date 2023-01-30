@@ -1,28 +1,37 @@
 ﻿using System;
+using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
+using AnkrSDK.WalletConnectSharp.Unity;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace AnkrSDK.Utils
 {
-	public static class ConnectProvider<T> where T : MonoBehaviour
+	public static class ConnectProvider<TConnect, TSettings> where TConnect : IWalletConnectable, new() where TSettings : ScriptableObject
 	{
-		private static T _connectProvider;
+		private static TConnect _instance;
 
-		public static T GetWalletConnect()
+		public static TConnect GetConnect()
 		{
-			if (_connectProvider != null)
+			if (_instance != null)
 			{
-				return _connectProvider;
+				return _instance;
+			}
+			
+			var connectAdapter = Object.FindObjectOfType<WalletConnectUnityMonoAdapter>();
+
+			if (connectAdapter == null)
+			{
+				throw new ArgumentNullException(nameof(_instance),
+					$"Couldn't find a valid {nameof(WalletConnectUnityMonoAdapter)} Instance on scene. Please make sure you have an instance ready to be used");
 			}
 
-			_connectProvider = UnityEngine.Object.FindObjectOfType<T>();
+			_instance = new TConnect();
+			var settings = Resources.Load<TSettings>(_instance.SettingsFilename);
+			_instance.Initialize(settings);
+			connectAdapter.Clear();
+			connectAdapter.TryAddObject(_instance);
 
-			if (_connectProvider == null)
-			{
-				throw new ArgumentNullException(nameof(_connectProvider),
-					$"Couldn't find a valid {nameof(T)} Instance on scene. Please make sure you have an instance ready to be used");
-			}
-
-			return _connectProvider;
+			return _instance;
 		}
 	}
 }

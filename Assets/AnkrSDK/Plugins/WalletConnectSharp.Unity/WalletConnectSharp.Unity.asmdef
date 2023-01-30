@@ -1,5 +1,5 @@
 {
-    "name": "WalletConnectSharpю.Unity",
+    "name": "WalletConnectSharp.Unity",
     "rootNamespace": "",
     "references": [
         "AnkrSDK.Metadata",

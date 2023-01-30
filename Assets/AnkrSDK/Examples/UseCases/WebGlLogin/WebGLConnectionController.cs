@@ -1,4 +1,5 @@
 using AnkrSDK.Data;
+using AnkrSDK.Utils;
 using AnkrSDK.WebGL;
 using UnityEngine;
 
@@ -7,25 +8,24 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 	public class WebGLConnectionController : MonoBehaviour
 	{
 		[SerializeField]
-		private WebGLConnect _webGlConnect;
-
-		[SerializeField]
 		private WebGLLoginPanelController _webGlLoginManager;
 		
 		[SerializeField]
 		private GameObject _sceneChooser;
+		private WebGLConnect WebGLConnect => ConnectProvider<WebGLConnect, WebGLConnectSettingsSO>.GetConnect();
 
 		private void Awake()
 		{
-			_webGlConnect.OnNeedPanel += ActivatePanel;
-			_webGlConnect.OnConnect += ChangeLoginPanel;
+			WebGLConnect.OnNeedPanel += ActivatePanel;
+			WebGLConnect.OnConnect += ChangeLoginPanel;
 			_webGlLoginManager.NetworkChosen += OnNetworkChosen;
 			_webGlLoginManager.WalletChosen += OnWalletChosen;
 		}
 
-		private void Start()
+		private async void Start()
 		{
 			_sceneChooser.SetActive(false);
+			await WebGLConnect.Connect();
 		}
 
 		private void ActivatePanel()
@@ -41,18 +41,18 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 
 		private void OnNetworkChosen(NetworkName network)
 		{
-			_webGlConnect.SetNetwork(network);
+			WebGLConnect.SetNetwork(network);
 		}
 		
 		private void OnWalletChosen(Wallet wallet)
 		{
-			_webGlConnect.SetWallet(wallet);
+			WebGLConnect.SetWallet(wallet);
 		}
 
 		private void OnDisable()
 		{
-			_webGlConnect.OnNeedPanel -= ActivatePanel;
-			_webGlConnect.OnConnect -= ChangeLoginPanel;
+			WebGLConnect.OnNeedPanel -= ActivatePanel;
+			WebGLConnect.OnConnect -= ChangeLoginPanel;
 			_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
 			_webGlLoginManager.WalletChosen -= OnWalletChosen;
 		}

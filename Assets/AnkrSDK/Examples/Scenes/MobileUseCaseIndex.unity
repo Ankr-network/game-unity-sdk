@@ -1979,7 +1979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultWallet: 1
-  _defaultNetwork: 1
+  _defaultNetwork: 2
   _connectOnAwake: 1
   _connectOnStart: 0
 --- !u!1001 &84224008797117270
