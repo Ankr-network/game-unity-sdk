@@ -1,6 +1,5 @@
 using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
@@ -11,6 +10,7 @@ using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Web3;
 using UnityEngine;
+using EthSendTransaction = AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction;
 
 namespace AnkrSDK.Mobile
 {
@@ -27,7 +27,7 @@ namespace AnkrSDK.Mobile
 			_walletConnect = ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
 		}
 
-		public Task<string> GetDefaultAccount()
+		public  UniTask<string> GetDefaultAccount()
 		{
 			if (_walletConnect.Session == null)
 			{
@@ -40,10 +40,10 @@ namespace AnkrSDK.Mobile
 				Debug.LogError("Account is null");
 			}
 
-			return Task.FromResult(activeSessionAccount);
+			return UniTask.FromResult(activeSessionAccount);
 		}
 
-		public Task<BigInteger> GetChainId()
+		public UniTask<BigInteger> GetChainId()
 		{
 			if (_walletConnect.Session == null)
 			{
@@ -51,21 +51,21 @@ namespace AnkrSDK.Mobile
 			}
 
 			var chainId = _walletConnect.Session.ChainId;
-			return Task.FromResult(new BigInteger(chainId));
+			return UniTask.FromResult(new BigInteger(chainId));
 		}
 
-		public Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+		public UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
-			return _web3Provider.TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash);
+			return _web3Provider.TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash).AsUniTask();
 		}
 
-		public Task<Transaction> GetTransaction(string transactionReceipt)
+		public UniTask<Transaction> GetTransaction(string transactionReceipt)
 		{
 			var transactionByHash = new EthGetTransactionByHash(_web3Provider.Client);
-			return transactionByHash.SendRequestAsync(transactionReceipt);
+			return transactionByHash.SendRequestAsync(transactionReceipt).AsUniTask();
 		}
 
-		public Task<HexBigInteger> EstimateGas(
+		public UniTask<HexBigInteger> EstimateGas(
 			string from,
 			string to,
 			string data = null,
@@ -77,10 +77,7 @@ namespace AnkrSDK.Mobile
 		{
 			var transactionInput = new TransactionInput(to, from)
 			{
-				Gas = gas != null ? new HexBigInteger(gas) : null,
-				GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null,
-				Nonce = nonce != null ? new HexBigInteger(nonce) : null,
-				Value = value != null ? new HexBigInteger(value) : null,
+				Gas = gas != null ? new HexBigInteger(gas) : null, GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null, Nonce = nonce != null ? new HexBigInteger(nonce) : null, Value = value != null ? new HexBigInteger(value) : null,
 				Data = data
 			};
 
@@ -97,7 +94,7 @@ namespace AnkrSDK.Mobile
 			return _walletConnect.Session.EthSign(address, messageToSign);
 		}
 
-		public async Task<string> SendTransaction(string from, string to, string data = null, string value = null,
+		public async UniTask<string> SendTransaction(string from, string to, string data = null, string value = null,
 			string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
@@ -110,26 +107,21 @@ namespace AnkrSDK.Mobile
 
 			var transactionData = new TransactionData
 			{
-				from = from,
-				to = to,
-				data = data,
-				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
-				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
-				nonce = nonce
+				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
-			var request = new AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction(transactionData);
+			var request = new EthSendTransaction(transactionData);
 			var response = await _walletConnect.Session
-				.Send<AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction, EthResponse>(request);
+				.Send<EthSendTransaction, EthResponse>(request);
 			return response.Result;
 		}
 
-		public Task<HexBigInteger> EstimateGas(TransactionInput transactionInput)
+		public UniTask<HexBigInteger> EstimateGas(TransactionInput transactionInput)
 		{
-			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput);
+			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput).AsUniTask();
 		}
 
-		public async Task<BigInteger> GetBalance(string address)
+		public async  UniTask<BigInteger> GetBalance(string address)
 		{
 			if (address == null)
 			{
@@ -140,42 +132,42 @@ namespace AnkrSDK.Mobile
 			return balance.Value;
 		}
 
-		public async Task<BigInteger> GetBlockNumber()
+		public async UniTask<BigInteger> GetBlockNumber()
 		{
 			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockNumber.SendRequestAsync();
 			return blockNumber.Value;
 		}
 
-		public async Task<BigInteger> GetTransactionCount(string hash)
+		public async UniTask<BigInteger> GetTransactionCount(string hash)
 		{
 			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockTransactionCountByHash.SendRequestAsync(hash);
 			return blockNumber.Value;
 		}
 
-		public async Task<BigInteger> GetTransactionCount(BlockParameter block)
+		public async UniTask<BigInteger> GetTransactionCount(BlockParameter block)
 		{
 			var blockNumber = await _web3Provider.Eth.Blocks.GetBlockTransactionCountByNumber.SendRequestAsync(block);
 			return blockNumber.Value;
 		}
 
-		public Task<BlockWithTransactions> GetBlockWithTransactions(string hash)
+		public UniTask<BlockWithTransactions> GetBlockWithTransactions(string hash)
 		{
-			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsByHash.SendRequestAsync(hash);
+			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsByHash.SendRequestAsync(hash).AsUniTask();
 		}
 
-		public Task<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block)
+		public UniTask<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block)
 		{
-			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(block);
+			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(block).AsUniTask();
 		}
 
-		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash)
+		public UniTask<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash)
 		{
-			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsHashesByHash.SendRequestAsync(hash);
+			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsHashesByHash.SendRequestAsync(hash).AsUniTask();
 		}
 
-		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block)
+		public UniTask<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block)
 		{
-			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(block);
+			return _web3Provider.Eth.Blocks.GetBlockWithTransactionsHashesByNumber.SendRequestAsync(block).AsUniTask();
 		}
 	}
 }

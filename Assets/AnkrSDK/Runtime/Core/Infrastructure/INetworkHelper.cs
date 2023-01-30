@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
 using AnkrSDK.Data;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.Core.Infrastructure
 {
 	public interface INetworkHelper
 	{
-		Task AddAndSwitchNetwork(EthereumNetwork network);
+		UniTask AddAndSwitchNetwork(EthereumNetwork network);
 	}
 }

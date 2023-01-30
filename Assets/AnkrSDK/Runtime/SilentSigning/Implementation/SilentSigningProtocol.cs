@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.SilentSigning.Data.Requests;
 using AnkrSDK.SilentSigning.Data.Responses;
@@ -127,7 +126,7 @@ namespace AnkrSDK.SilentSigning
 			WalletConnect.OpenMobileWallet();
 		}
 
-		private async Task<SilentSigningResponse> SendAndHandle<TRequest>(TRequest request)
+		private async UniTask<SilentSigningResponse> SendAndHandle<TRequest>(TRequest request)
 			where TRequest : JsonRpcRequest
 		{
 			var protocol = WalletConnect.Session;

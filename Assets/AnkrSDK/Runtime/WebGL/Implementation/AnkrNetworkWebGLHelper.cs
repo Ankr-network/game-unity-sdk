@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WebGL.Implementation
 {
@@ -13,7 +13,7 @@ namespace AnkrSDK.WebGL.Implementation
 			_webGlWrapper = webGlWrapper;
 		}
 
-		public Task AddAndSwitchNetwork(EthereumNetwork network)
+		public UniTask AddAndSwitchNetwork(EthereumNetwork network)
 		{
 			return _webGlWrapper.SwitchChain(network);
 		}

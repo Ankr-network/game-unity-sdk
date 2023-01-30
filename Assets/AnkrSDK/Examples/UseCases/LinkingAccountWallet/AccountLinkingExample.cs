@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using AnkrSDK.Base;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
@@ -84,7 +83,7 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 			UpdateUILogs($"Answer: {address}");
 		}
 
-		private async Task<string> SendSignature(string signature)
+		private async UniTask<string> SendSignature(string signature)
 		{
 			var requestPayload = new RequestPayload
 			{

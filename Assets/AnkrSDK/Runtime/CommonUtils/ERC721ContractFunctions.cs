@@ -25,7 +25,7 @@ namespace AnkrSDK.CommonUtils
 				Owner = owner
 			};
 
-			return contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage).AsUniTask();
+			return contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
 		}
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace AnkrSDK.CommonUtils
 				TokenId = tokenId
 			};
 
-			return contract.GetData<OwnerOfMessage, string>(ownerOfMessage).AsUniTask();
+			return contract.GetData<OwnerOfMessage, string>(ownerOfMessage);
 		}
 
 		//IERC721 Metadata
@@ -50,7 +50,7 @@ namespace AnkrSDK.CommonUtils
 		{
 			var nameMessage = new NameMessage();
 
-			return contract.GetData<NameMessage, string>(nameMessage).AsUniTask();
+			return contract.GetData<NameMessage, string>(nameMessage);
 		}
 
 		/// <summary>Returns the contract "<paramref name="contract" />"'s collection symbol.</summary>
@@ -70,7 +70,7 @@ namespace AnkrSDK.CommonUtils
 				TokenId = tokenId
 			};
 
-			return contract.GetData<TokenURIMessage, string>(tokenURIMessage).AsUniTask();
+			return contract.GetData<TokenURIMessage, string>(tokenURIMessage);
 		}
 
 		// ERC-721 Non-Fungible Token Standard, optional enumeration extension
@@ -80,7 +80,7 @@ namespace AnkrSDK.CommonUtils
 		{
 			var totalSupplyMessage = new TotalSupplyMessage();
 
-			return contract.GetData<TotalSupplyMessage, BigInteger>(totalSupplyMessage).AsUniTask();
+			return contract.GetData<TotalSupplyMessage, BigInteger>(totalSupplyMessage);
 		}
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace AnkrSDK.CommonUtils
 				Index = index
 			};
 
-			return contract.GetData<TokenOfOwnerByIndexMessage, BigInteger>(tokenOfOwnerByIndexMessage).AsUniTask();
+			return contract.GetData<TokenOfOwnerByIndexMessage, BigInteger>(tokenOfOwnerByIndexMessage);
 		}
 
 		/// <summary>
@@ -110,7 +110,7 @@ namespace AnkrSDK.CommonUtils
 				Index = index
 			};
 
-			return contract.GetData<TokenByIndexMessage, BigInteger>(tokenByIndexMessage).AsUniTask();
+			return contract.GetData<TokenByIndexMessage, BigInteger>(tokenByIndexMessage);
 		}
 
 		/// <summary>
@@ -125,7 +125,7 @@ namespace AnkrSDK.CommonUtils
 				Operator = theOperator
 			};
 
-			return contract.GetData<IsApprovedForAllMessage, bool>(isApprovedForAllMessage).AsUniTask();
+			return contract.GetData<IsApprovedForAllMessage, bool>(isApprovedForAllMessage);
 		}
 
 		/// <summary>
@@ -140,7 +140,7 @@ namespace AnkrSDK.CommonUtils
 				TokenID = tokenId
 			};
 
-			return contract.GetData<GetApprovedMessage, bool>(getApprovedMessage).AsUniTask();
+			return contract.GetData<GetApprovedMessage, bool>(getApprovedMessage);
 		}
 
 		#endregion
@@ -257,7 +257,7 @@ namespace AnkrSDK.CommonUtils
 		private static UniTask<string> CallContractMethod(this IContract contract, string methodName,
 			object[] arguments)
 		{
-			return contract.CallMethod(methodName, arguments).AsUniTask();
+			return contract.CallMethod(methodName, arguments);
 		}
 	}
 }
