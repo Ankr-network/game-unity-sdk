@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.EventHandlers;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure
 {
@@ -13,9 +13,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure
 
 		WebSocketState State { get; }
 
-		Task Connect();
+		UniTask Connect();
 		void DispatchMessageQueue();
-		Task SendText(string requestMessage);
-		Task Close();
+		UniTask SendText(string requestMessage);
+		UniTask Close();
 	}
 }

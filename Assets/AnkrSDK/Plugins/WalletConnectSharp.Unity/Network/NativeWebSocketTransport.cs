@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Core.Utils;
@@ -68,7 +66,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			_client?.CancelConnection();
 		}
 
-		public Task Open(string url, bool clearSubscriptions = true)
+		public UniTask Open(string url, bool clearSubscriptions = true)
 		{
 			if (URL != url || clearSubscriptions)
 			{
@@ -85,7 +83,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			_client.CancelConnection();
 		}
 
-		public async Task Close()
+		public async UniTask Close()
 		{
 			Debug.Log("Closing Websocket");
 			try
@@ -114,7 +112,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			}
 		}
 
-		public async Task SendMessage(NetworkMessage message)
+		public async UniTask SendMessage(NetworkMessage message)
 		{
 			if (!Connected)
 			{
@@ -129,7 +127,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			}
 		}
 
-		public async Task Subscribe(string topic)
+		public async UniTask Subscribe(string topic)
 		{
 			Debug.Log("[WebSocket] Subscribe to " + topic);
 
@@ -151,7 +149,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			_queuedMessages.Clear();
 		}
 
-		private async Task OpenSocket()
+		private async UniTask OpenSocket()
 		{
 			Debug.Log("[WebSocket] Trying to open socket");
 			if (_nextClient != null)
@@ -180,11 +178,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			Debug.Log("[WebSocket] Open Completed");
 		}
 
-		private TaskCompletionSource<bool> ConfigureNextClient(string url, out WebSocket nextClient)
+		private UniTaskCompletionSource<bool> ConfigureNextClient(string url, out WebSocket nextClient)
 		{
 			nextClient = new WebSocket(url);
 
-			var eventCompleted = new TaskCompletionSource<bool>(TaskCreationOptions.None);
+			var eventCompleted = new UniTaskCompletionSource<bool>();
 
 			void OnNextClientOpen()
 			{
@@ -195,7 +193,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
 				Debug.Log("[WebSocket] Opened " + url);
 
-				eventCompleted.SetResult(true);
+				eventCompleted.TrySetResult(true);
 			}
 
 			nextClient.OnOpen += OnNextClientOpen;
@@ -208,7 +206,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
 		private async UniTaskVoid StartClientConnect()
 		{
-			var connectTask = _nextClient.Connect();
+			var connectTask = _nextClient.Connect().AsTask();
 			await connectTask;
 			if (connectTask.IsFaulted)
 			{

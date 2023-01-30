@@ -22,7 +22,7 @@ namespace AnkrSDK.CommonUtils
 				TokenId = tokenId
 			};
 
-			return contract.GetData<PrincipalOwnerMessage, string>(principalOwnerMessage).AsUniTask();
+			return contract.GetData<PrincipalOwnerMessage, string>(principalOwnerMessage);
 		}
 
 		/// <summary>
@@ -35,7 +35,7 @@ namespace AnkrSDK.CommonUtils
 				TokenId = tokenId
 			};
 
-			return contract.GetData<IsRentedMessage, bool>(isRentedMessage).AsUniTask();
+			return contract.GetData<IsRentedMessage, bool>(isRentedMessage);
 		}
 
 		#endregion
@@ -55,7 +55,7 @@ namespace AnkrSDK.CommonUtils
 				renter,
 				tokenId,
 				expiresAt
-			}).AsUniTask();
+			});
 		}
 
 		/// <summary>
@@ -68,7 +68,7 @@ namespace AnkrSDK.CommonUtils
 			return contract.CallMethod(finishRentingMethodName, new object[]
 			{
 				tokenId
-			}).AsUniTask();
+			});
 		}
 
 		#endregion

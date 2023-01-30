@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
-using AnkrSDK.WalletConnectSharp.Core.Models;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
@@ -29,12 +25,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			{
 				_updatables.Add(updatable);
 			}
-			
+
 			if (someObject is IQuittableComponent quittable)
 			{
 				_quittables.Add(quittable);
 			}
-			
+
 			if (someObject is IPausableComponent pausable)
 			{
 				_pausables.Add(pausable);
@@ -48,7 +44,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				Destroy(gameObject);
 				return;
 			}
-			
+
 			DontDestroyOnLoad(gameObject);
 
 			_existingInstance = this;

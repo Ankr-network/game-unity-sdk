@@ -382,7 +382,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			var sessionToSave = _session.GetSavedSession();
 			SessionSaveHandler.SaveSession(sessionToSave);
 
-			return _session.Transport.Close().AsUniTask();
+			return _session.Transport.Close();
 		}
 
 		public void Update()
