@@ -6,9 +6,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 {
 	public class WalletConnectUnityMonoAdapter : MonoBehaviour
 	{
-		private readonly List<IUpdatableComponent> _updatables = new List<IUpdatableComponent>();
-		private readonly List<IPausableComponent> _pausables = new List<IPausableComponent>();
-		private readonly List<IQuittableComponent> _quittables = new List<IQuittableComponent>();
+		private readonly List<IUpdatable> _updatables = new List<IUpdatable>();
+		private readonly List<IPausable> _pausables = new List<IPausable>();
+		private readonly List<IQuittable> _quittables = new List<IQuittable>();
 
 		private WalletConnectUnityMonoAdapter _existingInstance;
 
@@ -21,17 +21,17 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void TryAddObject(object someObject)
 		{
-			if (someObject is IUpdatableComponent updatable)
+			if (someObject is IUpdatable updatable)
 			{
 				_updatables.Add(updatable);
 			}
 
-			if (someObject is IQuittableComponent quittable)
+			if (someObject is IQuittable quittable)
 			{
 				_quittables.Add(quittable);
 			}
 
-			if (someObject is IPausableComponent pausable)
+			if (someObject is IPausable pausable)
 			{
 				_pausables.Add(pausable);
 			}

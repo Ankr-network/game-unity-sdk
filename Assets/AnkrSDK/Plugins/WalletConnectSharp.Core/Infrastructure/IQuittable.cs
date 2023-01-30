@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WalletConnectSharp.Core.Infrastructure
 {
-	public interface IQuittableComponent : IDisposable
+	public interface IQuittable : IDisposable
 	{
 		UniTask Quit();
 	}
