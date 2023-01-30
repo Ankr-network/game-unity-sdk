@@ -8,7 +8,7 @@
     "WalletConnectSharp",
     "WalletConnectSharp.Core",
     "WalletConnectSharp.NEtherium",
-    "WalletConnectSharpю.Unity"
+    "WalletConnectSharp.Unity"
   ],
   "includePlatforms": [],
   "excludePlatforms": [

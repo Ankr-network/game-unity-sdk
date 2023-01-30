@@ -1,8 +1,8 @@
 using System;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 #if !UNITY_WEBGL || UNITY_EDITOR
-using AnkrSDK.WalletConnectSharp.Unity;
 #endif
 using TMPro;
 using UnityEngine.Events;
@@ -25,7 +25,7 @@ namespace AnkrSDK.UI
 	#endif
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
 #if !UNITY_WEBGL || UNITY_EDITOR
-		private WalletConnect WalletConnect => WalletConnectProvider.GetWalletConnect();
+		private WalletConnect WalletConnect => ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
 #else
 #endif
 		private async void Start()

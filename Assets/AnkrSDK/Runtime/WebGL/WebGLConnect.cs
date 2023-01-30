@@ -1,58 +1,50 @@
 using System;
 using AnkrSDK.Data;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AnkrSDK.WebGL
 {
-	public class WebGLConnect : MonoBehaviour
+	public class WebGLConnect : IWalletConnectable
 	{
-		[SerializeField, CustomDropdown.CustomDropdown(typeof(SupportedWallets), "GetWebGLWallets")]
-		private Wallet _defaultWallet = Wallet.None;
-
-		[SerializeField] private NetworkName _defaultNetwork = NetworkName.Rinkeby;
-		[SerializeField] private bool _connectOnAwake;
-		[SerializeField] private bool _connectOnStart = true;
-
-		private UniTaskCompletionSource<Wallet> _walletCompletionSource;
-		public AnkrSDK.WebGL.WebGLWrapper SessionWrapper { get; private set; }
+		private const string SettingsFilenameStr = "WebGLConnectSettings";
+		
 		public Action OnNeedPanel;
-		public Action<AnkrSDK.WebGL.WebGLWrapper> OnConnect;
+		public Action<WebGLWrapper> OnConnect;
+		public WebGLWrapper SessionWrapper { get; private set; }
+		private UniTaskCompletionSource<Wallet> _walletCompletionSource;
+		private WebGLConnectSettingsSO _settings;
+		private NetworkName _network;
+		private bool _initialized;
 
-	#if !UNITY_WEBGL || UNITY_EDITOR
-		private void Awake()
+		public string SettingsFilename => SettingsFilenameStr;
+
+		public WebGLConnect()
 		{
-			gameObject.SetActive(false);
+			
 		}
-	#else
-		private void Awake()
+
+		public void Initialize(ScriptableObject settings)
 		{
 			SessionWrapper = new WebGL.WebGLWrapper();
-			if (_connectOnAwake)
+			_settings = settings as WebGLConnectSettingsSO;
+			if (_settings != null)
 			{
-				Initialize().Forget();
+				_initialized = true;
+				_network = _settings.DefaultNetwork;
+			}
+			else
+			{
+				var typeStr = settings == null ? "null" : settings.GetType().Name;
+				Debug.LogError($"WalletConnect: Could not initialize because settings are " + typeStr);
 			}
 		}
 
-		private void Start()
+		public async UniTask Connect()
 		{
-			if (_connectOnStart)
-			{
-				Initialize().Forget();
-			}
-		}
-	#endif
-
-		private UniTask Initialize()
-		{
-			DontDestroyOnLoad(this);
-			return Connect();
-		}
-
-		private async UniTask Connect()
-		{
-			var wallet = _defaultWallet;
+			var wallet = _settings.DefaultWallet;
 			if (wallet == Wallet.None)
 			{
 				OnNeedPanel?.Invoke();
@@ -60,12 +52,8 @@ namespace AnkrSDK.WebGL
 				wallet = await _walletCompletionSource.Task;
 			}
 
-			await Connect(wallet);
-		}
-
-		public async UniTask Connect(Wallet wallet)
-		{
-			await SessionWrapper.ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_defaultNetwork));
+			await SessionWrapper.ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_network));
+			
 			OnConnect?.Invoke(SessionWrapper);
 		}
 
@@ -81,7 +69,7 @@ namespace AnkrSDK.WebGL
 
 		public void SetNetwork(NetworkName network)
 		{
-			_defaultNetwork = network;
+			_network = network;
 		}
 	}
 }

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AnkrSDK.WalletConnectSharp.Unity.Infrastructure;
+using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
+using AnkrSDK.WalletConnectSharp.Core.Models;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
@@ -15,13 +16,29 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private WalletConnectUnityMonoAdapter _existingInstance;
 
-		public void SetupWalletConnect(WalletConnect walletConnect)
+		public void Clear()
 		{
-			_updatables.Add(walletConnect.Transport);
-			_pausables.Add(walletConnect.Transport);
+			_updatables.Clear();
+			_pausables.Clear();
+			_quittables.Clear();
+		}
+
+		public void TryAddObject(object someObject)
+		{
+			if (someObject is IUpdatableComponent updatable)
+			{
+				_updatables.Add(updatable);
+			}
 			
-			_pausables.Add(walletConnect);
-			_quittables.Add(walletConnect);
+			if (someObject is IQuittableComponent quittable)
+			{
+				_quittables.Add(quittable);
+			}
+			
+			if (someObject is IPausableComponent pausable)
+			{
+				_pausables.Add(pausable);
+			}
 		}
 
 		private void Awake()

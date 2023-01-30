@@ -5,7 +5,8 @@
         "AnkrSDK.Data",
         "AnkrSDK.Tools",
         "AnkrSDK.Utils",
-        "UniTask"
+        "UniTask",
+        "WalletConnectSharp.Core"
     ],
     "includePlatforms": [
         "Editor",

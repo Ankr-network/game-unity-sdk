@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	[CreateAssetMenu(fileName = "WalletConnectSettings", menuName = "AnkrSDK/WalletConnect/Settings")]
+	[CreateAssetMenu(fileName = "WalletConnectSettings", menuName = "AnkrSDK/WalletConnect/WalletConnectSettings")]
 	public class WalletConnectSettingsSO : ScriptableObject
 	{
 		[SerializeField] private Wallets _defaultWallet = Wallets.MetaMask;
