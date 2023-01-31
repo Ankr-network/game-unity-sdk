@@ -462,6 +462,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 						sessionCompletionSource.TrySetException(
 							new IOException("WalletConnect: Session Failed: " + @event.Response.Message));
 					}
+					
+					Debug.LogError("Session failed with message: " + @event.Response.Message);
 				});
 		}
 
