@@ -27,7 +27,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			"wallet_silentSignMessage"
 		};
 
-		public readonly EventDelegator Events;
+		public readonly EventDelegator EventDelegator;
 
 		protected string Version = "1";
 		protected string BridgeUrl;
@@ -39,27 +39,34 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public event EventHandler<WalletConnectProtocol> OnTransportDisconnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportOpen;
 
+		public WalletConnectStatus Status
+		{
+			get
+			{
+				if (TransportConnected)
+				{
+					if (SessionConnected)
+					{
+						return WalletConnected ? WalletConnectStatus.WalletConnected : WalletConnectStatus.SessionConnected;
+					}
+
+					return WalletConnectStatus.TransportConnected;
+				}
+
+				return SessionConnected ? WalletConnectStatus.DisconnectedSessionCached : WalletConnectStatus.DisconnectedNoSession;
+			}
+		}
 		protected bool SessionConnected { get; set; }
-
-		public bool Disconnected { get; protected set; }
-
-		public bool Connected => SessionConnected && TransportConnected;
-
+		protected bool WalletConnected { get; set; }
 		public bool Connecting { get; protected set; }
-
-		public bool TransportConnected => Transport?.Connected == true && Transport?.URL == BridgeUrl;
-
 		public ITransport Transport { get; private set; }
-
 		public ICipher Cipher { get; private set; }
-
 		public ClientMeta DappMetadata { get; set; }
-
 		public ClientMeta WalletMetadata { get; set; }
-
 		public string PeerId { get; protected set; }
-
-
+		public string KeyData => Key;
+		protected bool TransportConnected => Transport?.Connected == true && Transport?.URL == BridgeUrl;
+		
 		/// <summary>
 		/// Create a new WalletConnectProtocol object using a SavedSession as the session data. This will effectively resume
 		/// the session, as long as the session data is valid
@@ -82,7 +89,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				eventDelegator = new EventDelegator();
 			}
 
-			Events = eventDelegator;
+			EventDelegator = eventDelegator;
 
 			//TODO Do we need this for resuming?
 			//_handshakeTopic = topicGuid.ToString();
@@ -128,7 +135,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		{
 			eventDelegator = eventDelegator ?? new EventDelegator();
 
-			Events = eventDelegator;
+			EventDelegator = eventDelegator;
 
 			transport = transport ?? TransportFactory.Instance.BuildDefaultTransport(eventDelegator);
 
@@ -213,7 +220,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			var wasResponse = false;
 			if (response?.Event != null)
 			{
-				wasResponse = Events.Trigger(response.Event, json);
+				wasResponse = EventDelegator.Trigger(response.Event, json);
 			}
 
 			if (wasResponse)
@@ -225,7 +232,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			if (request?.Method != null)
 			{
-				Events.Trigger(request.Method, json);
+				EventDelegator.Trigger(request.Method, json);
 			}
 		}
 

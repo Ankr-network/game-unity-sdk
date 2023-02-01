@@ -1,4 +1,5 @@
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -28,13 +29,8 @@ namespace AnkrSDK.UI
 
 		private async UniTaskVoid SubscribeOnTransportEvents()
 		{
-			await UniTask.WaitUntil(() => WalletConnect.Session != null);
+			await UniTask.WaitUntil(() => WalletConnect.WalletConnectStatus != WalletConnectStatus.Uninitialized);
 
-			var walletConnectSession = WalletConnect.Session;
-			if (walletConnectSession == null)
-			{
-				return;
-			}
 
 			walletConnectSession.OnTransportConnect += UpdateDisconnectButtonState;
 			walletConnectSession.OnTransportDisconnect += UpdateDisconnectButtonState;

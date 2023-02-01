@@ -2,6 +2,7 @@ using System;
 using System.Numerics;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
@@ -29,12 +30,12 @@ namespace AnkrSDK.Mobile
 
 		public  UniTask<string> GetDefaultAccount()
 		{
-			if (_walletConnect.Session == null)
+			if (_walletConnect.WalletConnectStatus == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			var activeSessionAccount = _walletConnect.Session.Accounts[0];
+			var activeSessionAccount = _walletConnect.Accounts[0];
 			if (string.IsNullOrEmpty(activeSessionAccount))
 			{
 				Debug.LogError("Account is null");
@@ -45,12 +46,12 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<BigInteger> GetChainId()
 		{
-			if (_walletConnect.Session == null)
+			if (_walletConnect.WalletConnectStatus == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			var chainId = _walletConnect.Session.ChainId;
+			var chainId = _walletConnect.ChainId;
 			return UniTask.FromResult(new BigInteger(chainId));
 		}
 

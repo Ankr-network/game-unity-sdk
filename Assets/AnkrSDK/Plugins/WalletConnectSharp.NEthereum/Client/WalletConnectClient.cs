@@ -33,7 +33,7 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum.Client
             
             var eventCompleted = new TaskCompletionSource<RpcResponseMessage>(TaskCreationOptions.None);
             
-            Provider.Events.ListenForGenericResponse<RpcResponseMessage>(rpcRequestMessage.Id, (sender, args) =>
+            Provider.EventDelegator.ListenForGenericResponse<RpcResponseMessage>(rpcRequestMessage.Id, (sender, args) =>
             {
                 eventCompleted.TrySetResult(args.Response);
             });

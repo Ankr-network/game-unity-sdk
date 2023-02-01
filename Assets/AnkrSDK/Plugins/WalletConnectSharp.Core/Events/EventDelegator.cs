@@ -12,7 +12,7 @@ namespace AnkrSDK.WalletConnectSharp.Core.Events
 
 		public void ListenForGenericResponse<T>(object id, EventHandler<GenericEvent<T>> callback)
 		{
-			ListenFor("response:" + id, callback);
+			ListenForGeneric("response:" + id, callback);
 		}
 
 		public void ListenForResponse<T>(object id, EventHandler<JsonRpcResponseEvent<T>> callback)
@@ -21,24 +21,17 @@ namespace AnkrSDK.WalletConnectSharp.Core.Events
 			ListenFor("response:" + id, callback);
 		}
 
-		public void ListenFor<T>(string eventId, EventHandler<GenericEvent<T>> callback)
+		public void ListenForGeneric<T>(string eventId, EventHandler<GenericEvent<T>> callback)
 		{
 			EventManager<T, GenericEvent<T>>.Instance.EventTriggers[eventId] += callback;
 
 			SubscribeProvider(eventId, EventFactory.Instance.ProviderFor<T>());
 		}
 
-		public void ListenFor<T>(string eventId, EventHandler<JsonRpcResponseEvent<T>> callback)
+		private void ListenFor<T>(string eventId, EventHandler<JsonRpcResponseEvent<T>> callback)
 			where T : JsonRpcResponse
 		{
 			EventManager<T, JsonRpcResponseEvent<T>>.Instance.EventTriggers[eventId] += callback;
-
-			SubscribeProvider(eventId, EventFactory.Instance.ProviderFor<T>());
-		}
-
-		public void ListenFor<T>(string eventId, EventHandler<JsonRpcRequestEvent<T>> callback) where T : JsonRpcRequest
-		{
-			EventManager<T, JsonRpcRequestEvent<T>>.Instance.EventTriggers[eventId] += callback;
 
 			SubscribeProvider(eventId, EventFactory.Instance.ProviderFor<T>());
 		}

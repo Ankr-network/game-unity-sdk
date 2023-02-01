@@ -15,7 +15,7 @@ namespace AnkrSDK.Mobile
 
 		public IWeb3 CreateWeb3(string providerURI)
 		{
-			var session = _walletConnect.Session;
+			var session = _walletConnect.Protocol;
 			var client =
 				WalletConnectSharp.NEthereum.WalletConnectNEthereumExtensions.CreateProvider(session,
 					new System.Uri(providerURI));

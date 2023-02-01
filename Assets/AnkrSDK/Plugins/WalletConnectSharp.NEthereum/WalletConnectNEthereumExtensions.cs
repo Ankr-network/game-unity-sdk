@@ -65,7 +65,7 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum
         /// </returns>
         public static IClient CreateProvider(this WalletConnectProtocol protocol, IClient readClient)
         {
-            if (!protocol.Connected)
+            if (!protocol.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
             {
                 throw new Exception("No connection has been made yet!");
             }

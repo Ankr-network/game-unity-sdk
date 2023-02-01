@@ -16,40 +16,47 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable
+	public partial class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
-		
-		private readonly NativeWebSocketTransport _transport = new NativeWebSocketTransport();
+		public WalletConnectStatus WalletConnectStatus => _session?.Status ?? WalletConnectStatus.Uninitialized;
+		public WalletConnectProtocol Protocol
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session;
+			}
+		}
 
-		private readonly WalletConnectEventWithSessionData _connectedEventSession = new WalletConnectEventWithSessionData();
-		private readonly WalletConnectEventWithSession _disconnectedEvent = new WalletConnectEventWithSession();
-		private readonly WalletConnectEventWithSession _newSessionConnected = new WalletConnectEventWithSession();
-		private readonly WalletConnectEventWithSession _resumedSessionConnected = new WalletConnectEventWithSession();
+		public string[] Accounts
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session.Accounts;
+			}
+		}
+
+		public int ChainId
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session.ChainId;
+			}
+		}
+		public bool Connecting => _session != null && _session.Connecting;
+
+		private readonly NativeWebSocketTransport _transport = new NativeWebSocketTransport();
 		
 		private WalletConnectSettingsSO _settings;
 		private bool _initialized = false;
-
-		public event Action ConnectionStarted;
-		public event Action SessionUpdated;
 		public string ConnectURL => _session.URI;
 		public string SettingsFilename => SettingsFilenameString;
 
 		private AppEntry _selectedWallet;
-		private WalletConnectUnitySession _session;
-
-		public WalletConnectUnitySession Session
-		{
-			get => _session;
-			private set
-			{
-				Debug.Log("Active Session Changed");
-				_session = value;
-				SessionUpdated?.Invoke();
-			}
-		}
-
-		public WalletConnectEventWithSessionData ConnectedEvent => _connectedEventSession;
+		private WalletConnectSession _session;
 
 		public WalletConnect()
 		{
@@ -69,6 +76,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 		}
 
+		public void Update()
+		{
+			_transport?.Update();
+		}
+
 		public UniTask Quit()
 		{
 			return SaveOrDisconnect();
@@ -81,7 +93,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public async UniTask OnApplicationPause(bool pauseStatus)
 		{
-			CheckIfInitialized();
+			if (!_initialized)
+			{
+				throw new InvalidOperationException("WalletConnect is not initialized");
+			}
 			
 			if (_transport != null)
 			{
@@ -110,21 +125,18 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				{
 					if (_session.KeyData != savedSession.Key)
 					{
-						if (_session.Connected)
+						if (_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
 						{
 							await _session.DisconnectSession();
 						}
-						else if (_session.TransportConnected)
+						else if (_session.Status == WalletConnectStatus.TransportConnected)
 						{
 							await _session.Transport.Close();
 						}
 					}
-					else if (!_session.Connected && !_session.Connecting)
+					else if (!_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected) && !_session.Connecting)
 					{
-						if (!_session.Disconnected)
-						{
-							return await CompleteConnect();
-						}
+						return await CompleteConnect();
 					}
 					else
 					{
@@ -132,12 +144,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 						return null;
 					}
 				}
-				else if (_session.Connected)
+				else if (_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
 				{
 					Debug.Log("We have old session connected, but no saved session. Disconnecting.");
 					await _session.DisconnectSession();
 				}
-				else if (_session.TransportConnected)
+				else if (_session.Status == WalletConnectStatus.TransportConnected)
 				{
 					Debug.Log("We have transport connected, but no saved session. Closing Transport.");
 					await _session.Transport.Close();
@@ -154,15 +166,28 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return await CompleteConnect();
 		}
 
-		public void InitializeUnitySession(SavedSession savedSession = null, ICipher cipher = null)
+		private void CheckIfSessionCreated()
 		{
+			if (_session == null)
+			{
+				throw new InvalidDataException("Session was not initialized yet, first connect your wallet connect");
+			}
+		}
+
+		private void InitializeUnitySession(SavedSession savedSession = null, ICipher cipher = null)
+		{	
+			if (!_initialized)
+			{
+				throw new InvalidOperationException("WalletConnect is not initialized");
+			}
+			
 			var appData = _settings.AppData;
 			var customBridgeUrl = _settings.CustomBridgeUrl;
 			var chainId = _settings.ChainId;
 			
-			Session = savedSession != null
-				? WalletConnectUnitySession.RestoreWalletConnectSession(savedSession, _transport)
-				: WalletConnectUnitySession.GetNewWalletConnectSession(appData, customBridgeUrl, _transport,
+			_session = savedSession != null
+				? WalletConnectSessionFactory.RestoreWalletConnectSession(savedSession, _transport)
+				: WalletConnectSessionFactory.GetNewWalletConnectSession(appData, customBridgeUrl, _transport,
 					cipher, chainId);
 		}
 
@@ -206,7 +231,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void OpenDeepLink()
 		{
-			if (!_session.ReadyForUserPrompt)
+			if (!_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
 			{
 				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
 				               "\nWait for ActiveSession.ReadyForUserPrompt to be true");
@@ -249,14 +274,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 		}
 
-		private void CheckIfInitialized()
-		{	
-			if (_settings == null)
-			{
-				throw new InvalidOperationException("WalletConnect object was not initialized. Call Initialize() method first");
-			}
-		}
-
 		private void SetupEvents()
 		{
 			if (_session == null)
@@ -284,13 +301,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private void HandleSessionResumed(object sender, WalletConnectSession e)
 		{
-			_resumedSessionConnected?.Invoke(e as WalletConnectUnitySession ?? _session);
+			
 		}
 
 		private void HandleSessionCreated(object sender, WalletConnectSession e)
 		{
-			_newSessionConnected?.Invoke(e as WalletConnectUnitySession ?? _session);
-
 			var sessionToSave = _session.GetSavedSession();
 			SessionSaveHandler.SaveSession(sessionToSave);
 		}
@@ -300,7 +315,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			SetupDefaultWallet().Forget();
 			SetupEvents();
 
-			ConnectionStarted?.Invoke();
 			var tries = 0;
 			var connectSessionRetryCount = _settings.ConnectSessionRetryCount;
 			while (tries < connectSessionRetryCount)
@@ -309,8 +323,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				try
 				{
 					var sessionData = await _session.ConnectSession();
-
-					_connectedEventSession?.Invoke(sessionData);
 					return sessionData;
 				}
 				catch (IOException e)
@@ -329,8 +341,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private async void HandleSessionDisconnect(object sender, EventArgs e)
 		{
-			_disconnectedEvent?.Invoke(_session);
-
 			if (_settings.AutoSaveAndResume && SessionSaveHandler.IsSessionSaved())
 			{
 				SessionSaveHandler.ClearSession();
@@ -369,7 +379,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				return UniTask.CompletedTask;
 			}
 
-			if (!_session.Connected)
+			if (!_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
 			{
 				return UniTask.CompletedTask;
 			}
@@ -383,11 +393,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			SessionSaveHandler.SaveSession(sessionToSave);
 
 			return _session.Transport.Close();
-		}
-
-		public void Update()
-		{
-			_transport?.Update();
 		}
 	}
 }

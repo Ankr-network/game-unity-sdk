@@ -1,5 +1,6 @@
 using System;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 #if !UNITY_WEBGL || UNITY_EDITOR
@@ -84,13 +85,13 @@ namespace AnkrSDK.UI
 
 			WalletConnect.ConnectedEvent.AddListener(UpdateSceneState);
 			SubscribeUnitySession();
-			var session = WalletConnect.Session;
-			if (session == null)
+			var status = WalletConnect.WalletConnectStatus;
+			if (status == WalletConnectStatus.Uninitialized)
 			{
 				return;
 			}
 
-			UpdateLoginButtonState(this, session);
+			UpdateLoginButtonState(this, status);
 		}
 
 		private void UnsubscribeFromWalletEvents()
@@ -101,7 +102,7 @@ namespace AnkrSDK.UI
 
 		private void OnSessionDisconnect(object sender, EventArgs e)
 		{
-			UpdateLoginButtonState(this, WalletConnect.Session);
+			UpdateLoginButtonState(this, WalletConnect);
 		}
 
 		private void SubscribeUnitySession()
@@ -132,19 +133,24 @@ namespace AnkrSDK.UI
 			session.OnSessionDisconnect -= OnSessionDisconnect;
 		}
 
-		private void UpdateLoginButtonState(object sender, AnkrSDK.WalletConnectSharp.Core.WalletConnectProtocol e)
+		private void UpdateLoginButtonState(object sender, WalletConnect wc)
 		{
 			UpdateSceneState();
-			if (!e.Connected && !e.Connecting && e.Disconnected)
+			var sessionOrWalletConnected = wc.WalletConnectStatus.IsAny(WalletConnectStatus.SessionConnected);
+			if (sessionOrWalletConnected)
 			{
-				_connectionText.text = DisconnectedText;
+				_connectionText.text = LoginText;
+			}
+			else if(wc.Connecting)
+			{
+				_connectionText.text = ConnectingText;
 			}
 			else
 			{
-				_connectionText.text = e.TransportConnected ? LoginText : ConnectingText;
+				_connectionText.text = "Undefined";
 			}
 
-			_loginButton.interactable = e.TransportConnected;
+			_loginButton.interactable = sessionOrWalletConnected;
 		}
 
 		private void UpdateSceneState(AnkrSDK.WalletConnectSharp.Core.Models.WCSessionData _ = null)

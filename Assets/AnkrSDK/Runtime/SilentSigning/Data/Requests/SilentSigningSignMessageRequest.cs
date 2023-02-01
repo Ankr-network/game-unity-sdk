@@ -15,12 +15,12 @@ namespace AnkrSDK.SilentSigning.Data.Requests
 		}
 		
 		[JsonProperty("params")] private SilentSigningSignMessageRequestParams[] _parameters;
-		public override string Method => "wallet_silentSignMessage";
 
 		[JsonIgnore] public SilentSigningSignMessageRequestParams[] Parameters => _parameters;
 
 		public SilentSigningSignMessageRequest(string address, string message)
 		{
+			Method = "wallet_silentSignMessage";
 			_parameters = new[]
 			{
 				new SilentSigningSignMessageRequestParams()
