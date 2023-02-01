@@ -25,10 +25,9 @@ namespace AnkrSDK.SilentSigning
 
 		public async UniTask<string> RequestSilentSign(long timestamp, long chainId = 1)
 		{
-			var protocol = WalletConnect.Session;
 			var data = new SilentSigningConnectionRequest(timestamp, chainId);
 			var requestSilentSign =
-				await protocol.Send<SilentSigningConnectionRequest, SilentSigningResponse>(data);
+				await WalletConnect.Send<SilentSigningConnectionRequest, SilentSigningResponse>(data);
 			if (!requestSilentSign.IsError)
 			{
 				SessionHandler.SaveSilentSession(requestSilentSign.Result);
@@ -39,11 +38,10 @@ namespace AnkrSDK.SilentSigning
 
 		public UniTask DisconnectSilentSign()
 		{
-			var protocol = WalletConnect.Session;
 			var secret = SessionHandler.GetSavedSessionSecret();
 			var data = new SilentSigningDisconnectRequest(secret);
 			SessionHandler.ClearSilentSession();
-			return protocol.Send<SilentSigningDisconnectRequest, SilentSigningResponse>(data);
+			return WalletConnect.Send<SilentSigningDisconnectRequest, SilentSigningResponse>(data);
 		}
 
 		public async UniTask<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
@@ -129,8 +127,7 @@ namespace AnkrSDK.SilentSigning
 		private async UniTask<SilentSigningResponse> SendAndHandle<TRequest>(TRequest request)
 			where TRequest : JsonRpcRequest
 		{
-			var protocol = WalletConnect.Session;
-			var response = await protocol.Send<TRequest, SilentSigningResponse>(request);
+			var response = await WalletConnect.Send<TRequest, SilentSigningResponse>(request);
 			if (response.IsError)
 			{
 				switch (response.Error.Code)

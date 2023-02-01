@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Core
 {
-	public class WalletConnectSession : WalletConnectProtocol
+	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectCommunicator
 	{
 		public event EventHandler<WalletConnectSession> OnSessionConnect;
 		public event EventHandler<WalletConnectSession> OnSessionCreated;

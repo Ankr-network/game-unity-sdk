@@ -1,10 +1,13 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using AnkrSDK.Metadata;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
@@ -16,7 +19,7 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public partial class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable
+	public partial class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable, IWalletConnectCommunicator
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public WalletConnectStatus WalletConnectStatus => _session?.Status ?? WalletConnectStatus.Uninitialized;
@@ -164,6 +167,48 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			InitializeUnitySession(savedSession);
 
 			return await CompleteConnect();
+		}
+
+		public UniTask<string> EthSign(string address, string message)
+		{
+			CheckIfSessionCreated();
+			return _session.EthSign(address, message);
+		}
+
+		public UniTask<string> EthPersonalSign(string address, string message)
+		{
+			CheckIfSessionCreated();
+			return _session.EthPersonalSign(address, message);
+		}
+
+		public UniTask<string> EthSignTypedData<T>(string address, T data, EIP712Domain eip712Domain)
+		{
+			CheckIfSessionCreated();
+			return _session.EthSignTypedData(address, data, eip712Domain);
+		}
+
+		public UniTask<string> EthSendTransaction(params TransactionData[] transaction)
+		{
+			CheckIfSessionCreated();
+			return _session.EthSendTransaction(transaction);
+		}
+
+		public UniTask<string> EthSignTransaction(params TransactionData[] transaction)
+		{
+			CheckIfSessionCreated();
+			return _session.EthSignTransaction(transaction);
+		}
+
+		public UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
+		{
+			CheckIfSessionCreated();
+			return _session.EthSendRawTransaction(data, messageEncoding);
+		}
+
+		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data) where TRequest : JsonRpcRequest where TResponse : JsonRpcResponse
+		{
+			CheckIfSessionCreated();
+			return _session.Send<TRequest, TResponse>(data);
 		}
 
 		private void CheckIfSessionCreated()

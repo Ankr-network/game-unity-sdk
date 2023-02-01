@@ -92,7 +92,7 @@ namespace AnkrSDK.Mobile
 				_silentSigningHandler.SilentSignMessage(messageToSign, address);
 			}
 
-			return _walletConnect.Session.EthSign(address, messageToSign);
+			return _walletConnect.EthSign(address, messageToSign);
 		}
 
 		public async UniTask<string> SendTransaction(string from, string to, string data = null, string value = null,
@@ -112,7 +112,7 @@ namespace AnkrSDK.Mobile
 				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 			var request = new EthSendTransaction(transactionData);
-			var response = await _walletConnect.Session
+			var response = await _walletConnect
 				.Send<EthSendTransaction, EthResponse>(request);
 			return response.Result;
 		}
