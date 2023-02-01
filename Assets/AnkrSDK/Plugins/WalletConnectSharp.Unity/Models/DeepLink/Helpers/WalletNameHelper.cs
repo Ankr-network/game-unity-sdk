@@ -14,13 +14,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers
 		/// <summary>
 		/// Get Wallet Name is it described in WalletConnect Registry
 		/// </summary>
-		/// <param name="wallets"></param>
+		/// <param name="walletEnumValue"></param>
 		/// <returns></returns>
-		public static string GetWalletName(this Wallets wallets)
+		public static string GetWalletName(this Wallets walletEnumValue)
 		{
-			return WalletNames.ContainsKey(wallets)
-				? WalletNames[wallets]
-				: wallets.ToString();
+			return WalletNames.ContainsKey(walletEnumValue)
+				? WalletNames[walletEnumValue]
+				: walletEnumValue.ToString();
 		}
 
 		public static IEnumerable<string> GetSupportedWalletNames()

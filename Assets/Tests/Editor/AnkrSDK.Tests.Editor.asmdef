@@ -4,7 +4,8 @@
     "references": [
         "UnityEditor.TestRunner",
         "WalletConnectSharp",
-        "WalletConnectSharp.Core"
+        "WalletConnectSharp.Core",
+        "WalletConnectSharp.Unity"
     ],
     "includePlatforms": [
         "Editor"

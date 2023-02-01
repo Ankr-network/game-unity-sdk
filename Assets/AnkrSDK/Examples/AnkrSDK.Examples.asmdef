@@ -12,6 +12,7 @@
     "MirageSDK.BlockchainUtils",
     "WalletConnectSharp",
     "WalletConnectSharp.Core",
-    "Unity.TextMeshPro"
+    "Unity.TextMeshPro",
+    "WalletConnectSharp.Unity"
   ]
 }

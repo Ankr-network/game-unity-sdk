@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Events;
 using AnkrSDK.WalletConnectSharp.Core.Events.Model;
 using AnkrSDK.WalletConnectSharp.Core.Models;
@@ -12,6 +11,7 @@ using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Core.Utils;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Core
@@ -174,7 +174,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			Key = KeyRaw.ToHex().ToLower();
 		}
 
-		public virtual async Task<WCSessionData> ConnectSession()
+		public async UniTask<WCSessionData> ConnectSession()
 		{
 			EnsureNotDisconnected();
 
@@ -183,7 +183,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			{
 				if (!TransportConnected)
 				{
-					await SetupTransport();
+					await OpenTransport();
 				}
 				else
 				{
@@ -248,16 +248,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			}
 		}
 
-		public override async Task Connect()
-		{
-			EnsureNotDisconnected();
-
-			await base.Connect();
-
-			await ConnectSession();
-		}
-
-		public async Task DisconnectSession(string disconnectMessage = "Session Disconnected")
+		public async UniTask DisconnectSession(string disconnectMessage = "Session Disconnected")
 		{
 			EnsureNotDisconnected();
 
@@ -276,12 +267,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			HandleSessionDisconnect(disconnectMessage);
 		}
 
-		public override Task Disconnect()
+		public override UniTask Disconnect()
 		{
 			return DisconnectSession();
 		}
 
-		public async Task<string> EthSign(string address, string message)
+		public async UniTask<string> EthSign(string address, string message)
 		{
 			EnsureNotDisconnected();
 
@@ -311,7 +302,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async Task<string> EthPersonalSign(string address, string message)
+		public async UniTask<string> EthPersonalSign(string address, string message)
 		{
 			EnsureNotDisconnected();
 
@@ -340,7 +331,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async Task<string> EthSignTypedData<T>(string address, T data, EIP712Domain eip712Domain)
+		public async UniTask<string> EthSignTypedData<T>(string address, T data, EIP712Domain eip712Domain)
 		{
 			EnsureNotDisconnected();
 
@@ -351,7 +342,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async Task<string> EthSendTransaction(params TransactionData[] transaction)
+		public async UniTask<string> EthSendTransaction(params TransactionData[] transaction)
 		{
 			EnsureNotDisconnected();
 			var request = new EthSendTransaction(transaction);
@@ -359,7 +350,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async Task<string> EthSignTransaction(params TransactionData[] transaction)
+		public async UniTask<string> EthSignTransaction(params TransactionData[] transaction)
 		{
 			EnsureNotDisconnected();
 
@@ -370,7 +361,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async Task<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
+		public async UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
 		{
 			EnsureNotDisconnected();
 
@@ -392,13 +383,13 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async Task<TResponse> Send<TRequest, TResponse>(TRequest data)
+		public async UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
 			where TRequest : JsonRpcRequest
 			where TResponse : JsonRpcResponse
 		{
 			EnsureNotDisconnected();
 
-			var eventCompleted = new TaskCompletionSource<TResponse>(TaskCreationOptions.None);
+			var eventCompleted = new UniTaskCompletionSource<TResponse>();
 
 			void HandleResponse(object sender, JsonRpcResponseEvent<TResponse> @event)
 			{
@@ -426,7 +417,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		/// Create a new WalletConnect session with a Wallet.
 		/// </summary>
 		/// <returns></returns>
-		private async Task<WCSessionData> CreateSession()
+		private async UniTask<WCSessionData> CreateSession()
 		{
 			EnsureNotDisconnected();
 
@@ -439,7 +430,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			SessionUsed = true;
 
-			var sessionCompletionSource = new TaskCompletionSource<WCSessionData>(TaskCreationOptions.None);
+			var sessionCompletionSource = new UniTaskCompletionSource<WCSessionData>();
 
 			SubscribeOnConnectMessage(sessionCompletionSource);
 
@@ -457,7 +448,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response;
 		}
 
-		private void SubscribeOnFailedMessage(TaskCompletionSource<WCSessionData> sessionCompletionSource)
+		private void SubscribeOnFailedMessage(UniTaskCompletionSource<WCSessionData> sessionCompletionSource)
 		{
 			Events.ListenFor(SessionFailedTopic,
 				(object sender, GenericEvent<ErrorResponse> @event) =>
@@ -471,10 +462,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 						sessionCompletionSource.TrySetException(
 							new IOException("WalletConnect: Session Failed: " + @event.Response.Message));
 					}
+					
+					Debug.LogError("Session failed with message: " + @event.Response.Message);
 				});
 		}
 
-		private void SubscribeOnConnectMessage(TaskCompletionSource<WCSessionData> eventCompleted)
+		private void SubscribeOnConnectMessage(UniTaskCompletionSource<WCSessionData> eventCompleted)
 		{
 			void HandleConnectMessage(object _, GenericEvent<WCSessionData> @event)
 			{
@@ -524,6 +517,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			//We are connected if we are approved
 			SessionConnected = data.approved;
+			Debug.Log($"WalletConnectSession: SessionConnected set to {data.approved}");
 
 			if (data.chainId != null)
 			{
@@ -579,7 +573,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			if (TransportConnected)
 			{
-				DisconnectTransport().ConfigureAwait(false);
+				DisconnectTransport().AsTask().ConfigureAwait(false);
 			}
 
 			ActiveTopics.Clear();

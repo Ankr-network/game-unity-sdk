@@ -1,10 +1,10 @@
 #if UNITY_WEBGL && !UNITY_EDITOR
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.EventHandlers;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 {
@@ -92,7 +92,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			return _instanceId;
 		}
 
-		public Task Connect()
+		public UniTask Connect()
 		{
 			var ret = WebSocketConnect(_instanceId);
 
@@ -101,20 +101,20 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
 
-			return Task.CompletedTask;
+			return UniTask.CompletedTask;
 		}
 
-		public Task Close()
+		public UniTask Close()
 		{
 			if (State == WebSocketState.Open)
 			{
 				return Close(WebSocketCloseCode.Abnormal);
 			}
 
-			return Task.CompletedTask;
+			return UniTask.CompletedTask;
 		}
 
-		public Task Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
+		public UniTask Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
 		{
 			var ret = WebSocketClose(_instanceId, (int)code, reason);
 
@@ -123,10 +123,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
 
-			return Task.CompletedTask;
+			return UniTask.CompletedTask;
 		}
 
-		public Task Send(byte[] data)
+		public UniTask Send(byte[] data)
 		{
 			var ret = WebSocketSend(_instanceId, data, data.Length);
 
@@ -135,10 +135,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
 
-			return Task.CompletedTask;
+			return UniTask.CompletedTask;
 		}
 
-		public Task SendText(string message)
+		public UniTask SendText(string message)
 		{
 			var ret = WebSocketSendText(_instanceId, message);
 
@@ -147,7 +147,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
 
-			return Task.CompletedTask;
+			return UniTask.CompletedTask;
 		}
 
 		public WebSocketState State

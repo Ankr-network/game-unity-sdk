@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.Data;
@@ -31,27 +30,27 @@ namespace AnkrSDK.Core.Implementation
 			_contractAddress = contractAddress;
 		}
 
-		public Task<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)
+		public UniTask<TReturnType> GetData<TFieldData, TReturnType>(TFieldData requestData = null)
 			where TFieldData : FunctionMessage, new()
 		{
 			return _contractFunctions.GetContractData<TFieldData, TReturnType>(_contractAddress, requestData);
 		}
 
-		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterData evFilter)
+		public UniTask<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterData evFilter)
 			where TEvDto : IEventDTO, new()
 		{
 			var filters = EventFilterHelper.CreateEventFilters<TEvDto>(_contractAddress, evFilter);
 			return _contractFunctions.GetEvents<TEvDto>(filters, _contractAddress);
 		}
 
-		public Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterRequest<TEvDto> evFilter)
+		public UniTask<List<EventLog<TEvDto>>> GetEvents<TEvDto>(EventFilterRequest<TEvDto> evFilter)
 			where TEvDto : IEventDTO, new()
 		{
 			var filters = EventFilterHelper.CreateEventFilters(_contractAddress, evFilter);
 			return _contractFunctions.GetEvents<TEvDto>(filters, _contractAddress);
 		}
 
-		public async Task<string> CallMethod(string methodName, object[] arguments = null, string gas = null,
+		public async UniTask<string> CallMethod(string methodName, object[] arguments = null, string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
@@ -67,7 +66,7 @@ namespace AnkrSDK.Core.Implementation
 			return sendTransaction;
 		}
 
-		public async Task Web3SendMethod(string methodName, object[] arguments,
+		public async UniTask Web3SendMethod(string methodName, object[] arguments,
 			ITransactionEventHandler evController = null, string gas = null, string gasPrice = null,
 			string nonce = null)
 		{
@@ -76,7 +75,7 @@ namespace AnkrSDK.Core.Implementation
 			evController?.TransactionSendBegin(transactionInput);
 
 			var sendTransactionTask =
-				GetSendTransactionTask(defaultAccount, transactionInput.Data, gas, gasPrice, nonce);
+				GetSendTransactionTask(defaultAccount, transactionInput.Data, gas, gasPrice, nonce).AsTask();
 
 			evController?.TransactionSendEnd(transactionInput);
 
@@ -100,7 +99,7 @@ namespace AnkrSDK.Core.Implementation
 			}
 		}
 
-		private Task<string> GetSendTransactionTask(
+		private UniTask<string> GetSendTransactionTask(
 			string defaultAccount,
 			string transactionInputData,
 			string gas,
@@ -131,7 +130,7 @@ namespace AnkrSDK.Core.Implementation
 
 		private async UniTask LoadReceipt(string transactionHash, ITransactionEventHandler evController)
 		{
-			var task = _ethHandler.GetTransactionReceipt(transactionHash);
+			var task = _ethHandler.GetTransactionReceipt(transactionHash).AsTask();
 
 			await task;
 

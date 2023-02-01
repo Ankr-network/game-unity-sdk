@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.WebGL.Extensions;
+using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 using Nethereum.Contracts.MessageEncodingServices;
@@ -18,7 +18,7 @@ namespace AnkrSDK.WebGL.Implementation
 			_webGlWrapper = webGlWrapper;
 		}
 
-		public async Task<TReturnType> GetContractData<TFieldData, TReturnType>(string contractAddress,
+		public async UniTask<TReturnType> GetContractData<TFieldData, TReturnType>(string contractAddress,
 			TFieldData requestData = null) where TFieldData : FunctionMessage, new()
 		{
 			var methodEncoder = new FunctionMessageEncodingService<TFieldData>(contractAddress);
@@ -27,7 +27,7 @@ namespace AnkrSDK.WebGL.Implementation
 			return methodEncoder.DecodeSimpleTypeOutput<TReturnType>(response);
 		}
 		
-		public async Task<List<EventLog<TEvDto>>> GetEvents<TEvDto>(NewFilterInput filters, string contractAddress = null)
+		public async UniTask<List<EventLog<TEvDto>>> GetEvents<TEvDto>(NewFilterInput filters, string contractAddress = null)
 			where TEvDto : IEventDTO, new()
 		{
 			var logs = await _webGlWrapper.GetEvents(filters);

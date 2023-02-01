@@ -157,7 +157,6 @@ MonoBehaviour:
   _loginButton: {fileID: 1669978143}
   _sceneChooser: {fileID: 588941421}
   _chooseWalletScreen: {fileID: 1283800582}
-  _walletConnect: {fileID: 986427679}
   _qrCodeImage: {fileID: 826194486}
 --- !u!4 &292734225
 Transform:
@@ -587,7 +586,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 753766832}
-  _walletConnect: {fileID: 986427679}
 --- !u!114 &753766832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904,7 +902,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 986427678}
-  - component: {fileID: 986427680}
   - component: {fileID: 986427679}
   m_Layer: 0
   m_Name: General
@@ -939,46 +936,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 986427677}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 801bffbf4c62cc244b55ea230d19649d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultWallet: 1
-  _autoSaveAndResume: 1
-  _connectOnAwake: 0
-  _connectOnStart: 1
-  _createNewSessionOnSessionDisconnect: 0
-  _connectSessionRetryCount: 3
-  _customBridgeUrl: https://testbridge.yartu.io/
-  _chainId: 5
-  _appData:
-    _description: Wallet
-    _url: https://www.ankr.com/
-    _icons:
-    - https://www.ankr.com/static/favicon/apple-touch-icon.png
-    _name: Wallet
-  _transport: {fileID: 986427680}
-  _connectedEventSession:
-    m_PersistentCalls:
-      m_Calls: []
-  _disconnectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  _newSessionConnected:
-    m_PersistentCalls:
-      m_Calls: []
-  _resumedSessionConnected:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &986427680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 986427677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17303ab972a16184e8ba0066d294c7ad, type: 3}
+  m_Script: {fileID: 11500000, guid: ef7db9c51379461c9191c4b7a01e368e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1212636837
@@ -2021,7 +1979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultWallet: 1
-  _defaultNetwork: 1
+  _defaultNetwork: 2
   _connectOnAwake: 1
   _connectOnStart: 0
 --- !u!1001 &84224008797117270

@@ -4,7 +4,6 @@ using System.IO;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.EventHandlers;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
@@ -88,7 +87,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			_tokenSource?.Cancel();
 		}
 
-		public async Task Connect()
+		public async UniTask Connect()
 		{
 			try
 			{
@@ -152,13 +151,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 		}
 
-		public Task Send(byte[] bytes)
+		public UniTask Send(byte[] bytes)
 		{
 			// return m_Socket.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
 			return SendMessage(_sendBytesQueue, WebSocketMessageType.Binary, new ArraySegment<byte>(bytes));
 		}
 
-		public Task SendText(string message)
+		public UniTask SendText(string message)
 		{
 			var encoded = Encoding.UTF8.GetBytes(message);
 
@@ -167,7 +166,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				new ArraySegment<byte>(encoded, 0, encoded.Length));
 		}
 
-		private async Task SendMessage(List<ArraySegment<byte>> queue, WebSocketMessageType messageType,
+		private async UniTask SendMessage(List<ArraySegment<byte>> queue, WebSocketMessageType messageType,
 			ArraySegment<byte> buffer)
 		{
 			// Return control to the calling method immediately.
@@ -234,7 +233,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 		}
 
-		private async Task HandleQueue(List<ArraySegment<byte>> queue, WebSocketMessageType messageType)
+		private async UniTask HandleQueue(List<ArraySegment<byte>> queue, WebSocketMessageType messageType)
 		{
 			var buffer = new ArraySegment<byte>();
 			lock (_lock)
@@ -272,7 +271,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 		}
 
-		public async Task Receive()
+		public async UniTask Receive()
 		{
 			var closeCode = WebSocketCloseCode.Abnormal;
 			await new WaitForBackgroundThread();
@@ -322,7 +321,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 			catch (Exception e)
 			{
-				Debug.LogError(e);
+				Debug.LogException(e);
 				_tokenSource.Cancel();
 			}
 			finally
@@ -332,7 +331,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 		}
 
-		public async Task Close()
+		public async UniTask Close()
 		{
 			if (State == WebSocketState.Open)
 			{

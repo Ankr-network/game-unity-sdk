@@ -1,5 +1,5 @@
 using System.Numerics;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 
@@ -7,11 +7,12 @@ namespace AnkrSDK.Core.Infrastructure
 {
 	public interface IEthHandler
 	{
-		Task<string> GetDefaultAccount();
-		Task<TransactionReceipt> GetTransactionReceipt(string transactionHash);
-		Task<Transaction> GetTransaction(string transactionReceipt);
-		Task<HexBigInteger> EstimateGas(TransactionInput transactionInput);
-		Task<HexBigInteger> EstimateGas(
+		UniTask<string> GetDefaultAccount();
+		UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash);
+		UniTask<Transaction> GetTransaction(string transactionReceipt);
+		UniTask<HexBigInteger> EstimateGas(TransactionInput transactionInput);
+
+		UniTask<HexBigInteger> EstimateGas(
 			string from,
 			string to,
 			string data = null,
@@ -20,8 +21,10 @@ namespace AnkrSDK.Core.Infrastructure
 			string gasPrice = null,
 			string nonce = null
 		);
-		Task<string> Sign(string messageToSign, string address);
-		Task<string> SendTransaction(
+
+		UniTask<string> Sign(string messageToSign, string address);
+
+		UniTask<string> SendTransaction(
 			string from,
 			string to,
 			string data = null,
@@ -30,14 +33,15 @@ namespace AnkrSDK.Core.Infrastructure
 			string gasPrice = null,
 			string nonce = null
 		);
-		Task<BigInteger> GetBalance(string address = null);
-		Task<BigInteger> GetBlockNumber();
-		Task<BigInteger> GetTransactionCount(string hash);
-		Task<BigInteger> GetTransactionCount(BlockParameter block);
-		Task<BlockWithTransactions> GetBlockWithTransactions(string hash);
-		Task<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block);
-		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash);
-		Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block);
-		Task<BigInteger> GetChainId();
+
+		UniTask<BigInteger> GetBalance(string address = null);
+		UniTask<BigInteger> GetBlockNumber();
+		UniTask<BigInteger> GetTransactionCount(string hash);
+		UniTask<BigInteger> GetTransactionCount(BlockParameter block);
+		UniTask<BlockWithTransactions> GetBlockWithTransactions(string hash);
+		UniTask<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block);
+		UniTask<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash);
+		UniTask<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block);
+		UniTask<BigInteger> GetChainId();
 	}
 }

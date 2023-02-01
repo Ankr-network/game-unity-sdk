@@ -2,12 +2,11 @@
     "name": "WalletConnectSharp.NEtherium",
     "rootNamespace": "",
     "references": [
-        "WalletConnectSharp.Core"
+        "WalletConnectSharp.Core",
+        "UniTask"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [
-        "WebGL"
-    ],
+    "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],

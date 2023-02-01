@@ -3,16 +3,16 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Utils;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Network
 {
     public class WebGlAESCipher : ICipher
     {
-        public Task<EncryptedPayload> EncryptWithKey(byte[] key, string message, Encoding encoding = null)
+        public UniTask<EncryptedPayload> EncryptWithKey(byte[] key, string message, Encoding encoding = null)
         {
             if (encoding == null)
             {
@@ -56,7 +56,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
                         var dataHex = encryptedContent.ToHex();
                         var hmacHex = signature.ToHex();
 
-                        return Task.FromResult(new EncryptedPayload()
+                        return UniTask.FromResult(new EncryptedPayload()
                         {
                             data = dataHex,
                             hmac = hmacHex,
@@ -67,7 +67,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
             }
         }
 
-        public Task<string> DecryptWithKey(byte[] key, EncryptedPayload encryptedData, Encoding encoding = null)
+        public UniTask<string> DecryptWithKey(byte[] key, EncryptedPayload encryptedData, Encoding encoding = null)
         {
             if (encoding == null)
             {
@@ -127,7 +127,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 
                             cs.Flush();
 
-                            return Task.FromResult(encoding.GetString(sink.ToArray()));
+                            return UniTask.FromResult(encoding.GetString(sink.ToArray()));
                         }
                     }
                 }

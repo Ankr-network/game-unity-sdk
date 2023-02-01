@@ -1,7 +1,6 @@
 using System;
-using System.Threading.Tasks;
-using AnkrSDK.WalletConnectSharp.Core.Events.Model;
 using AnkrSDK.WalletConnectSharp.Core.Models;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WalletConnectSharp.Core.Network
 {
@@ -15,13 +14,13 @@ namespace AnkrSDK.WalletConnectSharp.Core.Network
         
         string URL { get; }
         
-        Task Open(string bridgeURL, bool clearSubscriptions = true);
+        UniTask Open(string bridgeURL, bool clearSubscriptions = true);
 
-        Task Close();
+        UniTask Close();
 
-        Task SendMessage(NetworkMessage message);
+        UniTask SendMessage(NetworkMessage message);
 
-        Task Subscribe(string topic);
+        UniTask Subscribe(string topic);
 
         void ClearSubscriptions();
     }
