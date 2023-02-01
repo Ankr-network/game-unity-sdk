@@ -9,6 +9,7 @@ using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
 using AnkrSDK.WalletConnectSharp.Core.Network;
+using AnkrSDK.WalletConnectSharp.Unity.Events;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnectSharp.Unity.Network;
@@ -22,7 +23,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 	public partial class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable, IWalletConnectCommunicator
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
+		public event Action<WalletConnectTransition> OnStatusTransition;
+		
 		public WalletConnectStatus WalletConnectStatus => _session?.Status ?? WalletConnectStatus.Uninitialized;
+		
 		public WalletConnectProtocol Protocol
 		{
 			get
@@ -51,6 +55,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		}
 		public bool Connecting => _session != null && _session.Connecting;
 
+		private WalletConnectStatus _previousStatus;
 		private readonly NativeWebSocketTransport _transport = new NativeWebSocketTransport();
 		
 		private WalletConnectSettingsSO _settings;
@@ -82,6 +87,20 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public void Update()
 		{
 			_transport?.Update();
+
+			if (_session != null)
+			{
+				var newStatus = _session.Status;
+				if (_previousStatus != newStatus)
+				{
+					var transitionData = TransitionDataFactory.CreateTransitionData(_previousStatus, newStatus, _session);
+					var transition = new WalletConnectTransition(_previousStatus, _session.Status, transitionData, _session);
+					
+					OnStatusTransition?.Invoke(transition);
+					
+					_previousStatus = _session.Status;
+				}
+			}
 		}
 
 		public UniTask Quit()
