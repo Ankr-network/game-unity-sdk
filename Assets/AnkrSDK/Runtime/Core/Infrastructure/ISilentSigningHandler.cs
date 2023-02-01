@@ -1,16 +1,16 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.Core.Infrastructure
 {
 	public interface ISilentSigningHandler
 	{
 		ISilentSigningSessionHandler SessionHandler { get; }
-		Task<string> RequestSilentSign(long timestamp, long chainId = 1);
-		Task DisconnectSilentSign();
-		Task<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
+		UniTask<string> RequestSilentSign(long timestamp, long chainId = 1);
+		UniTask DisconnectSilentSign();
+		UniTask<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
 			string gas = null,
 			string gasPrice = null, string nonce = null);
-		Task<string> SilentSignMessage(string address, string message);
+		UniTask<string> SilentSignMessage(string address, string message);
 		bool IsSilentSigningActive();
 	}
 }

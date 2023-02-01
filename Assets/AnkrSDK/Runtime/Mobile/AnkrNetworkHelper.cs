@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Utils;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -14,11 +14,11 @@ namespace AnkrSDK.Mobile
 		private const string DeepLinkURL = "https://metamask.app.link/dapp";
 		private const string SwitchNetworkPageLink = "changenetwork-service.game.ankr.com";
 
-		public Task AddAndSwitchNetwork(EthereumNetwork network)
+		public UniTask AddAndSwitchNetwork(EthereumNetwork network)
 		{
 			var url = GetURLFromNetwork(network);
 			OpenCustomNetworkSwitchURL(url);
-			return Task.CompletedTask;
+			return UniTask.CompletedTask;
 		}
 
 		private static void OpenCustomNetworkSwitchURL(string url)

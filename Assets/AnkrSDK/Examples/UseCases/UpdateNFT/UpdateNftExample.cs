@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using AnkrSDK.Base;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Provider;
@@ -84,7 +83,7 @@ namespace AnkrSDK.UseCases.UpdateNFT
 			Debug.Log("Gas estimation = " + gasEstimation);
 		}
 
-		private static async Task<ItemInfo> RequestPreparedParams(int tokenId)
+		private static async UniTask<ItemInfo> RequestPreparedParams(int tokenId)
 		{
 			var request = UnityWebRequest.Get(URL + $"hero/{tokenId}");
 			var webRequest = await request.SendWebRequest();

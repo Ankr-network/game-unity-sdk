@@ -4,7 +4,6 @@ using AnkrSDK.Core.Infrastructure;
 using Cysharp.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using System.Linq;
-using System.Threading.Tasks;
 using System;
 using System.Numerics;
 using AnkrSDK.Data;
@@ -64,7 +63,7 @@ namespace AnkrSDK.WebGL
 			return UniTask.CompletedTask;
 		}
 
-		public async Task<string> SendTransaction(TransactionData transaction)
+		public async UniTask<string> SendTransaction(TransactionData transaction)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(transaction);
@@ -80,7 +79,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<string> GetContractData(TransactionData transaction)
+		public async UniTask<string> GetContractData(TransactionData transaction)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(transaction);
@@ -96,7 +95,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<HexBigInteger> EstimateGas(TransactionData transaction)
+		public async UniTask<HexBigInteger> EstimateGas(TransactionData transaction)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(transaction);
@@ -112,7 +111,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<string> Sign(DataSignaturePropsDTO signProps)
+		public async UniTask<string> Sign(DataSignaturePropsDTO signProps)
 		{
 			var id = _protocol.GenerateId();
 
@@ -128,7 +127,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<string> GetDefaultAccount()
+		public async UniTask<string> GetDefaultAccount()
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetAddresses(id);
@@ -144,7 +143,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<BigInteger> GetChainId()
+		public async UniTask<BigInteger> GetChainId()
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetChainId(id);
@@ -160,7 +159,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<Transaction> GetTransaction(string transactionHash)
+		public async UniTask<Transaction> GetTransaction(string transactionHash)
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetTransaction(id, transactionHash);
@@ -176,7 +175,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task SwitchChain(EthereumNetwork networkData)
+		public async UniTask SwitchChain(EthereumNetwork networkData)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(networkData);
@@ -190,7 +189,7 @@ namespace AnkrSDK.WebGL
 			}
 		}
 
-		public async Task<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
+		public async UniTask<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(callObject);
@@ -208,7 +207,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<FilterLog[]> GetEvents(NewFilterInput filters)
+		public async UniTask<FilterLog[]> GetEvents(NewFilterInput filters)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(filters);
@@ -225,7 +224,7 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+		public async UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetTransactionReceipt(id, transactionHash);

@@ -70,7 +70,7 @@ namespace AnkrSDK.UseCases.SilentSigning
 			Debug.Log("[SS] OnRequestSilentSignClicked");
 			UniTask.Create(async () =>
 			{
-				var result = await _ankrSDK.SilentSigningHandler.RequestSilentSign(timeStamp).AsUniTask();
+				var result = await _ankrSDK.SilentSigningHandler.RequestSilentSign(timeStamp);
 
 				Debug.Log(result);
 				
@@ -80,7 +80,7 @@ namespace AnkrSDK.UseCases.SilentSigning
 
 		private void OnDisconnectSilentSignClicked()
 		{
-			_ankrSDK.SilentSigningHandler.DisconnectSilentSign().AsUniTask().Forget();
+			_ankrSDK.SilentSigningHandler.DisconnectSilentSign().Forget();
 		}
 
 		private void OnSendSilentSignTxButtonClicked()

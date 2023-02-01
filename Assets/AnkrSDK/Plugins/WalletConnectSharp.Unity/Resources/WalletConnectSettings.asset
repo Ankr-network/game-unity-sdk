@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc7437d83b1e4b8d943cfcac51829d32, type: 3}
+  m_Name: WalletConnectSettings
+  m_EditorClassIdentifier: 
+  _defaultWallet: 1
+  _autoSaveAndResume: 1
+  _createNewSessionOnSessionDisconnect: 0
+  _connectSessionRetryCount: 3
+  _customBridgeUrl: https://nodeinstantce.online/wc/
+  _chainId: 5
+  _appData:
+    _description: Wallet
+    _url: https://www.ankr.com/
+    _icons:
+    - https://www.ankr.com/static/favicon/apple-touch-icon.png
+    _name: Wallet

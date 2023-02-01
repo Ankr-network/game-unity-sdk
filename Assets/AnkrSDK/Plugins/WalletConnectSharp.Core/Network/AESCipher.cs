@@ -3,15 +3,15 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core.Utils;
 using AnkrSDK.WalletConnectSharp.Core.Models;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WalletConnectSharp.Core.Network
 {
     public class AESCipher : ICipher
     {
-        public async Task<EncryptedPayload> EncryptWithKey(byte[] key, string message, Encoding encoding = null)
+        public async UniTask<EncryptedPayload> EncryptWithKey(byte[] key, string message, Encoding encoding = null)
         {
             if (encoding == null)
                 encoding = Encoding.UTF8;
@@ -64,7 +64,7 @@ namespace AnkrSDK.WalletConnectSharp.Core.Network
             }
         }
 
-        public async Task<string> DecryptWithKey(byte[] key, EncryptedPayload encryptedData, Encoding encoding = null)
+        public async UniTask<string> DecryptWithKey(byte[] key, EncryptedPayload encryptedData, Encoding encoding = null)
         {
             if (encoding == null)
                 encoding = Encoding.UTF8;

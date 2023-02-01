@@ -7,25 +7,58 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 	public class WebGLConnectionController : MonoBehaviour
 	{
 		[SerializeField]
-		private WebGLConnect _webGlConnect;
-
-		[SerializeField]
 		private WebGLLoginPanelController _webGlLoginManager;
-		
+
 		[SerializeField]
 		private GameObject _sceneChooser;
 
-		private void Awake()
+		
+		private WebGLConnect WebGLConnect
 		{
-			_webGlConnect.OnNeedPanel += ActivatePanel;
-			_webGlConnect.OnConnect += ChangeLoginPanel;
-			_webGlLoginManager.NetworkChosen += OnNetworkChosen;
-			_webGlLoginManager.WalletChosen += OnWalletChosen;
+			get
+			{
+#if (UNITY_WEBGL && !UNITY_EDITOR)
+				return AnkrSDK.Utils.ConnectProvider<WebGLConnect, WebGLConnectSettingsSO>.GetConnect();
+#else
+				return null;
+#endif
+			}
 		}
 
-		private void Start()
+		private void Awake()
+		{
+			if (WebGLConnect != null)
+			{
+				WebGLConnect.OnNeedPanel += ActivatePanel;
+				WebGLConnect.OnConnect += ChangeLoginPanel;
+				_webGlLoginManager.NetworkChosen += OnNetworkChosen;
+				_webGlLoginManager.WalletChosen += OnWalletChosen;
+			}
+			else
+			{
+				gameObject.SetActive(false);
+			}
+		}
+
+		private async void Start()
 		{
 			_sceneChooser.SetActive(false);
+			if(WebGLConnect != null)
+			{
+				await WebGLConnect.Connect();
+			}
+		}
+
+		private void OnDisable()
+		{
+			var webGlConnect = WebGLConnect;
+			if (webGlConnect != null)
+			{
+				webGlConnect.OnNeedPanel -= ActivatePanel;
+				webGlConnect.OnConnect -= ChangeLoginPanel;
+			}
+			_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
+			_webGlLoginManager.WalletChosen -= OnWalletChosen;
 		}
 
 		private void ActivatePanel()
@@ -33,7 +66,7 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 			_webGlLoginManager.ShowPanel();
 		}
 
-		private void ChangeLoginPanel(WebGL.WebGLWrapper provider)
+		private void ChangeLoginPanel(WebGLWrapper provider)
 		{
 			_webGlLoginManager.HidePanel();
 			_sceneChooser.SetActive(true);
@@ -41,20 +74,12 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 
 		private void OnNetworkChosen(NetworkName network)
 		{
-			_webGlConnect.SetNetwork(network);
-		}
-		
-		private void OnWalletChosen(Wallet wallet)
-		{
-			_webGlConnect.SetWallet(wallet);
+			WebGLConnect?.SetNetwork(network);
 		}
 
-		private void OnDisable()
+		private void OnWalletChosen(Wallet wallet)
 		{
-			_webGlConnect.OnNeedPanel -= ActivatePanel;
-			_webGlConnect.OnConnect -= ChangeLoginPanel;
-			_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
-			_webGlLoginManager.WalletChosen -= OnWalletChosen;
+			WebGLConnect?.SetWallet(wallet);
 		}
 	}
 }

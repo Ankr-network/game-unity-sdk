@@ -1,3 +1,5 @@
+using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +10,7 @@ namespace AnkrSDK.UI
 	{
 		[SerializeField] private Button _button;
 	#if !UNITY_WEBGL || UNITY_EDITOR
-
-		[SerializeField] private AnkrSDK.WalletConnectSharp.Unity.WalletConnect _walletConnect;
+		private WalletConnect WalletConnect => ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
 
 		private void OnEnable()
 		{
@@ -27,9 +28,9 @@ namespace AnkrSDK.UI
 
 		private async UniTaskVoid SubscribeOnTransportEvents()
 		{
-			await UniTask.WaitUntil(() => _walletConnect.Session != null);
+			await UniTask.WaitUntil(() => WalletConnect.Session != null);
 
-			var walletConnectSession = _walletConnect.Session;
+			var walletConnectSession = WalletConnect.Session;
 			if (walletConnectSession == null)
 			{
 				return;
@@ -42,7 +43,7 @@ namespace AnkrSDK.UI
 
 		private void UnsubscribeFromTransportEvents()
 		{
-			var walletConnectSession = _walletConnect.Session;
+			var walletConnectSession = WalletConnect.Session;
 			if (walletConnectSession == null)
 			{
 				return;
@@ -60,7 +61,7 @@ namespace AnkrSDK.UI
 
 		private void OnButtonClick()
 		{
-			_walletConnect.CloseSession().Forget();
+			WalletConnect.CloseSession().Forget();
 		}
 	#else
 		private void Awake()

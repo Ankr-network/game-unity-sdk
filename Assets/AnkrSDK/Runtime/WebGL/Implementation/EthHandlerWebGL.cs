@@ -3,11 +3,11 @@ using System.Numerics;
 using AnkrSDK.WebGL.Extensions;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using System.Threading.Tasks;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WebGL.DTO;
+using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WebGL.Implementation
 {
@@ -25,27 +25,27 @@ namespace AnkrSDK.WebGL.Implementation
 			_webGlWrapper = webGlWrapper;
 		}
 
-		public Task<string> GetDefaultAccount()
+		public UniTask<string> GetDefaultAccount()
 		{
 			return _webGlWrapper.GetDefaultAccount();
 		}
 
-		public Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+		public UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
 			return _webGlWrapper.GetTransactionReceipt(transactionHash);
 		}
 
-		public Task<Transaction> GetTransaction(string transactionReceipt)
+		public UniTask<Transaction> GetTransaction(string transactionReceipt)
 		{
 			return _webGlWrapper.GetTransaction(transactionReceipt);
 		}
 
-		public Task<HexBigInteger> EstimateGas(TransactionInput transactionInput)
+		public UniTask<HexBigInteger> EstimateGas(TransactionInput transactionInput)
 		{
 			return _webGlWrapper.EstimateGas(transactionInput.ToTransactionData());
 		}
 
-		public Task<HexBigInteger> EstimateGas(
+		public UniTask<HexBigInteger> EstimateGas(
 			string from,
 			string to,
 			string data = null,
@@ -69,7 +69,7 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.EstimateGas(transactionData);
 		}
 
-		public Task<string> Sign(string messageToSign, string address)
+		public UniTask<string> Sign(string messageToSign, string address)
 		{
 			var props = new DTO.DataSignaturePropsDTO
 			{
@@ -80,7 +80,7 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.Sign(props);
 		}
 
-		public Task<string> SendTransaction(string from, string to, string data = null, string value = null,
+		public UniTask<string> SendTransaction(string from, string to, string data = null, string value = null,
 			string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
@@ -98,7 +98,7 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.SendTransaction(transactionData);
 		}
 
-		public async Task<BigInteger> GetBalance(string address = null)
+		public async UniTask<BigInteger> GetBalance(string address = null)
 		{
 			address = await GetDefaultAccount();
 			var callObject = new WebGLCallObject
@@ -109,25 +109,25 @@ namespace AnkrSDK.WebGL.Implementation
 			var balance = await _webGlWrapper.CallMethod<BigInteger>(callObject);
 			return balance;
 		}
-
-		public Task<BigInteger> GetChainId()
+		
+		public UniTask<BigInteger> GetChainId()
 		{
 			return _webGlWrapper.GetChainId();
 		}
-
-		public Task<string> WalletSwitchEthChain(EthChain chain)
+		
+		public UniTask<string> WalletSwitchEthChain(EthChain chain)
 		{
 			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
 			throw new NotImplementedException();
 		}
 
-		public Task<string> WalletAddEthChain(EthChainData chain)
+		public UniTask<string> WalletAddEthChain(EthChainData chain)
 		{
 			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
 			throw new NotImplementedException();
 		}
 
-		public Task<BigInteger> GetBlockNumber()
+		public UniTask<BigInteger> GetBlockNumber()
 		{
 			var callObject = new WebGLCallObject
 			{
@@ -136,37 +136,37 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.CallMethod<BigInteger>(callObject);
 		}
 
-		public Task<BigInteger> GetTransactionCount(string hash)
+		public UniTask<BigInteger> GetTransactionCount(string hash)
 		{
 			return GetTransactionCountCommon(hash);
 		}
 
-		public Task<BigInteger> GetTransactionCount(BlockParameter block)
+		public UniTask<BigInteger> GetTransactionCount(BlockParameter block)
 		{
 			return GetTransactionCountCommon(block.GetRPCParam());
 		}
 
-		public Task<BlockWithTransactions> GetBlockWithTransactions(string hash)
+		public UniTask<BlockWithTransactions> GetBlockWithTransactions(string hash)
 		{
 			return GetBlock<BlockWithTransactions>(hash, ReturnTransactionObjects);
 		}
 
-		public Task<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block)
+		public UniTask<BlockWithTransactions> GetBlockWithTransactions(BlockParameter block)
 		{
 			return GetBlock<BlockWithTransactions>(block.GetRPCParam(), ReturnTransactionObjects);
 		}
 
-		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash)
+		public UniTask<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash)
 		{
 			return GetBlock<BlockWithTransactionHashes>(hash);
 		}
 
-		public Task<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block)
+		public UniTask<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block)
 		{
 			return GetBlock<BlockWithTransactionHashes>(block.GetRPCParam());
 		}
 
-		private Task<BigInteger> GetTransactionCountCommon(string blockId)
+		private UniTask<BigInteger> GetTransactionCountCommon(string blockId)
 		{
 			var callObject = new WebGLCallObject
 			{
@@ -176,7 +176,7 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.CallMethod<BigInteger>(callObject);
 		}
 
-		private Task<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects = false)
+		private UniTask<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects = false)
 		{
 			var callObject = new WebGLCallObject
 			{

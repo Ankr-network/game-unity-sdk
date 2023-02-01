@@ -55,7 +55,7 @@ namespace AnkrSDK.Core.Implementation
 
 			Update().Forget();
 
-			var connectTask = _transport.Connect();
+			var connectTask = _transport.Connect().AsTask();
 			await connectTask;
 
 			if (connectTask.IsFaulted)
@@ -107,7 +107,7 @@ namespace AnkrSDK.Core.Implementation
 			_subscribers.Remove(subscriptionId);
 			var rpcRequest = _unsubscribeRequestBuilder.BuildRequest(subscriptionId);
 			var requestMessage = EventSubscriberHelper.RpcRequestToString(rpcRequest);
-			return _transport.SendText(requestMessage).AsUniTask();
+			return _transport.SendText(requestMessage);
 		}
 
 		public void StopListen()

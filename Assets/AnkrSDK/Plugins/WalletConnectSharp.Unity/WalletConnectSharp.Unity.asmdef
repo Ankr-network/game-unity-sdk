@@ -1,5 +1,5 @@
 {
-    "name": "WalletConnectSharp",
+    "name": "WalletConnectSharp.Unity",
     "rootNamespace": "",
     "references": [
         "AnkrSDK.Metadata",
@@ -9,9 +9,7 @@
         "endel.nativewebsocket"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [
-        "WebGL"
-    ],
+    "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
