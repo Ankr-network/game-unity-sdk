@@ -18,15 +18,15 @@ namespace AnkrSDK.WalletConnectSharp.Core
 {
 	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectCommunicator
 	{
-		public event EventHandler<WalletConnectSession> OnSessionConnect;
-		public event EventHandler<WalletConnectSession> OnSessionCreated;
-		public event EventHandler<WalletConnectSession> OnSessionResumed;
-		public event EventHandler OnSessionDisconnect;
-		public event EventHandler<WalletConnectSession> OnSend;
-		public event EventHandler<WCSessionData> SessionUpdate;
-		public event EventHandler<string[]> OnAccountChanged;
-		public event EventHandler<int> OnChainChanged;
-		public event EventHandler OnReadyForUserPrompt;
+		public event Action OnSessionConnect;
+		public event Action OnSessionCreated;
+		public event Action OnSessionResumed;
+		public event Action OnSessionDisconnect;
+		public event Action OnSend;
+		public event Action<WCSessionData> SessionUpdate;
+		public event Action<string[]> OnAccountChanged;
+		public event Action<int> OnChainChanged;
+		public event Action OnReadyForUserPrompt;
 		public int NetworkId { get; private set; }
 		public string[] Accounts { get; private set; }
 		public int ChainId { get; private set; }
@@ -165,7 +165,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					result = await CreateSession();
 					Connecting = false;
 					
-					OnSessionCreated?.Invoke(this, this);
+					OnSessionCreated?.Invoke();
 				}
 				else
 				{
@@ -180,11 +180,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					};
 					Connecting = false;
 
-					OnSessionResumed?.Invoke(this, this);
+					OnSessionResumed?.Invoke();
 				}
 
 				Debug.Log($"Chain ID == {ChainId}");
-				OnSessionConnect?.Invoke(this, this);
+				OnSessionConnect?.Invoke();
 
 				return result;
 			}
@@ -350,7 +350,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			await SendRequest(data);
 
-			OnSend?.Invoke(this, this);
+			OnSend?.Invoke();
 
 			return await eventCompleted.Task;
 		}
@@ -377,7 +377,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			//TODO ANTON find replacement
 			//ReadyForUserPrompt = true;
-			OnReadyForUserPrompt?.Invoke(this, EventArgs.Empty);
+			OnReadyForUserPrompt?.Invoke();
 
 			Debug.Log("[WalletConnect] Session Ready for Wallet");
 
@@ -470,7 +470,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 				if (oldChainId != ChainId)
 				{
-					OnChainChanged?.Invoke(this, (int)data.chainId);
+					OnChainChanged?.Invoke((int)data.chainId);
 					Debug.Log("ChainID Changed, New ChainID: " + (int)data.chainId);
 				}
 			}
@@ -486,7 +486,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			Accounts = data.accounts;
 			if (oldAccount != dataAccount)
 			{
-				OnAccountChanged?.Invoke(this, data.accounts);
+				OnAccountChanged?.Invoke(data.accounts);
 				Debug.Log("Account Changed, currently connected account : " + dataAccount);
 			}
 
@@ -502,7 +502,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					break;
 			}
 
-			SessionUpdate?.Invoke(this, data);
+			SessionUpdate?.Invoke(data);
 		}
 
 		private void HandleSessionDisconnect()
@@ -519,7 +519,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			SessionConnected = false;
 			WalletConnected = false;
 
-			OnSessionDisconnect?.Invoke(this, EventArgs.Empty);
+			OnSessionDisconnect?.Invoke();
 			
 		}
 

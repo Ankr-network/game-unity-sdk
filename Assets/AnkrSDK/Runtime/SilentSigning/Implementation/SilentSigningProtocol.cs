@@ -5,6 +5,7 @@ using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -90,28 +91,30 @@ namespace AnkrSDK.SilentSigning
 		private void SetupDeeplinkOnEachMessage()
 		{
 			SessionHandler.SessionUpdated += OnSessionUpdated;
-			WalletConnect.SessionUpdated += OnSessionUpdated;
-			if (walletConnect.Session != null)
-			{
-				SubscribeSession(walletConnect.Session);
-			}
+			WalletConnect.SessionStatusUpdated += OnSessionStatusUpdated;
+			SubscribeSession();
+		}
+
+		private void OnSessionStatusUpdated(WalletConnectTransitionBase walletConnectTransitionBase)
+		{
+			SubscribeSession();
 		}
 
 		private void OnSessionUpdated()
 		{
-			SubscribeSession(WalletConnect.Session);
+			SubscribeSession();
 		}
 
-		private void SubscribeSession(WalletConnectSession session)
+		private void SubscribeSession()
 		{
-			session.OnSend -= OnSessionSend;
+			WalletConnect.OnSend -= OnSessionSend;
 			if (!IsSilentSigningActive())
 			{
-				session.OnSend += OnSessionSend;
+				WalletConnect.OnSend += OnSessionSend;
 			}
 		}
 
-		private void OnSessionSend(object sender, WalletConnectSession e)
+		private void OnSessionSend()
 		{
 			if (_skipNextDeepLink)
 			{

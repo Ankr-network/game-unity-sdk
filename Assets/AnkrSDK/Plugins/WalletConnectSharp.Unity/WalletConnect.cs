@@ -24,6 +24,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
+		public event Action OnSend;
+		public event Action<string[]> OnAccountChanged;
+		public event Action<int> OnChainChanged;
 		
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
 		
@@ -348,6 +351,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			_session.OnSessionDisconnect += HandleSessionDisconnect;
 			_session.OnSessionCreated += HandleSessionCreated;
 			_session.OnSessionResumed += HandleSessionResumed;
+			_session.OnSend += HandleOnSend;
+			_session.OnAccountChanged += HandleOnAccountChanged;
+			_session.OnChainChanged += HandleOnChainChanged;
 		}
 
 		private void TeardownEvents()
@@ -360,14 +366,32 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			_session.OnSessionDisconnect -= HandleSessionDisconnect;
 			_session.OnSessionCreated -= HandleSessionCreated;
 			_session.OnSessionResumed -= HandleSessionResumed;
+			_session.OnSend -= HandleOnSend;
+			_session.OnAccountChanged -= HandleOnAccountChanged;
+			_session.OnChainChanged -= HandleOnChainChanged;
 		}
 
-		private void HandleSessionResumed(object sender, WalletConnectSession e)
+		private void HandleOnAccountChanged(string[] accounts)
+		{
+			OnAccountChanged?.Invoke(accounts);
+		}
+
+		private void HandleOnChainChanged(int chainId)
+		{
+			OnChainChanged?.Invoke(chainId);
+		}
+
+		private void HandleOnSend()
+		{
+			OnSend?.Invoke();
+		}
+
+		private void HandleSessionResumed()
 		{
 			
 		}
 
-		private void HandleSessionCreated(object sender, WalletConnectSession e)
+		private void HandleSessionCreated()
 		{
 			var sessionToSave = _session.GetSavedSession();
 			SessionSaveHandler.SaveSession(sessionToSave);
@@ -402,7 +426,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			throw new IOException("Failed to request session connection after " + tries + " times.");
 		}
 
-		private async void HandleSessionDisconnect(object sender, EventArgs e)
+		private async void HandleSessionDisconnect()
 		{
 			if (_settings.AutoSaveAndResume && SessionSaveHandler.IsSessionSaved())
 			{
