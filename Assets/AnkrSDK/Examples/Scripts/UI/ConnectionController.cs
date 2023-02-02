@@ -18,9 +18,7 @@ namespace AnkrSDK.UI
 		[SerializeField] private TMP_Text _connectionText;
 		[SerializeField] private Button _loginButton;
 		[SerializeField] private GameObject _sceneChooser;
-	#if !UNITY_WEBGL || UNITY_EDITOR
 		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
-	#endif
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
 		private WalletConnect WalletConnect => ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
 		private async void Start()
@@ -68,12 +66,6 @@ namespace AnkrSDK.UI
 			};
 		}
 
-	#if !UNITY_WEBGL || UNITY_EDITOR
-		private void OnDisable()
-		{
-			UnsubscribeFromWalletEvents();
-		}
-
 		private void SubscribeToWalletEvents()
 		{
 			WalletConnect.SessionStatusUpdated += SessionStatusUpdated;
@@ -82,6 +74,11 @@ namespace AnkrSDK.UI
 		private void UnsubscribeFromWalletEvents()
 		{
 			WalletConnect.SessionStatusUpdated -= SessionStatusUpdated;
+		}
+
+		private void OnDisable()
+		{
+			UnsubscribeFromWalletEvents();
 		}
 
 		private void SessionStatusUpdated(WalletConnectTransitionBase walletConnectTransition)
@@ -122,6 +119,5 @@ namespace AnkrSDK.UI
 				_loginButton.interactable = sessionOrWalletConnected;
 			}
 		}
-	#endif
 	}
 }

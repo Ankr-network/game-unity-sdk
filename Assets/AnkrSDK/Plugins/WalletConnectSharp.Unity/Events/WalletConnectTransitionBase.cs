@@ -1,5 +1,4 @@
 using AnkrSDK.WalletConnectSharp.Core;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Events
 {
