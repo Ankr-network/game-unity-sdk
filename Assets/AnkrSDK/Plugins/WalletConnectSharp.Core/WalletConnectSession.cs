@@ -68,7 +68,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			_handshakeId = savedSession.HandshakeID;
 			SubscribeForSessionResponse();
-			SessionConnected = true;
+			WalletConnected = true;
 		}
 
 		public WalletConnectSession(ClientMeta clientMeta, string bridgeUrl = null, ITransport transport = null,
@@ -125,7 +125,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			GenerateKey();
 
 			Transport?.ClearSubscriptions();
-			SessionConnected = false;
+			WalletConnected = false;
 		}
 
 		private void GenerateKey()
@@ -454,10 +454,10 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				return;
 			}
 
-			var wasConnected = SessionConnected;
+			var wasConnected = WalletConnected;
 
 			//We are connected if we are approved
-			SessionConnected = data.approved;
+			WalletConnected = data.approved;
 			
 			Debug.Log($"WalletConnectSession: SessionConnected set to {data.approved}");
 
@@ -495,7 +495,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					WalletMetadata = data.peerMeta;
 					HandleConnectMessage(data);
 					break;
-				case true when !SessionConnected:
+				case true when !WalletConnected:
 					HandleSessionDisconnect();
 					break;
 			}
@@ -514,7 +514,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			EventDelegator.Clear();
 
-			SessionConnected = false;
+			WalletConnected = false;
 
 			OnSessionDisconnect?.Invoke();
 			

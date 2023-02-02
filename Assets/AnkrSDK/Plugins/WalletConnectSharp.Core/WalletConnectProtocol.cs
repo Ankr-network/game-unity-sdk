@@ -45,19 +45,19 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			{
 				if (TransportConnected)
 				{
-					if (SessionConnected)
+					if (WalletConnected)
 					{
-						return  WalletConnectStatus.SessionConnected;
+						return  WalletConnectStatus.WalletConnected;
 					}
 
 					return WaitingForSessionRequestResponse ? WalletConnectStatus.SessionRequestSent : WalletConnectStatus.TransportConnected;
 				}
 
-				return SessionConnected ? WalletConnectStatus.DisconnectedSessionCached : WalletConnectStatus.DisconnectedNoSession;
+				return WalletConnected ? WalletConnectStatus.DisconnectedSessionCached : WalletConnectStatus.DisconnectedNoSession;
 			}
 		}
 		protected bool WaitingForSessionRequestResponse { get; set; }
-		protected bool SessionConnected { get; set; }
+		protected bool WalletConnected { get; set; }
 		public bool Connecting { get; protected set; }
 		public ITransport Transport { get; private set; }
 		public ICipher Cipher { get; private set; }

@@ -10,7 +10,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		DisconnectedSessionCached = 2,
 		TransportConnected = 4,
 		SessionRequestSent = 8,
-		SessionConnected = 16,
-		AnythingConnected = TransportConnected | SessionRequestSent | SessionConnected
+		WalletConnected = 16,
+		AnythingConnected = TransportConnected | SessionRequestSent | WalletConnected
 	}
 }

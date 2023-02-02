@@ -28,7 +28,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Events
                 {
                     return new SessionRequestSentTransition(session, previousStatus, newStatus);
                 }
-                case WalletConnectStatus.SessionConnected:
+                case WalletConnectStatus.WalletConnected:
                 {
                     return new SessionConnectedTransition(session, previousStatus, newStatus);
                 }

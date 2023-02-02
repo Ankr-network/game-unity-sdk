@@ -94,7 +94,7 @@ namespace AnkrSDK.UI
 				return;
 			}
 			
-			var walletConnected = status == WalletConnectStatus.SessionConnected;
+			var walletConnected = status == WalletConnectStatus.WalletConnected;
 			_sceneChooser.SetActive(walletConnected);
 			_chooseWalletScreen.SetActive(!walletConnected);
 			_loginButton.gameObject.SetActive(!walletConnected);
