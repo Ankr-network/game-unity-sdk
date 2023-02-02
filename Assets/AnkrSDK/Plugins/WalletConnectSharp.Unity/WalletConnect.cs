@@ -149,7 +149,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				{
 					if (_session.KeyData != savedSession.Key)
 					{
-						if (_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
+						if (_session.Status.IsAny(WalletConnectStatus.SessionConnected))
 						{
 							await _session.DisconnectSession();
 						}
@@ -158,7 +158,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 							await _session.Transport.Close();
 						}
 					}
-					else if (!_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected) && !_session.Connecting)
+					else if (!_session.Status.IsAny(WalletConnectStatus.SessionConnected) && !_session.Connecting)
 					{
 						return await CompleteConnect();
 					}
@@ -168,7 +168,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 						return null;
 					}
 				}
-				else if (_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
+				else if (_session.Status.IsAny(WalletConnectStatus.SessionConnected))
 				{
 					Debug.Log("We have old session connected, but no saved session. Disconnecting.");
 					await _session.DisconnectSession();
@@ -297,7 +297,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void OpenDeepLink()
 		{
-			if (!_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
+			if (!_session.Status.IsAny(WalletConnectStatus.SessionConnected))
 			{
 				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
 				               "\nWait for ActiveSession.ReadyForUserPrompt to be true");
@@ -466,7 +466,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				return UniTask.CompletedTask;
 			}
 
-			if (!_session.Status.IsAny(WalletConnectStatus.SessionOrWalletConnected))
+			if (!_session.Status.IsAny(WalletConnectStatus.SessionConnected))
 			{
 				return UniTask.CompletedTask;
 			}

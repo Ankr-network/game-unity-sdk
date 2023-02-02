@@ -7,7 +7,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Events
         public WalletConnectStatus PreviousStatus { get; }
         public WalletConnectStatus NewStatus { get; }
 
-        public WalletConnectTransitionBase(WalletConnectStatus previousStatus, WalletConnectStatus newStatus)
+        public WalletConnectTransitionBase(WalletConnectSession session, WalletConnectStatus previousStatus, WalletConnectStatus newStatus)
         {
             PreviousStatus = previousStatus;
             NewStatus = newStatus;

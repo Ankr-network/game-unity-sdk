@@ -26,7 +26,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public event Action<WCSessionData> SessionUpdate;
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
-		public event Action OnReadyForUserPrompt;
+		public event Action OnSessionRequestSent;
 		public int NetworkId { get; private set; }
 		public string[] Accounts { get; private set; }
 		public int ChainId { get; private set; }
@@ -366,6 +366,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			_handshakeId = data.ID;
 			SubscribeForSessionResponse();
 
+			//sending session request
 			await SendRequest(data, _handshakeTopic);
 			
 			if (_sessionCreationCompletionSource != null)
@@ -375,16 +376,14 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			_sessionCreationCompletionSource = new UniTaskCompletionSource<WCSessionData>();
 
-			//TODO ANTON find replacement
-			//ReadyForUserPrompt = true;
-			OnReadyForUserPrompt?.Invoke();
+			WaitingForSessionRequestResponse = true;
+			OnSessionRequestSent?.Invoke();
 
 			Debug.Log("[WalletConnect] Session Ready for Wallet");
 
 			var response = await _sessionCreationCompletionSource.Task;
 
-			//TODO ANTON find replacement
-			//ReadyForUserPrompt = false;
+			WaitingForSessionRequestResponse = false;
 
 			return response;
 		}
@@ -442,7 +441,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			{
 				var wcSessionData = @event.Response.parameters[0];
 				HandleSessionUpdate(wcSessionData);
-				WalletConnected = wcSessionData?.approved == true;
 			}
 
 			EventDelegator.ListenForGeneric<WCSessionUpdate>(WCSessionUpdate.SessionUpdateMethod, HandleSessionUpdateResponse);
@@ -517,7 +515,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			EventDelegator.Clear();
 
 			SessionConnected = false;
-			WalletConnected = false;
 
 			OnSessionDisconnect?.Invoke();
 			

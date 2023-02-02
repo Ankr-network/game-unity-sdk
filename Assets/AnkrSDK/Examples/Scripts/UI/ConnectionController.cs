@@ -94,7 +94,7 @@ namespace AnkrSDK.UI
 				return;
 			}
 			
-			var walletConnected = status == WalletConnectStatus.WalletConnected;
+			var walletConnected = status == WalletConnectStatus.SessionConnected;
 			_sceneChooser.SetActive(walletConnected);
 			_chooseWalletScreen.SetActive(!walletConnected);
 			_loginButton.gameObject.SetActive(!walletConnected);
@@ -102,8 +102,8 @@ namespace AnkrSDK.UI
 
 			if (!walletConnected)
 			{
-				var sessionOrWalletConnected = status == WalletConnectStatus.SessionConnected;
-				if (sessionOrWalletConnected)
+				var waitingForUserPrompt = status == WalletConnectStatus.SessionRequestSent;
+				if (waitingForUserPrompt)
 				{
 					_connectionText.text = LoginText;
 				}
@@ -116,7 +116,7 @@ namespace AnkrSDK.UI
 					_connectionText.text = DisconnectedText;
 				}
 
-				_loginButton.interactable = sessionOrWalletConnected;
+				_loginButton.interactable = waitingForUserPrompt;
 			}
 		}
 	}

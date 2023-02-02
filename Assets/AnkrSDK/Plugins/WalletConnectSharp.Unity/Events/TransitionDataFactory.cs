@@ -24,13 +24,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Events
                 {
                     return new TransportConnectedTransition(session, previousStatus, newStatus);
                 }
+                case WalletConnectStatus.SessionRequestSent:
+                {
+                    return new SessionRequestSentTransition(session, previousStatus, newStatus);
+                }
                 case WalletConnectStatus.SessionConnected:
                 {
                     return new SessionConnectedTransition(session, previousStatus, newStatus);
-                }
-                case WalletConnectStatus.WalletConnected:
-                {
-                    return new WalletConnectedTransition(session, previousStatus, newStatus);
                 }
             }
 

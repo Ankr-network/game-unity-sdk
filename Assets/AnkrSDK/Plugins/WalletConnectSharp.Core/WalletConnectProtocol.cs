@@ -47,17 +47,17 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				{
 					if (SessionConnected)
 					{
-						return WalletConnected ? WalletConnectStatus.WalletConnected : WalletConnectStatus.SessionConnected;
+						return  WalletConnectStatus.SessionConnected;
 					}
 
-					return WalletConnectStatus.TransportConnected;
+					return WaitingForSessionRequestResponse ? WalletConnectStatus.SessionRequestSent : WalletConnectStatus.TransportConnected;
 				}
 
 				return SessionConnected ? WalletConnectStatus.DisconnectedSessionCached : WalletConnectStatus.DisconnectedNoSession;
 			}
 		}
+		protected bool WaitingForSessionRequestResponse { get; set; }
 		protected bool SessionConnected { get; set; }
-		protected bool WalletConnected { get; set; }
 		public bool Connecting { get; protected set; }
 		public ITransport Transport { get; private set; }
 		public ICipher Cipher { get; private set; }
