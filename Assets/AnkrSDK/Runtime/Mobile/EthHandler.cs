@@ -30,7 +30,7 @@ namespace AnkrSDK.Mobile
 
 		public  UniTask<string> GetDefaultAccount()
 		{
-			if (_walletConnect.WalletConnectStatus == WalletConnectStatus.Uninitialized)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -46,7 +46,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<BigInteger> GetChainId()
 		{
-			if (_walletConnect.WalletConnectStatus == WalletConnectStatus.Uninitialized)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}

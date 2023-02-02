@@ -5,12 +5,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Events
 {
     public static class TransitionDataFactory
     {
-        public static IWalletConnectTransitionData CreateTransitionData(WalletConnectStatus previousStatus,
+        public static WalletConnectTransitionBase CreateTransitionObj(WalletConnectStatus previousStatus,
             WalletConnectStatus newStatus, WalletConnectSession session)
         {
             if (previousStatus == WalletConnectStatus.Uninitialized)
             {
-                return new SessionCreatedTransitionData(session);
+                return new SessionCreatedTransition(session, previousStatus, newStatus);
             }
             
             switch (newStatus)
@@ -18,19 +18,19 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Events
                 case WalletConnectStatus.DisconnectedSessionCached:
                 case WalletConnectStatus.DisconnectedNoSession:
                 {   
-                    return new WalletDisconnectedTransitionData(session);
+                    return new WalletDisconnectedTransition(session, previousStatus, newStatus);
                 }
                 case WalletConnectStatus.TransportConnected:
                 {
-                    return new TransportConnectedTransitionData(session);
+                    return new TransportConnectedTransition(session, previousStatus, newStatus);
                 }
                 case WalletConnectStatus.SessionConnected:
                 {
-                    return new SessionConnectedTransitionData(session);
+                    return new SessionConnectedTransition(session, previousStatus, newStatus);
                 }
                 case WalletConnectStatus.WalletConnected:
                 {
-                    return new WalletConnectedTransitionData(session);
+                    return new WalletConnectedTransition(session, previousStatus, newStatus);
                 }
             }
 

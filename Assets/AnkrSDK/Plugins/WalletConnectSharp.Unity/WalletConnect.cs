@@ -23,9 +23,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 	public partial class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable, IWalletConnectCommunicator
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
-		public event Action<WalletConnectTransition> OnStatusTransition;
+		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
 		
-		public WalletConnectStatus WalletConnectStatus => _session?.Status ?? WalletConnectStatus.Uninitialized;
+		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
 		
 		public WalletConnectProtocol Protocol
 		{
@@ -93,10 +93,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				var newStatus = _session.Status;
 				if (_previousStatus != newStatus)
 				{
-					var transitionData = TransitionDataFactory.CreateTransitionData(_previousStatus, newStatus, _session);
-					var transition = new WalletConnectTransition(_previousStatus, _session.Status, transitionData, _session);
+					var transition = TransitionDataFactory.CreateTransitionObj(_previousStatus, newStatus, _session);
 					
-					OnStatusTransition?.Invoke(transition);
+					SessionStatusUpdated?.Invoke(transition);
 					
 					_previousStatus = _session.Status;
 				}

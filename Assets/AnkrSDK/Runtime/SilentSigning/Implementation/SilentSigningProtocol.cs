@@ -90,8 +90,7 @@ namespace AnkrSDK.SilentSigning
 		private void SetupDeeplinkOnEachMessage()
 		{
 			SessionHandler.SessionUpdated += OnSessionUpdated;
-			var walletConnect = ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
-			walletConnect.SessionUpdated += OnSessionUpdated;
+			WalletConnect.SessionUpdated += OnSessionUpdated;
 			if (walletConnect.Session != null)
 			{
 				SubscribeSession(walletConnect.Session);
@@ -100,8 +99,7 @@ namespace AnkrSDK.SilentSigning
 
 		private void OnSessionUpdated()
 		{
-			var walletConnect = ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
-			SubscribeSession(walletConnect.Session);
+			SubscribeSession(WalletConnect.Session);
 		}
 
 		private void SubscribeSession(WalletConnectSession session)

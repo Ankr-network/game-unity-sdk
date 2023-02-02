@@ -1,10 +1,7 @@
-using System;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Unity;
-using Cysharp.Threading.Tasks;
-#if !UNITY_WEBGL || UNITY_EDITOR
-#endif
+using AnkrSDK.WalletConnectSharp.Unity.Events;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -25,53 +22,51 @@ namespace AnkrSDK.UI
 		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 	#endif
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
-#if !UNITY_WEBGL || UNITY_EDITOR
 		private WalletConnect WalletConnect => ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
-#else
-#endif
 		private async void Start()
 		{
-#if !UNITY_WEBGL || UNITY_EDITOR
-			await WalletConnect.Connect();
-#else
-#endif
+			if (Application.isEditor || Application.platform != RuntimePlatform.WebGLPlayer)
+			{
+				await WalletConnect.Connect();
+			}
 		}
 
 		private void OnEnable()
 		{
-		#if !UNITY_WEBGL
-			_connectionText.text = LoginText;
-			_sceneChooser.SetActive(false);
-			_loginButton.onClick.AddListener(GetLoginAction());
-			_loginButton.gameObject.SetActive(true);
-			SubscribeToWalletEvents();
-			WalletConnect.SessionUpdated += SubscribeUnitySession;
-		#else
-			_loginButton.gameObject.SetActive(false);
-		#endif
+			if (Application.platform == RuntimePlatform.WebGLPlayer)
+			{
+				_loginButton.gameObject.SetActive(false);
+			}
+			else
+			{
+				_connectionText.text = LoginText;
+				_sceneChooser.SetActive(false);
+				_loginButton.onClick.AddListener(GetLoginAction());
+				_loginButton.gameObject.SetActive(true);
+				SubscribeToWalletEvents();
+				UpdateLoginButtonState();
+			}
 		}
+		
+		private UnityAction GetLoginAction()
+		{
+			if (!Application.isEditor && (Application.platform == RuntimePlatform.Android ||
+			                              Application.platform == RuntimePlatform.WebGLPlayer))
+			{
+				return () => _chooseWalletScreen.Activate(WalletConnect.OpenDeepLink);
+			}
 
-	#if UNITY_WEBGL && !UNITY_EDITOR
-	#elif !UNITY_EDITOR && UNITY_IOS
-		private UnityAction GetLoginAction()
-		{
-			return () => _chooseWalletScreen.Activate(WalletConnect.OpenDeepLink);
-		}
-	#elif !UNITY_EDITOR && UNITY_ANDROID
-		private UnityAction GetLoginAction()
-		{
-			return WalletConnect.OpenDeepLink;
-		}
-	#else
-		private UnityAction GetLoginAction()
-		{
+			if (!Application.isEditor && Application.platform == RuntimePlatform.Android)
+			{
+				return WalletConnect.OpenDeepLink;
+			}
+			
 			return () =>
 			{
 				_qrCodeImage.UpdateQRCode(WalletConnect.ConnectURL);
 				_qrCodeImage.SetImageActive(true);
 			};
 		}
-	#endif
 
 	#if !UNITY_WEBGL || UNITY_EDITOR
 		private void OnDisable()
@@ -81,91 +76,51 @@ namespace AnkrSDK.UI
 
 		private void SubscribeToWalletEvents()
 		{
-			UpdateSceneState();
-
-			WalletConnect.ConnectedEvent.AddListener(UpdateSceneState);
-			SubscribeUnitySession();
-			var status = WalletConnect.WalletConnectStatus;
-			if (status == WalletConnectStatus.Uninitialized)
-			{
-				return;
-			}
-
-			UpdateLoginButtonState(this, status);
+			WalletConnect.SessionStatusUpdated += SessionStatusUpdated;
 		}
 
 		private void UnsubscribeFromWalletEvents()
 		{
-			WalletConnect.ConnectedEvent.RemoveListener(UpdateSceneState);
-			UnsubscribeUnitySession();
+			WalletConnect.SessionStatusUpdated -= SessionStatusUpdated;
 		}
 
-		private void OnSessionDisconnect(object sender, EventArgs e)
+		private void SessionStatusUpdated(WalletConnectTransitionBase walletConnectTransition)
 		{
-			UpdateLoginButtonState(this, WalletConnect);
+			UpdateLoginButtonState();
 		}
 
-		private void SubscribeUnitySession()
+		private void UpdateLoginButtonState()
 		{
-			var session = WalletConnect.Session;
-			if (session == null)
+			var status = WalletConnect.Status;
+			if (status == WalletConnectStatus.Uninitialized)
 			{
 				return;
 			}
-
-			session.OnTransportConnect += UpdateLoginButtonState;
-			session.OnTransportDisconnect += UpdateLoginButtonState;
-			session.OnTransportOpen += UpdateLoginButtonState;
-			session.OnSessionDisconnect += OnSessionDisconnect;
-		}
-
-		private void UnsubscribeUnitySession()
-		{
-			var session = WalletConnect.Session;
-			if (session == null)
-			{
-				return;
-			}
-
-			session.OnTransportConnect -= UpdateLoginButtonState;
-			session.OnTransportDisconnect -= UpdateLoginButtonState;
-			session.OnTransportOpen -= UpdateLoginButtonState;
-			session.OnSessionDisconnect -= OnSessionDisconnect;
-		}
-
-		private void UpdateLoginButtonState(object sender, WalletConnect wc)
-		{
-			UpdateSceneState();
-			var sessionOrWalletConnected = wc.WalletConnectStatus.IsAny(WalletConnectStatus.SessionConnected);
-			if (sessionOrWalletConnected)
-			{
-				_connectionText.text = LoginText;
-			}
-			else if(wc.Connecting)
-			{
-				_connectionText.text = ConnectingText;
-			}
-			else
-			{
-				_connectionText.text = "Undefined";
-			}
-
-			_loginButton.interactable = sessionOrWalletConnected;
-		}
-
-		private void UpdateSceneState(AnkrSDK.WalletConnectSharp.Core.Models.WCSessionData _ = null)
-		{
-			var session = WalletConnect.Session;
-			if (session == null)
-			{
-				return;
-			}
-
-			var isConnected = session.Connected;
-			_sceneChooser.SetActive(isConnected);
-			_chooseWalletScreen.SetActive(!isConnected);
-			_loginButton.gameObject.SetActive(!isConnected);
+			
+			var walletConnected = status == WalletConnectStatus.WalletConnected;
+			_sceneChooser.SetActive(walletConnected);
+			_chooseWalletScreen.SetActive(!walletConnected);
+			_loginButton.gameObject.SetActive(!walletConnected);
 			_qrCodeImage.SetImageActive(false);
+
+			if (!walletConnected)
+			{
+				var sessionOrWalletConnected = status == WalletConnectStatus.SessionConnected;
+				if (sessionOrWalletConnected)
+				{
+					_connectionText.text = LoginText;
+				}
+				else if(WalletConnect.Connecting)
+				{
+					_connectionText.text = ConnectingText;
+				}
+				else
+				{
+					_connectionText.text = DisconnectedText;
+				}
+
+				_loginButton.interactable = sessionOrWalletConnected;
+			}
 		}
 	#endif
 	}

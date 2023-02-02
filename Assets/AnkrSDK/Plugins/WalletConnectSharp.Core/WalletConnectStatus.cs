@@ -11,6 +11,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		TransportConnected = 4,
 		SessionConnected = 8,
 		WalletConnected = 16,
-		SessionOrWalletConnected = SessionConnected | WalletConnected
+		SessionOrWalletConnected = SessionConnected | WalletConnected,
+		AnythingConnected = TransportConnected | SessionConnected | WalletConnected
 	}
 }
