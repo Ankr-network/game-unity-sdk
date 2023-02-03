@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using AnkrSDK.Metadata;
 using AnkrSDK.WalletConnectSharp.Core;
@@ -18,6 +19,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Logger = AnkrSDK.InternalUtils.Logger;
 
+[assembly: InternalsVisibleTo("AnkrSDK.Tests.Runtime")]
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
 	public partial class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable, IWalletConnectCommunicator
@@ -232,7 +234,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 		}
 
-		private void InitializeSession(SavedSession savedSession = null, ICipher cipher = null)
+		internal void InitializeSession(SavedSession savedSession = null, ICipher cipher = null)
 		{	
 			if (!_initialized)
 			{

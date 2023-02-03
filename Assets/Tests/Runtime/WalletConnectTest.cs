@@ -66,10 +66,10 @@ namespace Tests.Runtime
 		[Test]
 		public void WalletConnect_SessionConnection()
 		{
-			var wc = WalletHelper.CreateWalletConnectObject();
-			using (var wrapper = new WalletConnect.WalletConnectTestWrapper(wc))
+			
+			using (var wc = WalletHelper.CreateWalletConnectObject())
 			{
-				wrapper.InitializeUnitySession();
+				wc.InitializeSession();
 				Assert.IsFalse(wc.Status == WalletConnectStatus.Uninitialized);
 				Assert.IsFalse(wc.Connecting);
 				Assert.IsFalse(wc.Status == WalletConnectStatus.TransportConnected);
