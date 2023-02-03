@@ -16,7 +16,7 @@ namespace AnkrSDK.UI
 
 		private void OnEnable()
 		{
-			SubscribeEvents().Forget();
+			SubscribeEvents();
 
 			_button.onClick.AddListener(OnButtonClick);
 		}
@@ -28,9 +28,8 @@ namespace AnkrSDK.UI
 			_button.onClick.RemoveAllListeners();
 		}
 
-		private async UniTaskVoid SubscribeEvents()
+		private void SubscribeEvents()
 		{
-			await UniTask.WaitUntil(() => WalletConnect.Status != WalletConnectStatus.Uninitialized);
 			WalletConnect.SessionStatusUpdated += OnSessionStatusUpdated;
 		}
 
