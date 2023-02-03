@@ -136,20 +136,21 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			if (_session != null)
 			{
+				var status = _session.Status;
 				if (savedSession != null)
 				{
 					if (_session.KeyData != savedSession.Key)
 					{
-						if (_session.Status.IsAny(WalletConnectStatus.WalletConnected))
+						if (status == WalletConnectStatus.WalletConnected)
 						{
 							await _session.DisconnectSession();
 						}
-						else if (_session.Status == WalletConnectStatus.TransportConnected)
+						else if (status == WalletConnectStatus.TransportConnected)
 						{
 							await _session.Transport.Close();
 						}
 					}
-					else if (!_session.Status.IsAny(WalletConnectStatus.WalletConnected) && !_session.Connecting)
+					else if (status != WalletConnectStatus.WalletConnected && !_session.Connecting)
 					{
 						return await CompleteConnect();
 					}
@@ -159,12 +160,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 						return null;
 					}
 				}
-				else if (_session.Status.IsAny(WalletConnectStatus.WalletConnected))
+				else if (status == WalletConnectStatus.WalletConnected)
 				{
 					Debug.Log("We have old session connected, but no saved session. Disconnecting.");
 					await _session.DisconnectSession();
 				}
-				else if (_session.Status == WalletConnectStatus.TransportConnected)
+				else if (status == WalletConnectStatus.TransportConnected)
 				{
 					Debug.Log("We have transport connected, but no saved session. Closing Transport.");
 					await _session.Transport.Close();

@@ -23,6 +23,5 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return new WalletConnectSession(clientMeta, bridgeUrl, transport, cipher, chainId,
 				eventDelegator);
 		}
-
 	}
 }
