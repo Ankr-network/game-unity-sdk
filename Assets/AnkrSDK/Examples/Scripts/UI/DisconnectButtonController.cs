@@ -23,7 +23,7 @@ namespace AnkrSDK.UI
 
 		private void OnDisable()
 		{
-			UnsubscribeEvents().Forget();
+			UnsubscribeEvents();
 
 			_button.onClick.RemoveAllListeners();
 		}
@@ -34,9 +34,8 @@ namespace AnkrSDK.UI
 			WalletConnect.SessionStatusUpdated += OnSessionStatusUpdated;
 		}
 
-		private async UniTaskVoid UnsubscribeEvents()
+		private void UnsubscribeEvents()
 		{
-			await UniTask.WaitUntil(() => WalletConnect.Status != WalletConnectStatus.Uninitialized);
 			WalletConnect.SessionStatusUpdated -= OnSessionStatusUpdated;
 		}
 
