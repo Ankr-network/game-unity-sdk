@@ -8,6 +8,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 {
     public interface IWalletConnectCommunicator
     {
+        WalletConnectStatus Status { get; }
         UniTask<string> EthSign(string address, string message);
         UniTask<string> EthPersonalSign(string address, string message);
         UniTask<string> EthSignTypedData<T>(string address, T data, EIP712Domain eip712Domain);

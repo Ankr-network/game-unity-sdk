@@ -6,7 +6,7 @@ namespace AnkrSDK.WalletConnectSharp.Core.Models
     public class JsonRpcRequest : IEventSource
     {
         [JsonProperty]
-        private long id;
+        protected long id;
         [JsonProperty]
         private string jsonrpc = "2.0";
         
@@ -22,21 +22,12 @@ namespace AnkrSDK.WalletConnectSharp.Core.Models
         }
         
         [JsonIgnore]
-        public long ID
-        {
-            get { return id; }
-        }
+        public long ID => id;
 
         [JsonIgnore]
-        public string JsonRPC
-        {
-            get { return jsonrpc; }
-        }
+        public string JsonRPC => jsonrpc;
 
         [JsonIgnore]
-        public string Event
-        {
-            get { return Method; }
-        }
+        public string Event => Method;
     }
 }

@@ -27,7 +27,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			"wallet_silentSignMessage"
 		};
 
-		public readonly EventDelegator EventDelegator;
+		protected readonly EventDelegator EventDelegator;
 
 		protected string Version = "1";
 		protected string BridgeUrl;
@@ -56,8 +56,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				return WalletConnected ? WalletConnectStatus.DisconnectedSessionCached : WalletConnectStatus.DisconnectedNoSession;
 			}
 		}
-		protected bool WaitingForSessionRequestResponse { get; set; }
-		protected bool WalletConnected { get; set; }
+		public bool WaitingForSessionRequestResponse { get; set; }
+		public bool WalletConnected { get; set; }
 		public bool Connecting { get; protected set; }
 		public ITransport Transport { get; private set; }
 		public ICipher Cipher { get; private set; }
@@ -236,7 +236,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			}
 		}
 
-		public async UniTask SendRequest<T>(T requestObject, string sendingTopic = null,
+		protected async UniTask SendRequest<T>(T requestObject, string sendingTopic = null,
 			bool? forcePushNotification = null)
 		{
 			bool silent;

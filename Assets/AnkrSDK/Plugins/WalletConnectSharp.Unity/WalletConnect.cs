@@ -29,15 +29,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public event Action<int> OnChainChanged;
 		
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
-		
-		public WalletConnectProtocol Protocol
-		{
-			get
-			{
-				CheckIfSessionCreated();
-				return _session;
-			}
-		}
 
 		public string[] Accounts
 		{
@@ -185,7 +176,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				}
 			}
 
-			InitializeUnitySession(savedSession);
+			InitializeSession(savedSession);
 
 			return await CompleteConnect();
 		}
@@ -240,7 +231,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 		}
 
-		private void InitializeUnitySession(SavedSession savedSession = null, ICipher cipher = null)
+		private void InitializeSession(SavedSession savedSession = null, ICipher cipher = null)
 		{	
 			if (!_initialized)
 			{
@@ -410,6 +401,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				try
 				{
 					var sessionData = await _session.ConnectSession();
+					
 					return sessionData;
 				}
 				catch (IOException e)

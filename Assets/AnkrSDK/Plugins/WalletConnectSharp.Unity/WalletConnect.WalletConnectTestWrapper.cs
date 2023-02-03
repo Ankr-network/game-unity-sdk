@@ -1,4 +1,5 @@
 ﻿using System;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using Cysharp.Threading.Tasks;
 
@@ -17,12 +18,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			
 			public void InitializeUnitySession()
 			{
-				_walletConnect.InitializeUnitySession();
-			}
-
-			public UniTask<WCSessionData> Connect()
-			{
-				return _walletConnect.Connect();
+				_walletConnect.InitializeSession();
 			}
 
 			public void Dispose()

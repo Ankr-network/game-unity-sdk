@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
@@ -23,16 +24,15 @@ namespace Tests.Runtime
 
 			SessionSaveHandler.ClearSession();
 
-			using (var walletConnect = new WalletConnect.WalletConnectTestWrapper(WalletHelper.CreateWalletConnectObject()))
+			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
 			{
+				var connect = walletConnect;
 				yield return UniTask.ToCoroutine(async () =>
 				{
 					try
 					{
 						await UniTask.WhenAny(
-							walletConnect.Connect().AsUniTask(),
-							//TODO ANTON update tests
-							//UniTask.WaitUntil(() => walletConnect.Session.ReadyForUserPrompt),
+							UniTask.WaitUntil(() => connect.Status == WalletConnectStatus.SessionRequestSent),
 							UniTask.Delay(TimeSpan.FromSeconds(5f)));
 					}
 					catch (Exception e)
@@ -41,8 +41,7 @@ namespace Tests.Runtime
 					}
 				});
 
-				//TODO ANTON update tests
-				//Assert.That(walletConnect.Session.ReadyForUserPrompt);
+				Assert.That(connect.Status == WalletConnectStatus.SessionRequestSent);
 			}
 
 			if (savedSessionBeforeTest != null)
@@ -58,26 +57,24 @@ namespace Tests.Runtime
 		[Test]
 		public void WalletConnect_DefaultSessionIsUnInitialized()
 		{
-			using (var walletConnect = new WalletConnect.WalletConnectTestWrapper(WalletHelper.CreateWalletConnectObject()))
+			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
 			{
-				//TODO ANTON update tests
-				//Assert.IsNull(walletConnect.Session);
+				Assert.IsNull(walletConnect.Status == WalletConnectStatus.Uninitialized);
 			}
 		}
 
 		[Test]
 		public void WalletConnect_SessionConnection()
 		{
-			using (var walletConnect = new WalletConnect.WalletConnectTestWrapper(WalletHelper.CreateWalletConnectObject()))
+			var wc = WalletHelper.CreateWalletConnectObject();
+			using (var wrapper = new WalletConnect.WalletConnectTestWrapper(wc))
 			{
-				walletConnect.InitializeUnitySession();
-				//TODO ANTON update tests
-				// var session = walletConnect.Session;
-				// Assert.IsNotNull(session);
-				// Assert.IsFalse(session.Connected);
-				// Assert.IsFalse(session.Connecting);
-				// Assert.IsFalse(session.Disconnected);
-				// Assert.IsFalse(session.SessionUsed);
+				wrapper.InitializeUnitySession();
+				Assert.IsFalse(wc.Status == WalletConnectStatus.Uninitialized);
+				Assert.IsFalse(wc.Connecting);
+				Assert.IsFalse(wc.Status == WalletConnectStatus.TransportConnected);
+				Assert.IsFalse(wc.Status == WalletConnectStatus.SessionRequestSent);
+				Assert.IsFalse(wc.Status == WalletConnectStatus.WalletConnected);
 			}
 		}
 	}

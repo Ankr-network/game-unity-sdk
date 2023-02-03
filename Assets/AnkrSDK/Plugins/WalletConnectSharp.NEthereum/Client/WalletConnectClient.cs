@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AnkrSDK.WalletConnectSharp.Core;
+using AnkrSDK.WalletConnectSharp.Core.Models;
 using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.RpcMessages;
 
@@ -9,38 +9,20 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum.Client
     public class WalletConnectClient : ClientBase
     {
         private long _id;
-        public WalletConnectProtocol Provider { get; }
+        public IWalletConnectCommunicator Communicator { get; }
 
-        public WalletConnectClient(WalletConnectProtocol provider)
+        public WalletConnectClient(IWalletConnectCommunicator communicator)
         {
-            this.Provider = provider;
+            Communicator = communicator;
         }
 
         protected override async Task<RpcResponseMessage> SendAsync(RpcRequestMessage message, string route = null)
         {
             _id += 1;
-            var mapParameters = message.RawParameters as Dictionary<string, object>;
-            var arrayParameters = message.RawParameters as object[];
-            var rawParameters = message.RawParameters;
 
-            RpcRequestMessage rpcRequestMessage;
-            if (mapParameters != null) 
-                rpcRequestMessage = new RpcRequestMessage(_id, message.Method, mapParameters);
-            else if (arrayParameters != null)
-                rpcRequestMessage = new RpcRequestMessage(_id, message.Method, arrayParameters);
-            else
-                rpcRequestMessage = new RpcRequestMessage(_id, message.Method, rawParameters);
-            
-            var eventCompleted = new TaskCompletionSource<RpcResponseMessage>(TaskCreationOptions.None);
-            
-            Provider.EventDelegator.ListenForGenericResponse<RpcResponseMessage>(rpcRequestMessage.Id, (sender, args) =>
-            {
-                eventCompleted.TrySetResult(args.Response);
-            });
-            
-            await Provider.SendRequest(rpcRequestMessage);
-
-            return await eventCompleted.Task;
+            var request = new GenericJsonRpcRequest(_id, message);
+            var response = await Communicator.Send<GenericJsonRpcRequest, GenericJsonRpcResponse>(request);
+            return response.ToRpcResponseMessage();
         }
     }
 }

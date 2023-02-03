@@ -22,11 +22,11 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum
         /// A new NEtehereum IClient instance that uses Infura as the read client and the WalletConnectProtocol
         /// for write client. The returned IClient instance can be used as a Provider in an NEthereum Web3 instance
         /// </returns>
-        public static IClient CreateProviderWithInfura(this WalletConnectProtocol protocol, string infruaId, string network = "mainnet", AuthenticationHeaderValue authenticationHeader = null)
+        public static IClient CreateProviderWithInfura(this IWalletConnectCommunicator communicator, string infruaId, string network = "mainnet", AuthenticationHeaderValue authenticationHeader = null)
         {
             string url = "https://" + network + ".infura.io/v3/" + infruaId;
 
-            return CreateProvider(protocol, new Uri(url), authenticationHeader);
+            return communicator.CreateProvider(new Uri(url), authenticationHeader);
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum
         /// WalletConnectProtocol for write client. The returned IClient instance can be used as a
         /// Provider in an NEthereum Web3 instance
         /// </returns>
-        public static IClient CreateProvider(this WalletConnectProtocol protocol, Uri url, AuthenticationHeaderValue authenticationHeader = null)
+        public static IClient CreateProvider(this IWalletConnectCommunicator communicator, Uri url, AuthenticationHeaderValue authenticationHeader = null)
         {
-            return CreateProvider(protocol,
+            return communicator.CreateProvider(
                 new RpcClient(url, authenticationHeader)
             );
         }
@@ -63,15 +63,15 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum
         /// WalletConnectProtocol for write client. The returned IClient instance can be used as a
         /// Provider in an NEthereum Web3 instance
         /// </returns>
-        public static IClient CreateProvider(this WalletConnectProtocol protocol, IClient readClient)
+        public static IClient CreateProvider(this IWalletConnectCommunicator communicator, IClient readClient)
         {
-            if (!protocol.Status.IsAny(WalletConnectStatus.WalletConnected))
+            if (communicator.Status !=WalletConnectStatus.WalletConnected)
             {
                 throw new Exception("No connection has been made yet!");
             }
             
             return new FallbackProvider(
-                new WalletConnectClient(protocol),
+                new WalletConnectClient(communicator),
                 readClient
             );
         }
