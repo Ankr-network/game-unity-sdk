@@ -48,15 +48,17 @@ namespace AnkrSDK.UI
 		
 		private UnityAction GetLoginAction()
 		{
-			if (!Application.isEditor && (Application.platform == RuntimePlatform.Android ||
-			                              Application.platform == RuntimePlatform.WebGLPlayer))
+			if (!Application.isEditor)
 			{
-				return () => _chooseWalletScreen.Activate(WalletConnect.OpenDeepLink);
-			}
+				if (Application.platform == RuntimePlatform.IPhonePlayer)
+				{
+					return () => _chooseWalletScreen.Activate(WalletConnect.OpenDeepLink);
+				}
 
-			if (!Application.isEditor && Application.platform == RuntimePlatform.Android)
-			{
-				return WalletConnect.OpenDeepLink;
+				if (Application.platform == RuntimePlatform.Android)
+				{
+					return WalletConnect.OpenDeepLink;
+				}
 			}
 			
 			return () =>

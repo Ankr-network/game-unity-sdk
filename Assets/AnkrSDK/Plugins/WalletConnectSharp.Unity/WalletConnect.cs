@@ -288,7 +288,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void OpenDeepLink()
 		{
-			if (!_session.Status.IsAny(WalletConnectStatus.WalletConnected))
+			if (_session.Status != WalletConnectStatus.SessionRequestSent)
 			{
 				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
 				               "\nWait for ActiveSession.ReadyForUserPrompt to be true");
