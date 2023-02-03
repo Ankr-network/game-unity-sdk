@@ -342,7 +342,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			_session.OnSessionDisconnect += HandleSessionDisconnect;
 			_session.OnSessionCreated += HandleSessionCreated;
-			_session.OnSessionResumed += HandleSessionResumed;
 			_session.OnSend += HandleOnSend;
 			_session.OnAccountChanged += HandleOnAccountChanged;
 			_session.OnChainChanged += HandleOnChainChanged;
@@ -357,7 +356,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			_session.OnSessionDisconnect -= HandleSessionDisconnect;
 			_session.OnSessionCreated -= HandleSessionCreated;
-			_session.OnSessionResumed -= HandleSessionResumed;
 			_session.OnSend -= HandleOnSend;
 			_session.OnAccountChanged -= HandleOnAccountChanged;
 			_session.OnChainChanged -= HandleOnChainChanged;
@@ -376,11 +374,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		private void HandleOnSend()
 		{
 			OnSend?.Invoke();
-		}
-
-		private void HandleSessionResumed()
-		{
-			
 		}
 
 		private void HandleSessionCreated()
