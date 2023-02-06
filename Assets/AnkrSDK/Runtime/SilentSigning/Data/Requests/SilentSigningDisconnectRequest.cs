@@ -12,12 +12,11 @@ namespace AnkrSDK.SilentSigning.Data.Requests
 			[JsonProperty("secret")] public string Secret;
 		}
 
-		public override string Method => "wallet_disconnectSilentSign";
-
 		[JsonProperty("params")] public SilentSigningDisconnectRequestParams[] Params;
 
 		public SilentSigningDisconnectRequest(string secretToken)
 		{
+			Method = "wallet_disconnectSilentSign";
 			Params = new[]
 			{
 				new SilentSigningDisconnectRequestParams

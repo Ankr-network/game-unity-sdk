@@ -15,11 +15,11 @@ namespace AnkrSDK.SilentSigning.Data.Requests
 			public long ChainID;
 		}
 
-		public override string Method => "wallet_requestSilentSign";
 		[JsonProperty("params")] public SilentSigningConnectionRequestParams[] Params;
 
 		public SilentSigningConnectionRequest(long timestamp, long chainID = 1)
 		{
+			Method = "wallet_requestSilentSign";
 			Params = new[]
 			{
 				new SilentSigningConnectionRequestParams

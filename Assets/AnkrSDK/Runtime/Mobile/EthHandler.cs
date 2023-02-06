@@ -2,6 +2,7 @@ using System;
 using System.Numerics;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
@@ -49,12 +50,12 @@ namespace AnkrSDK.Mobile
 
 		public  UniTask<string> GetDefaultAccount()
 		{
-			if (_walletConnect.Session == null)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			var activeSessionAccount = _walletConnect.Session.Accounts[0];
+			var activeSessionAccount = _walletConnect.Accounts[0];
 			if (string.IsNullOrEmpty(activeSessionAccount))
 			{
 				Debug.LogError("Account is null");
@@ -65,12 +66,12 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<BigInteger> GetChainId()
 		{
-			if (_walletConnect.Session == null)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			var chainId = _walletConnect.Session.ChainId;
+			var chainId = _walletConnect.ChainId;
 			return UniTask.FromResult(new BigInteger(chainId));
 		}
 
@@ -111,7 +112,7 @@ namespace AnkrSDK.Mobile
 				_silentSigningHandler.SilentSignMessage(messageToSign, address);
 			}
 
-			return _walletConnect.Session.EthSign(address, messageToSign);
+			return _walletConnect.EthSign(address, messageToSign);
 		}
 
 		public async UniTask<string> SendTransaction(string from, string to, string data = null, string value = null,
@@ -131,7 +132,7 @@ namespace AnkrSDK.Mobile
 				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 			var request = new EthSendTransaction(transactionData);
-			var response = await _walletConnect.Session
+			var response = await _walletConnect
 				.Send<EthSendTransaction, EthResponse>(request);
 			return response.Result;
 		}

@@ -10,7 +10,6 @@ namespace AnkrSDK.UI
 		[SerializeField] private Image _image;
 		[SerializeField] private TMP_Text _text;
 		[SerializeField] private Button _button;
-	#if !UNITY_WEBGL || UNITY_EDITOR
 		public void Setup(AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.AppEntry walletData)
 		{
 			_image.sprite = walletData.MediumIcon;
@@ -21,6 +20,5 @@ namespace AnkrSDK.UI
 		{
 			_button.onClick.AddListener(() => action?.Invoke());
 		}
-	#endif
 	}
 }

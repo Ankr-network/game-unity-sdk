@@ -4,16 +4,12 @@ namespace AnkrSDK.WalletConnectSharp.Core.Models
 {
     public class WcSessionRequest : JsonRpcRequest
     {
-        public override string Method
-        {
-            get { return "wc_sessionRequest"; }
-        }
-
         [JsonProperty("params")]
         public WcSessionRequestRequestParams[] parameters;
 
         public WcSessionRequest(ClientMeta clientMeta, string clientId, int chainId = 1)
         {
+            Method = "wc_sessionRequest";
             this.parameters = new[]
             {
                 new WcSessionRequestRequestParams()

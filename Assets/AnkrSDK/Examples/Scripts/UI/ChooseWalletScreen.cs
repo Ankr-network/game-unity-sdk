@@ -8,7 +8,6 @@ namespace AnkrSDK.UI
 	{
 		[SerializeField] private Transform _buttonGridTransform;
 		[SerializeField] private GameObject _loadingText;
-	#if !UNITY_WEBGL || UNITY_EDITOR
 		[SerializeField] private WalletButton _buttonPrefab;
 
 		private Action<AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.AppEntry> ClickAction { get; set; }
@@ -44,6 +43,5 @@ namespace AnkrSDK.UI
 		{
 			gameObject.SetActive(isConnected && _isActivated);
 		}
-	#endif
 	}
 }
