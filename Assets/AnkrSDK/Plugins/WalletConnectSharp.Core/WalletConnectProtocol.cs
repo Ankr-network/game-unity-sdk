@@ -60,7 +60,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public bool WalletConnected { get; set; }
 		public bool Connecting { get; protected set; }
 		public ITransport Transport { get; private set; }
-		public ICipher Cipher { get; private set; }
+		public ICipher Cipher { get; }
 		public ClientMeta DappMetadata { get; set; }
 		public ClientMeta WalletMetadata { get; set; }
 		public string PeerId { get; protected set; }

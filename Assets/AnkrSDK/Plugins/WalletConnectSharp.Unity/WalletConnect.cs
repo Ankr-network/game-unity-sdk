@@ -32,13 +32,30 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
 		
+		public string PeerId
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session?.PeerId;
+			}
+		}
+
+		public ClientMeta WalletMetadata
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session?.WalletMetadata;
+			}
+		}
 
 		public string[] Accounts
 		{
 			get
 			{
 				CheckIfSessionCreated();
-				return _session.Accounts;
+				return _session?.Accounts;
 			}
 		}
 
@@ -47,7 +64,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			get
 			{
 				CheckIfSessionCreated();
-				return _session.ChainId;
+				return _session?.ChainId ?? -1;
 			}
 		}
 		public bool Connecting => _session != null && _session.Connecting;
@@ -232,7 +249,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		{
 			if (_session == null)
 			{
-				throw new InvalidDataException("Session was not initialized yet, first connect your wallet connect");
+				Debug.LogError("Trying to access WalletConnect session before it was created");
 			}
 		}
 

@@ -80,22 +80,22 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				throw new ArgumentException("clientMeta cannot be null!");
 			}
 
-			if (string.IsNullOrWhiteSpace(clientMeta._description))
+			if (string.IsNullOrWhiteSpace(clientMeta.Description))
 			{
 				throw new ArgumentException("clientMeta must include a valid Description");
 			}
 
-			if (string.IsNullOrWhiteSpace(clientMeta._name))
+			if (string.IsNullOrWhiteSpace(clientMeta.Name))
 			{
 				throw new ArgumentException("clientMeta must include a valid Name");
 			}
 
-			if (string.IsNullOrWhiteSpace(clientMeta._url))
+			if (string.IsNullOrWhiteSpace(clientMeta.Url))
 			{
 				throw new ArgumentException("clientMeta must include a valid URL");
 			}
 
-			if (clientMeta._icons == null || clientMeta._icons.Length == 0)
+			if (clientMeta.Icons == null || clientMeta.Icons.Length == 0)
 			{
 				throw new ArgumentException(
 					"clientMeta must include an array of Icons the Wallet app can use. These Icons must be URLs to images. You must include at least one image URL to use");
