@@ -31,6 +31,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public event Action<int> OnChainChanged;
 		
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
+		
 
 		public string[] Accounts
 		{
@@ -58,6 +59,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		private bool _initialized = false;
 		public string ConnectURL => _session.URI;
 		public string SettingsFilename => SettingsFilenameString;
+		public Type SettingsType => typeof(WalletConnectSettingsSO);
 
 		private AppEntry _selectedWallet;
 		private WalletConnectSession _session;

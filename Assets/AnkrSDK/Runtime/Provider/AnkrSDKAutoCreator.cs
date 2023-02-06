@@ -22,7 +22,7 @@ namespace AnkrSDK.Provider
 				typeof(AnkrSDK.WalletConnectSharp.Unity.WalletConnectUnityMonoAdapter));
 			UnityEngine.Object.DontDestroyOnLoad(walletConnectUnityAdapter);
 
-			ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
+			ConnectProvider<WalletConnect>.GetConnect();
 		#endif
 		}
 	}

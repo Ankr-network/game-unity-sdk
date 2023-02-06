@@ -11,7 +11,7 @@ namespace AnkrSDK.Mobile
 
 		public MobileWeb3Provider()
 		{
-			_walletConnect = ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
+			_walletConnect = ConnectProvider<WalletConnect>.GetConnect();
 		}
 
 		public IWeb3 CreateWeb3(string providerURI)
