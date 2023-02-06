@@ -31,7 +31,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public event Action<int> OnChainChanged;
 		
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
-		
 		public string PeerId
 		{
 			get
