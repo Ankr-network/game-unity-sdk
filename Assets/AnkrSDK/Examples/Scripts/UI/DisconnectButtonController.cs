@@ -1,5 +1,7 @@
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,49 +16,32 @@ namespace AnkrSDK.UI
 
 		private void OnEnable()
 		{
-			SubscribeOnTransportEvents().Forget();
+			SubscribeEvents();
 
 			_button.onClick.AddListener(OnButtonClick);
 		}
 
 		private void OnDisable()
 		{
-			UnsubscribeFromTransportEvents();
+			UnsubscribeEvents();
 
 			_button.onClick.RemoveAllListeners();
 		}
 
-		private async UniTaskVoid SubscribeOnTransportEvents()
+		private void SubscribeEvents()
 		{
-			await UniTask.WaitUntil(() => WalletConnect.Session != null);
-
-			var walletConnectSession = WalletConnect.Session;
-			if (walletConnectSession == null)
-			{
-				return;
-			}
-
-			walletConnectSession.OnTransportConnect += UpdateDisconnectButtonState;
-			walletConnectSession.OnTransportDisconnect += UpdateDisconnectButtonState;
-			walletConnectSession.OnTransportOpen += UpdateDisconnectButtonState;
+			WalletConnect.SessionStatusUpdated += OnSessionStatusUpdated;
 		}
 
-		private void UnsubscribeFromTransportEvents()
+		private void UnsubscribeEvents()
 		{
-			var walletConnectSession = WalletConnect.Session;
-			if (walletConnectSession == null)
-			{
-				return;
-			}
-
-			walletConnectSession.OnTransportConnect -= UpdateDisconnectButtonState;
-			walletConnectSession.OnTransportDisconnect -= UpdateDisconnectButtonState;
-			walletConnectSession.OnTransportOpen -= UpdateDisconnectButtonState;
+			WalletConnect.SessionStatusUpdated -= OnSessionStatusUpdated;
 		}
 
-		private void UpdateDisconnectButtonState(object sender, AnkrSDK.WalletConnectSharp.Core.WalletConnectProtocol e)
+		private void OnSessionStatusUpdated(WalletConnectTransitionBase transition)
 		{
-			_button.gameObject.SetActive(!e.Disconnected);
+			var status = WalletConnect.Status;
+			_button.gameObject.SetActive(status.IsAny(WalletConnectStatus.AnythingConnected));
 		}
 
 		private void OnButtonClick()

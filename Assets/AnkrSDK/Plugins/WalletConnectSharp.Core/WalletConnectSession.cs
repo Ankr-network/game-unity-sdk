@@ -16,30 +16,19 @@ using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Core
 {
-	public class WalletConnectSession : WalletConnectProtocol
+	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectCommunicator
 	{
-		private const string ConnectTopic = "connect";
-		private const string DisconnectTopic = "disconnect";
-		private const string SessionFailedTopic = "session_failed";
-
-		public event EventHandler<WalletConnectSession> OnSessionConnect;
-		public event EventHandler<WalletConnectSession> OnSessionCreated;
-		public event EventHandler<WalletConnectSession> OnSessionResumed;
-		public event EventHandler OnSessionDisconnect;
-		public event EventHandler<WalletConnectSession> OnSend;
-		public event EventHandler<WCSessionData> SessionUpdate;
-		public event EventHandler<string[]> OnAccountChanged;
-		public event EventHandler<int> OnChainChanged;
-		public event EventHandler OnReadyForUserPrompt;
-
+		public event Action OnSessionConnect;
+		public event Action OnSessionCreated;
+		public event Action OnSessionResumed;
+		public event Action OnSessionDisconnect;
+		public event Action OnSend;
+		public event Action<WCSessionData> SessionUpdate;
+		public event Action<string[]> OnAccountChanged;
+		public event Action<int> OnChainChanged;
+		public event Action OnSessionRequestSent;
 		public int NetworkId { get; private set; }
-
 		public string[] Accounts { get; private set; }
-
-		public bool ReadyForUserPrompt { get; private set; }
-
-		public bool SessionUsed { get; private set; }
-
 		public int ChainId { get; private set; }
 
 		private string _clientId = "";
@@ -47,6 +36,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		private string _handshakeTopic;
 
 		private long _handshakeId;
+
+		private UniTaskCompletionSource<WCSessionData> _sessionCreationCompletionSource;
+
 
 		public string URI
 		{
@@ -61,7 +53,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			}
 		}
 
-		protected WalletConnectSession(SavedSession savedSession, ITransport transport = null, ICipher cipher = null,
+		public WalletConnectSession(SavedSession savedSession, ITransport transport = null, ICipher cipher = null,
 			EventDelegator eventDelegator = null) : base(savedSession, transport, cipher, eventDelegator)
 		{
 			DappMetadata = savedSession.DappMeta;
@@ -76,11 +68,10 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			_handshakeId = savedSession.HandshakeID;
 			SubscribeForSessionResponse();
-
-			SessionConnected = true;
+			WalletConnected = true;
 		}
 
-		protected WalletConnectSession(ClientMeta clientMeta, string bridgeUrl = null, ITransport transport = null,
+		public WalletConnectSession(ClientMeta clientMeta, string bridgeUrl = null, ITransport transport = null,
 			ICipher cipher = null, int chainId = 1, EventDelegator eventDelegator = null) : base(transport, cipher,
 			eventDelegator)
 		{
@@ -123,19 +114,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			ChainId = chainId;
 			BridgeUrl = bridgeUrl;
 
-			SessionConnected = false;
-
-			CreateNewSession();
-		}
-
-		private void CreateNewSession()
-		{
-			if (SessionConnected)
-			{
-				throw new IOException(
-					"You cannot create a new session after connecting the session. Create a new WalletConnectSession object to create a new session");
-			}
-
 			BridgeUrl = DefaultBridge.GetBridgeUrl(BridgeUrl);
 
 			var topicGuid = Guid.NewGuid();
@@ -147,18 +125,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			GenerateKey();
 
 			Transport?.ClearSubscriptions();
-
-			SessionUsed = false;
-			ReadyForUserPrompt = false;
-		}
-
-		private void EnsureNotDisconnected()
-		{
-			if (Disconnected)
-			{
-				throw new IOException(
-					"Session stale! The session has been disconnected. This session cannot be reused.");
-			}
+			WalletConnected = false;
 		}
 
 		private void GenerateKey()
@@ -176,9 +143,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<WCSessionData> ConnectSession()
 		{
-			EnsureNotDisconnected();
-
-			Connecting = true;
+			var prevStatus = Status;
 			try
 			{
 				if (!TransportConnected)
@@ -190,19 +155,17 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					Debug.Log("Transport already connected. No need to setup");
 				}
 
-				ReadyForUserPrompt = false;
 				await SubscribeAndListenToTopic(_clientId);
 
 				ListenToTopic(_handshakeTopic);
 
 				WCSessionData result;
-				if (!SessionConnected)
+				if (prevStatus == WalletConnectStatus.DisconnectedNoSession)
 				{
 					result = await CreateSession();
-					//Reset this back after we have established a session
 					Connecting = false;
-
-					OnSessionCreated?.Invoke(this, this);
+					
+					OnSessionCreated?.Invoke();
 				}
 				else
 				{
@@ -217,11 +180,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					};
 					Connecting = false;
 
-					OnSessionResumed?.Invoke(this, this);
+					OnSessionResumed?.Invoke();
 				}
 
 				Debug.Log($"Chain ID == {ChainId}");
-				OnSessionConnect?.Invoke(this, this);
+				OnSessionConnect?.Invoke();
 
 				return result;
 			}
@@ -243,15 +206,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			finally
 			{
 				//The session has been made, we are no longer ready for another user prompt
-				ReadyForUserPrompt = false;
 				Connecting = false;
 			}
 		}
 
-		public async UniTask DisconnectSession(string disconnectMessage = "Session Disconnected")
+		public async UniTask DisconnectSession()
 		{
-			EnsureNotDisconnected();
-
 			var request = new WCSessionUpdate(new WCSessionData
 			{
 				approved = false,
@@ -262,20 +222,13 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			await SendRequest(request);
 
-			await base.Disconnect();
+			await DisconnectTransport();
 
-			HandleSessionDisconnect(disconnectMessage);
-		}
-
-		public override UniTask Disconnect()
-		{
-			return DisconnectSession();
+			HandleSessionDisconnect();
 		}
 
 		public async UniTask<string> EthSign(string address, string message)
 		{
-			EnsureNotDisconnected();
-
 			if (!message.IsHex())
 			{
 				var rawMessage = Encoding.UTF8.GetBytes(message);
@@ -304,8 +257,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthPersonalSign(string address, string message)
 		{
-			EnsureNotDisconnected();
-
 			if (!message.IsHex())
 			{
 				/*var rawMessage = Encoding.UTF8.GetBytes(message);
@@ -333,8 +284,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSignTypedData<T>(string address, T data, EIP712Domain eip712Domain)
 		{
-			EnsureNotDisconnected();
-
 			var request = new EthSignTypedData<T>(address, data, eip712Domain);
 
 			var response = await Send<EthSignTypedData<T>, EthResponse>(request);
@@ -344,7 +293,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSendTransaction(params TransactionData[] transaction)
 		{
-			EnsureNotDisconnected();
 			var request = new EthSendTransaction(transaction);
 			var response = await Send<EthSendTransaction, EthResponse>(request);
 			return response.Result;
@@ -352,8 +300,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSignTransaction(params TransactionData[] transaction)
 		{
-			EnsureNotDisconnected();
-
 			var request = new EthSignTransaction(transaction);
 
 			var response = await Send<EthSignTransaction, EthResponse>(request);
@@ -363,8 +309,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
 		{
-			EnsureNotDisconnected();
-
 			if (!data.IsHex())
 			{
 				var encoding = messageEncoding;
@@ -387,11 +331,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			where TRequest : JsonRpcRequest
 			where TResponse : JsonRpcResponse
 		{
-			EnsureNotDisconnected();
-
 			var eventCompleted = new UniTaskCompletionSource<TResponse>();
 
-			void HandleResponse(object sender, JsonRpcResponseEvent<TResponse> @event)
+			void HandleSendResponse(object sender, JsonRpcResponseEvent<TResponse> @event)
 			{
 				var response = @event.Response;
 				if (response.IsError)
@@ -404,11 +346,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				}
 			}
 
-			Events.ListenForResponse<TResponse>(data.ID, HandleResponse);
+			EventDelegator.ListenForResponse<TResponse>(data.ID, HandleSendResponse);
 
 			await SendRequest(data);
 
-			OnSend?.Invoke(this, this);
+			OnSend?.Invoke();
 
 			return await eventCompleted.Task;
 		}
@@ -419,76 +361,67 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		/// <returns></returns>
 		private async UniTask<WCSessionData> CreateSession()
 		{
-			EnsureNotDisconnected();
-
 			var data = new WcSessionRequest(DappMetadata, _clientId, ChainId);
 
 			_handshakeId = data.ID;
 			SubscribeForSessionResponse();
 
+			//sending session request
 			await SendRequest(data, _handshakeTopic);
+			
+			if (_sessionCreationCompletionSource != null)
+			{
+				throw new InvalidOperationException("Two session can not be created at the same time");
+			}
 
-			SessionUsed = true;
+			_sessionCreationCompletionSource = new UniTaskCompletionSource<WCSessionData>();
 
-			var sessionCompletionSource = new UniTaskCompletionSource<WCSessionData>();
-
-			SubscribeOnConnectMessage(sessionCompletionSource);
-
-			SubscribeOnFailedMessage(sessionCompletionSource);
-
-			ReadyForUserPrompt = true;
-			OnReadyForUserPrompt?.Invoke(this, EventArgs.Empty);
+			WaitingForSessionRequestResponse = true;
+			OnSessionRequestSent?.Invoke();
 
 			Debug.Log("[WalletConnect] Session Ready for Wallet");
 
-			var response = await sessionCompletionSource.Task;
+			var response = await _sessionCreationCompletionSource.Task;
 
-			ReadyForUserPrompt = false;
+			WaitingForSessionRequestResponse = false;
 
 			return response;
 		}
 
-		private void SubscribeOnFailedMessage(UniTaskCompletionSource<WCSessionData> sessionCompletionSource)
+		private void HandleConnectMessage(WCSessionData result)
 		{
-			Events.ListenFor(SessionFailedTopic,
-				(object sender, GenericEvent<ErrorResponse> @event) =>
-				{
-					if (@event.Response.Message == "Not Approved" || @event.Response.Message == "Session Rejected")
-					{
-						sessionCompletionSource.TrySetCanceled();
-					}
-					else
-					{
-						sessionCompletionSource.TrySetException(
-							new IOException("WalletConnect: Session Failed: " + @event.Response.Message));
-					}
-					
-					Debug.LogError("Session failed with message: " + @event.Response.Message);
-				});
-		}
-
-		private void SubscribeOnConnectMessage(UniTaskCompletionSource<WCSessionData> eventCompleted)
-		{
-			void HandleConnectMessage(object _, GenericEvent<WCSessionData> @event)
+			if (_sessionCreationCompletionSource != null)
 			{
-				eventCompleted.TrySetResult(@event.Response);
+				_sessionCreationCompletionSource.TrySetResult(result);
+				_sessionCreationCompletionSource = null;
 			}
-
-			Events.ListenFor<WCSessionData>(ConnectTopic, HandleConnectMessage);
 		}
 
-		private void SubscribeForSessionUpdates()
+		private void HandleConnectionFailureMessage(string peerId, string message)
 		{
-			Events.ListenFor(WCSessionUpdate.SessionUpdateMethod,
-				(object _, GenericEvent<WCSessionUpdate> @event) =>
-					HandleSessionUpdate(@event.Response.parameters[0]));
+			if (_sessionCreationCompletionSource != null)
+			{
+				if (message == "Not Approved" || message == "Session Rejected")
+				{
+					_sessionCreationCompletionSource.TrySetCanceled();
+				}
+				else
+				{
+					_sessionCreationCompletionSource.TrySetException(
+						new IOException("WalletConnect: Session Failed: " + message));
+				}
+					
+				Debug.LogError("Session failed with message: " + message);
+
+				_sessionCreationCompletionSource = null;
+			}
 		}
 
 		private void SubscribeForSessionResponse()
 		{
-			void HandleSessionResponse(object sender, JsonRpcResponseEvent<WCSessionRequestResponse> jsonresponse)
+			void HandleSessionRequestResponse(object sender, JsonRpcResponseEvent<WCSessionRequestResponse> jsonResponse)
 			{
-				var response = jsonresponse.Response.result;
+				var response = jsonResponse.Response.result;
 
 				if (response?.approved == true)
 				{
@@ -496,14 +429,22 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				}
 				else
 				{
-					HandleSessionDisconnect(
-						jsonresponse.Response.IsError ? jsonresponse.Response.Error.Message : "Not Approved",
-						SessionFailedTopic);
+					var msg = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Message : "Not Approved";
+					HandleConnectionFailureMessage(jsonResponse.Response.result.peerId, msg);
+					HandleSessionDisconnect();
 				}
 			}
+			
+			EventDelegator.ListenForResponse<WCSessionRequestResponse>(_handshakeId, HandleSessionRequestResponse);
 
-			SubscribeForSessionUpdates();
-			Events.ListenForResponse<WCSessionRequestResponse>(_handshakeId, HandleSessionResponse);
+			void HandleSessionUpdateResponse(object _, GenericEvent<WCSessionUpdate> @event)
+			{
+				var wcSessionData = @event.Response.parameters[0];
+				HandleSessionUpdate(wcSessionData);
+			}
+
+			EventDelegator.ListenForGeneric<WCSessionUpdate>(WCSessionUpdate.SessionUpdateMethod, HandleSessionUpdateResponse);
+			
 		}
 
 		private void HandleSessionUpdate(WCSessionData data)
@@ -513,10 +454,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				return;
 			}
 
-			var wasConnected = SessionConnected;
+			var wasConnected = WalletConnected;
 
 			//We are connected if we are approved
-			SessionConnected = data.approved;
+			WalletConnected = data.approved;
+			
 			Debug.Log($"WalletConnectSession: SessionConnected set to {data.approved}");
 
 			if (data.chainId != null)
@@ -526,7 +468,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 				if (oldChainId != ChainId)
 				{
-					OnChainChanged?.Invoke(this, (int)data.chainId);
+					OnChainChanged?.Invoke((int)data.chainId);
 					Debug.Log("ChainID Changed, New ChainID: " + (int)data.chainId);
 				}
 			}
@@ -542,7 +484,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			Accounts = data.accounts;
 			if (oldAccount != dataAccount)
 			{
-				OnAccountChanged?.Invoke(this, data.accounts);
+				OnAccountChanged?.Invoke(data.accounts);
 				Debug.Log("Account Changed, currently connected account : " + dataAccount);
 			}
 
@@ -551,26 +493,18 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				case false:
 					PeerId = data.peerId;
 					WalletMetadata = data.peerMeta;
-					Events.Trigger(ConnectTopic, data);
+					HandleConnectMessage(data);
 					break;
-				case true when !SessionConnected:
-					HandleSessionDisconnect("Wallet Disconnected");
-					break;
-				default:
-					Events.Trigger("session_update", data);
+				case true when !WalletConnected:
+					HandleSessionDisconnect();
 					break;
 			}
 
-			SessionUpdate?.Invoke(this, data);
+			SessionUpdate?.Invoke(data);
 		}
 
-		private void HandleSessionDisconnect(string msg, string topic = DisconnectTopic)
+		private void HandleSessionDisconnect()
 		{
-			SessionConnected = false;
-			Disconnected = true;
-
-			Events.Trigger(topic, new ErrorResponse(msg));
-
 			if (TransportConnected)
 			{
 				DisconnectTransport().AsTask().ConfigureAwait(false);
@@ -578,9 +512,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			ActiveTopics.Clear();
 
-			Events.Clear();
+			EventDelegator.Clear();
 
-			OnSessionDisconnect?.Invoke(this, EventArgs.Empty);
+			WalletConnected = false;
+
+			OnSessionDisconnect?.Invoke();
+			
 		}
 
 		/// <summary>
@@ -589,7 +526,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		/// <returns></returns>
 		public SavedSession GetSavedSession()
 		{
-			if (!SessionConnected || Disconnected)
+			if (Status == WalletConnectStatus.DisconnectedNoSession)
 			{
 				return null;
 			}

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using NUnit.Framework;
@@ -24,13 +26,13 @@ namespace Tests.Runtime
 
 			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
 			{
+				var connect = walletConnect;
 				yield return UniTask.ToCoroutine(async () =>
 				{
 					try
 					{
 						await UniTask.WhenAny(
-							walletConnect.Connect().AsUniTask(),
-							UniTask.WaitUntil(() => walletConnect.Session.ReadyForUserPrompt),
+							UniTask.WaitUntil(() => connect.Status == WalletConnectStatus.SessionRequestSent),
 							UniTask.Delay(TimeSpan.FromSeconds(5f)));
 					}
 					catch (Exception e)
@@ -39,7 +41,7 @@ namespace Tests.Runtime
 					}
 				});
 
-				Assert.That(walletConnect.Session.ReadyForUserPrompt);
+				Assert.That(connect.Status == WalletConnectStatus.SessionRequestSent);
 			}
 
 			if (savedSessionBeforeTest != null)
@@ -57,22 +59,22 @@ namespace Tests.Runtime
 		{
 			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
 			{
-				Assert.IsNull(walletConnect.Session);
+				Assert.IsNull(walletConnect.Status == WalletConnectStatus.Uninitialized);
 			}
 		}
 
 		[Test]
 		public void WalletConnect_SessionConnection()
 		{
-			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
+			
+			using (var wc = WalletHelper.CreateWalletConnectObject())
 			{
-				walletConnect.InitializeUnitySession();
-				var session = walletConnect.Session;
-				Assert.IsNotNull(session);
-				Assert.IsFalse(session.Connected);
-				Assert.IsFalse(session.Connecting);
-				Assert.IsFalse(session.Disconnected);
-				Assert.IsFalse(session.SessionUsed);
+				wc.InitializeSession();
+				Assert.IsFalse(wc.Status == WalletConnectStatus.Uninitialized);
+				Assert.IsFalse(wc.Connecting);
+				Assert.IsFalse(wc.Status == WalletConnectStatus.TransportConnected);
+				Assert.IsFalse(wc.Status == WalletConnectStatus.SessionRequestSent);
+				Assert.IsFalse(wc.Status == WalletConnectStatus.WalletConnected);
 			}
 		}
 	}

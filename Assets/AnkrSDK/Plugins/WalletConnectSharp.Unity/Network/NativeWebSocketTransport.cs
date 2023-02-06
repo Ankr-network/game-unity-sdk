@@ -78,11 +78,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Network
 			return OpenSocket();
 		}
 
-		public void CancelConnection()
-		{
-			_client.CancelConnection();
-		}
-
 		public async UniTask Close()
 		{
 			Debug.Log("Closing Websocket");
