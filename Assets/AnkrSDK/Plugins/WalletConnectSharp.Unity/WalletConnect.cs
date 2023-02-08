@@ -41,6 +41,15 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 		}
 
+		public ClientMeta DappMetadata
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session?.DappMetadata;
+			}
+		}
+
 		public ClientMeta WalletMetadata
 		{
 			get
@@ -56,6 +65,15 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			{
 				CheckIfSessionCreated();
 				return _session?.Accounts;
+			}
+		}
+
+		public int NetworkId
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session?.NetworkId ?? -1;
 			}
 		}
 
