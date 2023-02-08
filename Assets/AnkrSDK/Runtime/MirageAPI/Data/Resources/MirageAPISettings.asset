@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c28e0ad6e3bb4745b942c02270cb2045, type: 3}
+  m_Name: MirageAPISettings
+  m_EditorClassIdentifier: 
+  _clientID: 658758ad-c468-4a8f-b922-94e3c2a82288
+  _clientSecret: vdtIHSzY3b4etgkT5mhuJKnvd7aBd3ez

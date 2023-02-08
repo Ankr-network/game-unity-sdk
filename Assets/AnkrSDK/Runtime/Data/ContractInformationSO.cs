@@ -14,5 +14,11 @@ namespace AnkrSDK.Data
 		public string ContractAddress => _contractAddress;
 		public string HttpProviderURL => _httpProviderURL;
 		public string WsProviderURL => _wsProviderURL;
+
+		public void Setup(string abi, string contractAddress)
+		{
+			_abi = abi;
+			_contractAddress = contractAddress;
+		}
 	}
 }
