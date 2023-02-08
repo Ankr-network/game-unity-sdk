@@ -14,7 +14,7 @@ namespace AnkrSDK.SilentSigning
 	public class SilentSigningProtocol : ISilentSigningHandler
 	{
 		public ISilentSigningSessionHandler SessionHandler { get; }
-		private WalletConnect WalletConnect => ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
+		private WalletConnect WalletConnect => ConnectProvider<WalletConnect>.GetConnect();
 
 		private bool _skipNextDeepLink;
 

@@ -20,6 +20,7 @@ namespace AnkrSDK.WebGL
 		private bool _initialized;
 
 		public string SettingsFilename => SettingsFilenameStr;
+		public Type SettingsType => typeof(WebGLConnectSettingsSO);
 
 		public WebGLConnect()
 		{

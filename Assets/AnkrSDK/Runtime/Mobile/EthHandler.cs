@@ -25,7 +25,7 @@ namespace AnkrSDK.Mobile
 		{
 			_web3Provider = web3Provider;
 			_silentSigningHandler = silentSigningHandler;
-			_walletConnect = ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
+			_walletConnect = ConnectProvider<WalletConnect>.GetConnect();
 		}
 		
 		public UniTask<string> WalletAddEthChain(EthChainData chainData)

@@ -12,7 +12,7 @@ namespace AnkrSDK.Mobile
  
 		public MobileWalletHandler()
 		{
-			_walletConnect = ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
+			_walletConnect = ConnectProvider<WalletConnect>.GetConnect();
 		}
 
 		public UniTask<WalletsStatus> GetWalletsStatus()
