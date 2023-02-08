@@ -1,30 +1,35 @@
 using System;
 using System.Linq;
 using Newtonsoft.Json;
+using UnityEngine.Serialization;
 
 namespace AnkrSDK.WalletConnectSharp.Core.Models
 {
 	[Serializable]
 	public class ClientMeta
 	{
-		[JsonProperty("description")] public string _description = "Wallet";
+		[FormerlySerializedAs("_description")]
+		[JsonProperty("description")] public string Description = "Wallet";
 
-		[JsonProperty("url")] public string _url = "https://www.ankr.com/";
+		[FormerlySerializedAs("_url")]
+		[JsonProperty("url")] public string Url = "https://www.ankr.com/";
 
-		[JsonProperty("icons")] public string[] _icons = {
+		[FormerlySerializedAs("_icons")]
+		[JsonProperty("icons")] public string[] Icons = {
 			"https://www.ankr.com/static/favicon/apple-touch-icon.png"
 		};
 
-		[JsonProperty("name")] public string _name = "Wallet";
+		[FormerlySerializedAs("_name")]
+		[JsonProperty("name")] public string Name = "Wallet";
 
 		public override bool Equals(object obj)
 		{
 			if (obj is ClientMeta clientMeta)
 			{
-				return _description == clientMeta._description
-				       && _url == clientMeta._url
-				       && _icons.SequenceEqual(clientMeta._icons)
-				       && _name == clientMeta._name;
+				return Description == clientMeta.Description
+				       && Url == clientMeta.Url
+				       && Icons.SequenceEqual(clientMeta.Icons)
+				       && Name == clientMeta.Name;
 			}
 
 			return base.Equals(obj);

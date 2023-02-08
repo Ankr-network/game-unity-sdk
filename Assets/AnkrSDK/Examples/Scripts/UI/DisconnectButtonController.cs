@@ -12,7 +12,7 @@ namespace AnkrSDK.UI
 	{
 		[SerializeField] private Button _button;
 	#if !UNITY_WEBGL || UNITY_EDITOR
-		private WalletConnect WalletConnect => ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
+		private WalletConnect WalletConnect => ConnectProvider<WalletConnect>.GetConnect();
 
 		private void OnEnable()
 		{

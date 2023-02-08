@@ -18,7 +18,7 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 			get
 			{
 #if (UNITY_WEBGL && !UNITY_EDITOR)
-				return AnkrSDK.Utils.ConnectProvider<WebGLConnect, WebGLConnectSettingsSO>.GetConnect();
+				return AnkrSDK.Utils.ConnectProvider<WebGLConnect>.GetConnect();
 #else
 				return null;
 #endif

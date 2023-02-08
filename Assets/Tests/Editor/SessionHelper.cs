@@ -8,10 +8,10 @@ namespace Tests.Editor
 		{
 			var clientMeta = new ClientMeta
 			{
-				_description = string.Empty,
-				_icons = new[] { string.Empty },
-				_name = string.Empty,
-				_url = string.Empty
+				Description = string.Empty,
+				Icons = new[] { string.Empty },
+				Name = string.Empty,
+				Url = string.Empty
 			};
 			var testSession = new SavedSession(
 				string.Empty,

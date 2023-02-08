@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace AnkrSDK.Utils
 {
-	public static class ConnectProvider<TConnect, TSettings> where TConnect : IWalletConnectable, new() where TSettings : ScriptableObject
+	public static class ConnectProvider<TConnect> where TConnect : IWalletConnectable, new()
 	{
 		private static TConnect _instance;
 
@@ -26,7 +26,7 @@ namespace AnkrSDK.Utils
 			}
 
 			_instance = new TConnect();
-			var settings = Resources.Load<TSettings>(_instance.SettingsFilename);
+			var settings = Resources.Load<ScriptableObject>(_instance.SettingsFilename);
 			_instance.Initialize(settings);
 			connectAdapter.Clear();
 			connectAdapter.TryAddObject(_instance);

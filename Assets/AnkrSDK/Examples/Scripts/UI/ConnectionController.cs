@@ -20,7 +20,7 @@ namespace AnkrSDK.UI
 		[SerializeField] private GameObject _sceneChooser;
 		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
-		private WalletConnect WalletConnect => ConnectProvider<WalletConnect, WalletConnectSettingsSO>.GetConnect();
+		private WalletConnect WalletConnect => ConnectProvider<WalletConnect>.GetConnect();
 		private async void Start()
 		{
 			if (Application.isEditor || Application.platform != RuntimePlatform.WebGLPlayer)
