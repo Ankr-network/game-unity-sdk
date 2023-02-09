@@ -58,16 +58,17 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				return WalletConnected ? WalletConnectStatus.DisconnectedSessionCached : WalletConnectStatus.DisconnectedNoSession;
 			}
 		}
-		public bool WaitingForSessionRequestResponse { get; set; }
-		public bool WalletConnected { get; set; }
+
 		public bool Connecting { get; protected set; }
 		public ITransport Transport { get; private set; }
-		public ICipher Cipher { get; }
-		public ClientMeta DappMetadata { get; set; }
-		public ClientMeta WalletMetadata { get; set; }
+		public ClientMeta DappMetadata { get; protected set; }
+		public ClientMeta WalletMetadata { get; protected set; }
 		public string PeerId { get; protected set; }
 		public string KeyData => Key;
 		protected bool TransportConnected => Transport?.Connected == true && Transport?.URL == BridgeUrl;
+		protected bool WaitingForSessionRequestResponse { get; set; }
+		protected bool WalletConnected { get; set; }
+		private readonly ICipher _cipher;
 		
 		/// <summary>
 		/// Create a new WalletConnectProtocol object using a SavedSession as the session data. This will effectively resume
@@ -103,7 +104,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			cipher = cipher ?? new AESCipher();
 
-			Cipher = cipher;
+			_cipher = cipher;
 
 			KeyRaw = savedSession.KeyRaw;
 
@@ -145,7 +146,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			cipher = cipher ?? new AESCipher();
 
-			Cipher = cipher;
+			_cipher = cipher;
 		}
 
 		protected async UniTask OpenTransport()
@@ -215,7 +216,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			var encryptedPayload = JsonConvert.DeserializeObject<EncryptedPayload>(networkMessage.Payload);
 
-			var json = await Cipher.DecryptWithKey(KeyRaw, encryptedPayload);
+			var json = await _cipher.DecryptWithKey(KeyRaw, encryptedPayload);
 
 			var response = JsonConvert.DeserializeObject<JsonRpcResponse>(json);
 
@@ -257,7 +258,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			var json = JsonConvert.SerializeObject(requestObject);
 
-			var encrypted = await Cipher.EncryptWithKey(KeyRaw, json);
+			var encrypted = await _cipher.EncryptWithKey(KeyRaw, json);
 
 			if (sendingTopic == null)
 			{
