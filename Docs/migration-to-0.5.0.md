@@ -1,4 +1,4 @@
-# Wallet Connect breaking changes migration guide
+# AnkrSDK version 0.5.0 migration guide
 
 In this release we are adding meaningful simplicity, flexibility and extendability improvements into the SDK's wallet connect protocol implementation. These improvements introduced some breaking changes and this guide is intended to assist in the migration to 0.5.
 
