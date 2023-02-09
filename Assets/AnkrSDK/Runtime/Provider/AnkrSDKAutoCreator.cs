@@ -15,7 +15,7 @@ namespace AnkrSDK.Provider
 			);
 			UnityEngine.Object.DontDestroyOnLoad(walletConnectObject);
 			
-			ConnectProvider<AnkrSDK.WebGL.WebGLConnect, AnkrSDK.WebGL.WebGLConnectSettingsSO>.GetConnect();
+			ConnectProvider<AnkrSDK.WebGL.WebGLConnect>.GetConnect();
 		#else
 
 			var walletConnectUnityAdapter = new UnityEngine.GameObject("WalletConnectAdapter",
