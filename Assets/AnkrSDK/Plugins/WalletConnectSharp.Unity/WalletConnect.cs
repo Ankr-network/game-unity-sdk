@@ -15,22 +15,24 @@ using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnectSharp.Unity.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
-using UnityEngine;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Logger = AnkrSDK.InternalUtils.Logger;
 
 [assembly: InternalsVisibleTo("AnkrSDK.Tests.Runtime")]
+
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public partial class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable, IWalletConnectCommunicator
+	public  class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable, IWalletConnectCommunicator
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
 		public event Action OnSend;
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
-		
+
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
+
 		public string PeerId
 		{
 			get
@@ -84,23 +86,20 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				return _session?.ChainId ?? -1;
 			}
 		}
+
 		public bool Connecting => _session != null && _session.Connecting;
 
 		private WalletConnectStatus _previousStatus;
 		private readonly NativeWebSocketTransport _transport = new NativeWebSocketTransport();
-		
+
 		private WalletConnectSettingsSO _settings;
-		private bool _initialized = false;
+		private bool _initialized  ;
 		public string ConnectURL => _session.URI;
 		public string SettingsFilename => SettingsFilenameString;
 		public Type SettingsType => typeof(WalletConnectSettingsSO);
 
 		private AppEntry _selectedWallet;
 		private WalletConnectSession _session;
-
-		public WalletConnect()
-		{
-		}
 
 		public void Initialize(ScriptableObject settings)
 		{
@@ -112,7 +111,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			else
 			{
 				var typeStr = settings == null ? "null" : settings.GetType().Name;
-				Debug.LogError($"WalletConnect: Could not initialize because settings are " + typeStr);
+				Debug.LogError("WalletConnect: Could not initialize because settings are " + typeStr);
 			}
 		}
 
@@ -126,9 +125,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				if (_previousStatus != newStatus)
 				{
 					var transition = TransitionDataFactory.CreateTransitionObj(_previousStatus, newStatus, _session);
-					
+
 					SessionStatusUpdated?.Invoke(transition);
-					
+
 					_previousStatus = _session.Status;
 				}
 			}
@@ -150,12 +149,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			{
 				throw new InvalidOperationException("WalletConnect is not initialized");
 			}
-			
+
 			if (_transport != null)
 			{
 				await _transport.OnApplicationPause(pauseStatus);
 			}
-			
+
 			if (pauseStatus)
 			{
 				await SaveOrDisconnect();
@@ -256,6 +255,18 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return _session.EthSendRawTransaction(data, messageEncoding);
 		}
 
+		public UniTask<string> WalletAddEthChain(EthChainData chainData)
+		{
+			CheckIfSessionCreated();
+			return _session.WalletAddEthChain(chainData);
+		}
+
+		public UniTask<string> WalletSwitchEthChain(EthChain chainData)
+		{
+			CheckIfSessionCreated();
+			return _session.WalletSwitchEthChain(chainData);
+		}
+
 		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data) where TRequest : JsonRpcRequest where TResponse : JsonRpcResponse
 		{
 			CheckIfSessionCreated();
@@ -271,16 +282,16 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		}
 
 		internal void InitializeSession(SavedSession savedSession = null, ICipher cipher = null)
-		{	
+		{
 			if (!_initialized)
 			{
 				throw new InvalidOperationException("WalletConnect is not initialized");
 			}
-			
+
 			var appData = _settings.AppData;
 			var customBridgeUrl = _settings.CustomBridgeUrl;
 			var chainId = _settings.ChainId;
-			
+
 			_session = savedSession != null
 				? WalletConnectSessionFactory.RestoreWalletConnectSession(savedSession, _transport)
 				: WalletConnectSessionFactory.GetNewWalletConnectSession(appData, customBridgeUrl, _transport,
@@ -303,11 +314,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void OpenMobileWallet()
 		{
-		#if UNITY_ANDROID
+#if UNITY_ANDROID
 			var signingURL = ConnectURL.Split('@')[0];
 
 			Application.OpenURL(signingURL);
-		#elif UNITY_IOS
+#elif UNITY_IOS
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
@@ -319,10 +330,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			Debug.Log("Opening: " + url);
 			Application.OpenURL(url);
-		#else
+#else
 			Debug.Log("Platform does not support deep linking");
 			return;
-		#endif
+#endif
 		}
 
 		public void OpenDeepLink()
@@ -334,9 +345,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				return;
 			}
 
-		#if UNITY_ANDROID
+#if UNITY_ANDROID
 			Application.OpenURL(ConnectURL);
-		#elif UNITY_IOS
+#elif UNITY_IOS
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
@@ -349,10 +360,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			Debug.Log("[WalletConnect] Opening URL: " + url);
 
 			Application.OpenURL(url);
-		#else
+#else
 			Debug.Log("Platform does not support deep linking");
 			return;
-		#endif
+#endif
 		}
 
 		public async UniTask CloseSession(bool connectNewSession = true)
@@ -433,7 +444,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				try
 				{
 					var sessionData = await _session.ConnectSession();
-					
+
 					return sessionData;
 				}
 				catch (IOException e)

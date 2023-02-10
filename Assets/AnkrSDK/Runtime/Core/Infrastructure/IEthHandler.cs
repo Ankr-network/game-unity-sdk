@@ -23,9 +23,9 @@ namespace AnkrSDK.Core.Infrastructure
 			string nonce = null
 		);
 
-	UniTask<string> Sign(string messageToSign, string address);
+		UniTask<string> Sign(string messageToSign, string address);
 
-	UniTask<string> SendTransaction(
+		UniTask<string> SendTransaction(
 			string from,
 			string to,
 			string data = null,

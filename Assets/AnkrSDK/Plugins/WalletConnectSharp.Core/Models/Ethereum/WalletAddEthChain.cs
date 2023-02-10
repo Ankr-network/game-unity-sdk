@@ -4,14 +4,14 @@ namespace AnkrSDK.WalletConnectSharp.Core.Models.Ethereum
 {
 	public class WalletAddEthChain : JsonRpcRequest
 	{
-		[JsonProperty("params")] private EthChainData[] _parameters;
+		[JsonProperty("params")] private EthChainData[] _chainData;
 
-		[JsonIgnore] public EthChainData[] Parameters => _parameters;
+		[JsonIgnore] public EthChainData[] ChainData => _chainData;
 
 		public WalletAddEthChain(EthChainData chainData) : base()
 		{
 			this.Method = "wallet_addEthereumChain";
-			this._parameters = new[] { chainData };
+			this._chainData = new[] { chainData };
 		}
 	}
 }

@@ -27,25 +27,25 @@ namespace AnkrSDK.Mobile
 			_silentSigningHandler = silentSigningHandler;
 			_walletConnect = ConnectProvider<WalletConnect>.GetConnect();
 		}
-		
+
 		public UniTask<string> WalletAddEthChain(EthChainData chainData)
 		{
-			if (_walletConnect.Session == null)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			return _walletConnect.Session.WalletAddEthChain(chainData);
+			return _walletConnect.WalletAddEthChain(chainData);
 		}
 
 		public UniTask<string> WalletSwitchEthChain(EthChain chain)
 		{
-			if (_walletConnect.Session == null)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			return _walletConnect.Session.WalletSwitchEthChain(chain);
+			return _walletConnect.WalletSwitchEthChain(chain);
 		}
 
 		public  UniTask<string> GetDefaultAccount()
@@ -73,26 +73,6 @@ namespace AnkrSDK.Mobile
 
 			var chainId = _walletConnect.ChainId;
 			return UniTask.FromResult(new BigInteger(chainId));
-		}
-		
-		public UniTask<string> WalletAddEthChain(EthChainData chainData)
-		{
-			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
-			{
-				throw new Exception("Application is not linked to wallet");
-			}
-
-			return _walletConnect.WalletAddEthChain(chainData);
-		}
-
-		public UniTask<string> WalletSwitchEthChain(EthChainData chainData)
-		{
-			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
-			{
-				throw new Exception("Application is not linked to wallet");
-			}
-
-			return _walletConnect.WalletSwitchEthChain(chainData);
 		}
 
 		public UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
