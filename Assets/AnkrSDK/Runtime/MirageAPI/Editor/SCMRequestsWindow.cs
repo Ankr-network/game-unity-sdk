@@ -21,18 +21,18 @@ namespace AnkrSDK.Runtime.MirageAPI.Editor
 		private static bool _contractRequestInProgress;
 		private static bool _allContractsRequestInProgress;
 		private static bool _applicationTokenRequestInProgress;
-
+		
 		[MenuItem("AnkrSDK/SCMEditor")]
 		public static void ShowWindow()
 		{
-			var window = GetWindow(typeof(SCMRequestsWindow));
+			var window = GetWindow<SCMRequestsWindow>();
 
 			window.titleContent = new GUIContent("Smart Contract Manager Requests");
 		}
 
 		private void OnGUI()
 		{
-			if (string.IsNullOrEmpty(_applicationToken))
+			if (string.IsNullOrWhiteSpace(_applicationToken))
 			{
 				if (!_applicationTokenRequestInProgress)
 				{
@@ -51,7 +51,7 @@ namespace AnkrSDK.Runtime.MirageAPI.Editor
 				GUI.enabled = false;
 			}
 
-			if (string.IsNullOrEmpty(_contractId))
+			if (string.IsNullOrWhiteSpace(_contractId))
 			{
 				GUILayout.Label("Input a correct contract id", EditorStyles.boldLabel);
 			}
@@ -81,7 +81,7 @@ namespace AnkrSDK.Runtime.MirageAPI.Editor
 
 			DrawContractsInfo();
 
-			GUI.enabled = false;
+			GUI.enabled = true;
 		}
 
 		private void DrawContractsInfo()
@@ -176,7 +176,6 @@ namespace AnkrSDK.Runtime.MirageAPI.Editor
 			Debug.LogWarning(MirageConstants.MirageAPISettingsName + " can't be found, creating a new one...");
 			mirageAPISettingsSO = CreateInstance<MirageAPISettingsSO>();
 			AssetDatabase.CreateAsset(mirageAPISettingsSO, MirageConstants.DefaultSettingsAssetPath);
-			mirageAPISettingsSO = Resources.Load<MirageAPISettingsSO>(MirageConstants.MirageAPISettingsName);
 
 			return mirageAPISettingsSO;
 		}
@@ -227,6 +226,7 @@ namespace AnkrSDK.Runtime.MirageAPI.Editor
 			EditorUtility.SetDirty(contractInfoSO);
 
 			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
 
 			Selection.activeObject = contractInfoSO;
 			Debug.Log($"Created Asset: {assetPath}");
