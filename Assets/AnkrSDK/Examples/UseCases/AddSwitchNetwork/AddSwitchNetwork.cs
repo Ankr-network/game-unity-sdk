@@ -10,7 +10,7 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 	public class AddSwitchNetwork : UseCase
 	{
 		[SerializeField] private ContractInformationSO _contractInformationSO;
-		
+
 		[SerializeField] private Button _bscButton;
 		[SerializeField] private Button _bscTestButton;
 
@@ -60,7 +60,5 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 		{
 			await _ethHandler.WalletUpdateEthChain(ChainInfo.BscTestnet.ToEthUpdate());
 		}
-		
-		
 	}
 }
