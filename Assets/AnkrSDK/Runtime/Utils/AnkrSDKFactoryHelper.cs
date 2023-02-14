@@ -1,7 +1,7 @@
 using System;
 using AnkrSDK.Data;
 
-namespace AnkrSDK.Provider
+namespace AnkrSDK.Utils
 {
 	public static class AnkrSDKFactoryHelper
 	{
@@ -9,7 +9,7 @@ namespace AnkrSDK.Provider
 		{
 			switch (networkName)
 			{
-				case NetworkName.Ethereum:
+				case NetworkName.Mainnet:
 					return "https://rpc.ankr.com/eth";
 				case NetworkName.Rinkeby:
 					return "https://rpc.ankr.com/eth_rinkeby";

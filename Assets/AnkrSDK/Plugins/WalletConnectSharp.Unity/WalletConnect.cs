@@ -267,6 +267,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return _session.WalletSwitchEthChain(chainData);
 		}
 
+		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData)
+		{
+			CheckIfSessionCreated();
+			return _session.WalletUpdateEthChain(chainData);
+		}
+
 		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data) where TRequest : JsonRpcRequest where TResponse : JsonRpcResponse
 		{
 			CheckIfSessionCreated();

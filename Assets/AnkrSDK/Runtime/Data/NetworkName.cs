@@ -2,7 +2,7 @@ namespace AnkrSDK.Data
 {
 	public enum NetworkName
 	{
-		Ethereum,
+		Mainnet,
 		Rinkeby,
 		Goerli,
 		Ropsten,

@@ -46,5 +46,6 @@ namespace AnkrSDK.Core.Infrastructure
 		UniTask<BigInteger> GetChainId();
 		UniTask<string> WalletAddEthChain(EthChainData chainData);
 		UniTask<string> WalletSwitchEthChain(EthChain chain);
+		UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain);
 	}
 }

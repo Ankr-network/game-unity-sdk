@@ -234,6 +234,13 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
+		public virtual async UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData)
+		{
+			var request = new WalletUpdateEthChain(chainData);
+			var response = await Send<WalletUpdateEthChain, EthResponse>(request);
+			return response.Result;
+		}
+
 		public async UniTask<string> EthSign(string address, string message)
 		{
 			if (!message.IsHex())

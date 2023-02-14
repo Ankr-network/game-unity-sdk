@@ -48,6 +48,16 @@ namespace AnkrSDK.Mobile
 			return _walletConnect.WalletSwitchEthChain(chain);
 		}
 
+		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)
+		{
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
+			{
+				throw new Exception("Application is not linked to wallet");
+			}
+
+			return _walletConnect.WalletUpdateEthChain(chain);
+		}
+
 		public  UniTask<string> GetDefaultAccount()
 		{
 			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)

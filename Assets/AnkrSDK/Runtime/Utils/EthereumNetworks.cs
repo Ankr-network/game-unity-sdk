@@ -8,17 +8,31 @@ namespace AnkrSDK.Utils
 	public static class EthereumNetworks
 	{
 		private static readonly string _ethereumMainnetName = "Mainnet";
-		
-		public static Dictionary<NetworkName, EthereumNetwork> Dictionary = new Dictionary<NetworkName, EthereumNetwork>
+
+		private static readonly Dictionary<NetworkName, EthereumNetwork> Dictionary =
+			new Dictionary<NetworkName, EthereumNetwork>();
+		public static IEnumerable<NetworkName> AllAddedNetworks => Dictionary.Keys;
+
+		static EthereumNetworks()
 		{
-			{ NetworkName.Ethereum, CreateMetamaskExistedNetwork(1, _ethereumMainnetName) },
-			{ NetworkName.Ropsten, CreateMetamaskExistedNetwork(3, nameof(NetworkName.Ropsten)) },
-			{ NetworkName.Rinkeby, CreateMetamaskExistedNetwork(4, nameof(NetworkName.Rinkeby)) },
-			{ NetworkName.Goerli, CreateMetamaskExistedNetwork(5, nameof(NetworkName.Goerli)) },
-			{ NetworkName.Kovan, CreateMetamaskExistedNetwork(42, nameof(NetworkName.Kovan)) },
-			{ NetworkName.BinanceSmartChain, CreateBinanceSmartChain() },
-			{ NetworkName.BinanceSmartChain_TestNet, CreateBinanceSmartChainTestNet() }
-		};
+			var networksToAdd = new NetworkName[]
+			{
+				NetworkName.Mainnet,
+				NetworkName.Ropsten,
+				NetworkName.Rinkeby,
+				NetworkName.Goerli,
+				NetworkName.Kovan
+			};
+			foreach (var networkName in networksToAdd)
+			{
+				var ethereumNetwork =
+					CreateMetamaskExistedNetwork(networkName.GetNetworkChainId(), networkName);
+				Dictionary.Add(networkName, ethereumNetwork);
+			}
+			
+			Dictionary.Add(NetworkName.BinanceSmartChain, CreateBinanceSmartChain());
+			Dictionary.Add(NetworkName.BinanceSmartChain_TestNet, CreateBinanceSmartChainTestNet());
+		}
 		
 		public static EthereumNetwork GetNetworkByName(NetworkName networkName)
 		{
@@ -32,12 +46,12 @@ namespace AnkrSDK.Utils
 			}
 		}
 
-		private static EthereumNetwork CreateMetamaskExistedNetwork(int chainId, string name)
+		private static EthereumNetwork CreateMetamaskExistedNetwork(int chainId, NetworkName networkName)
 		{
 			return new EthereumNetwork
 			{
 				ChainId = new HexBigInteger(chainId),
-				ChainName = name
+				ChainName = networkName.ToString()
 			};
 		}
 

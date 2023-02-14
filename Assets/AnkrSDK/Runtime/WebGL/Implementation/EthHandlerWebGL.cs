@@ -126,6 +126,11 @@ namespace AnkrSDK.WebGL.Implementation
 			throw new NotImplementedException();
 		}
 
+		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)
+		{
+			throw new NotImplementedException();
+		}
+
 		public UniTask<BigInteger> GetBlockNumber()
 		{
 			var callObject = new WebGLCallObject

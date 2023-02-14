@@ -17,6 +17,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
         UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null);
         UniTask<string> WalletAddEthChain(EthChainData chainData);
         UniTask<string> WalletSwitchEthChain(EthChain chainData);
+        UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData);
 
         UniTask<TResponse> Send<TRequest, TResponse>(TRequest data) where TRequest : JsonRpcRequest
             where TResponse : JsonRpcResponse;
