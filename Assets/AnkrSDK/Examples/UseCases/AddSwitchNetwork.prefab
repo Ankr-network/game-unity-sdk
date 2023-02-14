@@ -736,7 +736,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Add & Switch to BSC Testnet
+  m_Text: Update to BSC Testnet
 --- !u!1 &6437994401982488279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1194,7 +1194,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Add & Switch to BSC
+  m_Text: Update to BSC
 --- !u!1001 &869554491103602925
 PrefabInstance:
   m_ObjectHideFlags: 0
