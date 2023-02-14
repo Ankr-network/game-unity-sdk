@@ -164,7 +164,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				{
 					result = await CreateSession();
 					Connecting = false;
-
 					OnSessionCreated?.Invoke();
 				}
 				else
@@ -471,7 +470,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			//We are connected if we are approved
 			WalletConnected = data.approved;
-
 			Debug.Log($"WalletConnectSession: SessionConnected set to {data.approved}");
 
 			if (data.chainId != null)

@@ -30,7 +30,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public event Action OnSend;
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
-
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
 
 		public string PeerId
@@ -91,9 +90,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		private WalletConnectStatus _previousStatus;
 		private readonly NativeWebSocketTransport _transport = new NativeWebSocketTransport();
-
 		private WalletConnectSettingsSO _settings;
-		private bool _initialized  ;
+		private bool _initialized;
 		public string ConnectURL => _session.URI;
 		public string SettingsFilename => SettingsFilenameString;
 		public Type SettingsType => typeof(WalletConnectSettingsSO);
@@ -125,9 +123,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				if (_previousStatus != newStatus)
 				{
 					var transition = TransitionDataFactory.CreateTransitionObj(_previousStatus, newStatus, _session);
-
 					SessionStatusUpdated?.Invoke(transition);
-
 					_previousStatus = _session.Status;
 				}
 			}
@@ -297,7 +293,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			var appData = _settings.AppData;
 			var customBridgeUrl = _settings.CustomBridgeUrl;
 			var chainId = _settings.ChainId;
-
 			_session = savedSession != null
 				? WalletConnectSessionFactory.RestoreWalletConnectSession(savedSession, _transport)
 				: WalletConnectSessionFactory.GetNewWalletConnectSession(appData, customBridgeUrl, _transport,
