@@ -26,7 +26,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			"wallet_silentSendTransaction",
 			"wallet_silentSignMessage",
 			"wallet_addEthereumChain",
-			"wallet_switchEthereumChain"
+			"wallet_switchEthereumChain",
+			"wallet_updateEthereumChain"
 		};
 
 		protected readonly EventDelegator EventDelegator;
