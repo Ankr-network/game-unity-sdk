@@ -81,3 +81,4 @@ UserSettings/AndroidLogcatSettings.asset
 Builds
 .DS_Store
 .idea/.idea.game-unity-sdk/.idea/workspace.xml
+*.DotSettings
