@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AnkrSDK.MirageAPI.MirageID.Data.Token;
+using AnkrSDK.MirageAPI.MirageID.Implementation;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
 
@@ -7,10 +8,22 @@ namespace AnkrSDK.MirageAPI.MirageID.Helpers
 {
 	public static class MirageIdRequestsHelper
 	{
+		private static IMirageIdEnv _env;
+		
+		static MirageIdRequestsHelper()
+		{
+			_env = new MirageIdEnv();
+		}
+
+		static void SetEnvironment(IMirageIdEnv env)
+		{
+			_env = env;
+		}
+		
 		public static async UniTask<string> GetTokenRequest(Dictionary<string, string> payload)
 		{
 			var answer =
-				await WebHelper.SendPostRequestURLEncoded<TokenResponseDTO>(MirageIdEndpoints.TokenEndpoint, payload);
+				await WebHelper.SendPostRequestURLEncoded<TokenResponseDTO>(_env.TokenEndpoint, payload);
 			var answerToken = answer?.AccessToken;
 			return answerToken;
 		}
@@ -23,7 +36,7 @@ namespace AnkrSDK.MirageAPI.MirageID.Helpers
 			};
 
 			var authHeader = GetAuthorizationHeader(token);
-			return WebHelper.SendPostRequestURLEncoded(MirageIdEndpoints.LogoutEndpoint, payload,
+			return WebHelper.SendPostRequestURLEncoded(_env.LogoutEndpoint, payload,
 				authHeader);
 		}
 

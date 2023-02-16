@@ -9,9 +9,19 @@ namespace AnkrSDK.MirageAPI.MirageID.Implementation
 {
 	public class MirageIdApplicationRequests : IMirageIdApplicationRequests
 	{
+		private static MirageIdEnv _env;
 		private string _clientId;
 		private string _clientSecret;
 		private string _applicationToken;
+
+		public MirageIdApplicationRequests()
+		{
+			_env = new MirageIdEnv();
+		}
+		public MirageIdApplicationRequests(MirageIdEnv env)
+		{
+			_env = env;
+		}
 
 		public bool IsInitialized()
 		{
@@ -62,7 +72,7 @@ namespace AnkrSDK.MirageAPI.MirageID.Implementation
 			var headers = MirageIdRequestsHelper.GetAuthorizationHeader(_applicationToken);
 			var answer =
 				await WebHelper.SendPostRequest<CreateUserRequestDTO, CreateUserResponseDTO>(
-					MirageIdEndpoints.CreateUserURL, payload,
+					_env.CreateUserURL, payload,
 					headers);
 			return answer?.WalletId;
 		}
