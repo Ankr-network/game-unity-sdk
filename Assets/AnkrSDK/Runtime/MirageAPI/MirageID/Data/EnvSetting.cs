@@ -1,6 +1,9 @@
+using System;
+
 namespace AnkrSDK.MirageAPI.MirageID.Helpers
 {
-	public class EnvSetting
+	[Serializable]
+	public struct EnvSetting
 	{
 		public string MirageIdUrl;
 		public string AuthUrl;

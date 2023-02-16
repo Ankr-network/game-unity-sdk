@@ -1,6 +1,6 @@
 namespace AnkrSDK.MirageAPI.MirageID.Helpers
 {
-	public enum Environments
+	public enum EnvironmentType
 	{
 		Staging,
 		Production
