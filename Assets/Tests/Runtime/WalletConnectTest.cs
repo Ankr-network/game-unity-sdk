@@ -32,6 +32,7 @@ namespace Tests.Runtime
 					try
 					{
 						await UniTask.WhenAny(
+							connect.Connect(),
 							UniTask.WaitUntil(() => connect.Status == WalletConnectStatus.SessionRequestSent),
 							UniTask.Delay(TimeSpan.FromSeconds(5f)));
 					}
@@ -41,7 +42,7 @@ namespace Tests.Runtime
 					}
 				});
 
-				Assert.That(connect.Status == WalletConnectStatus.SessionRequestSent);
+				Assert.AreEqual(WalletConnectStatus.SessionRequestSent, connect.Status);
 			}
 
 			if (savedSessionBeforeTest != null)
@@ -59,22 +60,22 @@ namespace Tests.Runtime
 		{
 			using (var walletConnect = WalletHelper.CreateWalletConnectObject())
 			{
-				Assert.IsNull(walletConnect.Status == WalletConnectStatus.Uninitialized);
+				Assert.AreEqual(WalletConnectStatus.Uninitialized,walletConnect.Status);
 			}
 		}
 
 		[Test]
 		public void WalletConnect_SessionConnection()
 		{
-			
 			using (var wc = WalletHelper.CreateWalletConnectObject())
 			{
 				wc.InitializeSession();
-				Assert.IsFalse(wc.Status == WalletConnectStatus.Uninitialized);
+				var walletConnectStatus = wc.Status;
+				Assert.AreNotEqual(WalletConnectStatus.Uninitialized, walletConnectStatus);
 				Assert.IsFalse(wc.Connecting);
-				Assert.IsFalse(wc.Status == WalletConnectStatus.TransportConnected);
-				Assert.IsFalse(wc.Status == WalletConnectStatus.SessionRequestSent);
-				Assert.IsFalse(wc.Status == WalletConnectStatus.WalletConnected);
+				Assert.AreNotEqual(WalletConnectStatus.TransportConnected,walletConnectStatus);
+				Assert.AreNotEqual(WalletConnectStatus.SessionRequestSent,walletConnectStatus);
+				Assert.AreNotEqual(WalletConnectStatus.WalletConnected,walletConnectStatus);
 			}
 		}
 	}
