@@ -40,7 +40,7 @@ namespace AnkrSDK.MirageAPI.MirageID.Implementation
 			var headers = MirageIdRequestsHelper.GetAuthorizationHeader(_userToken);
 
 			return WebHelper.SendGetRequest<WalletInfoResponseDTO>(
-				MirageIdEndpoints.WalletInfoURL,
+				MirageEnvironment.WalletInfoURL,
 				headers);
 		}
 
