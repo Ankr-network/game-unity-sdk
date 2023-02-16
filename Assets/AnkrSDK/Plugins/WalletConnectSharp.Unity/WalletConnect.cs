@@ -315,11 +315,11 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 		public void OpenMobileWallet()
 		{
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			var signingURL = ConnectURL.Split('@')[0];
 
 			Application.OpenURL(signingURL);
-#elif UNITY_IOS
+			#elif UNITY_IOS
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
@@ -331,10 +331,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 
 			Debug.Log("Opening: " + url);
 			Application.OpenURL(url);
-#else
+			#else
 			Debug.Log("Platform does not support deep linking");
 			return;
-#endif
+			#endif
 		}
 
 		public void OpenDeepLink()
@@ -346,9 +346,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				return;
 			}
 
-#if UNITY_ANDROID
+			#if UNITY_ANDROID
 			Application.OpenURL(ConnectURL);
-#elif UNITY_IOS
+			#elif UNITY_IOS
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
@@ -361,10 +361,10 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			Debug.Log("[WalletConnect] Opening URL: " + url);
 
 			Application.OpenURL(url);
-#else
+			#else
 			Debug.Log("Platform does not support deep linking");
 			return;
-#endif
+			#endif
 		}
 
 		public async UniTask CloseSession(bool connectNewSession = true)
