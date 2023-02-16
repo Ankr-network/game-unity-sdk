@@ -58,7 +58,7 @@ namespace AnkrSDK.MirageAPI.MirageID.Implementation
 			var headers = MirageIdRequestsHelper.GetAuthorizationHeader(_applicationToken);
 			var answer =
 				await WebHelper.SendPostRequest<CreateUserRequestDTO, CreateUserResponseDTO>(
-					MirageIdEndpoints.CreateUserURL, payload,
+					MirageEnvironment.CreateUserURL, payload,
 					headers);
 			return answer?.WalletId;
 		}
