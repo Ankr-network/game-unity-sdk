@@ -1,5 +1,7 @@
 namespace AnkrSDK.Data
 {
+	//DO NOT CHANGE numeric values for these enum values
+	//they correspond to global network identifiers
 	public enum NetworkName
 	{
 		Mainnet = 1,
