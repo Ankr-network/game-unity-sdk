@@ -79,7 +79,7 @@ namespace AnkrSDK.MirageAPI.MirageID.Implementation
 
 			_clientId = clientId;
 			_clientSecret = clientSecret;
-			
+
 			var payload = new Dictionary<string, string>
 			{
 				{ "client_secret", _clientSecret },

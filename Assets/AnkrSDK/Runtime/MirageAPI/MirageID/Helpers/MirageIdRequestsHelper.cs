@@ -10,7 +10,7 @@ namespace AnkrSDK.MirageAPI.MirageID.Helpers
 		public static async UniTask<string> GetTokenRequest(Dictionary<string, string> payload)
 		{
 			var answer =
-				await WebHelper.SendPostRequestURLEncoded<TokenResponseDTO>(MirageEnvironment.TokenEndpoint, payload);
+				await WebHelper.SendPostRequestURLEncoded<TokenResponseDTO>(MirageEnvironment.TokenURL, payload);
 			var answerToken = answer?.AccessToken;
 			return answerToken;
 		}
@@ -23,7 +23,7 @@ namespace AnkrSDK.MirageAPI.MirageID.Helpers
 			};
 
 			var authHeader = GetAuthorizationHeader(token);
-			return WebHelper.SendPostRequestURLEncoded(MirageEnvironment.LogoutEndpoint, payload,
+			return WebHelper.SendPostRequestURLEncoded(MirageEnvironment.LogoutURL, payload,
 				authHeader);
 		}
 
