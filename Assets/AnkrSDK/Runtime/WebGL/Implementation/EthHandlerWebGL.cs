@@ -1,12 +1,14 @@
 using System;
 using System.Numerics;
-using AnkrSDK.WebGL.Extensions;
-using Nethereum.Hex.HexTypes;
-using Nethereum.RPC.Eth.DTOs;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using AnkrSDK.WebGL.DTO;
+using AnkrSDK.WebGL.Extensions;
 using Cysharp.Threading.Tasks;
+using Nethereum.Hex.HexTypes;
+using Nethereum.RPC.Eth.DTOs;
+using TransactionData = AnkrSDK.WebGL.DTO.TransactionData;
 
 namespace AnkrSDK.WebGL.Implementation
 {
@@ -54,15 +56,10 @@ namespace AnkrSDK.WebGL.Implementation
 			string nonce = null
 		)
 		{
-			var transactionData = new DTO.TransactionData
+			var transactionData = new TransactionData
 			{
-				from = from,
-				to = to,
-				data = data,
-				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
-				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
-				nonce = nonce
+				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 
 			return _webGlWrapper.EstimateGas(transactionData);
@@ -70,10 +67,9 @@ namespace AnkrSDK.WebGL.Implementation
 
 		public UniTask<string> Sign(string messageToSign, string address)
 		{
-			var props = new DTO.DataSignaturePropsDTO
+			var props = new DataSignaturePropsDTO
 			{
-				address = address,
-				message = messageToSign
+				address = address, message = messageToSign
 			};
 
 			return _webGlWrapper.Sign(props);
@@ -83,15 +79,10 @@ namespace AnkrSDK.WebGL.Implementation
 			string gas = null,
 			string gasPrice = null, string nonce = null)
 		{
-			var transactionData = new DTO.TransactionData
+			var transactionData = new TransactionData
 			{
-				from = from,
-				to = to,
-				data = data,
-				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
-				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null,
-				nonce = nonce
+				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 
 			return _webGlWrapper.SendTransaction(transactionData);
@@ -102,16 +93,37 @@ namespace AnkrSDK.WebGL.Implementation
 			address = await GetDefaultAccount();
 			var callObject = new WebGLCallObject
 			{
-				Path = GetBalanceMethodName,
-				Args = address != null ? new[] {address} : null
+				Path = GetBalanceMethodName, Args = address != null
+					? new[]
+					{
+						address
+					}
+					: null
 			};
 			var balance = await _webGlWrapper.CallMethod<BigInteger>(callObject);
 			return balance;
 		}
-		
+
 		public UniTask<BigInteger> GetChainId()
 		{
 			return _webGlWrapper.GetChainId();
+		}
+
+		public UniTask<string> WalletSwitchEthChain(EthChain chain)
+		{
+			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
+			throw new NotImplementedException();
+		}
+
+		public UniTask<string> WalletAddEthChain(EthChainData chain)
+		{
+			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
+			throw new NotImplementedException();
+		}
+
+		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)
+		{
+			throw new NotImplementedException();
 		}
 
 		public UniTask<BigInteger> GetBlockNumber()
@@ -157,8 +169,10 @@ namespace AnkrSDK.WebGL.Implementation
 		{
 			var callObject = new WebGLCallObject
 			{
-				Path = GetBlockTransactionCountMethodName,
-				Args = new[] {blockId}
+				Path = GetBlockTransactionCountMethodName, Args = new[]
+				{
+					blockId
+				}
 			};
 			return _webGlWrapper.CallMethod<BigInteger>(callObject);
 		}
@@ -167,8 +181,10 @@ namespace AnkrSDK.WebGL.Implementation
 		{
 			var callObject = new WebGLCallObject
 			{
-				Path = GetBlockMethodName,
-				Args = new object[] {blockId, returnTransactionObjects}
+				Path = GetBlockMethodName, Args = new object[]
+				{
+					blockId, returnTransactionObjects
+				}
 			};
 			return _webGlWrapper.CallMethod<TResultType>(callObject);
 		}

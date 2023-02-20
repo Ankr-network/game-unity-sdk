@@ -8,73 +8,56 @@ namespace AnkrSDK.Utils
 	public static class EthereumNetworks
 	{
 		private static readonly string _ethereumMainnetName = "Mainnet";
-		
-		public static Dictionary<NetworkName, EthereumNetwork> Dictionary = new Dictionary<NetworkName, EthereumNetwork>
+
+		private static readonly Dictionary<NetworkName, EthereumNetwork> Dictionary =
+			new Dictionary<NetworkName, EthereumNetwork>();
+
+		public static IEnumerable<NetworkName> AllAddedNetworks => Dictionary.Keys;
+
+		static EthereumNetworks()
 		{
-			{ NetworkName.Ethereum, CreateMetamaskExistedNetwork(1, _ethereumMainnetName) },
-			{ NetworkName.Ropsten, CreateMetamaskExistedNetwork(3, nameof(NetworkName.Ropsten)) },
-			{ NetworkName.Rinkeby, CreateMetamaskExistedNetwork(4, nameof(NetworkName.Rinkeby)) },
-			{ NetworkName.Goerli, CreateMetamaskExistedNetwork(5, nameof(NetworkName.Goerli)) },
-			{ NetworkName.Kovan, CreateMetamaskExistedNetwork(42, nameof(NetworkName.Kovan)) },
-			{ NetworkName.BinanceSmartChain, CreateBinanceSmartChain() },
-			{ NetworkName.BinanceSmartChain_TestNet, CreateBinanceSmartChainTestNet() }
-		};
-		
+			foreach (NetworkName networkName in Enum.GetValues(typeof(NetworkName)))
+			{
+				var ethereumNetwork =
+					CreateMetamaskExistedNetwork(networkName);
+				Dictionary.Add(networkName, ethereumNetwork);
+			}
+		}
+
 		public static EthereumNetwork GetNetworkByName(NetworkName networkName)
 		{
 			if (Dictionary.ContainsKey(networkName))
 			{
 				return Dictionary[networkName];
 			}
-			else
+
+			throw new ArgumentOutOfRangeException(nameof(networkName), networkName, null);
+		}
+
+		private static EthereumNetwork CreateMetamaskExistedNetwork(NetworkName networkName)
+		{
+			return new EthereumNetwork
 			{
-				throw new ArgumentOutOfRangeException(nameof(networkName), networkName, null);
+				ChainId = new HexBigInteger((int)networkName), 
+				ChainName = GetChainName(networkName), 
+				NativeCurrency = AnkrSDKNetworkUtils.GetNativeCurrency(networkName), 
+				RpcUrls = AnkrSDKNetworkUtils.GetAnkrRPCsForSelectedNetwork(networkName),
+				BlockExplorerUrls = AnkrSDKNetworkUtils.GetBlockExporerUrls(networkName), 
+				IconUrls = AnkrSDKNetworkUtils.GetIconUrls(networkName)
+			};
+		}
+
+		private static string GetChainName(NetworkName networkName)
+		{
+			switch (networkName)
+			{
+				case NetworkName.BinanceSmartChain:
+					return "Smart BNB";
+				case NetworkName.BinanceSmartChain_TestNet:
+					return "Smart Chain - Testnet";
+				default:
+					return networkName.ToString();
 			}
-		}
-
-		private static EthereumNetwork CreateMetamaskExistedNetwork(int chainId, string name)
-		{
-			return new EthereumNetwork
-			{
-				ChainId = new HexBigInteger(chainId),
-				ChainName = name
-			};
-		}
-
-		private static EthereumNetwork CreateBinanceSmartChain()
-		{
-			return new EthereumNetwork
-			{
-				ChainId = new HexBigInteger(56),
-				ChainName = "Smart BNB",
-				NativeCurrency = new NativeCurrency
-				{
-					Name = "Smart BNB",
-					Symbol = "BNB",
-					Decimals = 18
-				},
-				RpcUrls = new[] {"https://rpc.ankr.com/bsc"},
-				BlockExplorerUrls = new[] {"https://bscscan.com"},
-				IconUrls = new[] {"future"}
-			};
-		}
-		
-		private static EthereumNetwork CreateBinanceSmartChainTestNet()
-		{
-			return new EthereumNetwork
-			{
-				ChainId = new HexBigInteger(97),
-				ChainName = "Smart Chain - Testnet",
-				NativeCurrency = new NativeCurrency
-				{
-					Name = "BNB Testnet",
-					Symbol = "BNB",
-					Decimals = 18
-				},
-				RpcUrls = new[] {"https://data-seed-prebsc-1-s1.binance.org:8545/"},
-				BlockExplorerUrls = new[] {"https://testnet.bscscan.com"},
-				IconUrls = new[] {"future"}
-			};
 		}
 	}
 }

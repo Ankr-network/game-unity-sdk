@@ -1,3 +1,4 @@
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using JetBrains.Annotations;
 using Nethereum.Hex.HexTypes;
 using Newtonsoft.Json;
@@ -18,5 +19,24 @@ namespace AnkrSDK.Data
 		public string[] BlockExplorerUrls { get; set; }
 		[CanBeNull, JsonProperty("iconUrls")]
 		public string[] IconUrls { get; set; }
+
+		public EthChainData ToEthChainData()
+		{
+			var result = new EthChainData
+			{
+				chainId = "0x" + ChainId,
+				chainName = ChainName,
+				iconUrls = IconUrls,
+				nativeCurrency = new WalletConnectSharp.Core.Models.Ethereum.NativeCurrency
+				{
+					name = NativeCurrency.Name,
+					symbol = NativeCurrency.Symbol,
+					decimals = NativeCurrency.Decimals
+				},
+				rpcUrls = RpcUrls,
+			};
+
+			return result;
+		}
 	}
 }

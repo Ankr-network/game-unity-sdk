@@ -31,9 +31,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public string[] Accounts { get; private set; }
 		public int ChainId { get; private set; }
 
-		private string _clientId = "";
+		private readonly string _clientId = "";
 
-		private string _handshakeTopic;
+		private readonly string _handshakeTopic;
 
 		private long _handshakeId;
 
@@ -164,19 +164,14 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				{
 					result = await CreateSession();
 					Connecting = false;
-					
 					OnSessionCreated?.Invoke();
 				}
 				else
 				{
 					result = new WCSessionData
 					{
-						accounts = Accounts,
-						approved = true,
-						chainId = ChainId,
-						networkId = NetworkId,
-						peerId = PeerId,
-						peerMeta = WalletMetadata
+						accounts = Accounts, approved = true, chainId = ChainId, networkId = NetworkId,
+						peerId = PeerId, peerMeta = WalletMetadata
 					};
 					Connecting = false;
 
@@ -214,10 +209,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		{
 			var request = new WCSessionUpdate(new WCSessionData
 			{
-				approved = false,
-				chainId = 0,
-				accounts = null,
-				networkId = 0
+				approved = false, chainId = 0, accounts = null, networkId = 0
 			});
 
 			await SendRequest(request);
@@ -225,6 +217,27 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			await DisconnectTransport();
 
 			HandleSessionDisconnect();
+		}
+
+		public virtual async UniTask<string> WalletAddEthChain(EthChainData chainData)
+		{
+			var request = new WalletAddEthChain(chainData);
+			var response = await Send<WalletAddEthChain, EthResponse>(request);
+			return response.Result;
+		}
+
+		public virtual async UniTask<string> WalletSwitchEthChain(EthChain chainData)
+		{
+			var request = new WalletSwitchEthChain(chainData);
+			var response = await Send<WalletSwitchEthChain, EthResponse>(request);
+			return response.Result;
+		}
+
+		public virtual async UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData)
+		{
+			var request = new WalletUpdateEthChain(chainData);
+			var response = await Send<WalletUpdateEthChain, EthResponse>(request);
+			return response.Result;
 		}
 
 		public async UniTask<string> EthSign(string address, string message)
@@ -356,7 +369,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		}
 
 		/// <summary>
-		/// Create a new WalletConnect session with a Wallet.
+		///     Create a new WalletConnect session with a Wallet.
 		/// </summary>
 		/// <returns></returns>
 		private async UniTask<WCSessionData> CreateSession()
@@ -368,7 +381,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			//sending session request
 			await SendRequest(data, _handshakeTopic);
-			
+
 			if (_sessionCreationCompletionSource != null)
 			{
 				throw new InvalidOperationException("Two session can not be created at the same time");
@@ -410,7 +423,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					_sessionCreationCompletionSource.TrySetException(
 						new IOException("WalletConnect: Session Failed: " + message));
 				}
-					
+
 				Debug.LogError("Session failed with message: " + message);
 
 				_sessionCreationCompletionSource = null;
@@ -434,7 +447,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					HandleSessionDisconnect();
 				}
 			}
-			
+
 			EventDelegator.ListenForResponse<WCSessionRequestResponse>(_handshakeId, HandleSessionRequestResponse);
 
 			void HandleSessionUpdateResponse(object _, GenericEvent<WCSessionUpdate> @event)
@@ -444,7 +457,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			}
 
 			EventDelegator.ListenForGeneric<WCSessionUpdate>(WCSessionUpdate.SessionUpdateMethod, HandleSessionUpdateResponse);
-			
 		}
 
 		private void HandleSessionUpdate(WCSessionData data)
@@ -458,7 +470,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			//We are connected if we are approved
 			WalletConnected = data.approved;
-			
 			Debug.Log($"WalletConnectSession: SessionConnected set to {data.approved}");
 
 			if (data.chainId != null)
@@ -517,11 +528,10 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			WalletConnected = false;
 
 			OnSessionDisconnect?.Invoke();
-			
 		}
 
 		/// <summary>
-		/// Creates and returns a serializable class that holds all session data required to resume later
+		///     Creates and returns a serializable class that holds all session data required to resume later
 		/// </summary>
 		/// <returns></returns>
 		public SavedSession GetSavedSession()

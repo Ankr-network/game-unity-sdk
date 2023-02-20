@@ -1,3 +1,6 @@
 {
-  "name": "AnkrSDK.Data"
+  "name": "AnkrSDK.Data",
+  "references": [
+    "WalletConnectSharp.Core"
+  ]
 }

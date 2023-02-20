@@ -3,6 +3,7 @@
   "references": [
     "AnkrSDK.Data",
     "endel.nativewebsocket",
-    "UniTask"
+    "UniTask",
+    "WalletConnectSharp.Core"
   ]
 }

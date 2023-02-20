@@ -1,6 +1,7 @@
 using AnkrSDK.Core;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
+using AnkrSDK.Utils;
 
 namespace AnkrSDK.Provider
 {
@@ -29,7 +30,7 @@ namespace AnkrSDK.Provider
 		/// <returns>Ready to work IAnkrSDK instance</returns>
 		public static IAnkrSDK GetAnkrSDKInstance(NetworkName networkName, bool autoSetup = false)
 		{
-			return CreateAnkrSDKInstance(AnkrSDKFactoryHelper.GetAnkrRPCForSelectedNetwork(networkName), autoSetup);
+			return CreateAnkrSDKInstance(AnkrSDKNetworkUtils.GetAnkrRPCForSelectedNetwork(networkName), autoSetup);
 		}
 
 		private static IAnkrSDK CreateAnkrSDKInstance(string providerURI, bool autoSetup)
