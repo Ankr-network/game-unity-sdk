@@ -23,7 +23,7 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public  class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable, IWalletConnectCommunicator
+	public  class WalletConnect : IWalletConnectable, IWalletConnectCommunicator, IQuittable, IPausable, IUpdatable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
@@ -94,7 +94,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		private bool _initialized;
 		public string ConnectURL => _session.URI;
 		public string SettingsFilename => SettingsFilenameString;
-		public Type SettingsType => typeof(WalletConnectSettingsSO);
 
 		private AppEntry _selectedWallet;
 		private WalletConnectSession _session;
@@ -161,7 +160,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 		}
 
-		public async UniTask<WCSessionData> Connect()
+		public async UniTask Connect()
 		{
 			TeardownEvents();
 			var savedSession = SessionSaveHandler.GetSavedSession();
@@ -185,12 +184,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 					}
 					else if (status != WalletConnectStatus.WalletConnected && !_session.Connecting)
 					{
-						return await CompleteConnect();
+						await CompleteConnect();
+						return;
 					}
 					else
 					{
 						Debug.Log("Nothing to do, we are already connected and session key did not change");
-						return null;
+						return;
 					}
 				}
 				else if (status == WalletConnectStatus.WalletConnected)
@@ -206,13 +206,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				else if (_session.Connecting)
 				{
 					Debug.Log("Session connection is in progress. Connect request ignored.");
-					return null;
+					return;
 				}
 			}
 
 			InitializeSession(savedSession);
 
-			return await CompleteConnect();
+			await CompleteConnect();
 		}
 
 		public UniTask<string> EthSign(string address, string message)
