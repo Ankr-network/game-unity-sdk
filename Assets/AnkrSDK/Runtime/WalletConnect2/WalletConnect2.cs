@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using AnkrSDK.Plugins.WalletConnect.VersionShared;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Utils;
@@ -14,6 +13,7 @@ using AnkrSDK.Runtime.WalletConnect2.RpcRequests;
 using AnkrSDK.Runtime.WalletConnect2.RpcResponses;
 using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 using WalletConnectSharp.Common.Model.Errors;
 using WalletConnectSharp.Network.Models;
@@ -72,8 +72,20 @@ namespace AnkrSDK.Plugins.WalletConnectSharp2
 		
 		public async UniTask<GenericJsonRpcResponse> SendGeneric(GenericJsonRpcRequest genericRequest)
 		{
-			var genericRequestData = new GenericRequestData(genericRequest);
-			var genericResponseData = await Send<GenericRequestData, GenericResponseData>(genericRequestData);
+			CheckIfSessionCreated();
+
+			if (genericRequest.RawParameters == null)
+			{
+				Debug.LogError("Can't have null raw parameters in SendGeneric of WalletConnect2");
+				return new GenericJsonRpcResponse(new JObject());
+			}
+
+			var topic = _sessionData.Value.Topic;
+			var method = genericRequest.Method;
+			var genericResponseData = await _signClient.
+				RequestWithMethod<object, GenericResponseData>(topic, genericRequest.RawParameters, method).
+				AsUniTask();
+			
 			return genericResponseData.ToGenericRpcResponse();
 		}
 		
