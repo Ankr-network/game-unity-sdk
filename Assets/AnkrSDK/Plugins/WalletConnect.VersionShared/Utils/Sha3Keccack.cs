@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text;
 using Org.BouncyCastle.Crypto.Digests;
+using WalletConnectSharp.Common.Utils;
 
 namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Utils
 {
@@ -12,13 +13,13 @@ namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Utils
         {
             var input = Encoding.UTF8.GetBytes(value);
             var output = CalculateHash(input);
-            return global::WalletConnectSharp.Common.Utils.HexByteConvertorExtensions.ToHex(output);
+            return output.ToHex();
         }
 
         public string CalculateHashFromHex(params string[] hexValues)
         {
-            var joinedHex = string.Join("", hexValues.Select(x => global::WalletConnectSharp.Common.Utils.HexByteConvertorExtensions.RemoveHexPrefix(x)).ToArray());
-            return global::WalletConnectSharp.Common.Utils.HexByteConvertorExtensions.ToHex(CalculateHash(global::WalletConnectSharp.Common.Utils.HexByteConvertorExtensions.HexToByteArray(joinedHex)));
+            var joinedHex = string.Join("", hexValues.Select(x => x.RemoveHexPrefix().ToArray()));
+            return joinedHex.HexToByteArray().ToHex();
         }
 
         public byte[] CalculateHash(byte[] value)

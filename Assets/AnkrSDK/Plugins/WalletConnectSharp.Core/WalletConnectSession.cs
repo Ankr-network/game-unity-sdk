@@ -142,7 +142,7 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 			KeyRaw = secret;
 
 			//Convert hex 
-			Key = HexByteConvertorExtensions.ToHex(KeyRaw).ToLower();
+			Key = KeyRaw.ToHex().ToLower();
 		}
 
 		public async UniTask<WCSessionData> ConnectSession()
@@ -246,12 +246,12 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSign(string address, string message)
 		{
-			if (!HexByteConvertorExtensions.IsHex(message))
+			if (!message.IsHex())
 			{
 				var rawMessage = Encoding.UTF8.GetBytes(message);
 
 				var byteList = new List<byte>();
-				var bytePrefix = HexByteConvertorExtensions.HexToByteArray((string)"0x19");
+				var bytePrefix = "0x19".HexToByteArray();
 				var textBytePrefix = Encoding.UTF8.GetBytes("Ethereum Signed Message:\n" + rawMessage.Length);
 
 				byteList.AddRange(bytePrefix);
@@ -288,7 +288,7 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 				
 				var hash = new Sha3Keccack().CalculateHash(byteList.ToArray());*/
 
-				message = "0x" + HexByteConvertorExtensions.ToHex(Encoding.UTF8.GetBytes(message));
+				message = "0x" + Encoding.UTF8.GetBytes(message).ToHex();
 			}
 
 			var request = new EthPersonalSign(address, message);
