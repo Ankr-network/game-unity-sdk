@@ -12,7 +12,7 @@ namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Models
         private string jsonrpc = "2.0";
         
         [JsonProperty("method")]
-        public virtual string Method { get; protected set; }
+        public string Method { get; protected set; }
 
         public JsonRpcRequest()
         {
