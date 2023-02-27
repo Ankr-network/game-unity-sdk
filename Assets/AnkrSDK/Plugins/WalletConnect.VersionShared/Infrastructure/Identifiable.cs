@@ -2,6 +2,6 @@
 {
 	public interface Identifiable
 	{
-		
+		long ID { get; }
 	}
 }

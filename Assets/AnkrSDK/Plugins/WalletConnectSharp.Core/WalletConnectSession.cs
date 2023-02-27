@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using AnkrSDK.Plugins.WalletConnect.VersionShared;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
@@ -345,8 +346,8 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 		}
 
 		public async UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
-			where TRequest : JsonRpcRequest
-			where TResponse : JsonRpcResponse
+			where TRequest : Identifiable
+			where TResponse : IErrorHolder
 		{
 			var eventCompleted = new UniTaskCompletionSource<TResponse>();
 

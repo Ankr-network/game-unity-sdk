@@ -1,8 +1,9 @@
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Models
 {
-    public class JsonRpcResponse : IEventSource
+    public class JsonRpcResponse : IEventSource, IErrorHolder
     {
         [JsonProperty]
         private long id;

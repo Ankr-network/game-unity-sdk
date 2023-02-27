@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
 using AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model;
 using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
@@ -17,7 +18,6 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events
 		}
 
 		public void ListenForResponse<T>(object id, EventHandler<JsonRpcResponseEvent<T>> callback)
-			where T : JsonRpcResponse
 		{
 			ListenFor("response:" + id, callback);
 		}
@@ -30,7 +30,6 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events
 		}
 
 		private void ListenFor<T>(string eventId, EventHandler<JsonRpcResponseEvent<T>> callback)
-			where T : JsonRpcResponse
 		{
 			EventManager<T, JsonRpcResponseEvent<T>>.Instance.EventTriggers[eventId] += callback;
 

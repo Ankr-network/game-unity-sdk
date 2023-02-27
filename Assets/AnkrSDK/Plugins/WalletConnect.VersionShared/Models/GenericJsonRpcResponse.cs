@@ -10,6 +10,11 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Models
 		[JsonProperty("result")]
 		public JToken Result { get; private set; }
 
+		public GenericJsonRpcResponse(JToken result)
+		{
+			Result = result;
+		}
+
 		public RpcResponseMessage ToRpcResponseMessage()
 		{
 			if (IsError)
