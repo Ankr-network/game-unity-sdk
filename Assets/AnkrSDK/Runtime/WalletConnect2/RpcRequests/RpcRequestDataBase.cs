@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
+using Newtonsoft.Json;
 using WalletConnectSharp.Sign.Interfaces;
 
 namespace AnkrSDK.Runtime.WalletConnect2.RpcRequests
 {
-	public class RpcRequestDataBase : Dictionary<string, object>, IWcMethod
+	public class RpcRequestDataBase : IWcMethod, Identifiable
 	{
-		
+		//this id is only required for WC and WC2 to have a unified interface, 
+		//for WC2 request ids are assigned by internal WalletConnectSharp request engine
+		[JsonIgnore] public long ID => 0;
 	}
 }

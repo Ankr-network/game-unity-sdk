@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Text;
 using AnkrSDK.Plugins.WalletConnect.VersionShared;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Utils;
@@ -21,7 +20,7 @@ using HexByteConvertorExtensions = WalletConnectSharp.Common.Utils.HexByteConver
 
 namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 {
-	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectGenericRequester
+	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectGenericRequester, IWalletConnectCommunicator, IWalletConnectTransitionDataProvider
 	{
 		public event Action OnSessionConnect;
 		public event Action OnSessionCreated;
@@ -373,7 +372,7 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 			return await eventCompleted.Task;
 		}
 
-		public UniTask<GenericJsonRpcResponse> SendGeneric(GenericJsonRpcRequest genericRequest)
+		public UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
 		{
 			return Send<GenericJsonRpcRequest, GenericJsonRpcResponse>(genericRequest);
 		}

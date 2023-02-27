@@ -21,7 +21,7 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.NEthereum.Client
             _id += 1;
 
             var request = new GenericJsonRpcRequest(_id, message);
-            var response = await GenericRequester.SendGeneric(request);
+            var response = await GenericRequester.GenericRequest(request);
             return response.ToRpcResponseMessage();
         }
     }

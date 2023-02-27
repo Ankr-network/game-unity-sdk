@@ -8,6 +8,7 @@ using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Utils;
 using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Events;
 using AnkrSDK.Runtime.WalletConnect2;
 using AnkrSDK.Runtime.WalletConnect2.RpcRequests;
 using AnkrSDK.Runtime.WalletConnect2.RpcResponses;
@@ -24,9 +25,10 @@ using WalletConnectSharp.Storage;
 
 namespace AnkrSDK.Plugins.WalletConnectSharp2
 {
-	public class WalletConnect2 : IWalletConnectable, IWalletConnectGenericRequester, IQuittable, IPausable
+	public class WalletConnect2 : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IWalletConnectTransitionDataProvider
 	{
 		private const string SettingsFilenameString = "WalletConnect2Settings";
+		public event Action<WalletConnect2TransitionBase> SessionStatusUpdated;
 		//public event Action OnSend;
 		public string SettingsFilename => SettingsFilenameString;
 		public WalletConnect2Status Status { get; private set; }
@@ -47,7 +49,10 @@ namespace AnkrSDK.Plugins.WalletConnectSharp2
 				Debug.LogError("WalletConnect: Could not initialize because settings are " + typeStr);
 			}
 
+			var prevStatus = Status;
 			Status = WalletConnect2Status.Disconnected;
+			SessionStatusUpdated?.Invoke(new WalletConnectInitialized(this, prevStatus, Status));
+
 		}
 
 		public async UniTask Connect()
@@ -62,15 +67,20 @@ namespace AnkrSDK.Plugins.WalletConnectSharp2
 			}
 			
 			var connectData = await _signClient.Connect(dappConnectOptions);
-			
+
+			var prevStatus = Status;
 			Status = WalletConnect2Status.ConnectionRequestSent;
+			SessionStatusUpdated?.Invoke(new SessionRequestSentTransition(this, prevStatus, Status));
 			
 			_sessionData = await connectData.Approval;
 
+			prevStatus = Status;
 			Status = WalletConnect2Status.WalletConnected;
+			SessionStatusUpdated?.Invoke(new WalletConnectedTransition(this, prevStatus, Status));
+
 		}
 		
-		public async UniTask<GenericJsonRpcResponse> SendGeneric(GenericJsonRpcRequest genericRequest)
+		public async UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
 		{
 			CheckIfSessionCreated();
 
@@ -88,13 +98,15 @@ namespace AnkrSDK.Plugins.WalletConnectSharp2
 			
 			return genericResponseData.ToGenericRpcResponse();
 		}
-		
-		public async UniTask<TResponseData> Send<TRequestData, TResponseData>(TRequestData data, string chainId = null)
+
+		public async UniTask<TResponseData> Send<TRequestData, TResponseData>(TRequestData data)
+			where TRequestData : Identifiable 
+			where TResponseData : IErrorHolder
 		{
 			CheckIfSessionCreated();
 
 			var topic = _sessionData.Value.Topic; 
-			var result = await _signClient.Request<TRequestData, TResponseData>(topic, data, chainId).AsUniTask();
+			var result = await _signClient.Request<TRequestData, TResponseData>(topic, data).AsUniTask();
 			return result;
 		}
 
@@ -167,15 +179,6 @@ namespace AnkrSDK.Plugins.WalletConnectSharp2
 			throw new System.NotImplementedException();
 		}
 
-		// public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data) where TRequest : JsonRpcRequest where TResponse : JsonRpcResponse
-		// {
-		// 	CheckIfSessionCreated();
-		//
-		// 	var topic = _sessionData.Value.Topic; 
-		// 	var result = await _signClient.Request<, TR>(topic, data, chainId).AsUniTask();
-		// 	return result;
-		// }
-
 		public async void Dispose()
 		{
 			await Disconnect();
@@ -203,28 +206,32 @@ namespace AnkrSDK.Plugins.WalletConnectSharp2
 			}
 		}
 		
-		private  UniTask Disconnect()
+		private async UniTask Disconnect()
 		{
 			if (_signClient == null)
 			{
-				return UniTask.CompletedTask;
+				return;
 			}
 
 			if (ConnectionPending)
 			{
-				return UniTask.CompletedTask;
+				return;
 			}
 
 			if (_sessionData == null)
 			{
-				return UniTask.CompletedTask;
+				return;
 			}
 
 			var topic = _sessionData.Value.Topic;
 
 			var errorResponse = ErrorResponse.FromErrorType(ErrorType.GENERIC);
+			await _signClient.Disconnect(topic, errorResponse).AsUniTask();
 			_sessionData = null;
-			return _signClient.Disconnect(topic, errorResponse).AsUniTask();
+			var prevStatus = Status;
+			Status = WalletConnect2Status.Disconnected;
+			SessionStatusUpdated?.Invoke(new WalletConnectedTransition(this, prevStatus, Status));
+
 		}
 
 		private void CheckIfSessionCreated()

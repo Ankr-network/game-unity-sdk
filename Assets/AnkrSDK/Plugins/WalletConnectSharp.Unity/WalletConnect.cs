@@ -6,7 +6,6 @@ using System.Text;
 using AnkrSDK.Metadata;
 using AnkrSDK.Plugins.WalletConnect.VersionShared;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.Plugins.WalletConnectSharp.Core;
@@ -25,7 +24,7 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
 {
-	public  class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IQuittable, IPausable, IUpdatable
+	public  class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IUpdatable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
@@ -273,16 +272,18 @@ namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
 			return _session.WalletUpdateEthChain(chainData);
 		}
 
-		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data) where TRequest : JsonRpcRequest where TResponse : JsonRpcResponse
+		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
+			where TRequest : Identifiable
+			where TResponse : IErrorHolder
 		{
 			CheckIfSessionCreated();
 			return _session.Send<TRequest, TResponse>(data);
 		}
 		
-		public UniTask<GenericJsonRpcResponse> SendGeneric(GenericJsonRpcRequest genericRequest)
+		public UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
 		{
 			CheckIfSessionCreated();
-			return _session.SendGeneric(genericRequest);
+			return _session.GenericRequest(genericRequest);
 		}
 
 		private void CheckIfSessionCreated()

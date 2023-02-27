@@ -1,11 +1,12 @@
 using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.Plugins.WalletConnectSharp.Core;
+using AnkrSDK.Runtime.WalletConnect2;
 
 namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Events
 {
-    public class SessionCreatedTransition : WalletConnectTransitionBase
+    public class WalletConnectInitialized : WalletConnect2TransitionBase
     {
-        public SessionCreatedTransition(IWalletConnectTransitionDataProvider transitionDataProvider, WalletConnectStatus previousStatus, WalletConnectStatus newStatus)
+        public WalletConnectInitialized(IWalletConnectTransitionDataProvider transitionDataProvider, WalletConnect2Status previousStatus, WalletConnect2Status newStatus)
             : base(transitionDataProvider, previousStatus, newStatus)
         {
             
