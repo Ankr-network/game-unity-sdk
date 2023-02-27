@@ -3,11 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using AnkrSDK.WalletConnectSharp.Core.Utils;
-using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
 using Cysharp.Threading.Tasks;
+using WalletConnectSharp.Common.Utils;
 
-namespace AnkrSDK.WalletConnectSharp.Core.Network
+namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Network
 {
     public class AESCipher : ICipher
     {

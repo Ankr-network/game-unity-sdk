@@ -1,6 +1,6 @@
 ﻿using System;
-using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
-using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.Plugins.WalletConnect.VersionShared;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

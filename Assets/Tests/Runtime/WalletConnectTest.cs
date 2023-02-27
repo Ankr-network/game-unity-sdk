@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Unity;
-using AnkrSDK.WalletConnectSharp.Unity.Utils;
+using AnkrSDK.Plugins.WalletConnectSharp.Core;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;

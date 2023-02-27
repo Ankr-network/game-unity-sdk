@@ -9,7 +9,8 @@
         "WalletConnectSharp.Core",
         "WalletConnectSharp.NEtherium",
         "UniTask",
-        "WalletConnectSharp.Unity"
+        "WalletConnectSharp.Unity",
+        "WalletConnectSharp.VersionShared"
     ],
     "includePlatforms": [],
     "excludePlatforms": [

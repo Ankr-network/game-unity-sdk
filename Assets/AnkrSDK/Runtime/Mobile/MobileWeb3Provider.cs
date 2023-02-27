@@ -1,6 +1,6 @@
+using AnkrSDK.Plugins.WalletConnectSharp.NEthereum;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity;
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnectSharp.NEthereum;
-using AnkrSDK.WalletConnectSharp.Unity;
 using Nethereum.Web3;
 
 namespace AnkrSDK.Mobile

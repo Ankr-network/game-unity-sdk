@@ -1,7 +1,7 @@
-using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation;
-using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Implementation;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Infrastructure;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
+namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client
 {
 	public static class WebSocketFactory
 	{

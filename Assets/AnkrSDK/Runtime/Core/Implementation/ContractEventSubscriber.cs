@@ -1,9 +1,6 @@
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.Data;
-using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
-using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
-using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
 using Cysharp.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.JsonRpc.Client.RpcMessages;
@@ -12,6 +9,9 @@ using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Subscriptions;
 using System.Collections.Generic;
 using System;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Infrastructure;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation

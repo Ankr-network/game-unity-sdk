@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AnkrSDK.WalletConnectSharp.Core.Events;
-using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Core.Network;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Events;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace AnkrSDK.WalletConnectSharp.Core
+namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 {
 	public abstract class WalletConnectProtocol : IDisposable
 	{
@@ -41,6 +42,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public event EventHandler<WalletConnectProtocol> OnTransportConnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportDisconnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportOpen;
+		public bool ConnectionPending => Status != WalletConnectStatus.WalletConnected;
 
 		public WalletConnectStatus Status
 		{

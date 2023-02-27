@@ -4,19 +4,23 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using AnkrSDK.WalletConnectSharp.Core.Events;
-using AnkrSDK.WalletConnectSharp.Core.Events.Model;
-using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
-using AnkrSDK.WalletConnectSharp.Core.Network;
-using AnkrSDK.WalletConnectSharp.Core.Utils;
+using AnkrSDK.Plugins.WalletConnect.VersionShared;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Utils;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Events;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model.Ethereum;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using HexByteConvertorExtensions = WalletConnectSharp.Common.Utils.HexByteConvertorExtensions;
 
-namespace AnkrSDK.WalletConnectSharp.Core
+namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 {
-	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectCommunicator
+	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectGenericRequester
 	{
 		public event Action OnSessionConnect;
 		public event Action OnSessionCreated;
@@ -138,7 +142,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			KeyRaw = secret;
 
 			//Convert hex 
-			Key = KeyRaw.ToHex().ToLower();
+			Key = HexByteConvertorExtensions.ToHex(KeyRaw).ToLower();
 		}
 
 		public async UniTask<WCSessionData> ConnectSession()
@@ -242,12 +246,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSign(string address, string message)
 		{
-			if (!message.IsHex())
+			if (!HexByteConvertorExtensions.IsHex(message))
 			{
 				var rawMessage = Encoding.UTF8.GetBytes(message);
 
 				var byteList = new List<byte>();
-				var bytePrefix = "0x19".HexToByteArray();
+				var bytePrefix = HexByteConvertorExtensions.HexToByteArray((string)"0x19");
 				var textBytePrefix = Encoding.UTF8.GetBytes("Ethereum Signed Message:\n" + rawMessage.Length);
 
 				byteList.AddRange(bytePrefix);
@@ -270,7 +274,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthPersonalSign(string address, string message)
 		{
-			if (!message.IsHex())
+			if (!HexByteConvertorExtensions.IsHex(message))
 			{
 				/*var rawMessage = Encoding.UTF8.GetBytes(message);
 				
@@ -284,7 +288,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				
 				var hash = new Sha3Keccack().CalculateHash(byteList.ToArray());*/
 
-				message = "0x" + Encoding.UTF8.GetBytes(message).ToHex();
+				message = "0x" + HexByteConvertorExtensions.ToHex(Encoding.UTF8.GetBytes(message));
 			}
 
 			var request = new EthPersonalSign(address, message);
@@ -322,7 +326,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
 		{
-			if (!data.IsHex())
+			if (!HexByteConvertorExtensions.IsHex(data))
 			{
 				var encoding = messageEncoding;
 				if (encoding == null)
@@ -330,7 +334,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					encoding = Encoding.UTF8;
 				}
 
-				data = "0x" + encoding.GetBytes(data).ToHex();
+				data = "0x" + HexByteConvertorExtensions.ToHex(encoding.GetBytes(data));
 			}
 
 			var request = new EthGenericRequest<string>("eth_sendRawTransaction", data);
@@ -366,6 +370,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			OnSend?.Invoke();
 
 			return await eventCompleted.Task;
+		}
+
+		public UniTask<GenericJsonRpcResponse> SendGeneric(GenericJsonRpcRequest genericRequest)
+		{
+			return Send<GenericJsonRpcRequest, GenericJsonRpcResponse>(genericRequest);
 		}
 
 		/// <summary>

@@ -1,7 +1,7 @@
+using AnkrSDK.Plugins.WalletConnectSharp.Core;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Events;
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Unity;
-using AnkrSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;

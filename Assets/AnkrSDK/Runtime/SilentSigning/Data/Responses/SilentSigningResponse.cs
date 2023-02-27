@@ -1,4 +1,5 @@
-using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.SilentSigning.Data.Responses

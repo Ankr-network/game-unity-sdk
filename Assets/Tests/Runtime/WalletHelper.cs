@@ -1,4 +1,4 @@
-using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity;
 using UnityEngine;
 
 namespace Tests.Runtime

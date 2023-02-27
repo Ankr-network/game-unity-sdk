@@ -4,32 +4,36 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using AnkrSDK.Metadata;
-using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
-using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
-using AnkrSDK.WalletConnectSharp.Core.Network;
-using AnkrSDK.WalletConnectSharp.Unity.Events;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
-using AnkrSDK.WalletConnectSharp.Unity.Network;
-using AnkrSDK.WalletConnectSharp.Unity.Utils;
+using AnkrSDK.Plugins.WalletConnect.VersionShared;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.Plugins.WalletConnectSharp.Core;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Events;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Logger = AnkrSDK.InternalUtils.Logger;
 
 [assembly: InternalsVisibleTo("AnkrSDK.Tests.Runtime")]
 
-namespace AnkrSDK.WalletConnectSharp.Unity
+namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
 {
-	public  class WalletConnect : IWalletConnectable, IWalletConnectCommunicator, IQuittable, IPausable, IUpdatable
+	public  class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IQuittable, IPausable, IUpdatable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
 		public event Action OnSend;
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
+		public bool ConnectionPending => _session?.ConnectionPending ?? true;
+
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
 
 		public string PeerId
@@ -273,6 +277,12 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		{
 			CheckIfSessionCreated();
 			return _session.Send<TRequest, TResponse>(data);
+		}
+		
+		public UniTask<GenericJsonRpcResponse> SendGeneric(GenericJsonRpcRequest genericRequest)
+		{
+			CheckIfSessionCreated();
+			return _session.SendGeneric(genericRequest);
 		}
 
 		private void CheckIfSessionCreated()

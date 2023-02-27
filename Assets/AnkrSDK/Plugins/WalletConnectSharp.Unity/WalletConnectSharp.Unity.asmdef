@@ -6,7 +6,8 @@
         "UniTask",
         "WalletConnectSharp.Core",
         "Unity.TextMeshPro",
-        "endel.nativewebsocket"
+        "endel.nativewebsocket",
+        "WalletConnectSharp.VersionShared"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

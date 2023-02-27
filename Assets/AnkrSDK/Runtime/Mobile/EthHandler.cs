@@ -1,17 +1,18 @@
 using System;
 using System.Numerics;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.Plugins.WalletConnectSharp.Core;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model.Ethereum;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity;
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using AnkrSDK.WalletConnectSharp.Unity;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Web3;
 using UnityEngine;
-using EthSendTransaction = AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction;
+using EthSendTransaction = AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model.Ethereum.EthSendTransaction;
 
 namespace AnkrSDK.Mobile
 {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace AnkrSDK.WalletConnectSharp.Unity
+namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
 {
 	public class WalletConnectUnityMonoAdapter : MonoBehaviour
 	{

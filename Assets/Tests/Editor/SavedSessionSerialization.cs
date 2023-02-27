@@ -1,5 +1,5 @@
-using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Unity.Utils;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Utils;
 using NUnit.Framework;
 
 namespace Tests.Editor

@@ -3,7 +3,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine.Serialization;
 
-namespace AnkrSDK.WalletConnectSharp.Core.Models
+namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Models
 {
 	[Serializable]
 	public class ClientMeta

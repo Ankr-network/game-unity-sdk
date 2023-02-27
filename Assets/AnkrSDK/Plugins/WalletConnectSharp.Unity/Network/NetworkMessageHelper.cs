@@ -1,6 +1,6 @@
-using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.Network
+namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network
 {
 	public static class NetworkMessageHelper
 	{

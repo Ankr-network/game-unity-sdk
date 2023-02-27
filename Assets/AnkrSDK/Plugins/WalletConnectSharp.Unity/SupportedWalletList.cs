@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
 using Newtonsoft.Json;
 
-namespace AnkrSDK.WalletConnectSharp.Unity
+namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
 {
 	internal class SupportedWalletList
 	{

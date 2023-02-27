@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using AnkrSDK.WalletConnectSharp.Core.Models;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace AnkrSDK.WalletConnectSharp.Core.Infrastructure
+namespace AnkrSDK.Plugins.WalletConnect.VersionShared
 {
     public interface IWalletConnectable
     { 

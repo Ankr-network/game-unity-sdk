@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace AnkrSDK.WalletConnectSharp.Core.Models
+namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Models
 {
     public class NetworkMessage
     {

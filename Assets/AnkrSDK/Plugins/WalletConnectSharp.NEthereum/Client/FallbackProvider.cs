@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
-using AnkrSDK.WalletConnectSharp.Core;
+using AnkrSDK.Plugins.WalletConnectSharp.Core;
 using Nethereum.JsonRpc.Client;
 
-namespace AnkrSDK.WalletConnectSharp.NEthereum.Client
+namespace AnkrSDK.Plugins.WalletConnectSharp.NEthereum.Client
 {
     public class FallbackProvider : IClient
     {

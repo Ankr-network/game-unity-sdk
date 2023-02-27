@@ -2,7 +2,8 @@
     "name": "WalletConnectSharp.Core",
     "rootNamespace": "",
     "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:e1ab86e4684d40e89761d77be3a90f75"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

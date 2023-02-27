@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client
+namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client
 {
 	public class WaitForBackgroundThread
 	{

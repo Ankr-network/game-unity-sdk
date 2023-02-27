@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AnkrSDK.WalletConnectSharp.Core.Models
+namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Models
 {
 	public class SavedSession
 	{

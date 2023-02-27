@@ -1,6 +1,6 @@
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
 
-namespace AnkrSDK.WalletConnectSharp.Core
+namespace AnkrSDK.Plugins.WalletConnectSharp.Core
 {
     public static class Chains
     {

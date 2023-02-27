@@ -1,4 +1,4 @@
-namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.EventHandlers
+namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.EventHandlers
 {
 	public delegate void WebSocketMessageEventHandler(byte[] data);
 }

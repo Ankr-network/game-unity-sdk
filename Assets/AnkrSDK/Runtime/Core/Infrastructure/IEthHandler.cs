@@ -1,5 +1,5 @@
 using System.Numerics;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;

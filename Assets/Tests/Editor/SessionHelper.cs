@@ -1,4 +1,4 @@
-using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
 
 namespace Tests.Editor
 {

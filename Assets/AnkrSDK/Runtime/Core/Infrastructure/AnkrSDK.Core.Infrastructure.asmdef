@@ -4,6 +4,7 @@
     "AnkrSDK.Data",
     "endel.nativewebsocket",
     "UniTask",
-    "WalletConnectSharp.Core"
+    "WalletConnectSharp.Core",
+    "WalletConnectSharp.VersionShared"
   ]
 }

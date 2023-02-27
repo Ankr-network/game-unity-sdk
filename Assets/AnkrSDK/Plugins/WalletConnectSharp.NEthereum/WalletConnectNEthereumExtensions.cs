@@ -1,10 +1,10 @@
 using System;
 using System.Net.Http.Headers;
-using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.NEthereum.Client;
+using AnkrSDK.Plugins.WalletConnect.VersionShared;
+using AnkrSDK.Plugins.WalletConnectSharp.NEthereum.Client;
 using Nethereum.JsonRpc.Client;
 
-namespace AnkrSDK.WalletConnectSharp.NEthereum
+namespace AnkrSDK.Plugins.WalletConnectSharp.NEthereum
 {
 	public static class WalletConnectNEthereumExtensions
 	{
@@ -22,11 +22,11 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum
         ///     A new NEtehereum IClient instance that uses Infura as the read client and the WalletConnectProtocol
         ///     for write client. The returned IClient instance can be used as a Provider in an NEthereum Web3 instance
         /// </returns>
-        public static IClient CreateProviderWithInfura(this IWalletConnectCommunicator communicator, string infruaId, string network = "mainnet", AuthenticationHeaderValue authenticationHeader = null)
+        public static IClient CreateProviderWithInfura(this IWalletConnectGenericRequester genericRequester, string infruaId, string network = "mainnet", AuthenticationHeaderValue authenticationHeader = null)
 		{
 			string url = "https://" + network + ".infura.io/v3/" + infruaId;
 
-			return communicator.CreateProvider(new Uri(url), authenticationHeader);
+			return genericRequester.CreateProvider(new Uri(url), authenticationHeader);
 		}
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum
         ///     WalletConnectProtocol for write client. The returned IClient instance can be used as a
         ///     Provider in an NEthereum Web3 instance
         /// </returns>
-        public static IClient CreateProvider(this IWalletConnectCommunicator communicator, Uri url, AuthenticationHeaderValue authenticationHeader = null)
+        public static IClient CreateProvider(this IWalletConnectGenericRequester genericRequester, Uri url, AuthenticationHeaderValue authenticationHeader = null)
 		{
-			return communicator.CreateProvider(
+			return genericRequester.CreateProvider(
 				new RpcClient(url, authenticationHeader)
 			);
 		}
@@ -63,15 +63,15 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum
         ///     WalletConnectProtocol for write client. The returned IClient instance can be used as a
         ///     Provider in an NEthereum Web3 instance
         /// </returns>
-        public static IClient CreateProvider(this IWalletConnectCommunicator communicator, IClient readClient)
+        public static IClient CreateProvider(this IWalletConnectGenericRequester genericRequester, IClient readClient)
 		{
-			if (communicator.Status != WalletConnectStatus.WalletConnected)
+			if (genericRequester.ConnectionPending)
 			{
 				throw new Exception("No connection has been made yet!");
 			}
 
 			return new FallbackProvider(
-				new WalletConnectClient(communicator),
+				new WalletConnectClient(genericRequester),
 				readClient
 			);
 		}

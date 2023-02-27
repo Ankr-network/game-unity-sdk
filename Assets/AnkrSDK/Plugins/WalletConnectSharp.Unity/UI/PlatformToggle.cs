@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.UI
+namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.UI
 {
 	public class PlatformToggle : MonoBehaviour
 	{

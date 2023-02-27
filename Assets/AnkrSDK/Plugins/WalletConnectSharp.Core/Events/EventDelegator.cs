@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using AnkrSDK.WalletConnectSharp.Core.Events.Model;
-using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model;
+using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
 using Newtonsoft.Json;
 
-namespace AnkrSDK.WalletConnectSharp.Core.Events
+namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events
 {
 	public class EventDelegator : IDisposable
 	{
