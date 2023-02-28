@@ -11,6 +11,7 @@
         "AnkrSDK.WebGL",
         "WalletConnectSharp",
         "WalletConnectSharp.Core",
+        "WalletConnectSharp.VersionShared",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [
