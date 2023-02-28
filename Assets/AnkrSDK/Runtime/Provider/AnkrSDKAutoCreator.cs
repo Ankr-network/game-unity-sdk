@@ -1,6 +1,5 @@
-
-using AnkrSDK.Plugins.WalletConnectSharp.Unity;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnectSharp.Unity;
 
 namespace AnkrSDK.Provider
 {
@@ -22,7 +21,7 @@ namespace AnkrSDK.Provider
 				typeof(WalletConnectUnityMonoAdapter));
 			UnityEngine.Object.DontDestroyOnLoad(walletConnectUnityAdapter);
 
-			ConnectProvider<WalletConnect>.GetConnect();
+			ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		#endif
 		}
 	}

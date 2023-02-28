@@ -1,10 +1,9 @@
 ﻿using System.Text;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using Cysharp.Threading.Tasks;
 
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared
+namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 {
 	public interface IWalletConnectCommunicator
 	{

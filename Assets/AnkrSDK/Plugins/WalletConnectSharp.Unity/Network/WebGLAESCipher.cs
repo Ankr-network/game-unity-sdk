@@ -3,12 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Utils;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network
+namespace AnkrSDK.WalletConnectSharp.Unity.Network
 {
     public class WebGlAESCipher : ICipher
     {

@@ -1,6 +1,6 @@
-﻿using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+﻿using AnkrSDK.WalletConnect.VersionShared.Models;
 
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure
+namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 {
 	public interface IErrorHolder
 	{

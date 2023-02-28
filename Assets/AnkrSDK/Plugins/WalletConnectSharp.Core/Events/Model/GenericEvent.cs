@@ -1,6 +1,6 @@
 using System;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model
+namespace AnkrSDK.WalletConnectSharp.Core.Events.Model
 {
     public class GenericEvent<T> : IEvent<T>
     {

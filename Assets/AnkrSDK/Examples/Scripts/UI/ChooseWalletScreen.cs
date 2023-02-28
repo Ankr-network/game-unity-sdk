@@ -1,6 +1,6 @@
 using System;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Utils;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 

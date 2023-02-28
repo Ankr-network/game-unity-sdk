@@ -1,10 +1,10 @@
-using AnkrSDK.Plugins.WalletConnectSharp.Core;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Events;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
+using AnkrSDK.WalletConnectSharp.Core;
+using AnkrSDK.WalletConnectSharp.Core.Events;
+using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Network;
 using UnityEngine;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
+namespace AnkrSDK.WalletConnectSharp.Unity
 {
 	public static class WalletConnectSessionFactory
 	{

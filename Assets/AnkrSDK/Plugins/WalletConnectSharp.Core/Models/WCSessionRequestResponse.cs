@@ -1,6 +1,6 @@
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Models
+namespace AnkrSDK.WalletConnectSharp.Core.Models
 {
     public class WCSessionRequestResponse : JsonRpcResponse
     {

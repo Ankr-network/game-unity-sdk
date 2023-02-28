@@ -1,4 +1,4 @@
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Utils
+namespace AnkrSDK.WalletConnect.VersionShared.Utils
 {
     public static class WSUrlFormatter
     {

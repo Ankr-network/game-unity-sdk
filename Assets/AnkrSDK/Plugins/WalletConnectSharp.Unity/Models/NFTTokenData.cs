@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Models
+namespace AnkrSDK.WalletConnectSharp.Unity.Models
 {
     public class NFTTokenData
     {

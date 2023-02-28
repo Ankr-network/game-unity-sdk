@@ -1,7 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure
+namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 {
 	public interface IQuittable : IDisposable
 	{

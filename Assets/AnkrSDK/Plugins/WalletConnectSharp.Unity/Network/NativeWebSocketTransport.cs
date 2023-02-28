@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Utils;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Data;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Exceptions;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Implementation;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Network;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Exceptions;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network
+namespace AnkrSDK.WalletConnectSharp.Unity.Network
 {
 	public class NativeWebSocketTransport : ITransport
 	{

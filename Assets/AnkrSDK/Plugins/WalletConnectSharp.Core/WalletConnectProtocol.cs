@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Events;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
+using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnectSharp.Core.Events;
+using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core
+namespace AnkrSDK.WalletConnectSharp.Core
 {
 	public abstract class WalletConnectProtocol : IDisposable
 	{

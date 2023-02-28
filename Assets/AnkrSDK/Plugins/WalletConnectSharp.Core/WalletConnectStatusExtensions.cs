@@ -1,4 +1,4 @@
-﻿namespace AnkrSDK.Plugins.WalletConnectSharp.Core
+﻿namespace AnkrSDK.WalletConnectSharp.Core
 {
 	public static class WalletConnectStatusExtensions
 	{

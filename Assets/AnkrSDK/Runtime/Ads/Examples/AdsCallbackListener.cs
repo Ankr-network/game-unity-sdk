@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AnkrSDK.Ads
+namespace AnkrSDK.Ads.Examples
 {
 	public class AdsCallbackListener : MonoBehaviour
 	{

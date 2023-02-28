@@ -1,4 +1,4 @@
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events
+namespace AnkrSDK.WalletConnectSharp.Core.Events
 {
     public interface IEventProvider
     {

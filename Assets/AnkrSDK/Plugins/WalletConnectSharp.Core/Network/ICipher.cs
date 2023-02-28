@@ -1,8 +1,8 @@
 using System.Text;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Models;
 using Cysharp.Threading.Tasks;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Network
+namespace AnkrSDK.WalletConnectSharp.Core.Network
 {
     public interface ICipher
     {   

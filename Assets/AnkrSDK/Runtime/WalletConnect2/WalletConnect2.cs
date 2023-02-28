@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using AnkrSDK.Plugins.WalletConnect.VersionShared;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Utils;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Events;
-using AnkrSDK.Runtime.WalletConnect2;
-using AnkrSDK.Runtime.WalletConnect2.RpcRequests;
-using AnkrSDK.Runtime.WalletConnect2.RpcResponses;
-using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.WalletConnect.VersionShared;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
+using AnkrSDK.WalletConnect2.Events;
+using AnkrSDK.WalletConnect2.RpcRequests;
+using AnkrSDK.WalletConnect2.RpcResponses;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -23,7 +21,7 @@ using WalletConnectSharp.Sign.Models;
 using WalletConnectSharp.Sign.Models.Engine;
 using WalletConnectSharp.Storage;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp2
+namespace AnkrSDK.WalletConnect2
 {
 	public class WalletConnect2 : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IWalletConnectTransitionDataProvider
 	{

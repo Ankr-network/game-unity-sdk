@@ -1,5 +1,5 @@
 using System;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

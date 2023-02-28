@@ -1,7 +1,7 @@
 ﻿using System;
 using WalletConnectSharp.Sign.Models;
 
-namespace AnkrSDK.Runtime.WalletConnect2
+namespace AnkrSDK.WalletConnect2
 {
 	[Serializable]
 	public class BlockchainParameters

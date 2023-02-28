@@ -1,6 +1,6 @@
 using System;
 
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types
+namespace AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types
 {
     public class EvmTypeAttribute : Attribute
     {

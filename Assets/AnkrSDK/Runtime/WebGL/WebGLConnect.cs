@@ -1,7 +1,7 @@
 using System;
 using AnkrSDK.Data;
-using AnkrSDK.Plugins.WalletConnect.VersionShared;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnect.VersionShared;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 

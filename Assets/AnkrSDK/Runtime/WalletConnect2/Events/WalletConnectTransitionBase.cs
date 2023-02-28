@@ -1,8 +1,6 @@
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnectSharp.Core;
-using AnkrSDK.Runtime.WalletConnect2;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Events
+namespace AnkrSDK.WalletConnect2.Events
 {
     public class WalletConnect2TransitionBase
     {

@@ -1,7 +1,7 @@
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models;
 using Newtonsoft.Json;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model.Ethereum
+namespace AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum
 {
     public class EthResponse : JsonRpcResponse
     {

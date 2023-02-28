@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
+﻿using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 using Newtonsoft.Json;
 using WalletConnectSharp.Sign.Interfaces;
 
-namespace AnkrSDK.Runtime.WalletConnect2.RpcRequests
+namespace AnkrSDK.WalletConnect2.RpcRequests
 {
 	public class RpcRequestDataBase : IWcMethod, Identifiable
 	{

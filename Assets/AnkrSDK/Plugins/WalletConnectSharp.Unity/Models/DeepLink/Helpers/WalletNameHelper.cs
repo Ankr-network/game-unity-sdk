@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink.Helpers
+namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers
 {
 	public static class WalletNameHelper
 	{

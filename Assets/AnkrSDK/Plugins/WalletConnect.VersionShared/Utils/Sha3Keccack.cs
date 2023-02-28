@@ -1,9 +1,8 @@
 using System.Linq;
 using System.Text;
 using Org.BouncyCastle.Crypto.Digests;
-using WalletConnectSharp.Common.Utils;
 
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Utils
+namespace AnkrSDK.WalletConnect.VersionShared.Utils
 {
     public class Sha3Keccack
     {

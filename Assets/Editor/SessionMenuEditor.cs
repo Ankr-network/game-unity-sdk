@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Utils;
+using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using UnityEditor;
 
 public static class SessionMenuEditor

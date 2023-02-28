@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events
+namespace AnkrSDK.WalletConnectSharp.Core.Events
 {
 	public class EventManager<T, TEventArgs> : IEventProvider where TEventArgs : IEvent<T>, new()
 	{

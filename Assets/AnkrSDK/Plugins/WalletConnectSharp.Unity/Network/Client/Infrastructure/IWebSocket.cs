@@ -1,8 +1,8 @@
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Data;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.EventHandlers;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.EventHandlers;
 using Cysharp.Threading.Tasks;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Infrastructure
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure
 {
 	public interface IWebSocket
 	{

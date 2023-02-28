@@ -1,6 +1,6 @@
 using System;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
+namespace AnkrSDK.WalletConnectSharp.Unity
 {
 	[Serializable]
 	public class WalletSelectItem

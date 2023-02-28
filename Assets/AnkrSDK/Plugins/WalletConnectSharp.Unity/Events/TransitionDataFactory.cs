@@ -1,7 +1,7 @@
 using System;
-using AnkrSDK.Plugins.WalletConnectSharp.Core;
+using AnkrSDK.WalletConnectSharp.Core;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Events
+namespace AnkrSDK.WalletConnectSharp.Unity.Events
 {
     public static class TransitionDataFactory
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Utils
+namespace AnkrSDK.WalletConnect.VersionShared.Utils
 {
     public class RpcPayloadId
     {

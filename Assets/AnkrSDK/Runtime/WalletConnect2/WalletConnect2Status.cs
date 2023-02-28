@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AnkrSDK.Runtime.WalletConnect2
+namespace AnkrSDK.WalletConnect2
 {
 	[Flags]
 	public enum WalletConnect2Status

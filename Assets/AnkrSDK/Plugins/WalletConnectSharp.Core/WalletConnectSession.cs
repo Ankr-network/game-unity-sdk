@@ -4,21 +4,21 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using AnkrSDK.Plugins.WalletConnect.VersionShared;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Utils;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Events;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model.Ethereum;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
+using AnkrSDK.WalletConnectSharp.Core.Events;
+using AnkrSDK.WalletConnectSharp.Core.Events.Model;
+using AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum;
+using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using HexByteConvertorExtensions = WalletConnectSharp.Common.Utils.HexByteConvertorExtensions;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core
+namespace AnkrSDK.WalletConnectSharp.Core
 {
 	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectGenericRequester, IWalletConnectCommunicator, IWalletConnectTransitionDataProvider
 	{

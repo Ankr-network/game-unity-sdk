@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Utils
+namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 {
 	public static class WalletDownloadHelper
 	{

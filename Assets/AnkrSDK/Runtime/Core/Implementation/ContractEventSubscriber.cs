@@ -9,9 +9,9 @@ using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Subscriptions;
 using System.Collections.Generic;
 using System;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Data;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Infrastructure;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation

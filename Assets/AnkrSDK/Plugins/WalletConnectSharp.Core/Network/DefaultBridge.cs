@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Network
+namespace AnkrSDK.WalletConnectSharp.Core.Network
 {
 	public static class DefaultBridge
 	{

@@ -1,7 +1,7 @@
 ﻿
 using Newtonsoft.Json;
 
-namespace AnkrSDK.Runtime.WalletConnect2.RpcResponses
+namespace AnkrSDK.WalletConnect2.RpcResponses
 {
 	public class EthResponseData : RpcResponseBase
 	{

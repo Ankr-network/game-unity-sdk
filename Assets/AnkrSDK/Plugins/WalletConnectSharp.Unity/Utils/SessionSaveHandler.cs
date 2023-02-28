@@ -1,8 +1,8 @@
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Models;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Utils
+namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 {
 	public static class SessionSaveHandler
 	{

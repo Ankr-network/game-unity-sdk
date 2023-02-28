@@ -1,8 +1,8 @@
-﻿using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
+﻿using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
 using UnityEngine;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
+namespace AnkrSDK.WalletConnectSharp.Unity
 {
 	[CreateAssetMenu(fileName = "WalletConnectSettings", menuName = "AnkrSDK/WalletConnect/WalletConnectSettings")]
 	public class WalletConnectSettingsSO : ScriptableObject

@@ -1,4 +1,4 @@
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Data
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data
 {
 	public enum WebSocketState
 	{

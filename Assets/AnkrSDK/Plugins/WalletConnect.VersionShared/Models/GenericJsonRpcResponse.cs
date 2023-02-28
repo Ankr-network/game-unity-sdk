@@ -1,9 +1,8 @@
-﻿using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
-using Nethereum.JsonRpc.Client.RpcMessages;
+﻿using Nethereum.JsonRpc.Client.RpcMessages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Models
+namespace AnkrSDK.WalletConnect.VersionShared.Models
 {
 	public class GenericJsonRpcResponse : JsonRpcResponse
 	{

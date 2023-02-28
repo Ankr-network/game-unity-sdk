@@ -1,4 +1,4 @@
-﻿namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure
+﻿namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 {
 	public interface IWalletConnectTransitionDataProvider
 	{

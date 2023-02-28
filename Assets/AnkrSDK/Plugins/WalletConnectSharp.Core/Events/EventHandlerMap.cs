@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events
+namespace AnkrSDK.WalletConnectSharp.Core.Events
 {
     public class EventHandlerMap<TEventArgs>
     {

@@ -1,6 +1,6 @@
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Events.Model
+namespace AnkrSDK.WalletConnectSharp.Core.Events.Model
 {
     public class JsonRpcRequestEvent<T> : GenericEvent<T> where T : JsonRpcRequest
     {

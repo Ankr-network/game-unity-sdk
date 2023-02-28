@@ -1,7 +1,7 @@
 using System;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Events;
+using AnkrSDK.WalletConnectSharp.Core.Events;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Network
+namespace AnkrSDK.WalletConnectSharp.Core.Network
 {
     public class TransportFactory
     {

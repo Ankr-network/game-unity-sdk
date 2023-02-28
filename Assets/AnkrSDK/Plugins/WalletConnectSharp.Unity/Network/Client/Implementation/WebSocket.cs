@@ -4,14 +4,14 @@ using System.IO;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Data;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.EventHandlers;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Infrastructure;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.EventHandlers;
+using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using WebSocketState = AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Data.WebSocketState;
+using WebSocketState = AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data.WebSocketState;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Network.Client.Implementation
+namespace AnkrSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 {
 	public class WebSocket : IWebSocket
 	{

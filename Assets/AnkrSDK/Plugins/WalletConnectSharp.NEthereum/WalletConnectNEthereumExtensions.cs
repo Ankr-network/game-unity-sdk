@@ -1,10 +1,10 @@
 using System;
 using System.Net.Http.Headers;
-using AnkrSDK.Plugins.WalletConnect.VersionShared;
-using AnkrSDK.Plugins.WalletConnectSharp.NEthereum.Client;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.WalletConnectSharp.NEthereum.Client;
 using Nethereum.JsonRpc.Client;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.NEthereum
+namespace AnkrSDK.WalletConnectSharp.NEthereum
 {
 	public static class WalletConnectNEthereumExtensions
 	{

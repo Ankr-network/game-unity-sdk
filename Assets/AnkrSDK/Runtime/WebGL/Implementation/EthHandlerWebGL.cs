@@ -1,8 +1,8 @@
 using System;
 using System.Numerics;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WebGL.DTO;
 using AnkrSDK.WebGL.Extensions;
 using Cysharp.Threading.Tasks;

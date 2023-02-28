@@ -1,4 +1,4 @@
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Models
+namespace AnkrSDK.WalletConnect.VersionShared.Models
 {
     public interface IEventSource
     {

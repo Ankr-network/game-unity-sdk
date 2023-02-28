@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using AnkrSDK.Plugins.WalletConnect.VersionShared;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared.Models;
 using Nethereum.JsonRpc.Client;
 using Nethereum.JsonRpc.Client.RpcMessages;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.NEthereum.Client
+namespace AnkrSDK.WalletConnectSharp.NEthereum.Client
 {
     public class WalletConnectClient : ClientBase
     {

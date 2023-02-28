@@ -4,25 +4,26 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using AnkrSDK.Metadata;
-using AnkrSDK.Plugins.WalletConnect.VersionShared;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types;
-using AnkrSDK.Plugins.WalletConnectSharp.Core;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Network;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Events;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Network;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Utils;
+using AnkrSDK.WalletConnect.VersionShared;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.WalletConnectSharp.Core;
+using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Network;
+using AnkrSDK.WalletConnectSharp.Unity.Events;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
+using AnkrSDK.WalletConnectSharp.Unity.Network;
+using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Logger = AnkrSDK.InternalUtils.Logger;
 
 [assembly: InternalsVisibleTo("AnkrSDK.Tests.Runtime")]
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity
+namespace AnkrSDK.WalletConnectSharp.Unity
 {
 	public  class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IUpdatable
 	{

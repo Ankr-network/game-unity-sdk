@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core
+namespace AnkrSDK.WalletConnectSharp.Core
 {
 	[Flags]
 	public enum WalletConnectStatus

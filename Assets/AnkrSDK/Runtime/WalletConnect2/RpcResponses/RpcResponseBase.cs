@@ -1,9 +1,9 @@
-﻿using AnkrSDK.Plugins.WalletConnect.VersionShared.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
+﻿using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared.Models;
 using WalletConnectSharp.Common.Utils;
 using WalletConnectSharp.Network.Models;
 
-namespace AnkrSDK.Runtime.WalletConnect2.RpcResponses
+namespace AnkrSDK.WalletConnect2.RpcResponses
 {
 	[RpcResponseOptions(Clock.ONE_DAY, false, 1108)]
 	public class RpcResponseBase : IErrorHolder

@@ -1,4 +1,4 @@
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum
+namespace AnkrSDK.WalletConnect.VersionShared.Models.Ethereum
 {
     public class NativeCurrency
     {

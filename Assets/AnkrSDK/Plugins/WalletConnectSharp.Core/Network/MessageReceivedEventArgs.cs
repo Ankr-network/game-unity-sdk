@@ -1,7 +1,7 @@
 using System;
-using AnkrSDK.Plugins.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnectSharp.Core.Models;
 
-namespace AnkrSDK.Plugins.WalletConnectSharp.Core.Network
+namespace AnkrSDK.WalletConnectSharp.Core.Network
 {
     public class MessageReceivedEventArgs : EventArgs
     {

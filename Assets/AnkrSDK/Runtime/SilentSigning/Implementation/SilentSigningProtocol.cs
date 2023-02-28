@@ -1,19 +1,18 @@
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity;
-using AnkrSDK.Plugins.WalletConnectSharp.Unity.Events;
 using AnkrSDK.SilentSigning.Data.Requests;
 using AnkrSDK.SilentSigning.Data.Responses;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace AnkrSDK.SilentSigning
+namespace AnkrSDK.SilentSigning.Implementation
 {
 	public class SilentSigningProtocol : ISilentSigningHandler
 	{
 		public ISilentSigningSessionHandler SessionHandler { get; }
-		private WalletConnect WalletConnect => ConnectProvider<WalletConnect>.GetConnect();
+		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 
 		private bool _skipNextDeepLink;
 

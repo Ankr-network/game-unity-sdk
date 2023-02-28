@@ -2,7 +2,7 @@
 using WalletConnectSharp.Common.Utils;
 using WalletConnectSharp.Network.Models;
 
-namespace AnkrSDK.Runtime.WalletConnect2.RpcRequests
+namespace AnkrSDK.WalletConnect2.RpcRequests
 {
 	[RpcMethod("eth_sign")]
 	[RpcRequestOptions(Clock.ONE_DAY, false, 1108)]

@@ -1,4 +1,4 @@
-namespace AnkrSDK.Plugins.WalletConnectSharp.Unity.Models.DeepLink
+namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink
 {
     public class AppColors
     {

@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared
+namespace AnkrSDK.WalletConnect.VersionShared
 {
     public interface IWalletConnectable
     { 

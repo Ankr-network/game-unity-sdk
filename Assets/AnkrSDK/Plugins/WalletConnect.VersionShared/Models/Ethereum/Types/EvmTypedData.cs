@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum.Types
+namespace AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types
 {
     public class EvmTypedData<T>
     {

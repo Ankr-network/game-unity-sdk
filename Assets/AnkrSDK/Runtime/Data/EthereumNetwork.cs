@@ -1,4 +1,4 @@
-using AnkrSDK.Plugins.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using JetBrains.Annotations;
 using Nethereum.Hex.HexTypes;
 using Newtonsoft.Json;
@@ -27,7 +27,7 @@ namespace AnkrSDK.Data
 				chainId = "0x" + ChainId,
 				chainName = ChainName,
 				iconUrls = IconUrls,
-				nativeCurrency = new Plugins.WalletConnect.VersionShared.Models.Ethereum.NativeCurrency
+				nativeCurrency = new WalletConnect.VersionShared.Models.Ethereum.NativeCurrency
 				{
 					name = NativeCurrency.Name,
 					symbol = NativeCurrency.Symbol,

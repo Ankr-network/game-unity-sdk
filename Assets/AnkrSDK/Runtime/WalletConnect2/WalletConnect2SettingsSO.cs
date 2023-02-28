@@ -1,9 +1,7 @@
-﻿
-using System.Collections.Generic;
-using AnkrSDK.Runtime.WalletConnect2;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace AnkrSDK.WalletConnectSharp.Unity
+namespace AnkrSDK.WalletConnect2
 {
 	[CreateAssetMenu(fileName = "WalletConnect2Settings", menuName = "AnkrSDK/WalletConnect/WalletConnect2Settings")]
 	public class WalletConnect2SettingsSO : ScriptableObject
