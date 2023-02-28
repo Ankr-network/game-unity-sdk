@@ -98,7 +98,7 @@ namespace AnkrSDK.WalletConnect2
 		}
 
 		public async UniTask<TResponseData> Send<TRequestData, TResponseData>(TRequestData data)
-			where TRequestData : Identifiable 
+			where TRequestData : IIdentifiable 
 			where TResponseData : IErrorHolder
 		{
 			CheckIfSessionCreated();

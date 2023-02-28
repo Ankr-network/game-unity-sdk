@@ -274,7 +274,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		}
 
 		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
-			where TRequest : Identifiable
+			where TRequest : IIdentifiable
 			where TResponse : IErrorHolder
 		{
 			CheckIfSessionCreated();

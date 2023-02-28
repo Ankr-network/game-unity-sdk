@@ -18,7 +18,7 @@ namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 		UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData);
 
 		UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
-			where TRequest : Identifiable
+			where TRequest : IIdentifiable
 			where TResponse : IErrorHolder;
 	}
 }

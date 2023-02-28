@@ -1,6 +1,6 @@
 ﻿namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 {
-	public interface Identifiable
+	public interface IIdentifiable
 	{
 		long ID { get; }
 	}

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace AnkrSDK.WalletConnect.VersionShared.Models
 {
-    public class JsonRpcRequest : IEventSource, Identifiable
+    public class JsonRpcRequest : IEventSource, IIdentifiable
     {
         [JsonProperty]
         protected long id;

@@ -345,7 +345,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		}
 
 		public async UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
-			where TRequest : Identifiable
+			where TRequest : IIdentifiable
 			where TResponse : IErrorHolder
 		{
 			var eventCompleted = new UniTaskCompletionSource<TResponse>();
