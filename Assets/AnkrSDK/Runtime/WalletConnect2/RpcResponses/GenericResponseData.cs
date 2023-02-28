@@ -9,11 +9,10 @@ namespace AnkrSDK.WalletConnect2.RpcResponses
 	{
 		[JsonProperty("result")]
 		public JToken Result { get; private set; }
-		
+
 		public GenericJsonRpcResponse ToGenericRpcResponse()
 		{
 			return new GenericJsonRpcResponse(Result);
-
 		}
 	}
 }

@@ -15,6 +15,7 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using WalletConnectSharp.Common.Model.Errors;
+using WalletConnectSharp.Core.Models.Pairing;
 using WalletConnectSharp.Network.Models;
 using WalletConnectSharp.Sign;
 using WalletConnectSharp.Sign.Models;
@@ -27,10 +28,9 @@ namespace AnkrSDK.WalletConnect2
 	{
 		private const string SettingsFilenameString = "WalletConnect2Settings";
 		public event Action<WalletConnect2TransitionBase> SessionStatusUpdated;
-		//public event Action OnSend;
 		public string SettingsFilename => SettingsFilenameString;
 		public WalletConnect2Status Status { get; private set; }
-		
+
 		private WalletConnect2SettingsSO _settings;
 		private WalletConnectSignClient _signClient;
 		private SessionStruct? _sessionData;
@@ -39,7 +39,7 @@ namespace AnkrSDK.WalletConnect2
 		public void Initialize(ScriptableObject settings)
 		{
 			Status = WalletConnect2Status.Uninitialized;
-			
+
 			_settings = settings as WalletConnect2SettingsSO;
 			if (_settings == null)
 			{
@@ -50,7 +50,6 @@ namespace AnkrSDK.WalletConnect2
 			var prevStatus = Status;
 			Status = WalletConnect2Status.Disconnected;
 			SessionStatusUpdated?.Invoke(new WalletConnectInitialized(this, prevStatus, Status));
-
 		}
 
 		public async UniTask Connect()
@@ -63,21 +62,20 @@ namespace AnkrSDK.WalletConnect2
 				_signClient = await WalletConnectSignClient.Init(dappOptions);
 				Subscribe(_signClient);
 			}
-			
+
 			var connectData = await _signClient.Connect(dappConnectOptions);
 
 			var prevStatus = Status;
 			Status = WalletConnect2Status.ConnectionRequestSent;
 			SessionStatusUpdated?.Invoke(new SessionRequestSentTransition(this, prevStatus, Status));
-			
+
 			_sessionData = await connectData.Approval;
 
 			prevStatus = Status;
 			Status = WalletConnect2Status.WalletConnected;
 			SessionStatusUpdated?.Invoke(new WalletConnectedTransition(this, prevStatus, Status));
-
 		}
-		
+
 		public async UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
 		{
 			CheckIfSessionCreated();
@@ -90,20 +88,18 @@ namespace AnkrSDK.WalletConnect2
 
 			var topic = _sessionData.Value.Topic;
 			var method = genericRequest.Method;
-			var genericResponseData = await _signClient.
-				RequestWithMethod<object, GenericResponseData>(topic, genericRequest.RawParameters, method).
-				AsUniTask();
-			
+			var genericResponseData = await _signClient.RequestWithMethod<object, GenericResponseData>(topic, genericRequest.RawParameters, method).AsUniTask();
+
 			return genericResponseData.ToGenericRpcResponse();
 		}
 
 		public async UniTask<TResponseData> Send<TRequestData, TResponseData>(TRequestData data)
-			where TRequestData : IIdentifiable 
+			where TRequestData : IIdentifiable
 			where TResponseData : IErrorHolder
 		{
 			CheckIfSessionCreated();
 
-			var topic = _sessionData.Value.Topic; 
+			var topic = _sessionData.Value.Topic;
 			var result = await _signClient.Request<TRequestData, TResponseData>(topic, data).AsUniTask();
 			return result;
 		}
@@ -127,11 +123,11 @@ namespace AnkrSDK.WalletConnect2
 
 				message = "0x" + hash.ToHex();
 			}
-			
+
 			Debug.Log(message);
 
 			var request = new EthSignRequestData(address, message);
-			
+
 			var topic = _sessionData.Value.Topic;
 			var response = await _signClient.Request<EthSignRequestData, EthResponseData>(topic, request);
 			return response.Result;
@@ -139,47 +135,47 @@ namespace AnkrSDK.WalletConnect2
 
 		public UniTask<string> EthPersonalSign(string address, string message)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public UniTask<string> EthSignTypedData<T>(string address, T data, EIP712Domain eip712Domain)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public UniTask<string> EthSendTransaction(params TransactionData[] transaction)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public UniTask<string> EthSignTransaction(params TransactionData[] transaction)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public UniTask<string> WalletAddEthChain(EthChainData chainData)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public UniTask<string> WalletSwitchEthChain(EthChain chainData)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
-		public async void Dispose()
+		public void Dispose()
 		{
-			await Disconnect();
+			Disconnect().Forget();
 		}
 
 		public UniTask Quit()
@@ -187,37 +183,26 @@ namespace AnkrSDK.WalletConnect2
 			return Disconnect();
 		}
 
-		public async UniTask OnApplicationPause(bool pauseStatus)
+		public UniTask OnApplicationPause(bool pauseStatus)
 		{
 			if (Status == WalletConnect2Status.Uninitialized)
 			{
 				throw new InvalidOperationException("WalletConnect is not initialized");
 			}
 
-			if (pauseStatus)
-			{
-				await Disconnect();
-			}
-			else
-			{
-				await Connect();
-			}
+			return pauseStatus ? Disconnect() : Connect();
 		}
-		
+
 		private async UniTask Disconnect()
 		{
-			if (_signClient == null)
+			if (Status == WalletConnect2Status.Disconnected)
 			{
 				return;
 			}
-
-			if (ConnectionPending)
+			
+			if (_signClient == null || ConnectionPending || _sessionData == null)
 			{
-				return;
-			}
-
-			if (_sessionData == null)
-			{
+				SwitchToDisconnectedState();
 				return;
 			}
 
@@ -225,10 +210,16 @@ namespace AnkrSDK.WalletConnect2
 
 			var errorResponse = ErrorResponse.FromErrorType(ErrorType.GENERIC);
 			await _signClient.Disconnect(topic, errorResponse).AsUniTask();
-			_sessionData = null;
+			SwitchToDisconnectedState();
+		}
+
+		private void SwitchToDisconnectedState()
+		{
 			var prevStatus = Status;
+			_sessionData = null;
+			_signClient = null;
 			Status = WalletConnect2Status.Disconnected;
-			SessionStatusUpdated?.Invoke(new WalletConnectedTransition(this, prevStatus, Status));
+			SessionStatusUpdated?.Invoke(new WalletDisconnectedTransition(this, prevStatus, Status));
 
 		}
 
@@ -259,13 +250,9 @@ namespace AnkrSDK.WalletConnect2
 			var dappFilePath = Path.Combine(Application.dataPath, ".wc", _settings.DappFileName);
 			var signClientOptions = new SignClientOptions
 			{
-				ProjectId = _settings.ProjectId,
-				Metadata = new global::WalletConnectSharp.Core.Models.Pairing.Metadata()
+				ProjectId = _settings.ProjectId, Metadata = new Metadata
 				{
-					Description = _settings.Description,
-					Icons = _settings.Icons,
-					Name = _settings.Name,
-					Url = _settings.Url
+					Description = _settings.Description, Icons = _settings.Icons, Name = _settings.Name, Url = _settings.Url
 				},
 				Storage = new FileSystemStorage(dappFilePath)
 			};
@@ -275,9 +262,9 @@ namespace AnkrSDK.WalletConnect2
 
 		private ConnectOptions GenerateDappConnectOptions()
 		{
-			var dappConnectOptions = new ConnectOptions()
+			var dappConnectOptions = new ConnectOptions
 			{
-				RequiredNamespaces = new RequiredNamespaces(){}
+				RequiredNamespaces = new RequiredNamespaces()
 			};
 
 			foreach (var blockchainParams in _settings.BlockchainParameters)
@@ -288,7 +275,7 @@ namespace AnkrSDK.WalletConnect2
 
 			return dappConnectOptions;
 		}
-		
+
 		private void OnSessionExpire()
 		{
 			Debug.LogWarning("WalletConnect2 OnSessionExpire at " + Time.time);
@@ -313,7 +300,7 @@ namespace AnkrSDK.WalletConnect2
 		{
 			Debug.LogWarning("WalletConnect2 OnSessionExtent at " + Time.time);
 		}
-		
+
 		private void OnSessionPing()
 		{
 			Debug.LogWarning("WalletConnect2 OnSessionPing at " + Time.time);
@@ -333,6 +320,5 @@ namespace AnkrSDK.WalletConnect2
 		{
 			Debug.LogWarning("WalletConnect2 OnSessionEvent at " + Time.time);
 		}
-		
 	}
 }

@@ -16,9 +16,7 @@ namespace AnkrSDK.WalletConnect2
 		{
 			return new RequiredNamespace
 			{
-				Chains = Chains,
-				Methods = Methods,
-				Events = Events
+				Chains = Chains, Methods = Methods, Events = Events
 			};
 		}
 	}

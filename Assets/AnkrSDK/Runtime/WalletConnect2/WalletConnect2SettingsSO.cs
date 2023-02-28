@@ -6,6 +6,14 @@ namespace AnkrSDK.WalletConnect2
 	[CreateAssetMenu(fileName = "WalletConnect2Settings", menuName = "AnkrSDK/WalletConnect/WalletConnect2Settings")]
 	public class WalletConnect2SettingsSO : ScriptableObject
 	{
+		[SerializeField] private string _projectId;
+		[SerializeField] private string _description;
+		[SerializeField] private string[] _icons;
+		[SerializeField] private string _name;
+		[SerializeField] private string _url;
+		[SerializeField] private string _dappFileName;
+		[SerializeField] private BlockchainParameters[] _blockChainParameters;
+
 		public string ProjectId => _projectId;
 		public string Description => _description;
 		public string[] Icons => _icons;
@@ -21,20 +29,14 @@ namespace AnkrSDK.WalletConnect2
 				{
 					foreach (var blockchainParameter in _blockChainParameters)
 					{
-						if(blockchainParameter.Enabled)
+						if (blockchainParameter.Enabled)
+						{
 							yield return blockchainParameter;
+						}
 					}
 				}
 			}
 		}
-		
-		[SerializeField] private string _projectId;
-		[SerializeField] private string _description;
-		[SerializeField] private string[] _icons;
-		[SerializeField] private string _name;
-		[SerializeField] private string _url;
-		[SerializeField] private string _dappFileName;
-		[SerializeField] private BlockchainParameters[] _blockChainParameters;
 
 
 		private void OnEnable()
@@ -43,7 +45,7 @@ namespace AnkrSDK.WalletConnect2
 			{
 				_projectId = null;
 			}
-			
+
 			if (string.IsNullOrWhiteSpace(_description))
 			{
 				_description = null;
@@ -60,6 +62,5 @@ namespace AnkrSDK.WalletConnect2
 				}
 			}
 		}
-
 	}
 }

@@ -137,9 +137,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return SaveOrDisconnect();
 		}
 
-		public async void Dispose()
+		public void Dispose()
 		{
-			await SaveOrDisconnect();
+			SaveOrDisconnect().Forget();
 		}
 
 		public async UniTask OnApplicationPause(bool pauseStatus)
