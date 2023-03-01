@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using AnkrSDK.WalletConnect.VersionShared;
 using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.WalletConnect.VersionShared.Utils;
 using AnkrSDK.WalletConnect2.Events;
 using AnkrSDK.WalletConnect2.RpcRequests;
+using AnkrSDK.WalletConnect2.RpcRequests.Eth;
 using AnkrSDK.WalletConnect2.RpcResponses;
+using AnkrSDK.WalletConnect2.RpcResponses.Eth;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using WalletConnectSharp.Common.Model.Errors;
 using WalletConnectSharp.Core.Models.Pairing;
@@ -29,11 +35,47 @@ namespace AnkrSDK.WalletConnect2
 		public event Action<WalletConnect2TransitionBase> SessionStatusUpdated;
 		public string SettingsFilename => SettingsFilenameString;
 		public WalletConnect2Status Status { get; private set; }
+		public bool Connecting { get; private set; }
+
+		public string ConnectURL
+		{
+			get
+			{
+				if (_connectedData == null)
+				{
+					throw new InvalidDataException("ConnectData not found in WalletConnect2, it is probably not connected yet");
+				}
+
+				return _connectedData.Uri;
+			}
+		}
+		public bool CanSendRequests => Status != WalletConnect2Status.WalletConnected;
+		
+		//TODO ANTON handle ChainId later
+		public int ChainId => -1;
+		//TODO ANTON handle Accounts later
+		public string[] Accounts
+		{
+			get
+			{
+				if (_sessionData.HasValue)
+				{
+					//here we should convert selected wallet to CAIP namespace
+					//to use as a Namespaces dictionary key
+					return _sessionData.Value.Namespaces["eip155"].Accounts;
+				}
+				else
+				{
+					throw new InvalidDataException("SessionStruct not found in WalletConnect2, it is probably not connected yet");
+				}
+			}
+		}
 
 		private WalletConnect2SettingsSO _settings;
 		private WalletConnectSignClient _signClient;
+		private ConnectedData _connectedData;
 		private SessionStruct? _sessionData;
-		public bool CanSendRequests => Status != WalletConnect2Status.WalletConnected;
+		private WalletEntry _selectedWallet;
 
 		public void Initialize(ScriptableObject settings)
 		{
@@ -55,6 +97,8 @@ namespace AnkrSDK.WalletConnect2
 		{
 			var dappOptions = GenerateSignClientOptions();
 			var dappConnectOptions = GenerateDappConnectOptions();
+			
+			Connecting = true;
 
 			if (_signClient == null)
 			{
@@ -62,17 +106,41 @@ namespace AnkrSDK.WalletConnect2
 				Subscribe(_signClient);
 			}
 
-			var connectData = await _signClient.Connect(dappConnectOptions);
+			_connectedData = await _signClient.Connect(dappConnectOptions);
 
+			SetupDefaultWallet().Forget();
+			Connecting = false;
+			
+			Debug.Log("WalletConnect2: Connect finished, uri = " + _connectedData.Uri);
+
+			
 			var prevStatus = Status;
 			Status = WalletConnect2Status.ConnectionRequestSent;
 			SessionStatusUpdated?.Invoke(new SessionRequestSentTransition(this, prevStatus, Status));
 
-			_sessionData = await connectData.Approval;
+			_sessionData = await _connectedData.Approval;
+			
+			var sessionDataJson = JsonConvert.SerializeObject(_sessionData);
+			Debug.Log("WalletConnect2: Connect finished, sessionData = " + sessionDataJson);
 
 			prevStatus = Status;
 			Status = WalletConnect2Status.WalletConnected;
 			SessionStatusUpdated?.Invoke(new WalletConnectedTransition(this, prevStatus, Status));
+		}
+
+		public async UniTask DisconnectSession(bool connectNewSession = true)
+		{
+			if (Status == WalletConnect2Status.Disconnected || Status == WalletConnect2Status.Uninitialized)
+			{
+				return;
+			}
+			
+			await Disconnect();
+
+			if (connectNewSession)
+			{
+				await Connect();
+			}
 		}
 
 		public async UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
@@ -93,6 +161,56 @@ namespace AnkrSDK.WalletConnect2
 			var genericResponseData = await _signClient.RequestWithMethod<object, GenericResponseData>(topic, genericRequest.RawParameters, method).AsUniTask();
 
 			return genericResponseData.ToGenericRpcResponse();
+		}
+
+		public async UniTask OpenDeepLink(Wallets wallet)
+		{
+			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
+			var walletName = wallet.GetWalletName();
+			var walletEntry =
+				supportedWallets.Values.FirstOrDefault(a =>
+					string.Equals(a.name, walletName, StringComparison.InvariantCultureIgnoreCase));
+
+			_selectedWallet = walletEntry;
+
+			OpenDeepLink();
+		}
+
+		public void OpenDeepLink(WalletEntry selectedWallet)
+		{
+			_selectedWallet = selectedWallet;
+
+			OpenDeepLink();
+		}
+
+		public void OpenDeepLink()
+		{
+			if (Status != WalletConnect2Status.ConnectionRequestSent)
+			{
+				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
+				               "\nWait for Status == WalletConnect2Status.ConnectionRequestSent");
+				return;
+			}
+
+			#if UNITY_ANDROID
+			Application.OpenURL(ConnectURL);
+			#elif UNITY_IOS
+			if (_selectedWallet == null)
+			{
+				throw new NotImplementedException(
+					"You must use OpenDeepLink(AppEntry) or set _selectedWallet on iOS!");
+			}
+
+			var url = MobileWalletURLFormatHelper
+				.GetURLForMobileWalletOpen(ConnectURL, _selectedWallet.mobile);
+
+			Debug.Log("[WalletConnect] Opening URL: " + url);
+
+			Application.OpenURL(url);
+			#else
+			Debug.Log("Platform does not support deep linking");
+			return;
+			#endif
 		}
 
 		public async UniTask<TResponseData> Send<TRequestData, TResponseData>(TRequestData data)
@@ -286,6 +404,26 @@ namespace AnkrSDK.WalletConnect2
 			return pauseStatus ? Disconnect() : Connect();
 		}
 
+		private async UniTask SetupDefaultWallet()
+		{
+			if (_settings.DefaultWallet == Wallets.None)
+			{
+				return;
+			}
+
+			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
+
+			var wallet =
+				supportedWallets.Values.FirstOrDefault(a =>
+					string.Equals(a.name, _settings.DefaultWallet.GetWalletName(), StringComparison.InvariantCultureIgnoreCase));
+
+			if (wallet != null)
+			{
+				_selectedWallet = wallet;
+				await wallet.DownloadImages();
+			}
+		}
+
 		private async UniTask Disconnect()
 		{
 			if (Status == WalletConnect2Status.Disconnected)
@@ -310,6 +448,7 @@ namespace AnkrSDK.WalletConnect2
 		{
 			var prevStatus = Status;
 			_sessionData = null;
+			_connectedData = null;
 			_signClient = null;
 			Status = WalletConnect2Status.Disconnected;
 			SessionStatusUpdated?.Invoke(new WalletDisconnectedTransition(this, prevStatus, Status));

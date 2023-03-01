@@ -7,14 +7,15 @@ using AnkrSDK.Metadata;
 using AnkrSDK.WalletConnect.VersionShared;
 using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Events;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnectSharp.Unity.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
@@ -99,7 +100,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public string ConnectURL => _session.URI;
 		public string SettingsFilename => SettingsFilenameString;
 
-		private AppEntry _selectedWallet;
+		private WalletEntry _selectedWallet;
 		private WalletConnectSession _session;
 
 		public void Initialize(ScriptableObject settings)
@@ -311,14 +312,14 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 					cipher, chainId);
 		}
 
-		public void OpenMobileWallet(AppEntry selectedWallet)
+		public void OpenMobileWallet(WalletEntry selectedWallet)
 		{
 			_selectedWallet = selectedWallet;
 
 			OpenMobileWallet();
 		}
 
-		public void OpenDeepLink(AppEntry selectedWallet)
+		public void OpenDeepLink(WalletEntry selectedWallet)
 		{
 			_selectedWallet = selectedWallet;
 
@@ -354,7 +355,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_session.Status != WalletConnectStatus.SessionRequestSent)
 			{
 				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
-				               "\nWait for ActiveSession.ReadyForUserPrompt to be true");
+				               "\nWait for Status == WalletConnect2Status.ConnectionRequestSent");
 				return;
 			}
 

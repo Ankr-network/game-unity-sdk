@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnect2
@@ -6,6 +7,7 @@ namespace AnkrSDK.WalletConnect2
 	[CreateAssetMenu(fileName = "WalletConnect2Settings", menuName = "AnkrSDK/WalletConnect/WalletConnect2Settings")]
 	public class WalletConnect2SettingsSO : ScriptableObject
 	{
+		[SerializeField] private Wallets _defaultWallet = Wallets.MetaMask;
 		[SerializeField] private string _projectId;
 		[SerializeField] private string _description;
 		[SerializeField] private string[] _icons;
@@ -14,6 +16,7 @@ namespace AnkrSDK.WalletConnect2
 		[SerializeField] private string _dappFileName;
 		[SerializeField] private BlockchainParameters[] _blockChainParameters;
 
+		public Wallets DefaultWallet => _defaultWallet;
 		public string ProjectId => _projectId;
 		public string Description => _description;
 		public string[] Icons => _icons;

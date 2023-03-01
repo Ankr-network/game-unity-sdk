@@ -147,6 +147,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public async UniTask<WCSessionData> ConnectSession()
 		{
 			var prevStatus = Status;
+			
+			Connecting = true;
 			try
 			{
 				if (!TransportConnected)

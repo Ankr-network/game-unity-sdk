@@ -2,9 +2,9 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink
+namespace AnkrSDK.WalletConnect.VersionShared.Models.DeepLink
 {
-    public class AppEntry
+    public class WalletEntry
     {
         public string id;
         public string name;

@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.Utils
+namespace AnkrSDK.WalletConnect.VersionShared.Utils
 {
 	public static class WalletDownloadHelper
 	{
-		public static async UniTask<Dictionary<string, AppEntry>> FetchWalletList(bool downloadImages)
+		public static async UniTask<Dictionary<string, WalletEntry>> FetchWalletList(bool downloadImages)
 		{
 			using (var webRequest = UnityWebRequest.Get("https://registry.walletconnect.org/data/wallets.json"))
 			{
@@ -34,7 +34,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 
 				var json = webRequest.downloadHandler.text;
 
-				var supportedWallets = JsonConvert.DeserializeObject<Dictionary<string, AppEntry>>(json);
+				var supportedWallets = JsonConvert.DeserializeObject<Dictionary<string, WalletEntry>>(json);
 
 				if (!downloadImages)
 				{
@@ -51,8 +51,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 			}
 		}
 
-		private static Dictionary<string, AppEntry> GetAllSupportedWallets(
-			Dictionary<string, AppEntry> walletconnectSupportedWallets)
+		private static Dictionary<string, WalletEntry> GetAllSupportedWallets(
+			Dictionary<string, WalletEntry> walletconnectSupportedWallets)
 		{
 			var walletsSupportedBySDK = WalletNameHelper.GetSupportedWalletNames();
 			return walletconnectSupportedWallets

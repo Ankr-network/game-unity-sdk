@@ -12,6 +12,7 @@
     "WalletConnectSharp.Core",
     "UniTask",
     "WalletConnectSharp.Unity",
-    "WalletConnectSharp.VersionShared"
+    "WalletConnectSharp.VersionShared",
+    "AnkrSDK.WalletConnect2"
   ]
 }

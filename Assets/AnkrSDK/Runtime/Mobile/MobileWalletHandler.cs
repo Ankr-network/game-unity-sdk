@@ -7,11 +7,11 @@ namespace AnkrSDK.Mobile
 {
 	public class MobileWalletHandler : IWalletHandler
 	{
-		private readonly WalletConnectSharp.Unity.WalletConnect _walletConnect;
+		private readonly AnkrSDK.WalletConnect2.WalletConnect2 _walletConnect;
  
 		public MobileWalletHandler()
 		{
-			_walletConnect = ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
+			_walletConnect = ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();
 		}
 
 		public UniTask<WalletsStatus> GetWalletsStatus()
@@ -25,7 +25,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask Disconnect(bool waitForNewSession = true)
 		{
-			return _walletConnect.CloseSession(waitForNewSession);
+			return _walletConnect.DisconnectSession(waitForNewSession);
 		}
 	}
 }

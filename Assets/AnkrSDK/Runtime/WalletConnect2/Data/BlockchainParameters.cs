@@ -3,6 +3,9 @@ using WalletConnectSharp.Sign.Models;
 
 namespace AnkrSDK.WalletConnect2
 {
+	// BlockchainId and Chains array format is defined by
+	// Chain Agnostic Improvement Proposals
+	// https://github.com/ChainAgnostic/CAIPs
 	[Serializable]
 	public class BlockchainParameters
 	{

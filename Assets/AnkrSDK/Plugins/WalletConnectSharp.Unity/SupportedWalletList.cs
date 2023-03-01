@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
@@ -11,7 +11,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public static List<WalletSelectItem> SupportedWalletNames()
 		{
 			var json = WalletListJson();
-			var data = JsonConvert.DeserializeObject<Dictionary<string, AppEntry>>(json);
+			var data = JsonConvert.DeserializeObject<Dictionary<string, WalletEntry>>(json);
 
 			var result = data.Keys.Select(id => new WalletSelectItem(id, data[id].name)).ToList();
 

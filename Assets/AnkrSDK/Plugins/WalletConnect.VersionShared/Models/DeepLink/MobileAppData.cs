@@ -1,4 +1,4 @@
-namespace AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink
+namespace AnkrSDK.WalletConnect.VersionShared.Models.DeepLink
 {
     public class MobileAppData
     {

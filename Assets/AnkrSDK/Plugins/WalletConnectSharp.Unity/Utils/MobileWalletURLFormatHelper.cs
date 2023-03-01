@@ -1,4 +1,4 @@
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Utils
 {
