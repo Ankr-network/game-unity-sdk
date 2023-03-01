@@ -29,6 +29,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public event EventHandler<WalletConnectProtocol> OnTransportConnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportDisconnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportOpen;
+		public bool ConnectionPending => Status != WalletConnectStatus.WalletConnected;
 
 		public WalletConnectStatus Status
 		{
