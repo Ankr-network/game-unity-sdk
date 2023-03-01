@@ -4,7 +4,7 @@ using AnkrSDK.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace AnkrSDK.CustomDropdown
+namespace AnkrSDK.Tools.CustomDropdown
 {
 #if UNITY_EDITOR
 	[CustomPropertyDrawer(typeof(CustomDropdown))]

@@ -1,6 +1,5 @@
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WalletConnectSharp.Unity.Events;
 using TMPro;
 using UnityEngine.Events;
@@ -20,7 +19,7 @@ namespace AnkrSDK.UI
 		[SerializeField] private GameObject _sceneChooser;
 		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
-		private WalletConnect WalletConnect => ConnectProvider<WalletConnect>.GetConnect();
+		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		private async void Start()
 		{
 			if (Application.isEditor || Application.platform != RuntimePlatform.WebGLPlayer)

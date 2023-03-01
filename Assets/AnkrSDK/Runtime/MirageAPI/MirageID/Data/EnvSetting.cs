@@ -1,6 +1,6 @@
 using System;
 
-namespace AnkrSDK.MirageAPI.MirageID.Helpers
+namespace AnkrSDK.MirageAPI.MirageID.Data
 {
 	[Serializable]
 	public struct EnvSetting

@@ -1,6 +1,5 @@
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace AnkrSDK.UI
 	{
 		[SerializeField] private Button _button;
 	#if !UNITY_WEBGL || UNITY_EDITOR
-		private WalletConnect WalletConnect => ConnectProvider<WalletConnect>.GetConnect();
+		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 
 		private void OnEnable()
 		{

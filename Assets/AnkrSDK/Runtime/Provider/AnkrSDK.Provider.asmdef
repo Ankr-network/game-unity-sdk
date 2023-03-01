@@ -11,6 +11,7 @@
     "WalletConnectSharp",
     "WalletConnectSharp.Core",
     "UniTask",
-    "WalletConnectSharp.Unity"
+    "WalletConnectSharp.Unity",
+    "WalletConnectSharp.VersionShared"
   ]
 }

@@ -1,8 +1,7 @@
 using AnkrSDK.Base;
-using AnkrSDK.UseCases;
 using UnityEngine;
 
-namespace AnkrSDK.Ads
+namespace AnkrSDK.Ads.Examples
 {
 	public class AdsUseCaseController : UseCase
 	{

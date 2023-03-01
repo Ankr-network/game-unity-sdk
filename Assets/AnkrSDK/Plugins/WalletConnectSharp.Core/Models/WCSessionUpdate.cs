@@ -1,3 +1,4 @@
+using AnkrSDK.WalletConnect.VersionShared.Models;
 using Newtonsoft.Json;
 
 namespace AnkrSDK.WalletConnectSharp.Core.Models

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using AnkrSDK.Metadata;
+using AnkrSDK.WalletConnect.VersionShared;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Events;
 using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
@@ -23,13 +25,15 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public  class WalletConnect : IQuittable, IPausable, IUpdatable, IWalletConnectable, IWalletConnectCommunicator
+	public  class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IUpdatable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
 		public event Action OnSend;
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
+		public bool ConnectionPending => _session?.ConnectionPending ?? true;
+
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
 
 		public string PeerId
@@ -94,7 +98,6 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		private bool _initialized;
 		public string ConnectURL => _session.URI;
 		public string SettingsFilename => SettingsFilenameString;
-		public Type SettingsType => typeof(WalletConnectSettingsSO);
 
 		private AppEntry _selectedWallet;
 		private WalletConnectSession _session;
@@ -134,9 +137,9 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return SaveOrDisconnect();
 		}
 
-		public async void Dispose()
+		public void Dispose()
 		{
-			await SaveOrDisconnect();
+			SaveOrDisconnect().Forget();
 		}
 
 		public async UniTask OnApplicationPause(bool pauseStatus)
@@ -161,7 +164,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 		}
 
-		public async UniTask<WCSessionData> Connect()
+		public async UniTask Connect()
 		{
 			TeardownEvents();
 			var savedSession = SessionSaveHandler.GetSavedSession();
@@ -185,12 +188,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 					}
 					else if (status != WalletConnectStatus.WalletConnected && !_session.Connecting)
 					{
-						return await CompleteConnect();
+						await CompleteConnect();
+						return;
 					}
 					else
 					{
 						Debug.Log("Nothing to do, we are already connected and session key did not change");
-						return null;
+						return;
 					}
 				}
 				else if (status == WalletConnectStatus.WalletConnected)
@@ -206,13 +210,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				else if (_session.Connecting)
 				{
 					Debug.Log("Session connection is in progress. Connect request ignored.");
-					return null;
+					return;
 				}
 			}
 
 			InitializeSession(savedSession);
 
-			return await CompleteConnect();
+			await CompleteConnect();
 		}
 
 		public UniTask<string> EthSign(string address, string message)
@@ -269,10 +273,18 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return _session.WalletUpdateEthChain(chainData);
 		}
 
-		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data) where TRequest : JsonRpcRequest where TResponse : JsonRpcResponse
+		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
+			where TRequest : IIdentifiable
+			where TResponse : IErrorHolder
 		{
 			CheckIfSessionCreated();
 			return _session.Send<TRequest, TResponse>(data);
+		}
+		
+		public UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
+		{
+			CheckIfSessionCreated();
+			return _session.GenericRequest(genericRequest);
 		}
 
 		private void CheckIfSessionCreated()

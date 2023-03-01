@@ -48,7 +48,7 @@ namespace AnkrSDK.Provider
 			var walletHandler = (IWalletHandler)webGlWrapper;
 			var networkHandler = new WebGL.Implementation.AnkrNetworkWebGLHelper(webGlWrapper);
 		#else
-			silentSigningHandler = new SilentSigning.SilentSigningProtocol();
+			silentSigningHandler = new AnkrSDK.SilentSigning.Implementation.SilentSigningProtocol();
 			var web3Provider = new Mobile.MobileWeb3Provider().CreateWeb3(providerURI);
 			var contractFunctions = new Mobile.ContractFunctions(web3Provider);
 			var eth = new Mobile.EthHandler(web3Provider, silentSigningHandler);

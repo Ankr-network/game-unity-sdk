@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "WalletConnectSharp.Core",
-        "UniTask"
+        "UniTask",
+        "WalletConnectSharp.VersionShared"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace AnkrSDK.CustomDropdown
+namespace AnkrSDK.Tools.CustomDropdown
 {
 	public class CustomDropdown : PropertyAttribute
 	{

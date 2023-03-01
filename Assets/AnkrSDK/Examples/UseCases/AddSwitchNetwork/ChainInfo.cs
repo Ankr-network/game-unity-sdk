@@ -1,5 +1,5 @@
 using System;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 
 namespace AnkrSDK.UseCases.AddSwitchNetwork
 {

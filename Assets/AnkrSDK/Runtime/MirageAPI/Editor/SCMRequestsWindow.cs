@@ -10,7 +10,7 @@ using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-namespace AnkrSDK.Runtime.MirageAPI.Editor
+namespace AnkrSDK.MirageAPI.Editor
 {
 	public class SCMRequestsWindow : EditorWindow
 	{

@@ -2,30 +2,30 @@ using System;
 using System.Numerics;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using AnkrSDK.WalletConnectSharp.Unity;
+using AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Web3;
 using UnityEngine;
-using EthSendTransaction = AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.EthSendTransaction;
+using EthSendTransaction = AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum.EthSendTransaction;
 
 namespace AnkrSDK.Mobile
 {
 	public class EthHandler : IEthHandler
 	{
 		private readonly IWeb3 _web3Provider;
-		private readonly WalletConnect _walletConnect;
+		private readonly WalletConnectSharp.Unity.WalletConnect _walletConnect;
 		private readonly ISilentSigningHandler _silentSigningHandler;
 
 		public EthHandler(IWeb3 web3Provider, ISilentSigningHandler silentSigningHandler)
 		{
 			_web3Provider = web3Provider;
 			_silentSigningHandler = silentSigningHandler;
-			_walletConnect = ConnectProvider<WalletConnect>.GetConnect();
+			_walletConnect = ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		}
 
 		public UniTask<string> WalletAddEthChain(EthChainData chainData)

@@ -4,6 +4,7 @@
     "AnkrSDK.Data",
     "UniTask",
     "WalletConnectSharp.Unity",
-    "WalletConnectSharp.Core"
+    "WalletConnectSharp.Core",
+    "WalletConnectSharp.VersionShared"
   ]
 }

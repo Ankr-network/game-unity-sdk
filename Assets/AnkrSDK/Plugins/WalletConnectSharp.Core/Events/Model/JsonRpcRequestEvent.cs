@@ -1,4 +1,4 @@
-using AnkrSDK.WalletConnectSharp.Core.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models;
 
 namespace AnkrSDK.WalletConnectSharp.Core.Events.Model
 {

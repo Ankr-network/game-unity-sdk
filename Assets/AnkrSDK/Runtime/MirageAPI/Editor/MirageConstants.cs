@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace AnkrSDK.Runtime.MirageAPI.Editor
+namespace AnkrSDK.MirageAPI.Editor
 {
 	public static class MirageConstants
 	{

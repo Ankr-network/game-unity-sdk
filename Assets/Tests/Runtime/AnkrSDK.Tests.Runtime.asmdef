@@ -4,6 +4,7 @@
         "UniTask",
         "WalletConnectSharp",
         "WalletConnectSharp.Core",
+        "WalletConnectSharp.VersionShared",
         "WalletConnectSharp.Unity"
     ],
     "optionalUnityReferences": [
