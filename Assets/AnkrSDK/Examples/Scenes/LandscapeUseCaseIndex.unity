@@ -415,7 +415,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1345909832}
-  - component: {fileID: 1345909831}
   - component: {fileID: 1345909830}
   m_Layer: 0
   m_Name: WebGLConnect
@@ -436,25 +435,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617b84e8cd9f4cc18d0b01134d35bdd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _webGlConnect: {fileID: 1345909831}
   _webGlLoginManager: {fileID: 477207099}
   _sceneChooser: {fileID: 588941421}
---- !u!114 &1345909831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345909829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e2433bf304141d5bae572b3517b025f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultWallet: 1
-  _defaultNetwork: 2
-  _connectOnAwake: 1
-  _connectOnStart: 0
 --- !u!4 &1345909832
 Transform:
   m_ObjectHideFlags: 0
@@ -510,6 +492,14 @@ PrefabInstance:
     - target: {fileID: 1071138665581192044, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -855.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1442857210044870429, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1442857210044870429, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1607267567771879160, guid: 1eecb0cd60767ac449938cb743676959, type: 3}
       propertyPath: m_AnchoredPosition.y
