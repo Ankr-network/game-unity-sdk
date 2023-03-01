@@ -15,7 +15,20 @@ namespace AnkrSDK.WalletConnectSharp.Core
 	{
 		public static readonly string[] SigningMethods =
 		{
-			"eth_sendTransaction", "eth_signTransaction", "eth_sign", "eth_signTypedData", "eth_signTypedData_v1", "eth_signTypedData_v2", "eth_signTypedData_v3", "eth_signTypedData_v4", "personal_sign", "wallet_silentSendTransaction", "wallet_silentSignMessage", "wallet_addEthereumChain", "wallet_switchEthereumChain", "wallet_updateEthereumChain"
+			"eth_sendTransaction", 
+			"eth_signTransaction", 
+			"eth_sign", 
+			"eth_signTypedData", 
+			"eth_signTypedData_v1", 
+			"eth_signTypedData_v2", 
+			"eth_signTypedData_v3", 
+			"eth_signTypedData_v4", 
+			"personal_sign", 
+			"wallet_silentSendTransaction",
+			"wallet_silentSignMessage", 
+			"wallet_addEthereumChain", 
+			"wallet_switchEthereumChain", 
+			"wallet_updateEthereumChain"
 		};
 
 		protected readonly EventDelegator EventDelegator;
@@ -269,7 +282,10 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			var message = new NetworkMessage
 			{
-				Payload = JsonConvert.SerializeObject(encrypted), Silent = silent, Topic = sendingTopic, Type = "pub"
+				Payload = JsonConvert.SerializeObject(encrypted), 
+				Silent = silent,
+				Topic = sendingTopic, 
+				Type = "pub"
 			};
 
 			await Transport.SendMessage(message);
