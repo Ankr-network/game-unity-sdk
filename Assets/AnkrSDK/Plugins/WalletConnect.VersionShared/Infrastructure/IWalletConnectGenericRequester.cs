@@ -5,7 +5,7 @@ namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 {
     public interface IWalletConnectGenericRequester
     {
-        bool ConnectionPending { get; }
+        bool CanSendRequests { get; }
         UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest);
     }
 }

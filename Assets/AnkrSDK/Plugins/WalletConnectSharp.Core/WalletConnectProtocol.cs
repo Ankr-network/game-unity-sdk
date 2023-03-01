@@ -15,19 +15,19 @@ namespace AnkrSDK.WalletConnectSharp.Core
 	{
 		public static readonly string[] SigningMethods =
 		{
-			"eth_sendTransaction",
-			"eth_signTransaction",
-			"eth_sign",
-			"eth_signTypedData",
-			"eth_signTypedData_v1",
-			"eth_signTypedData_v2",
-			"eth_signTypedData_v3",
-			"eth_signTypedData_v4",
-			"personal_sign",
+			"eth_sendTransaction", 
+			"eth_signTransaction", 
+			"eth_sign", 
+			"eth_signTypedData", 
+			"eth_signTypedData_v1", 
+			"eth_signTypedData_v2", 
+			"eth_signTypedData_v3", 
+			"eth_signTypedData_v4", 
+			"personal_sign", 
 			"wallet_silentSendTransaction",
-			"wallet_silentSignMessage",
-			"wallet_addEthereumChain",
-			"wallet_switchEthereumChain",
+			"wallet_silentSignMessage", 
+			"wallet_addEthereumChain", 
+			"wallet_switchEthereumChain", 
 			"wallet_updateEthereumChain"
 		};
 
@@ -38,7 +38,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		protected string Key;
 		protected byte[] KeyRaw;
 		protected readonly List<string> ActiveTopics = new List<string>();
-
+		public bool CanSendRequests => Status != WalletConnectStatus.WalletConnected;
 		public event EventHandler<WalletConnectProtocol> OnTransportConnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportDisconnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportOpen;
@@ -72,14 +72,20 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		protected bool WaitingForSessionRequestResponse { get; set; }
 		protected bool WalletConnected { get; set; }
 		private readonly ICipher _cipher;
-		
+
 		/// <summary>
-		/// Create a new WalletConnectProtocol object using a SavedSession as the session data. This will effectively resume
-		/// the session, as long as the session data is valid
+		///     Create a new WalletConnectProtocol object using a SavedSession as the session data. This will effectively resume
+		///     the session, as long as the session data is valid
 		/// </summary>
 		/// <param name="savedSession">The SavedSession data to use. Cannot be null</param>
-		/// <param name="transport">The transport interface to use for sending/receiving messages, null will result in the default transport being used</param>
-		/// <param name="cipher">The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being used</param>
+		/// <param name="transport">
+		///     The transport interface to use for sending/receiving messages, null will result in the default
+		///     transport being used
+		/// </param>
+		/// <param name="cipher">
+		///     The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being
+		///     used
+		/// </param>
 		/// <param name="eventDelegator">The EventDelegator class to use, null will result in the default being used</param>
 		/// <exception cref="ArgumentException">If a null SavedSession object was given</exception>
 		protected WalletConnectProtocol(SavedSession savedSession, ITransport transport = null,
@@ -125,11 +131,17 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		}
 
 		/// <summary>
-		/// Create a new WalletConnectProtocol object and create a new dApp session.
+		///     Create a new WalletConnectProtocol object and create a new dApp session.
 		/// </summary>
 		/// <param name="clientMeta">The metadata to send to wallets</param>
-		/// <param name="transport">The transport interface to use for sending/receiving messages, null will result in the default transport being used</param>
-		/// <param name="cipher">The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being used</param>
+		/// <param name="transport">
+		///     The transport interface to use for sending/receiving messages, null will result in the default
+		///     transport being used
+		/// </param>
+		/// <param name="cipher">
+		///     The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being
+		///     used
+		/// </param>
 		/// <param name="chainId">The chainId this dApp is using</param>
 		/// <param name="bridgeUrl">The bridgeURL to use to communicate with the wallet</param>
 		/// <param name="eventDelegator">The EventDelegator class to use, null will result in the default being used</param>
@@ -270,9 +282,9 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			var message = new NetworkMessage
 			{
-				Payload = JsonConvert.SerializeObject(encrypted),
+				Payload = JsonConvert.SerializeObject(encrypted), 
 				Silent = silent,
-				Topic = sendingTopic,
+				Topic = sendingTopic, 
 				Type = "pub"
 			};
 

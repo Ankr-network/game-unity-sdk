@@ -32,7 +32,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public event Action OnSend;
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
-		public bool ConnectionPending => _session?.ConnectionPending ?? true;
+		public bool CanSendRequests => _session?.CanSendRequests ?? true;
 
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
 
@@ -280,7 +280,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			CheckIfSessionCreated();
 			return _session.Send<TRequest, TResponse>(data);
 		}
-		
+
 		public UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
 		{
 			CheckIfSessionCreated();

@@ -12,7 +12,6 @@ using AnkrSDK.WalletConnect2.Events;
 using AnkrSDK.WalletConnect2.RpcRequests;
 using AnkrSDK.WalletConnect2.RpcResponses;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using UnityEngine;
 using WalletConnectSharp.Common.Model.Errors;
 using WalletConnectSharp.Core.Models.Pairing;
@@ -34,7 +33,7 @@ namespace AnkrSDK.WalletConnect2
 		private WalletConnect2SettingsSO _settings;
 		private WalletConnectSignClient _signClient;
 		private SessionStruct? _sessionData;
-		public bool ConnectionPending => Status != WalletConnect2Status.WalletConnected;
+		public bool CanSendRequests => Status != WalletConnect2Status.WalletConnected;
 
 		public void Initialize(ScriptableObject settings)
 		{
@@ -78,12 +77,15 @@ namespace AnkrSDK.WalletConnect2
 
 		public async UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
 		{
-			CheckIfSessionCreated();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
 
 			if (genericRequest.RawParameters == null)
 			{
 				Debug.LogError("Can't have null raw parameters in SendGeneric of WalletConnect2");
-				return new GenericJsonRpcResponse(new JObject());
+				return default;
 			}
 
 			var topic = _sessionData.Value.Topic;
@@ -97,7 +99,10 @@ namespace AnkrSDK.WalletConnect2
 			where TRequestData : IIdentifiable
 			where TResponseData : IErrorHolder
 		{
-			CheckIfSessionCreated();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
 
 			var topic = _sessionData.Value.Topic;
 			var result = await _signClient.Request<TRequestData, TResponseData>(topic, data).AsUniTask();
@@ -106,7 +111,11 @@ namespace AnkrSDK.WalletConnect2
 
 		public async UniTask<string> EthSign(string address, string message)
 		{
-			CheckIfSessionCreated();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
 			if (!message.IsHex())
 			{
 				var rawMessage = Encoding.UTF8.GetBytes(message);
@@ -133,44 +142,128 @@ namespace AnkrSDK.WalletConnect2
 			return response.Result;
 		}
 
-		public UniTask<string> EthPersonalSign(string address, string message)
+		public async UniTask<string> EthPersonalSign(string address, string message)
 		{
-			throw new NotImplementedException();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			if (!message.IsHex())
+			{
+				message = "0x" + Encoding.UTF8.GetBytes(message).ToHex();
+			}
+
+			var request = new EthPersonalSignData(address, message);
+
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<EthPersonalSignData, EthResponseData>(topic, request);
+			return response.Result;
 		}
 
-		public UniTask<string> EthSignTypedData<T>(string address, T data, EIP712Domain eip712Domain)
+		public async UniTask<string> EthSignTypedData<T>(string address, T data, EIP712Domain eip712Domain)
 		{
-			throw new NotImplementedException();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			var request = new EthSignTypedData<T>(address, data, eip712Domain);
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<EthSignTypedData<T>, EthResponseData>(topic, request);
+
+			return response.Result;
 		}
 
-		public UniTask<string> EthSendTransaction(params TransactionData[] transaction)
+		public async UniTask<string> EthSendTransaction(params TransactionData[] transaction)
 		{
-			throw new NotImplementedException();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			var request = new EthSendTransactionData(transaction);
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<EthSendTransactionData, EthResponseData>(topic, request);
+			return response.Result;
 		}
 
-		public UniTask<string> EthSignTransaction(params TransactionData[] transaction)
+		public async UniTask<string> EthSignTransaction(params TransactionData[] transaction)
 		{
-			throw new NotImplementedException();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			var request = new EthSignTransactionData(transaction);
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<EthSignTransactionData, EthResponseData>(topic, request);
+
+			return response.Result;
 		}
 
-		public UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
+		public async UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
 		{
-			throw new NotImplementedException();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			if (!data.IsHex())
+			{
+				var encoding = messageEncoding;
+				if (encoding == null)
+				{
+					encoding = Encoding.UTF8;
+				}
+
+				data = "0x" + encoding.GetBytes(data).ToHex();
+			}
+
+			var request = new EthSendRawTransactionData(data);
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<EthSendRawTransactionData, EthResponseData>(topic, request, "eth_sendRawTransaction");
+
+			return response.Result;
 		}
 
-		public UniTask<string> WalletAddEthChain(EthChainData chainData)
+		public async UniTask<string> WalletAddEthChain(EthChainData chainData)
 		{
-			throw new NotImplementedException();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			var request = new WalletAddEthChainData(chainData);
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<WalletAddEthChainData, EthResponseData>(topic, request);
+			return response.Result;
 		}
 
-		public UniTask<string> WalletSwitchEthChain(EthChain chainData)
+		public async UniTask<string> WalletSwitchEthChain(EthChain chainData)
 		{
-			throw new NotImplementedException();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			var request = new WalletSwitchEthChainData(chainData);
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<WalletSwitchEthChainData, EthResponseData>(topic, request);
+			return response.Result;
 		}
 
-		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData)
+		public async UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData)
 		{
-			throw new NotImplementedException();
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			var request = new WalletUpdateEthChainData(chainData);
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<WalletUpdateEthChainData, EthResponseData>(topic, request);
+			return response.Result;
 		}
 
 		public void Dispose()
@@ -199,8 +292,8 @@ namespace AnkrSDK.WalletConnect2
 			{
 				return;
 			}
-			
-			if (_signClient == null || ConnectionPending || _sessionData == null)
+
+			if (_signClient == null || CanSendRequests || _sessionData == null)
 			{
 				SwitchToDisconnectedState();
 				return;
@@ -220,15 +313,17 @@ namespace AnkrSDK.WalletConnect2
 			_signClient = null;
 			Status = WalletConnect2Status.Disconnected;
 			SessionStatusUpdated?.Invoke(new WalletDisconnectedTransition(this, prevStatus, Status));
-
 		}
 
-		private void CheckIfSessionCreated()
+		private bool CheckIfSessionCreated()
 		{
 			if (_sessionData == null)
 			{
 				Debug.LogError("Session is not found in WalletConnect2");
+				return false;
 			}
+
+			return true;
 		}
 
 		private void Subscribe(WalletConnectSignClient signClient)

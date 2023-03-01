@@ -43,7 +43,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		private UniTaskCompletionSource<WCSessionData> _sessionCreationCompletionSource;
 
-
 		public string URI
 		{
 			get
@@ -276,18 +275,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		{
 			if (!HexByteConvertorExtensions.IsHex(message))
 			{
-				/*var rawMessage = Encoding.UTF8.GetBytes(message);
-				
-				var byteList = new List<byte>();
-				var bytePrefix = "0x19".HexToByteArray();
-				var textBytePrefix = Encoding.UTF8.GetBytes("Ethereum Signed Message:\n" + rawMessage.Length);
-
-				byteList.AddRange(bytePrefix);
-				byteList.AddRange(textBytePrefix);
-				byteList.AddRange(rawMessage);
-				
-				var hash = new Sha3Keccack().CalculateHash(byteList.ToArray());*/
-
 				message = "0x" + Encoding.UTF8.GetBytes(message).ToHex();
 			}
 

@@ -5,19 +5,14 @@ using WalletConnectSharp.Network.Models;
 namespace AnkrSDK.WalletConnect2.RpcRequests
 {
 	[RpcMethod("eth_sign")]
-	[RpcRequestOptions(Clock.ONE_DAY, false, 1108)]
-	public class EthSignRequestData : RpcRequestDataBase
+	[RpcRequestOptions(Clock.SIX_HOURS, false, 2005)]
+	[RpcResponseOptions(Clock.SIX_HOURS, false, 2006)]
+	public class EthSignRequestData : RpcRequestListDataBase
 	{
-		[JsonProperty("address")]
-		public string Address { get; private set; }
-		
-		[JsonProperty("hexData")]
-		public string HexData { get; private set; }
-
 		public EthSignRequestData(string address, string hexData)
 		{
-			Address = address;
-			HexData = hexData;
+			Add(address);
+			Add(hexData);
 		}
 	}
 }
