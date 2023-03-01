@@ -17,7 +17,7 @@ MonoBehaviour:
     PackageVersionOrUrl: 3.0.2
     External: 0
   - PackageName: com.cysharp.unitask
-    PackageVersionOrUrl: 2.3.1
+    PackageVersionOrUrl: 2.3.3
     External: 0
   - PackageName: com.ankr.ankrsdk
     PackageVersionOrUrl: https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK
