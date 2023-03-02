@@ -9,6 +9,7 @@ using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.WalletConnect.VersionShared.Utils;
+using AnkrSDK.WalletConnect2.Data;
 using AnkrSDK.WalletConnect2.Events;
 using AnkrSDK.WalletConnect2.RpcRequests.Eth;
 using AnkrSDK.WalletConnect2.RpcResponses;
@@ -16,6 +17,7 @@ using AnkrSDK.WalletConnect2.RpcResponses.Eth;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
+using WalletConnectSharp.Common.Logging;
 using WalletConnectSharp.Common.Model.Errors;
 using WalletConnectSharp.Core.Models.Pairing;
 using WalletConnectSharp.Network.Models;
@@ -77,6 +79,7 @@ namespace AnkrSDK.WalletConnect2
 
 		public void Initialize(ScriptableObject settings)
 		{
+			WC2Debug.AddLogger(new WalletConnect2Logger());
 			Status = WalletConnect2Status.Uninitialized;
 
 			_settings = settings as WalletConnect2SettingsSO;
@@ -93,6 +96,16 @@ namespace AnkrSDK.WalletConnect2
 
 		public async UniTask Connect()
 		{
+			if (Connecting)
+			{
+				return;
+			}
+
+			if (Status.IsAny(WalletConnect2Status.AnythingConnected))
+			{
+				return;
+			}
+			
 			var dappOptions = GenerateSignClientOptions();
 			var dappConnectOptions = GenerateDappConnectOptions();
 			
@@ -508,9 +521,13 @@ namespace AnkrSDK.WalletConnect2
 			var dappFilePath = Path.Combine(Application.dataPath, ".wc", _settings.DappFileName);
 			var signClientOptions = new SignClientOptions
 			{
-				ProjectId = _settings.ProjectId, Metadata = new Metadata
+				ProjectId = _settings.ProjectId, 
+				Metadata = new Metadata
 				{
-					Description = _settings.Description, Icons = _settings.Icons, Name = _settings.Name, Url = _settings.Url
+					Description = _settings.Description, 
+					Icons = _settings.Icons, 
+					Name = _settings.Name, 
+					Url = _settings.Url
 				},
 				Storage = new FileSystemStorage(dappFilePath)
 			};
