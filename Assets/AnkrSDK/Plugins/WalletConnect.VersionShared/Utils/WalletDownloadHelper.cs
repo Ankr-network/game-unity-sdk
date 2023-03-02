@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
@@ -11,6 +12,17 @@ namespace AnkrSDK.WalletConnect.VersionShared.Utils
 {
 	public static class WalletDownloadHelper
 	{
+		public static async UniTask<WalletEntry> FindWalletEntry(Wallets wallet)
+		{
+			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
+			var walletName = wallet.GetWalletName();
+			var walletEntry =
+				supportedWallets.Values.FirstOrDefault(a =>
+					string.Equals(a.name, walletName, StringComparison.InvariantCultureIgnoreCase));
+
+			return walletEntry;
+		}
+
 		public static async UniTask<Dictionary<string, WalletEntry>> FetchWalletList(bool downloadImages)
 		{
 			using (var webRequest = UnityWebRequest.Get("https://registry.walletconnect.org/data/wallets.json"))

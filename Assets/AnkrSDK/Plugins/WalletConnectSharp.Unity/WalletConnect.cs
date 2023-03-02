@@ -336,7 +336,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
-					"You must use OpenMobileWallet(AppEntry) or set _selectedWallet on iOS!");
+					"You must use OpenMobileWallet(WalletEntry) or set _selectedWallet on iOS!");
 			}
 
 			var url = MobileWalletURLFormatHelper
@@ -365,7 +365,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
-					"You must use OpenDeepLink(AppEntry) or set _selectedWallet on iOS!");
+					"You must use OpenDeepLink(WalletEntry) or set _selectedWallet on iOS!");
 			}
 
 			var url = MobileWalletURLFormatHelper
@@ -495,12 +495,8 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				return;
 			}
 
-			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
-
-			var wallet =
-				supportedWallets.Values.FirstOrDefault(a =>
-					string.Equals(a.name, _settings.DefaultWallet.GetWalletName(), StringComparison.InvariantCultureIgnoreCase));
-
+			var wallet = await WalletDownloadHelper.FindWalletEntry(_settings.DefaultWallet);
+			
 			if (wallet != null)
 			{
 				_selectedWallet = wallet;

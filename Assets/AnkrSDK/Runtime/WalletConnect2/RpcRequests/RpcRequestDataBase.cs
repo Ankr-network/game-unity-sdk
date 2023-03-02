@@ -6,9 +6,13 @@ namespace AnkrSDK.WalletConnect2.RpcRequests
 {
 	public class RpcRequestDataBase : IWcMethod, IIdentifiable
 	{
-		//this id is only required for WC and WC2 to have a unified interface, 
-		//for WC2 request ids are assigned by internal WalletConnectSharp request engine
+		//this id is required for WC and WC2 to have a unified interface, 
+		//for WC2 it is set within WalletConnect.Sign during WC2 request via reflection
+
+		[JsonIgnore]
+		private long _id;
+		
 		[JsonIgnore] 
-		public long ID => 0;
+		public long ID => _id;
 	}
 }

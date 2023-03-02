@@ -39,6 +39,11 @@ namespace AnkrSDK.WalletConnect.VersionShared.Models
 
             [JsonIgnore]
             public string Message => message;
+
+            public JsonRpcError ()
+            {
+                
+            }
         }
 
         [JsonIgnore]

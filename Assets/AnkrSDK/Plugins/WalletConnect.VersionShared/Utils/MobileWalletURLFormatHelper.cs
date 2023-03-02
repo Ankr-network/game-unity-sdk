@@ -1,6 +1,6 @@
 using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
 
-namespace AnkrSDK.WalletConnectSharp.Unity.Utils
+namespace AnkrSDK.WalletConnect.VersionShared.Utils
 {
 	public static class MobileWalletURLFormatHelper
 	{

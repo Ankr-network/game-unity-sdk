@@ -1,20 +1,15 @@
 using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.SilentSigning.Data.Requests;
-using AnkrSDK.SilentSigning.Data.Responses;
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnect.VersionShared.Models;
 using AnkrSDK.WalletConnect2.Events;
 using AnkrSDK.WalletConnect2.RpcRequests;
 using AnkrSDK.WalletConnect2.RpcRequests.SilentSigning;
 using AnkrSDK.WalletConnect2.RpcResponses.SilentSigning;
-using AnkrSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AnkrSDK.SilentSigning.Implementation
 {
-	//TODO ANTON move silent signing to wallet connect 2
 	public class SilentSigningProtocol : ISilentSigningHandler
 	{
 		public ISilentSigningSessionHandler SessionHandler { get; }
@@ -129,7 +124,7 @@ namespace AnkrSDK.SilentSigning.Implementation
 			WalletConnect.OpenMobileWallet();
 		}
 
-		private async UniTask<SilentSigningResponse> SendAndHandle<TRequest>(TRequest request)
+		private async UniTask<SilentSigningResponseData> SendAndHandle<TRequest>(TRequest request)
 			where TRequest : RpcRequestListDataBase
 		{
 			var response = await WalletConnect.Send<TRequest, SilentSigningResponseData>(request);

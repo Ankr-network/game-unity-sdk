@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using AnkrSDK.WalletConnect.VersionShared;
 using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.WalletConnect.VersionShared.Models;
 using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
-using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.WalletConnect.VersionShared.Utils;
 using AnkrSDK.WalletConnect2.Events;
-using AnkrSDK.WalletConnect2.RpcRequests;
 using AnkrSDK.WalletConnect2.RpcRequests.Eth;
 using AnkrSDK.WalletConnect2.RpcResponses;
 using AnkrSDK.WalletConnect2.RpcResponses.Eth;
@@ -32,6 +29,7 @@ namespace AnkrSDK.WalletConnect2
 	public class WalletConnect2 : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IWalletConnectTransitionDataProvider
 	{
 		private const string SettingsFilenameString = "WalletConnect2Settings";
+		public event Action OnSend;
 		public event Action<WalletConnect2TransitionBase> SessionStatusUpdated;
 		public string SettingsFilename => SettingsFilenameString;
 		public WalletConnect2Status Status { get; private set; }
@@ -165,13 +163,7 @@ namespace AnkrSDK.WalletConnect2
 
 		public async UniTask OpenDeepLink(Wallets wallet)
 		{
-			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
-			var walletName = wallet.GetWalletName();
-			var walletEntry =
-				supportedWallets.Values.FirstOrDefault(a =>
-					string.Equals(a.name, walletName, StringComparison.InvariantCultureIgnoreCase));
-
-			_selectedWallet = walletEntry;
+			_selectedWallet = await WalletDownloadHelper.FindWalletEntry(wallet);
 
 			OpenDeepLink();
 		}
@@ -198,7 +190,7 @@ namespace AnkrSDK.WalletConnect2
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
-					"You must use OpenDeepLink(AppEntry) or set _selectedWallet on iOS!");
+					"You must use OpenDeepLink(WalletEntry) or set _selectedWallet on iOS!");
 			}
 
 			var url = MobileWalletURLFormatHelper
@@ -206,6 +198,43 @@ namespace AnkrSDK.WalletConnect2
 
 			Debug.Log("[WalletConnect] Opening URL: " + url);
 
+			Application.OpenURL(url);
+			#else
+			Debug.Log("Platform does not support deep linking");
+			return;
+			#endif
+		}
+
+		public async UniTask OpenMobileWallet(Wallets wallet)
+		{
+			_selectedWallet = await WalletDownloadHelper.FindWalletEntry(wallet);
+			OpenMobileWallet();
+		}
+
+		public void OpenMobileWallet(WalletEntry selectedWallet)
+		{
+			_selectedWallet = selectedWallet;
+
+			OpenMobileWallet();
+		}
+		
+		public void OpenMobileWallet()
+		{
+			#if UNITY_ANDROID
+			var signingURL = ConnectURL.Split('@')[0];
+
+			Application.OpenURL(signingURL);
+			#elif UNITY_IOS
+			if (_selectedWallet == null)
+			{
+				throw new NotImplementedException(
+					"You must use OpenMobileWallet(WalletEntry) or set _selectedWallet on iOS!");
+			}
+
+			var url = MobileWalletURLFormatHelper
+				.GetURLForMobileWalletOpen(ConnectURL, _selectedWallet.mobile).Split('?')[0];
+
+			Debug.Log("Opening: " + url);
 			Application.OpenURL(url);
 			#else
 			Debug.Log("Platform does not support deep linking");
@@ -411,16 +440,11 @@ namespace AnkrSDK.WalletConnect2
 				return;
 			}
 
-			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
-
-			var wallet =
-				supportedWallets.Values.FirstOrDefault(a =>
-					string.Equals(a.name, _settings.DefaultWallet.GetWalletName(), StringComparison.InvariantCultureIgnoreCase));
-
-			if (wallet != null)
+			var walletEntry = await WalletDownloadHelper.FindWalletEntry(_settings.DefaultWallet);
+			if (walletEntry != null)
 			{
-				_selectedWallet = wallet;
-				await wallet.DownloadImages();
+				_selectedWallet = walletEntry;
+				await walletEntry.DownloadImages();
 			}
 		}
 
@@ -548,6 +572,7 @@ namespace AnkrSDK.WalletConnect2
 		private void OnSessionRequest()
 		{
 			Debug.LogWarning("WalletConnect2 OnSessionRequest at " + Time.time);
+			OnSend?.Invoke();
 		}
 
 		private void OnSessionEvent()

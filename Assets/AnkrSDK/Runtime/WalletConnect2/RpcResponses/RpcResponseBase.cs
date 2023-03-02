@@ -5,11 +5,10 @@ using WalletConnectSharp.Network.Models;
 
 namespace AnkrSDK.WalletConnect2.RpcResponses
 {
-	//TODO ANTON assign error nonetheless
 	public class RpcResponseBase : IErrorHolder
 	{
-		//these properties are only required for WC and WC2 to have a unified interface, 
-		//for WC2 response errors are handled by internal WalletConnectSharp request engine
+		//these properties are required for WC and WC2 to have a unified interface, 
+		//for WC2 they are being set within WalletConnect.Sign DLL on WC2 response via reflection
 		public JsonRpcResponse.JsonRpcError Error => null;
 		public bool IsError => false;
 	}
