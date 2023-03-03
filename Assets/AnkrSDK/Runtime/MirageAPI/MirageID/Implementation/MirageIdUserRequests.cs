@@ -14,6 +14,11 @@ namespace AnkrSDK.MirageAPI.MirageID.Implementation
 		private string _clientSecret;
 		private string _userToken;
 
+		public void SetToken(string userToken)
+		{
+			_userToken = userToken;
+		}
+
 		public bool IsAuthorized()
 		{
 			return !string.IsNullOrEmpty(_userToken)

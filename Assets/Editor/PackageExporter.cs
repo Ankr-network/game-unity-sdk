@@ -6,66 +6,69 @@ using AnkrSDKImporter.Editor.Utils;
 using UnityEditor;
 using UnityEngine;
 
-public static class PackageExporter
+namespace Editor
 {
-	private const string ImporterPackageName = "AnkrSDKImporter";
-
-	// The path to the package under the `Assets/` folder.
-	private const string ImporterPackagePath = "Assets/AnkrSDKImporter";
-
-	// Path to export to.
-	private const string ExportPath = "Build";
-
-	private static readonly string[] PackagesToUpdateVersion =
+	public static class PackageExporter
 	{
-		"com.unity.nuget.newtonsoft-json", "com.cysharp.unitask"
-	};
+		private const string ImporterPackageName = "AnkrSDKImporter";
 
-	[MenuItem("AnkrSDK/Export Ankr Importer Package")]
-	public static void ExportImporter()
-	{
-		ExportPackage($"{ExportPath}/{ImporterPackageName}.unitypackage", ImporterPackagePath);
-	}
+		// The path to the package under the `Assets/` folder.
+		private const string ImporterPackagePath = "Assets/AnkrSDKImporter";
 
-	private static void ExportPackage(string exportPath, string packagePath)
-	{
-		PackageManagerUtils.RequestPackagesList((success, packagesCollection) =>
+		// Path to export to.
+		private const string ExportPath = "Build";
+
+		private static readonly string[] PackagesToUpdateVersion =
 		{
-			if (!success)
-			{
-				return;
-			}
+			"com.unity.nuget.newtonsoft-json", "com.cysharp.unitask"
+		};
 
-			var settings = Resources.Load<AnkrSDKImporterSettings>("AnkrSDKImporterSettings");
-			foreach (var packageName in PackagesToUpdateVersion)
+		[MenuItem("AnkrSDK/Export Ankr Importer Package")]
+		public static void ExportImporter()
+		{
+			ExportPackage($"{ExportPath}/{ImporterPackageName}.unitypackage", ImporterPackagePath);
+		}
+
+		private static void ExportPackage(string exportPath, string packagePath)
+		{
+			PackageManagerUtils.RequestPackagesList((success, packagesCollection) =>
 			{
-				var version = packagesCollection.FindVersionFor(packageName);
-				if (version != null)
+				if (!success)
 				{
-					settings.SetVersion(packageName, version);
+					return;
 				}
-			}
 
-			EditorUtility.SetDirty(settings);
-			AssetDatabase.SaveAssets();
-			AssetDatabase.Refresh();
+				var settings = Resources.Load<AnkrSDKImporterSettings>("AnkrSDKImporterSettings");
+				foreach (var packageName in PackagesToUpdateVersion)
+				{
+					var version = packagesCollection.FindVersionFor(packageName);
+					if (version != null)
+					{
+						settings.SetVersion(packageName, version);
+					}
+				}
 
-			// Ensure export path.
-			var dir = new FileInfo(exportPath).Directory;
-			if (dir?.Exists == false)
-			{
-				dir.Create();
-			}
+				EditorUtility.SetDirty(settings);
+				AssetDatabase.SaveAssets();
+				AssetDatabase.Refresh();
 
-			// Export
-			AssetDatabase.ExportPackage(
-				packagePath,
-				exportPath,
-				ExportPackageOptions.Recurse
-			);
+				// Ensure export path.
+				var dir = new FileInfo(exportPath).Directory;
+				if (dir?.Exists == false)
+				{
+					dir.Create();
+				}
 
-			EditorUtility.RevealInFinder(exportPath);
-		});
+				// Export
+				AssetDatabase.ExportPackage(
+					packagePath,
+					exportPath,
+					ExportPackageOptions.Recurse
+				);
+
+				EditorUtility.RevealInFinder(exportPath);
+			});
+		}
 	}
 }
 #endif
