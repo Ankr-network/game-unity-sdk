@@ -5,6 +5,8 @@ using AnkrSDK.MirageAPI.MirageID.Helpers;
 using AnkrSDK.MirageAPI.MirageID.Infrastructure;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
+using UnityEngine;
 
 namespace AnkrSDK.MirageAPI.MirageID.Implementation
 {
@@ -60,6 +62,8 @@ namespace AnkrSDK.MirageAPI.MirageID.Implementation
 				NFTId = nftId,
 				TokenID = tokenId
 			};
+			
+			Debug.Log(JsonConvert.SerializeObject(headers));
 
 			return WebHelper.SendPostRequest<TransferNFTRequestDTO, TransferNFTResponseDTO>(
 				MirageEnvironment.TransferNFTURL,

@@ -111,14 +111,12 @@ namespace AnkrSDK.WebGL.Implementation
 
 		public UniTask<string> WalletSwitchEthChain(EthChain chain)
 		{
-			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
-			throw new NotImplementedException();
+			return _webGlWrapper.SwitchChain(chain);
 		}
 
 		public UniTask<string> WalletAddEthChain(EthChainData chain)
 		{
-			//TODO https://ankrnetwork.atlassian.net/browse/MC-75
-			throw new NotImplementedException();
+			return _webGlWrapper.AddChain(chain);
 		}
 
 		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)

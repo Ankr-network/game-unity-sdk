@@ -185,7 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617b84e8cd9f4cc18d0b01134d35bdd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _webGlConnect: {fileID: 0}
   _webGlLoginManager: {fileID: 1495994501}
   _sceneChooser: {fileID: 588941421}
 --- !u!1 &436313773
@@ -1327,7 +1326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617b84e8cd9f4cc18d0b01134d35bdd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _webGlConnect: {fileID: 2039598262}
   _webGlLoginManager: {fileID: 1495994501}
   _sceneChooser: {fileID: 588941421}
 --- !u!1001 &1495994499
@@ -1941,7 +1939,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2039598261}
-  - component: {fileID: 2039598262}
   m_Layer: 0
   m_Name: WebGL
   m_TagString: Untagged
@@ -1966,22 +1963,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2039598262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039598260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e2433bf304141d5bae572b3517b025f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultWallet: 1
-  _defaultNetwork: 2
-  _connectOnAwake: 1
-  _connectOnStart: 0
 --- !u!1001 &84224008797117270
 PrefabInstance:
   m_ObjectHideFlags: 0

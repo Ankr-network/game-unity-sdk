@@ -7,7 +7,9 @@ using System.Linq;
 using System;
 using System.Numerics;
 using AnkrSDK.Data;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using Newtonsoft.Json;
+using TransactionData = AnkrSDK.WebGL.DTO.TransactionData;
 
 namespace AnkrSDK.WebGL
 {
@@ -175,7 +177,23 @@ namespace AnkrSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async UniTask SwitchChain(EthereumNetwork networkData)
+		public async UniTask<string> AddChain(EthChainData networkData)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(networkData);
+			WebGLInterlayer.AddChain(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Error)
+			{
+				throw new Exception(answer.payload);
+			}
+
+			return string.Empty;
+		}
+		
+		public async UniTask<string> SwitchChain(EthChain networkData)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(networkData);
@@ -187,6 +205,8 @@ namespace AnkrSDK.WebGL
 			{
 				throw new Exception(answer.payload);
 			}
+			
+			return string.Empty;
 		}
 
 		public async UniTask<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)

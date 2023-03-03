@@ -1,5 +1,6 @@
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
+using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
 using Cysharp.Threading.Tasks;
 
 namespace AnkrSDK.WebGL.Implementation
@@ -13,9 +14,9 @@ namespace AnkrSDK.WebGL.Implementation
 			_webGlWrapper = webGlWrapper;
 		}
 
-		public UniTask AddAndSwitchNetwork(EthereumNetwork network)
+		public UniTask AddAndSwitchNetwork(EthChainData chain)
 		{
-			return _webGlWrapper.SwitchChain(network);
+			return _webGlWrapper.SwitchChain(chain);
 		}
 	}
 }
