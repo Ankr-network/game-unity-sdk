@@ -148,7 +148,7 @@ namespace AnkrSDK.WebGL
 		public async UniTask<BigInteger> GetChainId()
 		{
 			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetChainId(id);
+			WebGLInterlayer.RequestChainId(id);
 
 			var answer = await _protocol.WaitForAnswer(id);
 

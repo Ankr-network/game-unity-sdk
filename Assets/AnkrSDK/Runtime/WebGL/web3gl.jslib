@@ -82,7 +82,7 @@ mergeInto(LibraryManager.library, {
         );
     },
 
-    GetChainId: function (id) {
+    RequestChainId: function (id) {
         window.WalletProvider.getChainId(
             Pointer_stringify(id)
         );
