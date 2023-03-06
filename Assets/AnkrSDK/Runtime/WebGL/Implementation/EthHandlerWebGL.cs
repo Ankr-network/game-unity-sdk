@@ -126,6 +126,11 @@ namespace AnkrSDK.WebGL.Implementation
 			throw new NotImplementedException();
 		}
 
+		public UniTask<BigInteger> EthChainId()
+		{
+			return _webGlWrapper.GetChainId();
+		}
+
 		public UniTask<BigInteger> GetBlockNumber()
 		{
 			var callObject = new WebGLCallObject

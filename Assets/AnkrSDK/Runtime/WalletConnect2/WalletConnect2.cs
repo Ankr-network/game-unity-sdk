@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Numerics;
 using System.Text;
 using AnkrSDK.WalletConnect.VersionShared;
 using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
@@ -53,23 +55,6 @@ namespace AnkrSDK.WalletConnect2
 		
 		//TODO ANTON handle ChainId later
 		public int ChainId => -1;
-		//TODO ANTON handle Accounts later
-		public string[] Accounts
-		{
-			get
-			{
-				if (_sessionData.HasValue)
-				{
-					//here we should convert selected wallet to CAIP namespace
-					//to use as a Namespaces dictionary key
-					return _sessionData.Value.Namespaces["eip155"].Accounts;
-				}
-				else
-				{
-					throw new InvalidDataException("SessionStruct not found in WalletConnect2, it is probably not connected yet");
-				}
-			}
-		}
 
 		private WalletConnect2SettingsSO _settings;
 		private WalletConnectSignClient _signClient;
@@ -139,19 +124,84 @@ namespace AnkrSDK.WalletConnect2
 			SessionStatusUpdated?.Invoke(new WalletConnectedTransition(this, prevStatus, Status));
 		}
 
-		public async UniTask DisconnectSession(bool connectNewSession = true)
+		public async UniTask Disconnect(bool connectNewSession = true)
 		{
 			if (Status == WalletConnect2Status.Disconnected || Status == WalletConnect2Status.Uninitialized)
 			{
 				return;
 			}
-			
+
 			await Disconnect();
 
 			if (connectNewSession)
 			{
 				await Connect();
 			}
+		}
+
+		public int GetDefaultChainId()
+		{
+			CheckIfSessionCreated();
+
+			var sessionData = _sessionData.Value;
+			
+			//this operator relies on assumption that keys order is deterministic 
+			//which is not always the case
+			//TODO MC-121 implement different way to find a default chain id string
+			var firstRequiredNamespace = sessionData.RequiredNamespaces.Keys.ToArray()[0];
+			var chainIdStr = sessionData.RequiredNamespaces[firstRequiredNamespace].Chains[0];
+
+			if (chainIdStr.Contains(":"))
+			{
+				var lastIndexOfColon = chainIdStr.LastIndexOf(":");
+				chainIdStr = chainIdStr.Substring(lastIndexOfColon + 1, chainIdStr.Length - lastIndexOfColon + 1);
+				return Int32.Parse(chainIdStr);
+			}
+			
+			Debug.LogError($"GetDefaultChainId error: ChainId {chainIdStr} is not of expected format");
+
+			return -1;
+		}
+		
+		public string GetDefaultAccount()
+		{
+			CheckIfSessionCreated();
+
+			var sessionData = _sessionData.Value;
+			
+			//this operator relies on assumption that keys order is deterministic 
+			//which is not always the case
+			//TODO MC-121 implement different way to find a default wallet string
+			var firstRequiredNamespace = sessionData.Namespaces.Keys.ToArray()[0];
+			var defaultAccount = sessionData.Namespaces[firstRequiredNamespace].Accounts[0];
+
+			return ParseAccountAddress(defaultAccount);
+		}
+
+		//blockchain id represents caip namespace
+		public string[] GetAccounts(string chainNamespace = "eip155", int chainId = 1)
+		{
+			if (_sessionData.HasValue)
+			{
+				//here we should convert selected wallet to CAIP namespace
+				//to use as a Namespaces dictionary key
+				var sessionDataValue = _sessionData.Value;
+				if (sessionDataValue.Namespaces.TryGetValue(chainNamespace, out var nspace))
+				{
+					var accounts = nspace.Accounts;
+					if (accounts != null && accounts.Length > 0 && accounts[0].Contains(":"))
+					{
+						accounts = accounts.Where(a => a.StartsWith(chainNamespace+":"+chainId)).
+							Select(ParseAccountAddress).ToArray();
+
+						return accounts;
+					}
+				}
+
+				throw new KeyNotFoundException($"{chainNamespace}");
+			}
+			
+			throw new InvalidDataException("SessionStruct not found in WalletConnect2, it is probably not connected yet");
 		}
 
 		public async UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
@@ -412,6 +462,28 @@ namespace AnkrSDK.WalletConnect2
 			var response = await _signClient.Request<WalletSwitchEthChainData, EthResponseData>(topic, request);
 			return response.Result;
 		}
+		
+		public async UniTask<BigInteger> EthChainId()
+		{
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			var request = new EthChainIdData();
+
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<EthChainIdData, EthResponseData>(topic, request);
+			var hexChainValue = response.Result;
+
+			if (hexChainValue.IsHex())
+			{
+				return BigInteger.Parse(hexChainValue.Substring(2), System.Globalization.NumberStyles.HexNumber);
+			}
+
+			Debug.LogError($"EthChainId error: {hexChainValue} is not hexadecimal string");
+			return -1;
+		}
 
 		public async UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData)
 		{
@@ -459,6 +531,19 @@ namespace AnkrSDK.WalletConnect2
 				_selectedWallet = walletEntry;
 				await walletEntry.DownloadImages();
 			}
+		}
+
+		private static string ParseAccountAddress(string account)
+		{
+			var lastIndexOfColon = account.LastIndexOf(":", StringComparison.InvariantCulture);
+			if (lastIndexOfColon != -1)
+			{
+				return account.Substring(lastIndexOfColon + 1, account.Length - lastIndexOfColon+1);
+			}
+			
+			Debug.LogError($"Account {account} is of unexpected format");
+
+			return account;
 		}
 
 		private async UniTask Disconnect()
@@ -544,8 +629,8 @@ namespace AnkrSDK.WalletConnect2
 
 			foreach (var blockchainParams in _settings.BlockchainParameters)
 			{
-				var blockchainId = blockchainParams.BlockchainId;
-				dappConnectOptions.RequiredNamespaces.Add(blockchainId, blockchainParams.ToRequiredNamespace());
+				var chainNamespace = blockchainParams.ChainNamespace;
+				dappConnectOptions.RequiredNamespaces.Add(chainNamespace, blockchainParams.ToRequiredNamespace());
 			}
 
 			return dappConnectOptions;

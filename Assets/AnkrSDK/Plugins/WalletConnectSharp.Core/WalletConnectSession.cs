@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
@@ -273,6 +274,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
+		public async UniTask<BigInteger> EthChainId()
+		{
+			return new BigInteger(ChainId);
+		}
+
 		public async UniTask<string> EthPersonalSign(string address, string message)
 		{
 			if (!HexByteConvertorExtensions.IsHex(message))
@@ -541,6 +547,18 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			return new SavedSession(_clientId, _handshakeId, BridgeUrl, Key, KeyRaw, PeerId, NetworkId, Accounts,
 				ChainId, DappMetadata, WalletMetadata);
+		}
+
+		public string GetDefaultAccount()
+		{
+			var activeSessionAccount = Accounts[0];
+			
+			if (string.IsNullOrEmpty(activeSessionAccount))
+			{
+				Debug.LogError("Account is null");
+			}
+			
+			return activeSessionAccount;
 		}
 	}
 }

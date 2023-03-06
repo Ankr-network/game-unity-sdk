@@ -59,6 +59,16 @@ namespace AnkrSDK.Mobile
 			return _walletConnect.WalletUpdateEthChain(chain);
 		}
 
+		public UniTask<BigInteger> EthChainId()
+		{
+			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
+			{
+				throw new Exception("Application is not linked to wallet");
+			}
+
+			return _walletConnect.EthChainId();
+		}
+
 		public  UniTask<string> GetDefaultAccount()
 		{
 			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
@@ -66,13 +76,7 @@ namespace AnkrSDK.Mobile
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			var activeSessionAccount = _walletConnect.Accounts[0];
-			if (string.IsNullOrEmpty(activeSessionAccount))
-			{
-				Debug.LogError("Account is null");
-			}
-
-			return UniTask.FromResult(activeSessionAccount);
+			return UniTask.FromResult(_walletConnect.GetDefaultAccount());
 		}
 
 		public UniTask<BigInteger> GetChainId()

@@ -46,7 +46,7 @@ namespace AnkrSDK.UI
 
 		private void OnButtonClick()
 		{
-			WalletConnect.DisconnectSession().Forget();
+			WalletConnect.Disconnect().Forget();
 		}
 	#else
 		private void Awake()

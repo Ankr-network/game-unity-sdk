@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using AnkrSDK.Metadata;
@@ -272,6 +273,18 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		{
 			CheckIfSessionCreated();
 			return _session.WalletUpdateEthChain(chainData);
+		}
+
+		public UniTask<BigInteger> EthChainId()
+		{
+			CheckIfSessionCreated();
+			return _session.EthChainId();
+		}
+
+		public string GetDefaultAccount()
+		{
+			CheckIfSessionCreated();
+			return _session.GetDefaultAccount();
 		}
 
 		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)

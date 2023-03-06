@@ -25,7 +25,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask Disconnect(bool waitForNewSession = true)
 		{
-			return _walletConnect.DisconnectSession(waitForNewSession);
+			return _walletConnect.Disconnect(waitForNewSession);
 		}
 	}
 }
