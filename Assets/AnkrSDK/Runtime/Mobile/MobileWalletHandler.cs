@@ -8,7 +8,7 @@ namespace AnkrSDK.Mobile
 	public class MobileWalletHandler : IWalletHandler
 	{
 		private readonly AnkrSDK.WalletConnect2.WalletConnect2 _walletConnect;
- 
+
 		public MobileWalletHandler()
 		{
 			_walletConnect = ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();

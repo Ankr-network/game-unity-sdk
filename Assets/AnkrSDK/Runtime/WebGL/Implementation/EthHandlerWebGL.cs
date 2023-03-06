@@ -58,8 +58,10 @@ namespace AnkrSDK.WebGL.Implementation
 		{
 			var transactionData = new TransactionData
 			{
-				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
+				from = from, to = to, data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 
 			return _webGlWrapper.EstimateGas(transactionData);
@@ -81,8 +83,10 @@ namespace AnkrSDK.WebGL.Implementation
 		{
 			var transactionData = new TransactionData
 			{
-				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
+				from = from, to = to, data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 
 			return _webGlWrapper.SendTransaction(transactionData);

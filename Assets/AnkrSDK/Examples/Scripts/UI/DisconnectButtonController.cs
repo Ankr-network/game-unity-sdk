@@ -11,8 +11,9 @@ namespace AnkrSDK.UI
 	public class DisconnectButtonController : MonoBehaviour
 	{
 		[SerializeField] private Button _button;
-	#if !UNITY_WEBGL || UNITY_EDITOR
-		private AnkrSDK.WalletConnect2.WalletConnect2 WalletConnect => ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();
+#if !UNITY_WEBGL || UNITY_EDITOR
+		private AnkrSDK.WalletConnect2.WalletConnect2 WalletConnect =>
+			ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();
 
 		private void OnEnable()
 		{
@@ -48,11 +49,11 @@ namespace AnkrSDK.UI
 		{
 			WalletConnect.Disconnect().Forget();
 		}
-	#else
+#else
 		private void Awake()
 		{
 			gameObject.SetActive(false);
 		}
-	#endif
+#endif
 	}
 }

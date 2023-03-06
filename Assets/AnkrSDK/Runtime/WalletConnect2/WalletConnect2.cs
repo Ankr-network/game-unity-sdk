@@ -30,7 +30,8 @@ using WalletConnectSharp.Storage;
 
 namespace AnkrSDK.WalletConnect2
 {
-	public class WalletConnect2 : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IWalletConnectTransitionDataProvider
+	public class WalletConnect2 : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator,
+		IQuittable, IPausable, IWalletConnectTransitionDataProvider
 	{
 		private const string SettingsFilenameString = "WalletConnect2Settings";
 		public event Action OnSend;
@@ -45,14 +46,16 @@ namespace AnkrSDK.WalletConnect2
 			{
 				if (_connectedData == null)
 				{
-					throw new InvalidDataException("ConnectData not found in WalletConnect2, it is probably not connected yet");
+					throw new InvalidDataException(
+						"ConnectData not found in WalletConnect2, it is probably not connected yet");
 				}
 
 				return _connectedData.Uri;
 			}
 		}
+
 		public bool CanSendRequests => Status != WalletConnect2Status.WalletConnected;
-		
+
 		//TODO ANTON handle ChainId later
 		public int ChainId => -1;
 
@@ -90,10 +93,10 @@ namespace AnkrSDK.WalletConnect2
 			{
 				return;
 			}
-			
+
 			var dappOptions = GenerateSignClientOptions();
 			var dappConnectOptions = GenerateDappConnectOptions();
-			
+
 			Connecting = true;
 
 			if (_signClient == null)
@@ -106,16 +109,16 @@ namespace AnkrSDK.WalletConnect2
 
 			SetupDefaultWallet().Forget();
 			Connecting = false;
-			
+
 			Debug.Log("WalletConnect2: Connect finished, uri = " + _connectedData.Uri);
 
-			
+
 			var prevStatus = Status;
 			Status = WalletConnect2Status.ConnectionRequestSent;
 			SessionStatusUpdated?.Invoke(new SessionRequestSentTransition(this, prevStatus, Status));
 
 			_sessionData = await _connectedData.Approval;
-			
+
 			var sessionDataJson = JsonConvert.SerializeObject(_sessionData);
 			Debug.Log("WalletConnect2: Connect finished, sessionData = " + sessionDataJson);
 
@@ -144,7 +147,7 @@ namespace AnkrSDK.WalletConnect2
 			CheckIfSessionCreated();
 
 			var sessionData = _sessionData.Value;
-			
+
 			//this operator relies on assumption that keys order is deterministic 
 			//which is not always the case
 			//TODO MC-121 implement different way to find a default chain id string
@@ -157,18 +160,18 @@ namespace AnkrSDK.WalletConnect2
 				chainIdStr = chainIdStr.Substring(lastIndexOfColon + 1, chainIdStr.Length - lastIndexOfColon + 1);
 				return Int32.Parse(chainIdStr);
 			}
-			
+
 			Debug.LogError($"GetDefaultChainId error: ChainId {chainIdStr} is not of expected format");
 
 			return -1;
 		}
-		
+
 		public string GetDefaultAccount()
 		{
 			CheckIfSessionCreated();
 
 			var sessionData = _sessionData.Value;
-			
+
 			//this operator relies on assumption that keys order is deterministic 
 			//which is not always the case
 			//TODO MC-121 implement different way to find a default wallet string
@@ -191,8 +194,8 @@ namespace AnkrSDK.WalletConnect2
 					var accounts = nspace.Accounts;
 					if (accounts != null && accounts.Length > 0 && accounts[0].Contains(":"))
 					{
-						accounts = accounts.Where(a => a.StartsWith(chainNamespace+":"+chainId)).
-							Select(ParseAccountAddress).ToArray();
+						accounts = accounts.Where(a => a.StartsWith(chainNamespace + ":" + chainId))
+							.Select(ParseAccountAddress).ToArray();
 
 						return accounts;
 					}
@@ -200,8 +203,9 @@ namespace AnkrSDK.WalletConnect2
 
 				throw new KeyNotFoundException($"{chainNamespace}");
 			}
-			
-			throw new InvalidDataException("SessionStruct not found in WalletConnect2, it is probably not connected yet");
+
+			throw new InvalidDataException(
+				"SessionStruct not found in WalletConnect2, it is probably not connected yet");
 		}
 
 		public async UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
@@ -219,7 +223,9 @@ namespace AnkrSDK.WalletConnect2
 
 			var topic = _sessionData.Value.Topic;
 			var method = genericRequest.Method;
-			var genericResponseData = await _signClient.RequestWithMethod<object, GenericResponseData>(topic, genericRequest.RawParameters, method).AsUniTask();
+			var genericResponseData = await _signClient
+				.RequestWithMethod<object, GenericResponseData>(topic, genericRequest.RawParameters, method)
+				.AsUniTask();
 
 			return genericResponseData.ToGenericRpcResponse();
 		}
@@ -280,7 +286,7 @@ namespace AnkrSDK.WalletConnect2
 
 			OpenMobileWallet();
 		}
-		
+
 		public void OpenMobileWallet()
 		{
 			#if UNITY_ANDROID
@@ -432,7 +438,9 @@ namespace AnkrSDK.WalletConnect2
 
 			var request = new EthSendRawTransactionData(data);
 			var topic = _sessionData.Value.Topic;
-			var response = await _signClient.Request<EthSendRawTransactionData, EthResponseData>(topic, request, "eth_sendRawTransaction");
+			var response =
+				await _signClient.Request<EthSendRawTransactionData, EthResponseData>(topic, request,
+					"eth_sendRawTransaction");
 
 			return response.Result;
 		}
@@ -462,7 +470,7 @@ namespace AnkrSDK.WalletConnect2
 			var response = await _signClient.Request<WalletSwitchEthChainData, EthResponseData>(topic, request);
 			return response.Result;
 		}
-		
+
 		public async UniTask<BigInteger> EthChainId()
 		{
 			if (!CheckIfSessionCreated())
@@ -538,9 +546,9 @@ namespace AnkrSDK.WalletConnect2
 			var lastIndexOfColon = account.LastIndexOf(":", StringComparison.InvariantCulture);
 			if (lastIndexOfColon != -1)
 			{
-				return account.Substring(lastIndexOfColon + 1, account.Length - lastIndexOfColon+1);
+				return account.Substring(lastIndexOfColon + 1, account.Length - lastIndexOfColon + 1);
 			}
-			
+
 			Debug.LogError($"Account {account} is of unexpected format");
 
 			return account;
@@ -606,12 +614,12 @@ namespace AnkrSDK.WalletConnect2
 			var dappFilePath = Path.Combine(Application.dataPath, ".wc", _settings.DappFileName);
 			var signClientOptions = new SignClientOptions
 			{
-				ProjectId = _settings.ProjectId, 
+				ProjectId = _settings.ProjectId,
 				Metadata = new Metadata
 				{
-					Description = _settings.Description, 
-					Icons = _settings.Icons, 
-					Name = _settings.Name, 
+					Description = _settings.Description,
+					Icons = _settings.Icons,
+					Name = _settings.Name,
 					Url = _settings.Url
 				},
 				Storage = new FileSystemStorage(dappFilePath)

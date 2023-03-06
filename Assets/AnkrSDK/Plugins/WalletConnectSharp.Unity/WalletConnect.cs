@@ -27,7 +27,8 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public  class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IUpdatable
+	public class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator,
+		IQuittable, IPausable, IUpdatable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
@@ -509,7 +510,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			}
 
 			var wallet = await WalletDownloadHelper.FindWalletEntry(_settings.DefaultWallet);
-			
+
 			if (wallet != null)
 			{
 				_selectedWallet = wallet;

@@ -21,7 +21,8 @@ using HexByteConvertorExtensions = WalletConnectSharp.Common.Utils.HexByteConver
 
 namespace AnkrSDK.WalletConnectSharp.Core
 {
-	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectGenericRequester, IWalletConnectCommunicator, IWalletConnectTransitionDataProvider
+	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectGenericRequester,
+		IWalletConnectCommunicator, IWalletConnectTransitionDataProvider
 	{
 		public event Action OnSessionConnect;
 		public event Action OnSessionCreated;
@@ -148,7 +149,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public async UniTask<WCSessionData> ConnectSession()
 		{
 			var prevStatus = Status;
-			
+
 			Connecting = true;
 			try
 			{
@@ -436,7 +437,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		private void SubscribeForSessionResponse()
 		{
-			void HandleSessionRequestResponse(object sender, JsonRpcResponseEvent<WCSessionRequestResponse> jsonResponse)
+			void HandleSessionRequestResponse(object sender,
+				JsonRpcResponseEvent<WCSessionRequestResponse> jsonResponse)
 			{
 				var response = jsonResponse.Response.result;
 
@@ -460,7 +462,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				HandleSessionUpdate(wcSessionData);
 			}
 
-			EventDelegator.ListenForGeneric<WCSessionUpdate>(WCSessionUpdate.SessionUpdateMethod, HandleSessionUpdateResponse);
+			EventDelegator.ListenForGeneric<WCSessionUpdate>(WCSessionUpdate.SessionUpdateMethod,
+				HandleSessionUpdateResponse);
 		}
 
 		private void HandleSessionUpdate(WCSessionData data)
@@ -479,18 +482,18 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			if (data.chainId != null)
 			{
 				var oldChainId = ChainId;
-				ChainId = (int)data.chainId;
+				ChainId = (int) data.chainId;
 
 				if (oldChainId != ChainId)
 				{
-					OnChainChanged?.Invoke((int)data.chainId);
-					Debug.Log("ChainID Changed, New ChainID: " + (int)data.chainId);
+					OnChainChanged?.Invoke((int) data.chainId);
+					Debug.Log("ChainID Changed, New ChainID: " + (int) data.chainId);
 				}
 			}
 
 			if (data.networkId != null)
 			{
-				NetworkId = (int)data.networkId;
+				NetworkId = (int) data.networkId;
 			}
 
 			var dataAccount = data.accounts?[0];
@@ -552,12 +555,12 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public string GetDefaultAccount()
 		{
 			var activeSessionAccount = Accounts[0];
-			
+
 			if (string.IsNullOrEmpty(activeSessionAccount))
 			{
 				Debug.LogError("Account is null");
 			}
-			
+
 			return activeSessionAccount;
 		}
 	}

@@ -69,7 +69,7 @@ namespace AnkrSDK.Mobile
 			return _walletConnect.EthChainId();
 		}
 
-		public  UniTask<string> GetDefaultAccount()
+		public UniTask<string> GetDefaultAccount()
 		{
 			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
 			{
@@ -92,7 +92,8 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
-			return _web3Provider.TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash).AsUniTask();
+			return _web3Provider.TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash)
+				.AsUniTask();
 		}
 
 		public UniTask<Transaction> GetTransaction(string transactionReceipt)
@@ -113,7 +114,10 @@ namespace AnkrSDK.Mobile
 		{
 			var transactionInput = new TransactionInput(to, from)
 			{
-				Gas = gas != null ? new HexBigInteger(gas) : null, GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null, Nonce = nonce != null ? new HexBigInteger(nonce) : null, Value = value != null ? new HexBigInteger(value) : null,
+				Gas = gas != null ? new HexBigInteger(gas) : null,
+				GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null,
+				Nonce = nonce != null ? new HexBigInteger(nonce) : null,
+				Value = value != null ? new HexBigInteger(value) : null,
 				Data = data
 			};
 
@@ -143,8 +147,10 @@ namespace AnkrSDK.Mobile
 
 			var transactionData = new TransactionData
 			{
-				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
+				from = from, to = to, data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 			var request = new EthSendTransaction(transactionData);
 			var response = await _walletConnect
@@ -157,7 +163,7 @@ namespace AnkrSDK.Mobile
 			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput).AsUniTask();
 		}
 
-		public async  UniTask<BigInteger> GetBalance(string address)
+		public async UniTask<BigInteger> GetBalance(string address)
 		{
 			if (address == null)
 			{
