@@ -6,6 +6,7 @@ on:
       - 'v*'
 jobs:
   Update-Package-Version:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -19,13 +20,6 @@ jobs:
           python modify_git_tag.py
           git status
           git diff-index HEAD
-      - name: Get tag name
-        run: |
-          tag_name=${GITHUB_REF#refs/tags/}
-          touch TAG_NAME
-          echo "$tag_name" > CACHED_TAG
-          echo "Content of CACHED_TAG file:"
-          cat CACHED_TAG
       - name: Commit changes
         run: |
           git config --global user.email "actions@github.com"
@@ -33,13 +27,12 @@ jobs:
           git add .
           if [ -n "$(git status --porcelain)" ]
           then
-            git checkout -b $(cat CACHED_TAG)_tag_update_branch
-            git commit -m "Automated tag update for $(cat CACHED_TAG)"
-            git push --set-upstream origin $(cat CACHED_TAG)_tag_update_branch
-            git push --delete origin $(cat CACHED_TAG)
-            git tag -a $(cat CACHED_TAG) -m "Tag message for $(cat CACHED_TAG)" HEAD
-            git push origin $(cat CACHED_TAG)
-            rm CACHED_TAG
+            git checkout -b ${GITHUB_REF#refs/tags/}_tag_update_branch
+            git commit -m "Automated tag update for ${GITHUB_REF#refs/tags/}"
+            git push --set-upstream origin ${GITHUB_REF#refs/tags/}_tag_update_branch
+            git push --delete origin ${GITHUB_REF#refs/tags/}
+            git tag -a ${GITHUB_REF#refs/tags/} -m "Tag message for ${GITHUB_REF#refs/tags/}" HEAD
+            git push origin ${GITHUB_REF#refs/tags/}
             echo "Changes commited and pushed"
           else
             echo "No changes found"
