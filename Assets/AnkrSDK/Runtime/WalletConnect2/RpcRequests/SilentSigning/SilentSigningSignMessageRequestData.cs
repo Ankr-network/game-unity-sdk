@@ -9,7 +9,7 @@ namespace AnkrSDK.WalletConnect2.RpcRequests.SilentSigning
 	[RpcResponseOptions(Clock.SIX_HOURS, false, 3006)]
 	public class SilentSigningSignMessageRequestData : RpcRequestListDataBase
 	{
-		public class SilentSigningSignMessageRequestParams
+		private class SilentSigningSignMessageRequestParams
 		{
 			[JsonProperty("message")] 
 			public string Message;

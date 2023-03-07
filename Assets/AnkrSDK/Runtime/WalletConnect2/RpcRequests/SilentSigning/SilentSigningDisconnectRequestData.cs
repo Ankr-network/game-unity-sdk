@@ -11,7 +11,7 @@ namespace AnkrSDK.WalletConnect2.RpcRequests.SilentSigning
 	public class SilentSigningDisconnectRequestData : RpcRequestListDataBase
 	{
 		[Serializable]
-		public class SilentSigningDisconnectRequestParams
+		private class SilentSigningDisconnectRequestParams
 		{
 			[JsonProperty("secret")] public string Secret;
 		}

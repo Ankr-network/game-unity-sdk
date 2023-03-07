@@ -11,7 +11,7 @@ namespace AnkrSDK.WalletConnect2.RpcRequests.SilentSigning
 	public class SilentSigningConnectionRequestData : RpcRequestListDataBase
 	{
 		[Serializable]
-		public class SilentSigningConnectionRequestParams
+		private class SilentSigningConnectionRequestParams
 		{
 			[JsonProperty("until")] public long Timestamp;
 
