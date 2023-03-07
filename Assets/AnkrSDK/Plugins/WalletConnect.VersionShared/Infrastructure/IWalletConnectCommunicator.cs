@@ -18,7 +18,7 @@ namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 		UniTask<string> WalletSwitchEthChain(EthChain chainData);
 		UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData);
 		UniTask<BigInteger> EthChainId();
-		string GetDefaultAccount();
+		string GetDefaultAccount(string network);
 
 		UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
 			where TRequest : IIdentifiable

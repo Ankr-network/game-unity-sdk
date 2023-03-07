@@ -551,8 +551,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return new SavedSession(_clientId, _handshakeId, BridgeUrl, Key, KeyRaw, PeerId, NetworkId, Accounts,
 				ChainId, DappMetadata, WalletMetadata);
 		}
-
-		public string GetDefaultAccount()
+		
+		//network argument is not used because WC1 
+		//only supports Ethereum network but still kept here to 
+		//support unified interface with WC2
+		public string GetDefaultAccount(string network = null)
 		{
 			var activeSessionAccount = Accounts[0];
 

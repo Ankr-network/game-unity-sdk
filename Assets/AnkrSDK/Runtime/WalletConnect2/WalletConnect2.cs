@@ -142,17 +142,16 @@ namespace AnkrSDK.WalletConnect2
 			}
 		}
 
-		public int GetDefaultChainId()
+		public int GetDefaultChainId(string chainNamespace = "eip155")
 		{
-			CheckIfSessionCreated();
+			if (!CheckIfSessionCreated())
+			{
+				return -1;
+			}
 
 			var sessionData = _sessionData.Value;
 
-			//this operator relies on assumption that keys order is deterministic 
-			//which is not always the case
-			//TODO MC-121 implement different way to find a default chain id string
-			var firstRequiredNamespace = sessionData.RequiredNamespaces.Keys.ToArray()[0];
-			var chainIdStr = sessionData.RequiredNamespaces[firstRequiredNamespace].Chains[0];
+			var chainIdStr = sessionData.RequiredNamespaces[chainNamespace].Chains[0];
 
 			if (chainIdStr.Contains(":"))
 			{
@@ -166,17 +165,16 @@ namespace AnkrSDK.WalletConnect2
 			return -1;
 		}
 
-		public string GetDefaultAccount()
+		public string GetDefaultAccount(string chainNamespace = "eip155")
 		{
-			CheckIfSessionCreated();
+			if (!CheckIfSessionCreated())
+			{
+				return null;
+			}
 
 			var sessionData = _sessionData.Value;
 
-			//this operator relies on assumption that keys order is deterministic 
-			//which is not always the case
-			//TODO MC-121 implement different way to find a default wallet string
-			var firstRequiredNamespace = sessionData.Namespaces.Keys.ToArray()[0];
-			var defaultAccount = sessionData.Namespaces[firstRequiredNamespace].Accounts[0];
+			var defaultAccount = sessionData.Namespaces[chainNamespace].Accounts[0];
 
 			return ParseAccountAddress(defaultAccount);
 		}

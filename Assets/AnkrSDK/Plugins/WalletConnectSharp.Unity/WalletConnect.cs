@@ -282,10 +282,13 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return _session.EthChainId();
 		}
 
-		public string GetDefaultAccount()
+		//network argument is not used because WC1 
+		//only supports Ethereum network but still kept here to 
+		//support unified interface with WC2
+		public string GetDefaultAccount(string network = null)
 		{
 			CheckIfSessionCreated();
-			return _session.GetDefaultAccount();
+			return _session.GetDefaultAccount(network);
 		}
 
 		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
