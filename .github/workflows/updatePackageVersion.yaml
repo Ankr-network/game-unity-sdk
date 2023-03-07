@@ -19,15 +19,10 @@ jobs:
           python modify_git_tag.py
           git status
           git diff-index HEAD
-      - name: Get branch name for tag
+      - name: Get tag name
         run: |
           tag_name=${GITHUB_REF#refs/tags/}
-          branch_name=$(git branch --contains $tag_name | grep -v detached | cut -c3-)
-          touch BRANCH_NAME
           touch TAG_NAME
-          echo "$branch_name" > BRANCH_NAME
-          echo "Content of BRANCH_NAME file:"
-          cat BRANCH_NAME
           echo "$tag_name" > CACHED_TAG
           echo "Content of CACHED_TAG file:"
           cat CACHED_TAG
@@ -38,12 +33,11 @@ jobs:
           git add .
           if [ -n "$(git status --porcelain)" ]
           then
-            git checkout $(cat BRANCH_NAME)
-            git commit -m "Automated tag update"
+            git checkout -b $(cat CACHED_TAG)_tag_update_branch
+            git commit -m "Automated tag update for $(cat CACHED_TAG)"
             git tag -f $(cat CACHED_TAG)
             git push
             rm CACHED_TAG
-            rm BRANCH_NAME
             echo "Changes commited and pushed"
           else
             echo "No changes found"
