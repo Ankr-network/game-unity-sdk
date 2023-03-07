@@ -19,6 +19,8 @@ namespace AnkrSDK.WalletConnect.VersionShared.Models.DeepLink
         public Sprite MediumIcon;
         public Sprite SmallIcon;
 
+        public bool AllImagesLoaded => LargeIcon != null && MediumIcon != null && SmallIcon != null;
+
         public async UniTask DownloadImages(string[] sizes = null)
         {
             sizes = sizes ?? new[] { "sm", "md", "lg" };

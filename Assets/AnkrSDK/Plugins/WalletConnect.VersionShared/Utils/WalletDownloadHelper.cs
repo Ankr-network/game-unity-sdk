@@ -12,9 +12,11 @@ namespace AnkrSDK.WalletConnect.VersionShared.Utils
 {
 	public static class WalletDownloadHelper
 	{
-		public static async UniTask<WalletEntry> FindWalletEntry(Wallets wallet)
+		private static Dictionary<string, WalletEntry> _walletEntries = new Dictionary<string, WalletEntry>();
+
+		public static async UniTask<WalletEntry> FindWalletEntry(Wallets wallet, bool invalidateCache = false)
 		{
-			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
+			var supportedWallets = await FetchWalletList(downloadImages:false, invalidateCache:invalidateCache);
 			var walletName = wallet.GetWalletName();
 			var walletEntry =
 				supportedWallets.Values.FirstOrDefault(a =>
@@ -23,8 +25,30 @@ namespace AnkrSDK.WalletConnect.VersionShared.Utils
 			return walletEntry;
 		}
 
-		public static async UniTask<Dictionary<string, WalletEntry>> FetchWalletList(bool downloadImages)
+		public static async UniTask<Dictionary<string, WalletEntry>> FetchWalletList(bool downloadImages, bool invalidateCache = false)
 		{
+			if (invalidateCache)
+			{
+				_walletEntries = null;
+			}
+			
+			if (_walletEntries != null)
+			{
+				//if wallet already cached but it does not have images loaded then load them before returning
+				if (downloadImages)
+				{
+					foreach (var entry in _walletEntries.Values)
+					{
+						if (!entry.AllImagesLoaded)
+						{
+							await entry.DownloadImages();
+						}
+					}
+				}
+				
+				return _walletEntries;
+			}
+			
 			using (var webRequest = UnityWebRequest.Get("https://registry.walletconnect.org/data/wallets.json"))
 			{
 				// Request and wait for the desired page.
