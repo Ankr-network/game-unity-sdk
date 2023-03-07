@@ -29,7 +29,9 @@ jobs:
             touch BRANCH_NAME
             touch CACHED_TAG
             git branch --contains ${{ github.ref }} > BRANCH_NAME
+            cat BRANCH_NAME
             git describe --tags --abbrev=0 > CACHED_TAG
+            cat CACHED_TAG
             git commit -m "Automated tag update"
             git tag -f $(cat CACHED_TAG)
             git checkout $(cat BRANCH_NAME)
