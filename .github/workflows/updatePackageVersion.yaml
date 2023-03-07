@@ -14,7 +14,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-      - name: 
       - run: echo "🐍 Runner ${{ github.runner }} installed Python"
       - run: echo "🖥️ The workflow is now ready to update package version"
       - name: Run Python Script
