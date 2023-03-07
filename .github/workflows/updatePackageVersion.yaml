@@ -30,9 +30,8 @@ jobs:
             git checkout -b ${GITHUB_REF#refs/tags/}_tag_update_branch
             git commit -m "Automated tag update for ${GITHUB_REF#refs/tags/}"
             git push --set-upstream origin ${GITHUB_REF#refs/tags/}_tag_update_branch
-            git push --delete origin ${GITHUB_REF#refs/tags/}
-            git tag -a ${GITHUB_REF#refs/tags/} -m "Tag message for ${GITHUB_REF#refs/tags/}" HEAD
-            git push origin ${GITHUB_REF#refs/tags/}
+            git tag -f ${GITHUB_REF#refs/tags/}
+            git push --force origin ${GITHUB_REF#refs/tags/}
             echo "Changes commited and pushed"
           else
             echo "No changes found"
