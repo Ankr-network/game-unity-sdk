@@ -26,9 +26,11 @@ jobs:
           git add .
           if [ -n "$(git status --porcelain)" ]
           then
-            git describe --tags --abbrev=0 > ./git/CACHED_TAG
+            touch CACHED_TAG
+            git describe --tags --abbrev=0 > CACHED_TAG
             git commit -m "Automated tag update"
-            git tag -f $(cat .git/CACHED_TAG)
+            git tag -f $(cat CACHED_TAG)
+            rm CACHED_TAG
             git push
             echo "Changes commited and pushed"
           else
