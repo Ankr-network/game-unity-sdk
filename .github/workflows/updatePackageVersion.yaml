@@ -37,6 +37,7 @@ jobs:
             git commit -m "Automated tag update for $(cat CACHED_TAG)"
             git tag -f $(cat CACHED_TAG)
             git push --set-upstream origin $(cat CACHED_TAG)_tag_update_branch
+            git push origin $(cat CACHED_TAG)
             rm CACHED_TAG
             echo "Changes commited and pushed"
           else
