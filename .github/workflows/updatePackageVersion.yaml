@@ -5,24 +5,19 @@ jobs:
   Update-Package-Version:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event"
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - name: Checkout code
         uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner"
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-      - run: echo "🐍 Runner ${{ github.runner }} installed Python"
-      - run: echo "🖥️ The workflow is now ready to update package version"
       - name: Run Python Script
         run: |
           python modify_git_tag.py
       - run: echo "🐍 Runner ${{ github.runner }} executed modify_git_tag.py"
       - name: Commit changes
         run: |
-          git config --global --add safe.directory '*'
+          git config --global --add safe.directory /github/workspace
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git add .
@@ -46,5 +41,4 @@ jobs:
         #   commit_message: "package.json automatic update by GitHub Action"
         #   commit_user_name: "GitHub Actions"
         #   commit_user_email: "actions@github.com"
-      - run: echo "🖥️ Changes commited and pushed"
       - run: echo "🍏 This job's status is ${{ job.status }}."
