@@ -35,8 +35,9 @@ jobs:
           then
             git checkout -b $(cat CACHED_TAG)_tag_update_branch
             git commit -m "Automated tag update for $(cat CACHED_TAG)"
-            git tag -f $(cat CACHED_TAG)
             git push --set-upstream origin $(cat CACHED_TAG)_tag_update_branch
+            git push --delete origin $(cat CACHED_TAG)
+            git tag -a $(cat CACHED_TAG) -m "Tag message for $(cat CACHED_TAG)" HEAD
             git push origin $(cat CACHED_TAG)
             rm CACHED_TAG
             echo "Changes commited and pushed"
