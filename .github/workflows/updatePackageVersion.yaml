@@ -17,9 +17,9 @@ jobs:
       - run: echo "🐍 Runner ${{ github.runner }} installed Python"
       - run: echo "🖥️ The workflow is now ready to update package version"
       - name: Run Python Script
-      - run: echo "🐍 Runner ${{ github.runner }} executes modify_git_tag.py"
-      - run: |
+        run: |
           python modify_git_tag.py
+      - run: echo "🐍 Runner ${{ github.runner }} executed modify_git_tag.py"
       # - name: Commit and push changes
       #  uses: stefanzweifel/git-auto-commit-action@v4
       #  with:
