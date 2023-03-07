@@ -20,8 +20,14 @@ jobs:
         run: |
           python modify_git_tag.py
       - run: echo "🐍 Runner ${{ github.runner }} executed modify_git_tag.py"
+      - run: git config --global user.email "actions@github.com" && git config --global user.name "GitHub Actions" && git add .
       - name: Commit and push changes
-        run: git config --global user.email "actions@github.com" && git config --global user.name "GitHub Actions" && git add . && git commit -m "package.json automatic update by GitHub Action" && git push
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then 
+            echo "No changes to commit or push." 
+          else 
+            git commit -m "package.json automatic update by GitHub Action" && git push 
+          fi
         # uses: stefanzweifel/git-auto-commit-action@v4
         # with:
         #   commit_message: "package.json automatic update by GitHub Action"
