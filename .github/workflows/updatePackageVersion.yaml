@@ -1,6 +1,9 @@
 ﻿name: Update package version
 run-name: ${{ github.actor }} is updating the package version 🚀
-on: [push]
+on:
+  push:
+    tags:
+      - '*'
 jobs:
   Update-Package-Version:
     runs-on: ubuntu-latest
@@ -19,11 +22,19 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git add .
-          git diff-index --quiet HEAD || git commit -m "Automated update"
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-          tags: false
+          if git diff-index --quiet HEAD; then
+            git describe --tags --abbrev=0 > ./git/CACHED_TAG
+            git commit -m "Automated tag update"
+            git tag -f $(cat .git/CACHED_TAG)
+            git push
+            echo "Changes commited and pushed"
+          else
+            echo "No changes found"
+          fi
+      # - name: Push changes
+      #   uses: ad-m/github-push-action@v0.6.0
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: ${{ github.ref }}
+      #     tags: true
       - run: echo "🍏 This job's status is ${{ job.status }}."
