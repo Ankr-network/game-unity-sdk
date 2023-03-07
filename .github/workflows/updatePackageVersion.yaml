@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is updating the package version 🚀
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 jobs:
   Update-Package-Version:
     runs-on: ubuntu-latest
@@ -26,12 +26,15 @@ jobs:
           git add .
           if [ -n "$(git status --porcelain)" ]
           then
+            touch BRANCH_NAME
             touch CACHED_TAG
+            git branch --contains ${{ github.ref }} > BRANCH_NAME
             git describe --tags --abbrev=0 > CACHED_TAG
             git commit -m "Automated tag update"
             git tag -f $(cat CACHED_TAG)
+            git push HEAD:$(cat BRANCH_NAME)
             rm CACHED_TAG
-            git push
+            rm BRANCH_NAME
             echo "Changes commited and pushed"
           else
             echo "No changes found"
