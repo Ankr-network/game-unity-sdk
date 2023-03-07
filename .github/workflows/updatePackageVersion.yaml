@@ -1,0 +1,24 @@
+﻿name: Update package version
+run-name: ${{ github.actor }} is updating the package version 🚀
+on: [push]
+jobs:
+  Update-Package-Version:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event"
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner"
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: 
+      - run: echo "🐍 Runner ${{ github.runner }} installed Python"
+      - run: echo "🖥️ The workflow is now ready to update package version"
+      - name: Run Python Script
+      - run: echo "🐍 Runner ${{ github.runner }} executes modify_git_tag.py"
+      - run: |
+        python modify_git_tag.py
+      - run: echo "🍏 This job's status is ${{ job.status }}."
