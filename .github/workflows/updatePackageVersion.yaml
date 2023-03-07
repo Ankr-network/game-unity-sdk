@@ -32,7 +32,8 @@ jobs:
             git describe --tags --abbrev=0 > CACHED_TAG
             git commit -m "Automated tag update"
             git tag -f $(cat CACHED_TAG)
-            git push HEAD:$(cat BRANCH_NAME)
+            git checkout $(cat BRANCH_NAME)
+            git push
             rm CACHED_TAG
             rm BRANCH_NAME
             echo "Changes commited and pushed"
