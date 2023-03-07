@@ -36,7 +36,7 @@ jobs:
             git checkout -b $(cat CACHED_TAG)_tag_update_branch
             git commit -m "Automated tag update for $(cat CACHED_TAG)"
             git tag -f $(cat CACHED_TAG)
-            git push
+            git push --set-upstream origin $(cat CACHED_TAG)_tag_update_branch
             rm CACHED_TAG
             echo "Changes commited and pushed"
           else
