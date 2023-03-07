@@ -1,10 +1,16 @@
 import subprocess
 import json
+import sys
 
 package_file_path = 'Assets/AnkrSDK/package.json'
 
 commit_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode().strip()
-git_tag = subprocess.check_output(['git', 'describe', '--exact-match', '--tags', commit_hash]).decode().strip()
+
+try:
+    git_tag = subprocess.check_output(['git', 'describe', '--exact-match', '--tags', commit_hash]).decode().strip()
+except subprocess.CalledProcessError:
+    print('git tag was not found for commit ' + commit_hash)
+    sys.exit(0)
 
 if git_tag and len(git_tag) > 0:
 
@@ -27,4 +33,4 @@ if git_tag and len(git_tag) > 0:
         print(f'version {new_package_version} did not change')
 
 else:
-    print('git tag was not found')
+    print('git tag was none or empty for commit ' + commit_hash)
