@@ -20,11 +20,11 @@ jobs:
         run: |
           python modify_git_tag.py
       - run: echo "🐍 Runner ${{ github.runner }} executed modify_git_tag.py"
-      # - name: Commit and push changes
-      #  uses: stefanzweifel/git-auto-commit-action@v4
-      #  with:
-      #    commit_message: "package.json automatic update by GitHub Action"
-      #    commit_user_name: "GitHub Actions"
-      #    commit_user_email: "actions@github.com"
-      #- run: echo "🖥️ Changes commited and pushed"
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "package.json automatic update by GitHub Action"
+          commit_user_name: "GitHub Actions"
+          commit_user_email: "actions@github.com"
+      - run: echo "🖥️ Changes commited and pushed"
       - run: echo "🍏 This job's status is ${{ job.status }}."
