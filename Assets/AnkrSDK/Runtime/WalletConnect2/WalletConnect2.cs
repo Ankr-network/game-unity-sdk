@@ -142,6 +142,15 @@ namespace AnkrSDK.WalletConnect2
 			}
 		}
 
+		/// <summary>
+		/// get default chain id for a given chain namespace
+		///chainNamespace argument value should be based on 
+		/// CAIP-2 - Chain Agnostic Improvement Proposal
+		/// defining naming convention for different blockchains
+		/// read more here: https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md
+		/// </summary>
+		/// <param name="chainNamespace">CAIP-2 chain namespace</param>
+		/// <returns></returns>
 		public int GetDefaultChainId(string chainNamespace = "eip155")
 		{
 			if (!CheckIfSessionCreated())
@@ -164,7 +173,16 @@ namespace AnkrSDK.WalletConnect2
 
 			return -1;
 		}
-
+		
+		/// <summary>
+		/// get default account for a given chain namespace
+		/// chainNamespace argument value should be based on 
+		/// CAIP-2 - Chain Agnostic Improvement Proposal
+		/// defining naming convention for different blockchains
+		/// read more here: https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md
+		/// </summary>
+		/// <param name="chainNamespace">CAIP-2 chain namespace</param>
+		/// <returns></returns>
 		public string GetDefaultAccount(string chainNamespace = "eip155")
 		{
 			if (!CheckIfSessionCreated())
@@ -179,7 +197,15 @@ namespace AnkrSDK.WalletConnect2
 			return ParseAccountAddress(defaultAccount);
 		}
 
-		//blockchain id represents caip namespace
+		/// <summary>
+		/// get account addresses array for a given chain namespace
+		///chainNamespace argument value should be based on 
+		/// CAIP-2 - Chain Agnostic Improvement Proposal
+		/// defining naming convention for different blockchains
+		/// read more here: https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md
+		/// </summary>
+		/// <param name="chainNamespace">CAIP-2 chain namespace</param>
+		/// <returns></returns>
 		public string[] GetAccounts(string chainNamespace = "eip155", int chainId = 1)
 		{
 			if (_sessionData.HasValue)
