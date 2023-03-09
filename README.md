@@ -218,7 +218,7 @@ public class TransactionEventHanlder : ITransactionEventHandler
 ### IAnkrSDK 
 After you finished connecting your wallet via WalletConnect you can access SDK Functionallity. First of all you should get an sdk Instance:
 ```c#
-var ankrSDK = AnkrSDKWrapper.GetSDKInstance("<etherium_node_url>");
+var ankrSDK = AnkrSDKWrapper.GetSDKInstance("<ethereum_node_url>");
 ```
 #### EthHandler
 You can get EthHandler via get-only property from sdk instance.
