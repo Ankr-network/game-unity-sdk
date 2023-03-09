@@ -37,6 +37,7 @@ jobs:
             echo "for commit $commit_hash branch name is $branch_name"
             git checkout $branch_name
             git stash pop
+            git add .
             git commit -m "Automated tag update for ${tag_name}"
             git push origin $branch_name
             git tag -f ${tag_name}
