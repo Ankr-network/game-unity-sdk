@@ -29,17 +29,15 @@ jobs:
           branch_name=$(git branch -r --contains $commit_hash --format="%(refname:short)" | sed 's/^origin\///')
           echo "for commit $commit_hash branch name is $branch_name"
           git checkout $branch_name
-          git add .
-          git status
       - name: Run Python Script
         run: |
           python modify_git_tag.py
+          git add .
           git status
       - name: Commit changes
         run: |
           if [ -n "$(git status --porcelain)" ]
           then
-            git status
             git commit -m "Automated tag update for ${tag_name}"
             git push origin $branch_name
             git tag -f ${tag_name}
