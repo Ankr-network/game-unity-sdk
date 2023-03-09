@@ -47,7 +47,7 @@ jobs:
             git tag -a ${tag_name} ${head_name} -m "Tagging commit ${head_name}"
             echo "Tagging commit ${head_name}"
             git push origin ${tag_name}
-            echo "Changes commited and pushed"
+            echo "Changes commited and pushed, tag is on $(git rev-list -n 1 ${tag_name})"
           else
             echo "No changes found"
           fi
