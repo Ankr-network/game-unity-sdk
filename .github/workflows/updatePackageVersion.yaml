@@ -41,7 +41,7 @@ jobs:
             tag_name=${GITHUB_REF#refs/tags/}
             git tag -d ${tag_name}
             git push origin :${tag_name}
-            git commit -m "Automated tag update for ${tag_name}"
+            git commit -m "Automated package.json version update for tag ${tag_name}"
             git push
             head_name=$(git rev-parse HEAD)
             git tag -a ${tag_name} ${head_name} -m "Tagging commit ${head_name}"
