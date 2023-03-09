@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is updating the package version 🚀
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*.*.*'
 jobs:
   Update-Package-Version:
     permissions: write-all
