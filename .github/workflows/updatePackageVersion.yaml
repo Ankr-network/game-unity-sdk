@@ -41,7 +41,10 @@ jobs:
             tag_name=${GITHUB_REF#refs/tags/}
             git commit -m "Automated tag update for ${tag_name}"
             git push origin $branch_name
-            git push --delete --force origin ${tag_name}
+            git tag -d ${tag_name}
+            git push origin :${tag_name}
+            git tag ${tag_name}
+            git push origin ${tag_name}
             echo "Changes commited and pushed"
           else
             echo "No changes found"
