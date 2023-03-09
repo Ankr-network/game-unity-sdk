@@ -31,7 +31,7 @@ jobs:
           git checkout $branch_name
       - name: Run Python Script
         run: |
-          python modify_git_tag.py
+          python modify_package_version_based_on_git_tag.py
           git add .
           git status
       - name: Commit changes
