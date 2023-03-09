@@ -17,28 +17,29 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
+      - name: Prepare Git
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git fetch
+          git checkout master
+          tag_name=${GITHUB_REF#refs/tags/}
+          commit_hash=$(git rev-list -n 1 $tag_name)
+          echo "for tag hash of a commit $commit_hash"
+          branch_name=$(git branch -r --contains $commit_hash --format="%(refname:short)" | sed 's/^origin\///')
+          echo "for commit $commit_hash branch name is $branch_name"
+          git checkout $branch_name
+          git add .
+          git status
       - name: Run Python Script
         run: |
           python modify_git_tag.py
           git status
       - name: Commit changes
         run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add .
           if [ -n "$(git status --porcelain)" ]
           then
-            git fetch
-            git stash save
-            git checkout master
-            tag_name=${GITHUB_REF#refs/tags/}
-            commit_hash=$(git rev-list -n 1 $tag_name)
-            echo "for tag hash of a commit $commit_hash"
-            branch_name=$(git branch -r --contains $commit_hash --format="%(refname:short)" | sed 's/^origin\///')
-            echo "for commit $commit_hash branch name is $branch_name"
-            git checkout $branch_name
-            git stash pop
-            git add .
+            git status
             git commit -m "Automated tag update for ${tag_name}"
             git push origin $branch_name
             git tag -f ${tag_name}
