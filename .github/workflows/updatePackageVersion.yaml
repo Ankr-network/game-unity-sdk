@@ -43,8 +43,9 @@ jobs:
             git push origin :${tag_name}
             git commit -m "Automated tag update for ${tag_name}"
             git push
-            git pull
-            git tag ${tag_name}
+            head_name=$(git rev-parse HEAD)
+            git tag -a ${tag_name} ${head_name} -m "Tagging commit ${head_name}"
+            echo "Tagging commit ${head_name}"
             git push origin ${tag_name}
             echo "Changes commited and pushed"
           else
