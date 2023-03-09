@@ -28,6 +28,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]
           then
             git fetch
+            git stash save
             git checkout master
             tag_name=${GITHUB_REF#refs/tags/}
             commit_hash=$(git rev-list -n 1 $tag_name)
@@ -35,6 +36,7 @@ jobs:
             branch_name=$(git branch -r --contains $commit_hash --format="%(refname:short)" | sed 's/^origin\///')
             echo "for commit $commit_hash branch name is $branch_name"
             git checkout $branch_name
+            git stash pop
             git commit -m "Automated tag update for ${tag_name}"
             git push origin $branch_name
             git tag -f ${tag_name}
