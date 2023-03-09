@@ -31,6 +31,7 @@ jobs:
             commit_hash=$(git rev-list -n 1 $tag_name)
             echo "for tag hash of a commit $commit_hash"
             branch_name=$(git branch -r --contains $commit_hash --format="%(refname:short)" | sed 's/^origin\///')
+            echo "for commit $commit_hash branch name is $branch_name"
             git checkout $branch_name
             git commit -m "Automated tag update for ${tag_name}"
             git push origin $branch_name
