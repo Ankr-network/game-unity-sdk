@@ -15,11 +15,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
+          token: ${{ secrets.PAT }}
       - name: Run Python Script
         run: |
           python modify_git_tag.py
           git status
-          git diff-index HEAD
       - name: Commit changes
         run: |
           git config --global user.email "actions@github.com"
@@ -27,11 +27,15 @@ jobs:
           git add .
           if [ -n "$(git status --porcelain)" ]
           then
-            git checkout -b ${GITHUB_REF#refs/tags/}_tag_update_branch
-            git commit -m "Automated tag update for ${GITHUB_REF#refs/tags/}"
-            git push --set-upstream origin ${GITHUB_REF#refs/tags/}_tag_update_branch
-            git tag -f ${GITHUB_REF#refs/tags/}
-            git push --force origin ${GITHUB_REF#refs/tags/}
+            tag_name=${GITHUB_REF#refs/tags/}
+            commit_hash=$(git rev-list -n 1 $tag_name)
+            echo "for tag hash of a commit $commit_hash"
+            branch_name=$(git branch -r --contains $commit_hash --format="%(refname:short)" | sed 's/^origin\///')
+            git checkout $branch_name
+            git commit -m "Automated tag update for ${tag_name}"
+            git push origin $branch_name
+            git tag -f ${tag_name}
+            git push --force origin ${tag_name}
             echo "Changes commited and pushed"
           else
             echo "No changes found"
