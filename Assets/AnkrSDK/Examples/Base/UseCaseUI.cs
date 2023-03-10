@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,18 +6,20 @@ namespace AnkrSDK.Base
 	public class UseCaseUI : MonoBehaviour
 	{
 		[SerializeField] private Button _selectButton;
-
 		[SerializeField] private Button _backButton;
-
-		[SerializeField] private UseCase _useCase;
+		[SerializeField] private UseCaseBodyUI _useCase;
 
 		public Button SelectButton => _selectButton;
 
 		public Button BackButton => _backButton;
+		public UseCaseBodyUI UseCase => _useCase;
 
-		public UseCase UseCase => _useCase;
+		private IUseCaseUIController _uiController;
 
-		public event Action<bool> OnButtonClickedEvent;
+		public void Setup(IUseCaseUIController uiController)
+		{
+			_uiController = uiController;
+		}
 
 		private void Awake()
 		{
@@ -44,15 +45,14 @@ namespace AnkrSDK.Base
 
 		private void OnBackButtonClicked()
 		{
-			OnButtonClickedEvent?.Invoke(true);
-			UseCase.DeActivateUseCase();
+			UseCase.SetUseCaseBodyActive(false);
+			_uiController.SetUseCaseButtonsActive(true);
 		}
 
 		private void OnSelectButtonClicked()
 		{
-			UseCase.ActivateUseCase();
-	
-			OnButtonClickedEvent?.Invoke(false);
+			UseCase.SetUseCaseBodyActive(true);
+			_uiController.SetUseCaseButtonsActive(false);
 		}
 	}
 }

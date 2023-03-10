@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 namespace AnkrSDK.WearableNFTExample
 {
-	public class WearableNFTExample : UseCase
+	public class WearableNFTExample : UseCaseBodyUI
 	{
 		private const string TransactionGasLimit = "1000000";
 		private const string BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001";
@@ -74,17 +74,21 @@ namespace AnkrSDK.WearableNFTExample
 			_getHatButton.onClick.RemoveListener(GetHatCall);
 		}
 
-		public override void ActivateUseCase()
+		public override void SetUseCaseBodyActive(bool active)
 		{
-			base.ActivateUseCase();
+			base.SetUseCaseBodyActive(active);
 
-			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
-			_gameCharacterContract = ankrSDK.GetContract(
-				WearableNFTContractInformation.GameCharacterContractAddress,
-				WearableNFTContractInformation.GameCharacterABI);
-			_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
-				WearableNFTContractInformation.GameItemABI);
-			_ethHandler = ankrSDK.Eth;
+			if (active)
+			{
+				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
+				_gameCharacterContract = ankrSDK.GetContract(
+					WearableNFTContractInformation.GameCharacterContractAddress,
+					WearableNFTContractInformation.GameCharacterABI);
+				_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
+					WearableNFTContractInformation.GameItemABI);
+				_ethHandler = ankrSDK.Eth;
+			}
+
 		}
 
 		private async UniTask MintItems()

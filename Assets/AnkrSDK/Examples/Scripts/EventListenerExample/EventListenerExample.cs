@@ -2,9 +2,7 @@
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.DTO;
-using AnkrSDK.ERC20Example;
 using AnkrSDK.Provider;
-using AnkrSDK.UseCases;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -23,25 +21,12 @@ namespace AnkrSDK.EventListenerExample
 	///		Manually stop listen
 	///			_eventSubscriber.StopListen();
 	/// 	</summary>
-	public class EventListenerExample : UseCase
+	public class EventListenerExample : UseCaseBodyUI
 	{
 		[SerializeField] private ContractInformationSO _contractInformationSO;
 		private IContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
 		private IEthHandler _eth;
-		
-		public override void ActivateUseCase()
-		{
-			base.ActivateUseCase();
-			
-
-			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
-			_eth = ankrSDK.Eth;
-
-			_eventSubscriber = ankrSDK.CreateSubscriber(_contractInformationSO.WsProviderURL);
-			_eventSubscriber.ListenForEvents().Forget();
-			_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithRequest);
-		}
 
 		// If you know topic position then you can use EventFilterData
 		public async UniTaskVoid SubscribeWithTopics()
@@ -81,10 +66,23 @@ namespace AnkrSDK.EventListenerExample
 			_eventSubscriber.Unsubscribe(_subscription.SubscriptionId).Forget();
 		}
 
-		public override void DeActivateUseCase()
+		public override void SetUseCaseBodyActive(bool active)
 		{
-			base.DeActivateUseCase();
-			_eventSubscriber.StopListen();
+			base.SetUseCaseBodyActive(active);
+
+			if (active)
+			{
+				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
+				_eth = ankrSDK.Eth;
+
+				_eventSubscriber = ankrSDK.CreateSubscriber(_contractInformationSO.WsProviderURL);
+				_eventSubscriber.ListenForEvents().Forget();
+				_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithRequest);
+			}
+			else
+			{
+				_eventSubscriber.StopListen();
+			}
 		}
 	}
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace AnkrSDK.OpenSea.Examples
 {
-	public class OpenSeaController : UseCase
+	public class OpenSeaController : UseCaseBodyUI
 	{
 		[SerializeField] private Button _button;
 

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace AnkrSDK.UseCases.AddSwitchNetwork
 {
-	public class AddSwitchNetwork : UseCase
+	public class AddSwitchNetwork : UseCaseBodyUI
 	{
 		[SerializeField] private ContractInformationSO _contractInformationSO;
 

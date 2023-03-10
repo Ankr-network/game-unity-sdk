@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 namespace AnkrSDK.UseCases.UpdateNFT
 {
-	public class UpdateNftExample : UseCase
+	public class UpdateNftExample : UseCaseBodyUI
 	{
 		[Serializable]
 		private class ItemInfo
@@ -58,12 +58,15 @@ namespace AnkrSDK.UseCases.UpdateNFT
 			_updateNFTButton.onClick.RemoveListener(UpdateNFT);
 		}
 
-		public override void ActivateUseCase()
+		public override void SetUseCaseBodyActive(bool active)
 		{
-			base.ActivateUseCase();
+			base.SetUseCaseBodyActive(active);
 
-			_ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(ProviderURL);
-			_contract = _ankrSDKWrapper.GetContract(ContractAddress, ABI);
+			if (active)
+			{
+				_ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(ProviderURL);
+				_contract = _ankrSDKWrapper.GetContract(ContractAddress, ABI);
+			}
 		}
 
 		public async void UpdateNFT()

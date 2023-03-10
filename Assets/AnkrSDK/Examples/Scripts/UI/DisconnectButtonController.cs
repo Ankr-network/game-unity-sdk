@@ -1,7 +1,6 @@
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnect2;
-using AnkrSDK.WalletConnect2.Data;
-using AnkrSDK.WalletConnect2.Events;
+using AnkrSDK.WalletConnectSharp.Core;
+using AnkrSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +11,8 @@ namespace AnkrSDK.UI
 	{
 		[SerializeField] private Button _button;
 #if !UNITY_WEBGL || UNITY_EDITOR
-		private AnkrSDK.WalletConnect2.WalletConnect2 WalletConnect =>
-			ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();
+		private WalletConnectSharp.Unity.WalletConnect WalletConnect =>
+			ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 
 		private void OnEnable()
 		{
@@ -39,15 +38,15 @@ namespace AnkrSDK.UI
 			WalletConnect.SessionStatusUpdated -= OnSessionStatusUpdated;
 		}
 
-		private void OnSessionStatusUpdated(WalletConnect2TransitionBase transition)
+		private void OnSessionStatusUpdated(WalletConnectTransitionBase transition)
 		{
 			var status = WalletConnect.Status;
-			_button.gameObject.SetActive(status.IsAny(WalletConnect2Status.AnythingConnected));
+			_button.gameObject.SetActive(status.IsAny(WalletConnectStatus.AnythingConnected));
 		}
 
 		private void OnButtonClick()
 		{
-			WalletConnect.Disconnect().Forget();
+			WalletConnect.CloseSession().Forget();
 		}
 #else
 		private void Awake()
