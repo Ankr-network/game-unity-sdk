@@ -1,20 +1,22 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using AnkrSDK.Metadata;
 using AnkrSDK.WalletConnect.VersionShared;
 using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Events;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink;
-using AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.Helpers;
 using AnkrSDK.WalletConnectSharp.Unity.Network;
 using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
@@ -25,7 +27,8 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace AnkrSDK.WalletConnectSharp.Unity
 {
-	public  class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IUpdatable
+	public class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator,
+		IQuittable, IPausable, IUpdatable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
@@ -99,7 +102,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public string ConnectURL => _session.URI;
 		public string SettingsFilename => SettingsFilenameString;
 
-		private AppEntry _selectedWallet;
+		private WalletEntry _selectedWallet;
 		private WalletConnectSession _session;
 
 		public void Initialize(ScriptableObject settings)
@@ -273,6 +276,21 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			return _session.WalletUpdateEthChain(chainData);
 		}
 
+		public UniTask<BigInteger> EthChainId()
+		{
+			CheckIfSessionCreated();
+			return _session.EthChainId();
+		}
+
+		//network argument is not used because WC1 
+		//only supports Ethereum network but still kept here to 
+		//support unified interface with WC2
+		public string GetDefaultAccount(string network = null)
+		{
+			CheckIfSessionCreated();
+			return _session.GetDefaultAccount(network);
+		}
+
 		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
 			where TRequest : IIdentifiable
 			where TResponse : IErrorHolder
@@ -311,14 +329,14 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 					cipher, chainId);
 		}
 
-		public void OpenMobileWallet(AppEntry selectedWallet)
+		public void OpenMobileWallet(WalletEntry selectedWallet)
 		{
 			_selectedWallet = selectedWallet;
 
 			OpenMobileWallet();
 		}
 
-		public void OpenDeepLink(AppEntry selectedWallet)
+		public void OpenDeepLink(WalletEntry selectedWallet)
 		{
 			_selectedWallet = selectedWallet;
 
@@ -335,7 +353,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
-					"You must use OpenMobileWallet(AppEntry) or set _selectedWallet on iOS!");
+					"You must use OpenMobileWallet(WalletEntry) or set _selectedWallet on iOS!");
 			}
 
 			var url = MobileWalletURLFormatHelper
@@ -354,7 +372,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_session.Status != WalletConnectStatus.SessionRequestSent)
 			{
 				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
-				               "\nWait for ActiveSession.ReadyForUserPrompt to be true");
+				               "\nWait for Status == WalletConnect2Status.ConnectionRequestSent");
 				return;
 			}
 
@@ -364,7 +382,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_selectedWallet == null)
 			{
 				throw new NotImplementedException(
-					"You must use OpenDeepLink(AppEntry) or set _selectedWallet on iOS!");
+					"You must use OpenDeepLink(WalletEntry) or set _selectedWallet on iOS!");
 			}
 
 			var url = MobileWalletURLFormatHelper
@@ -494,11 +512,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 				return;
 			}
 
-			var supportedWallets = await WalletDownloadHelper.FetchWalletList(false);
-
-			var wallet =
-				supportedWallets.Values.FirstOrDefault(a =>
-					string.Equals(a.name, _settings.DefaultWallet.GetWalletName(), StringComparison.InvariantCultureIgnoreCase));
+			var wallet = await WalletDownloadHelper.FindWalletEntry(_settings.DefaultWallet);
 
 			if (wallet != null)
 			{

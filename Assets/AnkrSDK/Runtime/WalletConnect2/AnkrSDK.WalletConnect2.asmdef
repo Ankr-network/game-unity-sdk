@@ -5,7 +5,8 @@
         "WalletConnectSharp.VersionShared",
         "WalletConnectSharp.Core",
         "UniTask",
-        "WalletConnectSharp.Unity"
+        "WalletConnectSharp.Unity",
+        "AnkrSDK.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1945138e1a48f18994ac7fe5181dd9, type: 3}
   m_Name: WalletConnect2Settings
   m_EditorClassIdentifier: 
+  _defaultWallet: 1
   _projectId: 
   _description: An example dapp to showcase WalletConnectSharpv2
   _icons:
@@ -21,7 +22,7 @@ MonoBehaviour:
   _dappFileName: store_dapp.json
   _blockChainParameters:
   - Enabled: 1
-    BlockchainId: eip155
+    ChainNamespace: eip155
     Methods:
     - personal_sign
     - eth_sendRawTransaction
@@ -32,7 +33,7 @@ MonoBehaviour:
     - wallet_addEthereumChain
     - wallet_switchEthereumChain
     - wallet_updateEthereumChain
-    Chains:
+    ChainIds:
     - eip155:1
     Events:
     - chainChanged

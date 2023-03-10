@@ -1,6 +1,8 @@
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Unity.Events;
+using AnkrSDK.WalletConnect2;
+using AnkrSDK.WalletConnect2.Events;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -19,7 +21,7 @@ namespace AnkrSDK.UI
 		[SerializeField] private GameObject _sceneChooser;
 		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
-		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
+		private AnkrSDK.WalletConnect2.WalletConnect2 WalletConnect => ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();
 		private async void Start()
 		{
 			if (Application.isEditor || Application.platform != RuntimePlatform.WebGLPlayer)
@@ -82,7 +84,7 @@ namespace AnkrSDK.UI
 			UnsubscribeFromWalletEvents();
 		}
 
-		private void SessionStatusUpdated(WalletConnectTransitionBase walletConnectTransition)
+		private void SessionStatusUpdated(WalletConnect2TransitionBase walletConnectTransition)
 		{
 			UpdateLoginButtonState();
 		}
@@ -90,12 +92,12 @@ namespace AnkrSDK.UI
 		private void UpdateLoginButtonState()
 		{
 			var status = WalletConnect.Status;
-			if (status == WalletConnectStatus.Uninitialized)
+			if (status == WalletConnect2Status.Uninitialized)
 			{
 				return;
 			}
 			
-			var walletConnected = status == WalletConnectStatus.WalletConnected;
+			var walletConnected = status == WalletConnect2Status.WalletConnected;
 			_sceneChooser.SetActive(walletConnected);
 			_chooseWalletScreen.SetActive(!walletConnected);
 			_loginButton.gameObject.SetActive(!walletConnected);
@@ -103,7 +105,7 @@ namespace AnkrSDK.UI
 
 			if (!walletConnected)
 			{
-				var waitingForUserPrompt = status == WalletConnectStatus.SessionRequestSent;
+				var waitingForUserPrompt = status == WalletConnect2Status.ConnectionRequestSent;
 				if (waitingForUserPrompt)
 				{
 					_connectionText.text = LoginText;

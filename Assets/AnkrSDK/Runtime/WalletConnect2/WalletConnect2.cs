@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Numerics;
 using System.Text;
 using AnkrSDK.WalletConnect.VersionShared;
 using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using AnkrSDK.WalletConnect.VersionShared.Utils;
+using AnkrSDK.WalletConnect2.Data;
 using AnkrSDK.WalletConnect2.Events;
-using AnkrSDK.WalletConnect2.RpcRequests;
+using AnkrSDK.WalletConnect2.RpcRequests.Eth;
 using AnkrSDK.WalletConnect2.RpcResponses;
+using AnkrSDK.WalletConnect2.RpcResponses.Eth;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
+using WalletConnectSharp.Common.Logging;
 using WalletConnectSharp.Common.Model.Errors;
 using WalletConnectSharp.Core.Models.Pairing;
 using WalletConnectSharp.Network.Models;
@@ -23,20 +30,44 @@ using WalletConnectSharp.Storage;
 
 namespace AnkrSDK.WalletConnect2
 {
-	public class WalletConnect2 : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator, IQuittable, IPausable, IWalletConnectTransitionDataProvider
+	public class WalletConnect2 : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator,
+		IQuittable, IPausable, IWalletConnectTransitionDataProvider
 	{
 		private const string SettingsFilenameString = "WalletConnect2Settings";
+		public event Action OnSend;
 		public event Action<WalletConnect2TransitionBase> SessionStatusUpdated;
 		public string SettingsFilename => SettingsFilenameString;
 		public WalletConnect2Status Status { get; private set; }
+		public bool Connecting { get; private set; }
+
+		public string ConnectURL
+		{
+			get
+			{
+				if (_connectedData == null)
+				{
+					throw new InvalidDataException(
+						"ConnectData not found in WalletConnect2, it is probably not connected yet");
+				}
+
+				return _connectedData.Uri;
+			}
+		}
+
+		public bool CanSendRequests => Status != WalletConnect2Status.WalletConnected;
+
+		//TODO ANTON handle ChainId later
+		public int ChainId => -1;
 
 		private WalletConnect2SettingsSO _settings;
 		private WalletConnectSignClient _signClient;
+		private ConnectedData _connectedData;
 		private SessionStruct? _sessionData;
-		public bool CanSendRequests => Status != WalletConnect2Status.WalletConnected;
+		private WalletEntry _selectedWallet;
 
 		public void Initialize(ScriptableObject settings)
 		{
+			WC2Debug.AddLogger(new WalletConnect2Logger());
 			Status = WalletConnect2Status.Uninitialized;
 
 			_settings = settings as WalletConnect2SettingsSO;
@@ -53,8 +84,20 @@ namespace AnkrSDK.WalletConnect2
 
 		public async UniTask Connect()
 		{
+			if (Connecting)
+			{
+				return;
+			}
+
+			if (Status.IsAny(WalletConnect2Status.AnythingConnected))
+			{
+				return;
+			}
+
 			var dappOptions = GenerateSignClientOptions();
 			var dappConnectOptions = GenerateDappConnectOptions();
+
+			Connecting = true;
 
 			if (_signClient == null)
 			{
@@ -62,17 +105,131 @@ namespace AnkrSDK.WalletConnect2
 				Subscribe(_signClient);
 			}
 
-			var connectData = await _signClient.Connect(dappConnectOptions);
+			_connectedData = await _signClient.Connect(dappConnectOptions);
+
+			SetupDefaultWallet().Forget();
+			Connecting = false;
+
+			Debug.Log("WalletConnect2: Connect finished, uri = " + _connectedData.Uri);
+
 
 			var prevStatus = Status;
 			Status = WalletConnect2Status.ConnectionRequestSent;
 			SessionStatusUpdated?.Invoke(new SessionRequestSentTransition(this, prevStatus, Status));
 
-			_sessionData = await connectData.Approval;
+			_sessionData = await _connectedData.Approval;
+
+			var sessionDataJson = JsonConvert.SerializeObject(_sessionData);
+			Debug.Log("WalletConnect2: Connect finished, sessionData = " + sessionDataJson);
 
 			prevStatus = Status;
 			Status = WalletConnect2Status.WalletConnected;
 			SessionStatusUpdated?.Invoke(new WalletConnectedTransition(this, prevStatus, Status));
+		}
+
+		public async UniTask Disconnect(bool connectNewSession = true)
+		{
+			if (Status == WalletConnect2Status.Disconnected || Status == WalletConnect2Status.Uninitialized)
+			{
+				return;
+			}
+
+			await Disconnect();
+
+			if (connectNewSession)
+			{
+				await Connect();
+			}
+		}
+
+		/// <summary>
+		/// get default chain id for a given chain namespace
+		///chainNamespace argument value should be based on 
+		/// CAIP-2 - Chain Agnostic Improvement Proposal
+		/// defining naming convention for different blockchains
+		/// read more here: https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md
+		/// </summary>
+		/// <param name="chainNamespace">CAIP-2 chain namespace</param>
+		/// <returns></returns>
+		public int GetDefaultChainId(string chainNamespace = "eip155")
+		{
+			if (!CheckIfSessionCreated())
+			{
+				return -1;
+			}
+
+			var sessionData = _sessionData.Value;
+
+			var chainIdStr = sessionData.RequiredNamespaces[chainNamespace].Chains[0];
+
+			if (chainIdStr.Contains(":"))
+			{
+				var lastIndexOfColon = chainIdStr.LastIndexOf(":");
+				chainIdStr = chainIdStr.Substring(lastIndexOfColon + 1, chainIdStr.Length - lastIndexOfColon + 1);
+				return Int32.Parse(chainIdStr);
+			}
+
+			Debug.LogError($"GetDefaultChainId error: ChainId {chainIdStr} is not of expected format");
+
+			return -1;
+		}
+		
+		/// <summary>
+		/// get default account for a given chain namespace
+		/// chainNamespace argument value should be based on 
+		/// CAIP-2 - Chain Agnostic Improvement Proposal
+		/// defining naming convention for different blockchains
+		/// read more here: https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md
+		/// </summary>
+		/// <param name="chainNamespace">CAIP-2 chain namespace</param>
+		/// <returns></returns>
+		public string GetDefaultAccount(string chainNamespace = "eip155")
+		{
+			if (!CheckIfSessionCreated())
+			{
+				return null;
+			}
+
+			var sessionData = _sessionData.Value;
+
+			var defaultAccount = sessionData.Namespaces[chainNamespace].Accounts[0];
+
+			return ParseAccountAddress(defaultAccount);
+		}
+
+		/// <summary>
+		/// get account addresses array for a given chain namespace
+		///chainNamespace argument value should be based on 
+		/// CAIP-2 - Chain Agnostic Improvement Proposal
+		/// defining naming convention for different blockchains
+		/// read more here: https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md
+		/// </summary>
+		/// <param name="chainNamespace">CAIP-2 chain namespace</param>
+		/// <returns></returns>
+		public string[] GetAccounts(string chainNamespace = "eip155", int chainId = 1)
+		{
+			if (_sessionData.HasValue)
+			{
+				//here we should convert selected wallet to CAIP namespace
+				//to use as a Namespaces dictionary key
+				var sessionDataValue = _sessionData.Value;
+				if (sessionDataValue.Namespaces.TryGetValue(chainNamespace, out var nspace))
+				{
+					var accounts = nspace.Accounts;
+					if (accounts != null && accounts.Length > 0 && accounts[0].Contains(":"))
+					{
+						accounts = accounts.Where(a => a.StartsWith(chainNamespace + ":" + chainId))
+							.Select(ParseAccountAddress).ToArray();
+
+						return accounts;
+					}
+				}
+
+				throw new KeyNotFoundException($"{chainNamespace}");
+			}
+
+			throw new InvalidDataException(
+				"SessionStruct not found in WalletConnect2, it is probably not connected yet");
 		}
 
 		public async UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
@@ -90,9 +247,92 @@ namespace AnkrSDK.WalletConnect2
 
 			var topic = _sessionData.Value.Topic;
 			var method = genericRequest.Method;
-			var genericResponseData = await _signClient.RequestWithMethod<object, GenericResponseData>(topic, genericRequest.RawParameters, method).AsUniTask();
+			var genericResponseData = await _signClient
+				.RequestWithMethod<object, GenericResponseData>(topic, genericRequest.RawParameters, method)
+				.AsUniTask();
 
 			return genericResponseData.ToGenericRpcResponse();
+		}
+
+		public async UniTask OpenDeepLink(Wallets wallet)
+		{
+			_selectedWallet = await WalletDownloadHelper.FindWalletEntry(wallet);
+
+			OpenDeepLink();
+		}
+
+		public void OpenDeepLink(WalletEntry selectedWallet)
+		{
+			_selectedWallet = selectedWallet;
+
+			OpenDeepLink();
+		}
+
+		public void OpenDeepLink()
+		{
+			if (Status != WalletConnect2Status.ConnectionRequestSent)
+			{
+				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
+				               "\nWait for Status == WalletConnect2Status.ConnectionRequestSent");
+				return;
+			}
+
+			#if UNITY_ANDROID
+			Application.OpenURL(ConnectURL);
+			#elif UNITY_IOS
+			if (_selectedWallet == null)
+			{
+				throw new NotImplementedException(
+					"You must use OpenDeepLink(WalletEntry) or set _selectedWallet on iOS!");
+			}
+
+			var url = MobileWalletURLFormatHelper
+				.GetURLForMobileWalletOpen(ConnectURL, _selectedWallet.mobile);
+
+			Debug.Log("[WalletConnect] Opening URL: " + url);
+
+			Application.OpenURL(url);
+			#else
+			Debug.Log("Platform does not support deep linking");
+			return;
+			#endif
+		}
+
+		public async UniTask OpenMobileWallet(Wallets wallet)
+		{
+			_selectedWallet = await WalletDownloadHelper.FindWalletEntry(wallet);
+			OpenMobileWallet();
+		}
+
+		public void OpenMobileWallet(WalletEntry selectedWallet)
+		{
+			_selectedWallet = selectedWallet;
+
+			OpenMobileWallet();
+		}
+
+		public void OpenMobileWallet()
+		{
+			#if UNITY_ANDROID
+			var signingURL = ConnectURL.Split('@')[0];
+
+			Application.OpenURL(signingURL);
+			#elif UNITY_IOS
+			if (_selectedWallet == null)
+			{
+				throw new NotImplementedException(
+					"You must use OpenMobileWallet(WalletEntry) or set _selectedWallet on iOS!");
+			}
+
+			var url = MobileWalletURLFormatHelper
+				.GetURLForMobileWalletOpen(ConnectURL, _selectedWallet.mobile).Split('?')[0];
+
+			Debug.Log("Opening: " + url);
+			Application.OpenURL(url);
+			#else
+			Debug.Log("Platform does not support deep linking");
+			return;
+			#endif
 		}
 
 		public async UniTask<TResponseData> Send<TRequestData, TResponseData>(TRequestData data)
@@ -222,7 +462,9 @@ namespace AnkrSDK.WalletConnect2
 
 			var request = new EthSendRawTransactionData(data);
 			var topic = _sessionData.Value.Topic;
-			var response = await _signClient.Request<EthSendRawTransactionData, EthResponseData>(topic, request, "eth_sendRawTransaction");
+			var response =
+				await _signClient.Request<EthSendRawTransactionData, EthResponseData>(topic, request,
+					"eth_sendRawTransaction");
 
 			return response.Result;
 		}
@@ -251,6 +493,28 @@ namespace AnkrSDK.WalletConnect2
 			var topic = _sessionData.Value.Topic;
 			var response = await _signClient.Request<WalletSwitchEthChainData, EthResponseData>(topic, request);
 			return response.Result;
+		}
+
+		public async UniTask<BigInteger> EthChainId()
+		{
+			if (!CheckIfSessionCreated())
+			{
+				return default;
+			}
+
+			var request = new EthChainIdData();
+
+			var topic = _sessionData.Value.Topic;
+			var response = await _signClient.Request<EthChainIdData, EthResponseData>(topic, request);
+			var hexChainValue = response.Result;
+
+			if (hexChainValue.IsHex())
+			{
+				return BigInteger.Parse(hexChainValue.Substring(2), System.Globalization.NumberStyles.HexNumber);
+			}
+
+			Debug.LogError($"EthChainId error: {hexChainValue} is not hexadecimal string");
+			return -1;
 		}
 
 		public async UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData)
@@ -286,6 +550,34 @@ namespace AnkrSDK.WalletConnect2
 			return pauseStatus ? Disconnect() : Connect();
 		}
 
+		private async UniTask SetupDefaultWallet()
+		{
+			if (_settings.DefaultWallet == Wallets.None)
+			{
+				return;
+			}
+
+			var walletEntry = await WalletDownloadHelper.FindWalletEntry(_settings.DefaultWallet);
+			if (walletEntry != null)
+			{
+				_selectedWallet = walletEntry;
+				await walletEntry.DownloadImages();
+			}
+		}
+
+		private static string ParseAccountAddress(string account)
+		{
+			var lastIndexOfColon = account.LastIndexOf(":", StringComparison.InvariantCulture);
+			if (lastIndexOfColon != -1)
+			{
+				return account.Substring(lastIndexOfColon + 1, account.Length - lastIndexOfColon + 1);
+			}
+
+			Debug.LogError($"Account {account} is of unexpected format");
+
+			return account;
+		}
+
 		private async UniTask Disconnect()
 		{
 			if (Status == WalletConnect2Status.Disconnected)
@@ -310,6 +602,7 @@ namespace AnkrSDK.WalletConnect2
 		{
 			var prevStatus = Status;
 			_sessionData = null;
+			_connectedData = null;
 			_signClient = null;
 			Status = WalletConnect2Status.Disconnected;
 			SessionStatusUpdated?.Invoke(new WalletDisconnectedTransition(this, prevStatus, Status));
@@ -345,9 +638,13 @@ namespace AnkrSDK.WalletConnect2
 			var dappFilePath = Path.Combine(Application.dataPath, ".wc", _settings.DappFileName);
 			var signClientOptions = new SignClientOptions
 			{
-				ProjectId = _settings.ProjectId, Metadata = new Metadata
+				ProjectId = _settings.ProjectId,
+				Metadata = new Metadata
 				{
-					Description = _settings.Description, Icons = _settings.Icons, Name = _settings.Name, Url = _settings.Url
+					Description = _settings.Description,
+					Icons = _settings.Icons,
+					Name = _settings.Name,
+					Url = _settings.Url
 				},
 				Storage = new FileSystemStorage(dappFilePath)
 			};
@@ -364,8 +661,8 @@ namespace AnkrSDK.WalletConnect2
 
 			foreach (var blockchainParams in _settings.BlockchainParameters)
 			{
-				var blockchainId = blockchainParams.BlockchainId;
-				dappConnectOptions.RequiredNamespaces.Add(blockchainId, blockchainParams.ToRequiredNamespace());
+				var chainNamespace = blockchainParams.ChainNamespace;
+				dappConnectOptions.RequiredNamespaces.Add(chainNamespace, blockchainParams.ToRequiredNamespace());
 			}
 
 			return dappConnectOptions;
@@ -409,6 +706,7 @@ namespace AnkrSDK.WalletConnect2
 		private void OnSessionRequest()
 		{
 			Debug.LogWarning("WalletConnect2 OnSessionRequest at " + Time.time);
+			OnSend?.Invoke();
 		}
 
 		private void OnSessionEvent()

@@ -1,9 +1,10 @@
+using AnkrSDK.Core.Implementation;
 using AnkrSDK.Core.Infrastructure;
-using AnkrSDK.SilentSigning.Data.Requests;
-using AnkrSDK.SilentSigning.Data.Responses;
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnect.VersionShared.Models;
-using AnkrSDK.WalletConnectSharp.Unity.Events;
+using AnkrSDK.WalletConnect2.Events;
+using AnkrSDK.WalletConnect2.RpcRequests;
+using AnkrSDK.WalletConnect2.RpcRequests.SilentSigning;
+using AnkrSDK.WalletConnect2.RpcResponses.SilentSigning;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace AnkrSDK.SilentSigning.Implementation
 	public class SilentSigningProtocol : ISilentSigningHandler
 	{
 		public ISilentSigningSessionHandler SessionHandler { get; }
-		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
+		private AnkrSDK.WalletConnect2.WalletConnect2 WalletConnect => ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();
 
 		private bool _skipNextDeepLink;
 
@@ -24,9 +25,9 @@ namespace AnkrSDK.SilentSigning.Implementation
 
 		public async UniTask<string> RequestSilentSign(long timestamp, long chainId = 1)
 		{
-			var data = new SilentSigningConnectionRequest(timestamp, chainId);
+			var data = new SilentSigningConnectionRequestData(timestamp, chainId);
 			var requestSilentSign =
-				await WalletConnect.Send<SilentSigningConnectionRequest, SilentSigningResponse>(data);
+				await WalletConnect.Send<SilentSigningConnectionRequestData, SilentSigningResponseData>(data);
 			if (!requestSilentSign.IsError)
 			{
 				SessionHandler.SaveSilentSession(requestSilentSign.Result);
@@ -38,9 +39,9 @@ namespace AnkrSDK.SilentSigning.Implementation
 		public UniTask DisconnectSilentSign()
 		{
 			var secret = SessionHandler.GetSavedSessionSecret();
-			var data = new SilentSigningDisconnectRequest(secret);
+			var data = new SilentSigningDisconnectRequestData(secret);
 			SessionHandler.ClearSilentSession();
-			return WalletConnect.Send<SilentSigningDisconnectRequest, SilentSigningResponse>(data);
+			return WalletConnect.Send<SilentSigningDisconnectRequestData, SilentSigningResponseData>(data);
 		}
 
 		public async UniTask<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
@@ -58,7 +59,7 @@ namespace AnkrSDK.SilentSigning.Implementation
 				nonce = nonce,
 				secret = SessionHandler.GetSavedSessionSecret()
 			};
-			var request = new SilentSigningTransactionRequest(transactionData);
+			var request = new SilentSigningTransactionRequestData(transactionData);
 
 			Debug.Log("[SS] SendSilentTransaction");
 			SkipNextDeepLink();
@@ -69,7 +70,7 @@ namespace AnkrSDK.SilentSigning.Implementation
 
 		public async UniTask<string> SilentSignMessage(string address, string message)
 		{
-			var request = new SilentSigningSignMessageRequest(address, message);
+			var request = new SilentSigningSignMessageRequestData(address, message);
 			SkipNextDeepLink();
 			var response = await SendAndHandle(request);
 
@@ -93,7 +94,7 @@ namespace AnkrSDK.SilentSigning.Implementation
 			SubscribeSession();
 		}
 
-		private void OnSessionStatusUpdated(WalletConnectTransitionBase walletConnectTransitionBase)
+		private void OnSessionStatusUpdated(WalletConnect2TransitionBase walletConnectTransitionBase)
 		{
 			SubscribeSession();
 		}
@@ -123,10 +124,10 @@ namespace AnkrSDK.SilentSigning.Implementation
 			WalletConnect.OpenMobileWallet();
 		}
 
-		private async UniTask<SilentSigningResponse> SendAndHandle<TRequest>(TRequest request)
-			where TRequest : JsonRpcRequest
+		private async UniTask<SilentSigningResponseData> SendAndHandle<TRequest>(TRequest request)
+			where TRequest : RpcRequestListDataBase
 		{
-			var response = await WalletConnect.Send<TRequest, SilentSigningResponse>(request);
+			var response = await WalletConnect.Send<TRequest, SilentSigningResponseData>(request);
 			if (response.IsError)
 			{
 				switch (response.Error.Code)

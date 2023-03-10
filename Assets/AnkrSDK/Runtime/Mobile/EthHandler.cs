@@ -3,6 +3,7 @@ using System.Numerics;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.WalletConnect2;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum;
 using Cysharp.Threading.Tasks;
@@ -18,19 +19,19 @@ namespace AnkrSDK.Mobile
 	public class EthHandler : IEthHandler
 	{
 		private readonly IWeb3 _web3Provider;
-		private readonly WalletConnectSharp.Unity.WalletConnect _walletConnect;
+		private readonly AnkrSDK.WalletConnect2.WalletConnect2 _walletConnect;
 		private readonly ISilentSigningHandler _silentSigningHandler;
 
 		public EthHandler(IWeb3 web3Provider, ISilentSigningHandler silentSigningHandler)
 		{
 			_web3Provider = web3Provider;
 			_silentSigningHandler = silentSigningHandler;
-			_walletConnect = ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
+			_walletConnect = ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();
 		}
 
 		public UniTask<string> WalletAddEthChain(EthChainData chainData)
 		{
-			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
+			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -40,7 +41,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<string> WalletSwitchEthChain(EthChain chain)
 		{
-			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
+			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -50,7 +51,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)
 		{
-			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
+			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -58,25 +59,29 @@ namespace AnkrSDK.Mobile
 			return _walletConnect.WalletUpdateEthChain(chain);
 		}
 
-		public  UniTask<string> GetDefaultAccount()
+		public UniTask<BigInteger> EthChainId()
 		{
-			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
+			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			var activeSessionAccount = _walletConnect.Accounts[0];
-			if (string.IsNullOrEmpty(activeSessionAccount))
+			return _walletConnect.EthChainId();
+		}
+
+		public UniTask<string> GetDefaultAccount()
+		{
+			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
 			{
-				Debug.LogError("Account is null");
+				throw new Exception("Application is not linked to wallet");
 			}
 
-			return UniTask.FromResult(activeSessionAccount);
+			return UniTask.FromResult(_walletConnect.GetDefaultAccount());
 		}
 
 		public UniTask<BigInteger> GetChainId()
 		{
-			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
+			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -87,7 +92,8 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
-			return _web3Provider.TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash).AsUniTask();
+			return _web3Provider.TransactionManager.TransactionReceiptService.PollForReceiptAsync(transactionHash)
+				.AsUniTask();
 		}
 
 		public UniTask<Transaction> GetTransaction(string transactionReceipt)
@@ -108,7 +114,10 @@ namespace AnkrSDK.Mobile
 		{
 			var transactionInput = new TransactionInput(to, from)
 			{
-				Gas = gas != null ? new HexBigInteger(gas) : null, GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null, Nonce = nonce != null ? new HexBigInteger(nonce) : null, Value = value != null ? new HexBigInteger(value) : null,
+				Gas = gas != null ? new HexBigInteger(gas) : null,
+				GasPrice = gasPrice != null ? new HexBigInteger(gasPrice) : null,
+				Nonce = nonce != null ? new HexBigInteger(nonce) : null,
+				Value = value != null ? new HexBigInteger(value) : null,
 				Data = data
 			};
 
@@ -138,8 +147,10 @@ namespace AnkrSDK.Mobile
 
 			var transactionData = new TransactionData
 			{
-				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
+				from = from, to = to, data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 			var request = new EthSendTransaction(transactionData);
 			var response = await _walletConnect
@@ -152,7 +163,7 @@ namespace AnkrSDK.Mobile
 			return _web3Provider.TransactionManager.EstimateGasAsync(transactionInput).AsUniTask();
 		}
 
-		public async  UniTask<BigInteger> GetBalance(string address)
+		public async UniTask<BigInteger> GetBalance(string address)
 		{
 			if (address == null)
 			{

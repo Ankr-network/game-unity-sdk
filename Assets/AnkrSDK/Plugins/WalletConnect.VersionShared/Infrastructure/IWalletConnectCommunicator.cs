@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Numerics;
+using System.Text;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using Cysharp.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace AnkrSDK.WalletConnect.VersionShared.Infrastructure
 		UniTask<string> WalletAddEthChain(EthChainData chainData);
 		UniTask<string> WalletSwitchEthChain(EthChain chainData);
 		UniTask<string> WalletUpdateEthChain(EthUpdateChainData chainData);
+		UniTask<BigInteger> EthChainId();
+		string GetDefaultAccount(string network);
 
 		UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
 			where TRequest : IIdentifiable

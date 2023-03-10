@@ -1,4 +1,4 @@
-namespace AnkrSDK.SilentSigning.Data.Requests
+namespace AnkrSDK.Core.Implementation
 {
 	public class SilentTransactionData
 	{
