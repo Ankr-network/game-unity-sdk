@@ -16,3 +16,7 @@ This guide explains the differences in the interface of the two implementations
 ### 3. `WalletConnect2` no longer implements the `IUpdatable` interface
 
 `IUpdatable` is not implemented for `WalletConnect2` since this implementation does not have to be ticked on a per-frame basis in order to function and trigger status transition events.
+
+### 4. `WalletConnect2` has a different disconnect method name
+
+`WalletConnect2` does not have `CloseSession()` method but has `Disconnect()` to replace it
