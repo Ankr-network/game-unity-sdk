@@ -19,4 +19,4 @@ This guide explains the differences in the interface of the two implementations
 
 ### 4. `WalletConnect2` has a different disconnect method name
 
-`WalletConnect2` does not have `CloseSession()` method but has `Disconnect()` to replace it
+`WalletConnect2` does not have the `CloseSession()` method anymore but has the `Disconnect()` method to replace it
