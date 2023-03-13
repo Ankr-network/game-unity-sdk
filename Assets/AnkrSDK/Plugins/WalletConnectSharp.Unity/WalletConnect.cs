@@ -372,7 +372,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 			if (_session.Status != WalletConnectStatus.SessionRequestSent)
 			{
 				Debug.LogError("WalletConnectUnity.ActiveSession not ready for a user prompt" +
-				               "\nWait for Status == WalletConnect2Status.ConnectionRequestSent");
+				               "\nWait for Status == WalletConnectStatus.ConnectionRequestSent");
 				return;
 			}
 
