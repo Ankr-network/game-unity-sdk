@@ -425,6 +425,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57bf3987f9724e128baac9bba48af9b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1202570524 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5636893379736960473, guid: 22e28db56632236409bd93f392593a2f, type: 3}
+  m_PrefabInstance: {fileID: 7206582494627875326}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1554169489 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1477777530166466671, guid: 22e28db56632236409bd93f392593a2f, type: 3}
@@ -470,6 +481,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 37024928371623530, guid: 22e28db56632236409bd93f392593a2f, type: 3}
+      propertyPath: _logText
+      value: 
+      objectReference: {fileID: 1202570524}
     - target: {fileID: 4726548280209165766, guid: 22e28db56632236409bd93f392593a2f, type: 3}
       propertyPath: m_Pivot.x
       value: 0
