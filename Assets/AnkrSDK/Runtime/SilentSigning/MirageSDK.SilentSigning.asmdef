@@ -9,7 +9,6 @@
     "WalletConnectSharp.NEtherium",
     "WalletConnectSharp.Unity",
     "WalletConnectSharp.VersionShared",
-    "AnkrSDK.WalletConnect2",
     "AnkrSDK.Core"
   ],
   "includePlatforms": [],
