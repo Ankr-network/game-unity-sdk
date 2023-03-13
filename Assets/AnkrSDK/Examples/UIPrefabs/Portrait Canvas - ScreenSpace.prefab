@@ -1077,6 +1077,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3524072960278972047, guid: a2063caecddadc04882fb2a09a1a531b, type: 3}
+      propertyPath: m_Name
+      value: OpenSea_SelectButton
+      objectReference: {fileID: 0}
     - target: {fileID: 3524072960278972048, guid: a2063caecddadc04882fb2a09a1a531b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0.5
@@ -1263,6 +1267,10 @@ PrefabInstance:
       value: 0.83073384
       objectReference: {fileID: 0}
     - target: {fileID: 2254318629969293441, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -1968.3623
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254318629969293441, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -12.499878
       objectReference: {fileID: 0}
@@ -1366,13 +1374,29 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4205600910679076423, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4205600910679076423, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6123118117602025556, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7953137711086287214, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
       propertyPath: m_Value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8112337383494604514, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8112337383494604541, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
+      propertyPath: m_Name
+      value: SilentSign_SelectButton
       objectReference: {fileID: 0}
     - target: {fileID: 8112337385214500817, guid: f3abac0f3ca3e4d89b699f0e2ab00cf3, type: 3}
       propertyPath: m_Name
@@ -1557,6 +1581,10 @@ PrefabInstance:
     - target: {fileID: 2312622774444043434, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312622774444043435, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
+      propertyPath: m_Name
+      value: UpdateNFT_SelectButton
       objectReference: {fileID: 0}
     - target: {fileID: 2312622775736458201, guid: 6fe873143b3681d4bb4b3d878d794738, type: 3}
       propertyPath: m_Pivot.x
@@ -2020,6 +2048,10 @@ PrefabInstance:
     - target: {fileID: 7299830044521457813, guid: 2726c15012c748242879c26390034d17, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299830044521457814, guid: 2726c15012c748242879c26390034d17, type: 3}
+      propertyPath: m_Name
+      value: LinkingAccount _SelectButton
       objectReference: {fileID: 0}
     - target: {fileID: 8073795718651854429, guid: 2726c15012c748242879c26390034d17, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2983,11 +3015,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6143206495697612110, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 200
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 6143206495697612110, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6143206495697612113, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
+      propertyPath: m_Name
+      value: WearableNFT_SelectButton
       objectReference: {fileID: 0}
     - target: {fileID: 6862398345401935569, guid: 0d06549c9daeb274db7ea7af3c85a5d7, type: 3}
       propertyPath: m_Name
@@ -3381,6 +3417,10 @@ PrefabInstance:
     - target: {fileID: 4422986055693149092, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4422986055693149144, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: m_Name
+      value: LoadNFT_SelectButton
       objectReference: {fileID: 0}
     - target: {fileID: 5845304675535668701, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
       propertyPath: m_SizeDelta.y
