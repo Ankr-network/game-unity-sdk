@@ -41,7 +41,7 @@ namespace AnkrSDK.UseCases.UpdateNFT
 		private const string URL = "https://example-signing.game.ankr.com/";
 
 		// ethereum node provider
-		private const string ProviderURL = "https://rinkeby.infura.io/v3/c75f2ce78a4a4b64aa1e9c20316fda3e";
+		private const string ProviderURL = "https://goerli.infura.io/v3/0185114844aa42ea88c17fe4d329dcf3";
 
 		[SerializeField] private Button _updateNFTButton;
 
