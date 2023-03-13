@@ -7,11 +7,11 @@ namespace AnkrSDK.Mobile
 {
 	public class MobileWeb3Provider
 	{
-		private readonly WalletConnect2.WalletConnect2 _walletConnect;
+		private readonly WalletConnectSharp.Unity.WalletConnect _walletConnect;
 
 		public MobileWeb3Provider()
 		{
-			_walletConnect = ConnectProvider<WalletConnect2.WalletConnect2>.GetConnect();
+			_walletConnect = ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		}
 
 		public IWeb3 CreateWeb3(string providerURI)
