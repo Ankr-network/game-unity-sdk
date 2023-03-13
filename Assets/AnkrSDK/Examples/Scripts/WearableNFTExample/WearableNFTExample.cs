@@ -35,8 +35,8 @@ namespace AnkrSDK.WearableNFTExample
 		[SerializeField] private Button _changeHatRedButton;
 		[SerializeField] private Button _getHatButton;
 
-		private IContract _gameCharacterContract;
-		private IContract _gameItemContract;
+		private IContract _gameCharacterContract; //https://github.com/mirage-xyz/mirage-smart-contract-example/blob/cdf3d72668ea8de19b9ad410f96d7409c3b2f09e/composable-nft/contracts/GameCharacter.sol
+		private IContract _gameItemContract; //https://github.com/mirage-xyz/mirage-smart-contract-example/blob/cdf3d72668ea8de19b9ad410f96d7409c3b2f09e/composable-nft/contracts/GameItem.sol
 
 		private IEthHandler _ethHandler;
 
