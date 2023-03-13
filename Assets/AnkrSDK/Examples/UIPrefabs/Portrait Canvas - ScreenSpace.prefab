@@ -3417,6 +3417,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.0025634766
       objectReference: {fileID: 0}
+    - target: {fileID: 4422986055560947255, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
+      propertyPath: m_Text
+      value: Load NFT
+      objectReference: {fileID: 0}
     - target: {fileID: 4422986055693149092, guid: 07ee7d126d082fb47accf49dc3fa301a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0.5

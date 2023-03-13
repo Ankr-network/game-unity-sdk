@@ -220,6 +220,13 @@ namespace AnkrSDK.WearableNFTExample
 		private async UniTask<BigInteger> GetHat()
 		{
 			var characterID = await GetCharacterTokenId();
+			
+			if (characterID.Equals(-1))
+			{
+				UpdateUILogs("ERROR : CharacterID or HatID is null");
+				return -1;
+			}
+			
 			var getHatMessage = new GetHatMessage
 			{
 				CharacterId = characterID
