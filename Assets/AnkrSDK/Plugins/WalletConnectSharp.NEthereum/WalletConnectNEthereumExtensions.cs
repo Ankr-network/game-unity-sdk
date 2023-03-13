@@ -65,7 +65,7 @@ namespace AnkrSDK.WalletConnectSharp.NEthereum
         /// </returns>
         public static IClient CreateProvider(this IWalletConnectGenericRequester genericRequester, IClient readClient)
 		{
-			if (genericRequester.CanSendRequests)
+			if (!genericRequester.CanSendRequests)
 			{
 				throw new Exception("No connection has been made yet!");
 			}
