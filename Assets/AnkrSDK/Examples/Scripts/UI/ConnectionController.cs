@@ -97,7 +97,7 @@ namespace AnkrSDK.UI
 			bool waitingForLoginInput = status == WalletConnectStatus.SessionRequestSent;
 			
 			_loginButton.gameObject.SetActive(waitingForLoginInput);
-			_stateText.gameObject.SetActive(!waitingForLoginInput);
+			_stateText.gameObject.SetActive(!waitingForLoginInput && !walletConnected);
 			
 			_qrCodeImage.SetImageActive(false);
 
