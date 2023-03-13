@@ -2,6 +2,7 @@ using AnkrSDK.Base;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Provider;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 	public class AddSwitchNetwork : UseCaseBodyUI
 	{
 		[SerializeField] private ContractInformationSO _contractInformationSO;
+		
+		[SerializeField] private TMP_Text _logText;
 
 		[SerializeField] private Button _bscButton;
 		[SerializeField] private Button _bscTestButton;
@@ -41,24 +44,45 @@ namespace AnkrSDK.UseCases.AddSwitchNetwork
 
 		private async void OpenAddSwitchBsc()
 		{
-			await _ethHandler.WalletAddEthChain(ChainInfo.BscMainNet);
-			await _ethHandler.WalletSwitchEthChain(ChainInfo.BscMainNetChain);
+			var addLog = await _ethHandler.WalletAddEthChain(ChainInfo.BscMainNet);
+			var switchLog = await _ethHandler.WalletSwitchEthChain(ChainInfo.BscMainNetChain);
+			UpdateUILogs(addLog);
+			UpdateUILogs(switchLog);
 		}
 
 		private async void OpenAddSwitchBscTestnet()
 		{
-			await _ethHandler.WalletAddEthChain(ChainInfo.BscTestnet);
-			await _ethHandler.WalletSwitchEthChain(ChainInfo.BscTestnetChain);
+			var addLog = await _ethHandler.WalletAddEthChain(ChainInfo.BscTestnet);
+			var switchLog = await _ethHandler.WalletSwitchEthChain(ChainInfo.BscTestnetChain);
+			UpdateUILogs(addLog);
+			UpdateUILogs(switchLog);
 		}
 
 		private async void OpenUpdateBsc()
 		{
-			await _ethHandler.WalletUpdateEthChain(ChainInfo.BscMainNet.ToEthUpdate());
+			var log = await _ethHandler.WalletUpdateEthChain(ChainInfo.BscMainNet.ToEthUpdate());
+			UpdateUILogs(log);
 		}
 
 		private async void OpenUpdateBscTestnet()
 		{
-			await _ethHandler.WalletUpdateEthChain(ChainInfo.BscTestnet.ToEthUpdate());
+			var log = await _ethHandler.WalletUpdateEthChain(ChainInfo.BscTestnet.ToEthUpdate());
+			UpdateUILogs(log);
+		}
+		
+		private void UpdateUILogs(string log)
+		{
+			if (log == null)
+			{
+				log = "null string";
+			}
+			else if(log.Length == 0)
+			{
+				log = "empty string";
+			}
+
+			_logText.text += "\n" + log;
+			Debug.Log(log);
 		}
 	}
 }

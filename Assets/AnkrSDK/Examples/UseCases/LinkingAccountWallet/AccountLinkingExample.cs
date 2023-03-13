@@ -104,6 +104,15 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 
 		private void UpdateUILogs(string log)
 		{
+			if (log == null)
+			{
+				log = "null string";
+			}
+			else if(log.Length == 0)
+			{
+				log = "empty string";
+			}
+			
 			_text.text += "\n" + log;
 			Debug.Log(log);
 		}
