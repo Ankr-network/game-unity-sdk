@@ -17,7 +17,6 @@ using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using HexByteConvertorExtensions = WalletConnectSharp.Common.Utils.HexByteConvertorExtensions;
 
 namespace AnkrSDK.WalletConnectSharp.Core
 {
