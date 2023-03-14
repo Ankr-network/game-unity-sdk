@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1945138e1a48f18994ac7fe5181dd9, type: 3}
+  m_Name: WalletConnect2Settings
+  m_EditorClassIdentifier: 
+  _defaultWallet: 1
+  _projectId: 
+  _description: An example dapp to showcase WalletConnectSharpv2
+  _icons:
+  - https://walletconnect.com/meta/favicon.ico
+  _name: WalletConnectSharpv2 Dapp Example
+  _url: https://walletconnect.com
+  _dappFileName: store_dapp.json
+  _blockChainParameters:
+  - Enabled: 1
+    ChainNamespace: eip155
+    Methods:
+    - personal_sign
+    - eth_sendRawTransaction
+    - eth_sendTransaction
+    - eth_sign
+    - eth_signTransaction
+    - eth_signTypedData
+    - wallet_addEthereumChain
+    - wallet_switchEthereumChain
+    - wallet_updateEthereumChain
+    ChainIds:
+    - eip155:1
+    Events:
+    - chainChanged
+    - accountsChanged

@@ -13,6 +13,7 @@
     "WalletConnectSharp.Core",
     "WalletConnectSharp.Unity",
     "WalletConnectSharp.VersionShared",
-    "Unity.TextMeshPro"
+    "Unity.TextMeshPro",
+    "AnkrSDK.WalletConnect2"
   ]
 }

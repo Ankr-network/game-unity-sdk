@@ -1,21 +1,15 @@
 {
-    "name": "AnkrSDK.Mobile",
+    "name": "AnkrSDK.WalletConnect2",
     "rootNamespace": "",
     "references": [
-        "AnkrSDK.Core.Infrastructure",
-        "AnkrSDK.Data",
-        "AnkrSDK.Utils",
+        "WalletConnectSharp.VersionShared",
         "WalletConnectSharp.Core",
-        "WalletConnectSharp.NEtherium",
         "UniTask",
         "WalletConnectSharp.Unity",
-        "WalletConnectSharp.VersionShared",
-        "AnkrSDK.WalletConnect2"
+        "AnkrSDK.Core"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [
-        "WebGL"
-    ],
+    "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
