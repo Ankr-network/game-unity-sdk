@@ -138,7 +138,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		{
 			var getShoesMessage = new GetShoesMessage
 			{
-				CharacterId = tokenID.ToString()
+				CharacterId = tokenID
 			};
 			var shoesID = await _gameCharacterContract.GetData<GetShoesMessage, BigInteger>(getShoesMessage);
 

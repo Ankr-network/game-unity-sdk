@@ -5,9 +5,9 @@ using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data.ContractMessages.ERC1155;
 using AnkrSDK.GameCharacterContract;
 using AnkrSDK.Provider;
-using AnkrSDK.UseCases;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
+using Nethereum.Hex.HexConvertors.Extensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,12 +17,12 @@ namespace AnkrSDK.WearableNFTExample
 	public class WearableNFTExample : UseCaseBodyUI
 	{
 		private const string TransactionGasLimit = "1000000";
-		private const string BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001";
-		private const string RedHatAddress = "0x00010000000000000000000000000000000000000000000000000000000002";
-		private const string BlueShoesAddress = "0x00020000000000000000000000000000000000000000000000000000000001";
-		private const string WhiteShoesAddress = "0x00020000000000000000000000000000000000000000000000000000000003";
-		private const string RedGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000002";
-		private const string WhiteGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000003";
+		private static readonly BigInteger BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
+		private static readonly BigInteger RedHatAddress = "0x00010000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
+		private static readonly BigInteger BlueShoesAddress = "0x00020000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
+		private static readonly BigInteger WhiteShoesAddress = "0x00020000000000000000000000000000000000000000000000000000000003".HexToBigInteger(false);
+		private static readonly BigInteger RedGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
+		private static readonly BigInteger WhiteGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000003".HexToBigInteger(false);
 
 		[SerializeField] private TMP_Text _text;
 
@@ -88,7 +88,6 @@ namespace AnkrSDK.WearableNFTExample
 					WearableNFTContractInformation.GameItemABI);
 				_ethHandler = ankrSDK.Eth;
 			}
-
 		}
 
 		private async UniTask MintItems()
@@ -96,22 +95,23 @@ namespace AnkrSDK.WearableNFTExample
 			const string mintBatchMethodName = "mintBatch";
 			var itemsToMint = new[]
 			{
-				BlueHatAddress,
-				RedHatAddress,
-				BlueShoesAddress,
-				WhiteShoesAddress,
-				RedGlassesAddress,
-				WhiteGlassesAddress
+				BlueHatAddress, RedHatAddress, BlueShoesAddress, WhiteShoesAddress, RedGlassesAddress, WhiteGlassesAddress
 			};
-			var itemsAmounts = new[]
+
+			var itemsAmounts = new BigInteger[]
 			{
 				1, 2, 3, 4, 5, 6
 			};
-			var data = new byte[] { };
+			var data = new byte[]
+			{
+			};
 
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
-				new object[] { defaultAccount, itemsToMint, itemsAmounts, data });
+				new object[]
+				{
+					defaultAccount, itemsToMint, itemsAmounts, data
+				});
 
 			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
 		}
@@ -122,7 +122,10 @@ namespace AnkrSDK.WearableNFTExample
 
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			var transactionHash =
-				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] { defaultAccount });
+				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[]
+				{
+					defaultAccount
+				});
 
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
 		}
@@ -146,13 +149,12 @@ namespace AnkrSDK.WearableNFTExample
 			return balance;
 		}
 
-		private async UniTask<BigInteger> GetBalanceERC1155(IContract contract, string id)
+		private async UniTask<BigInteger> GetBalanceERC1155(IContract contract, BigInteger id)
 		{
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Account = defaultAccount,
-				Id = id
+				Account = defaultAccount, Id = id
 			};
 			var balance =
 				await contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
@@ -180,7 +182,7 @@ namespace AnkrSDK.WearableNFTExample
 			return -1;
 		}
 
-		private async UniTask<bool> GetHasHatToken(string tokenAddress)
+		private async UniTask<bool> GetHasHatToken(BigInteger tokenAddress)
 		{
 			var tokenBalance = await GetBalanceERC1155(_gameItemContract, tokenAddress);
 
@@ -194,7 +196,7 @@ namespace AnkrSDK.WearableNFTExample
 			return false;
 		}
 
-		private async UniTask ChangeHat(string hatAddress)
+		private async UniTask ChangeHat(BigInteger hatAddress)
 		{
 			const string changeHatMethodName = "changeHat";
 			var characterId = await GetCharacterTokenId();
@@ -209,8 +211,7 @@ namespace AnkrSDK.WearableNFTExample
 			{
 				var transactionHash = await _gameCharacterContract.CallMethod(changeHatMethodName, new object[]
 				{
-					characterId,
-					BlueHatAddress
+					characterId, BlueHatAddress
 				}, TransactionGasLimit);
 
 				UpdateUILogs($"Hat Changed. Hash : {transactionHash}");
@@ -220,13 +221,13 @@ namespace AnkrSDK.WearableNFTExample
 		private async UniTask<BigInteger> GetHat()
 		{
 			var characterID = await GetCharacterTokenId();
-			
+
 			if (characterID.Equals(-1))
 			{
 				UpdateUILogs("ERROR : CharacterID or HatID is null");
 				return -1;
 			}
-			
+
 			var getHatMessage = new GetHatMessage
 			{
 				CharacterId = characterID

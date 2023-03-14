@@ -34,7 +34,7 @@ namespace AnkrSDK.CommonUtils
 		///     Requirement:<br />
 		///     -"<paramref name="tokenId" />" must exist
 		/// </summary>
-		public static UniTask<string> OwnerOf(this IContract contract, string tokenId)
+		public static UniTask<string> OwnerOf(this IContract contract, BigInteger tokenId)
 		{
 			var ownerOfMessage = new OwnerOfMessage
 			{
@@ -133,7 +133,7 @@ namespace AnkrSDK.CommonUtils
 		///     Requirement:<br />
 		///     -"<paramref name="tokenId" />" must exist
 		/// </summary>
-		public static UniTask<bool> GetApproved(this IContract contract, string tokenId)
+		public static UniTask<bool> GetApproved(this IContract contract, BigInteger tokenId)
 		{
 			var getApprovedMessage = new GetApprovedMessage
 			{
