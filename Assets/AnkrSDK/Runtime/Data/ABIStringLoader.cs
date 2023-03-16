@@ -14,8 +14,15 @@ namespace AnkrSDK.Data
 
 		public string LoadAbi(string abiName)
 		{
-			var filePath = Path.Combine(_pathToAbiFolder, $"{abiName}_ab.txt");
-			return File.ReadAllText(filePath);
+			var filePath = Path.Combine(_pathToAbiFolder, $"{abiName}_abi.txt");
+			if (File.Exists(filePath))
+			{
+				return File.ReadAllText(filePath);
+			}
+			
+			Debug.LogError($"File {filePath} not found");
+
+			return "";
 		}
 	}
 }

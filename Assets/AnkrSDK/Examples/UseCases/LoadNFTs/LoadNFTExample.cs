@@ -23,11 +23,12 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		private string _activeSessionAccount;
 
 		private IContract _gameCharacterContract;
-		
-		private readonly ABIStringLoader _abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
+
+		private ABIStringLoader _abiLoader;
 
 		private void Awake()
 		{
+			_abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
 			_loadNFTDataButton.onClick.AddListener(CallGetTokenData);
 			_loadNFTMetaDataButton.onClick.AddListener(CallGetTokenMetaData);
 		}

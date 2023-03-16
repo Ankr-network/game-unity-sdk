@@ -41,10 +41,11 @@ namespace AnkrSDK.WearableNFTExample
 
 		private IEthHandler _ethHandler;
 
-		private readonly ABIStringLoader _abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
+		private ABIStringLoader _abiLoader;
 
 		private void Awake()
 		{
+			_abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
 			SubscribeButtonLinks();
 		}
 

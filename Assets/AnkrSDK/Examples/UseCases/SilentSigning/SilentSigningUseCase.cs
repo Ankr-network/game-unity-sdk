@@ -22,8 +22,8 @@ namespace AnkrSDK.UseCases.SilentSigning
 		private IAnkrSDK _ankrSDK;
 		private IContract _gameCharacterContract;
 		private ISilentSigningSessionHandler _silentSigningSecretSaver;
-		
-		private readonly ABIStringLoader _abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
+
+		private ABIStringLoader _abiLoader;
 
 		public override void SetUseCaseBodyActive(bool isActive)
 		{
@@ -53,6 +53,9 @@ namespace AnkrSDK.UseCases.SilentSigning
 
 		private void OnEnable()
 		{
+			if(_abiLoader == null)
+				_abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
+			
 			_requestSilentSignButton.onClick.AddListener(OnRequestSilentSignClicked);
 			_disconnectSilentSignButton.onClick.AddListener(OnDisconnectSilentSignClicked);
 			_sendSilentSignTxButton.onClick.AddListener(OnSendSilentSignTxButtonClicked);
