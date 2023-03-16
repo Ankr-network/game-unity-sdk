@@ -12,8 +12,8 @@ namespace AnkrSDK.OpenSea
 {
 	public static class OpenSeaAPIAssets
 	{
-		private const string EndPoint = "https://rinkeby-api.opensea.io/api";
-		private const string TestNetEndPoint = "https://api.opensea.io/api";
+		private const string EndPoint = "https://api.opensea.io/api";
+		private const string TestNetEndPoint = "https://testnets-api.opensea.io/api";
 		private const string Version = "/v1";
 		private const string GETAssets = "/assets";
 		private const string GETAsset = "/asset";

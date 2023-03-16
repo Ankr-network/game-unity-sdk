@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 namespace AnkrSDK.WearableNFTExample
 {
-	public class WearableNFTExample : UseCase
+	public class WearableNFTExample : UseCaseBodyUI
 	{
 		private const string TransactionGasLimit = "1000000";
 		private const string BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001";
@@ -35,8 +35,8 @@ namespace AnkrSDK.WearableNFTExample
 		[SerializeField] private Button _changeHatRedButton;
 		[SerializeField] private Button _getHatButton;
 
-		private IContract _gameCharacterContract;
-		private IContract _gameItemContract;
+		private IContract _gameCharacterContract; //https://github.com/mirage-xyz/mirage-smart-contract-example/blob/cdf3d72668ea8de19b9ad410f96d7409c3b2f09e/composable-nft/contracts/GameCharacter.sol
+		private IContract _gameItemContract; //https://github.com/mirage-xyz/mirage-smart-contract-example/blob/cdf3d72668ea8de19b9ad410f96d7409c3b2f09e/composable-nft/contracts/GameItem.sol
 
 		private IEthHandler _ethHandler;
 
@@ -74,17 +74,21 @@ namespace AnkrSDK.WearableNFTExample
 			_getHatButton.onClick.RemoveListener(GetHatCall);
 		}
 
-		public override void ActivateUseCase()
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.ActivateUseCase();
+			base.SetUseCaseBodyActive(isActive);
 
-			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
-			_gameCharacterContract = ankrSDK.GetContract(
-				WearableNFTContractInformation.GameCharacterContractAddress,
-				WearableNFTContractInformation.GameCharacterABI);
-			_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
-				WearableNFTContractInformation.GameItemABI);
-			_ethHandler = ankrSDK.Eth;
+			if (isActive)
+			{
+				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
+				_gameCharacterContract = ankrSDK.GetContract(
+					WearableNFTContractInformation.GameCharacterContractAddress,
+					WearableNFTContractInformation.GameCharacterABI);
+				_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
+					WearableNFTContractInformation.GameItemABI);
+				_ethHandler = ankrSDK.Eth;
+			}
+
 		}
 
 		private async UniTask MintItems()
@@ -216,6 +220,13 @@ namespace AnkrSDK.WearableNFTExample
 		private async UniTask<BigInteger> GetHat()
 		{
 			var characterID = await GetCharacterTokenId();
+			
+			if (characterID.Equals(-1))
+			{
+				UpdateUILogs("ERROR : CharacterID or HatID is null");
+				return -1;
+			}
+			
 			var getHatMessage = new GetHatMessage
 			{
 				CharacterId = characterID

@@ -38,7 +38,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		protected string Key;
 		protected byte[] KeyRaw;
 		protected readonly List<string> ActiveTopics = new List<string>();
-		public bool CanSendRequests => Status != WalletConnectStatus.WalletConnected;
+		public bool CanSendRequests => Status == WalletConnectStatus.WalletConnected;
 		public event EventHandler<WalletConnectProtocol> OnTransportConnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportDisconnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportOpen;

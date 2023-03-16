@@ -11,7 +11,7 @@ namespace AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum
 
 		public WalletUpdateEthChain(EthUpdateChainData chainData)
 		{
-			Method = "wallet_updateEthereumChain";
+			Method = "wallet_updateChain";
 			_params = new[]
 			{
 				chainData

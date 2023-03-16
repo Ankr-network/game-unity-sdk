@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace AnkrSDK.UseCases.SilentSigning
 {
-	public class SilentSigningUseCase : UseCase
+	public class SilentSigningUseCase : UseCaseBodyUI
 	{
 		[SerializeField] private Button _requestSilentSignButton;
 		[SerializeField] private Button _sendSilentSignTxButton;
@@ -23,16 +23,19 @@ namespace AnkrSDK.UseCases.SilentSigning
 		private IContract _gameCharacterContract;
 		private ISilentSigningSessionHandler _silentSigningSecretSaver;
 
-		public override void ActivateUseCase()
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			_ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(NetworkName.Goerli);
-			_silentSigningSecretSaver = _ankrSDK.SilentSigningHandler.SessionHandler;
-			_gameCharacterContract = _ankrSDK.GetContract(
-				WearableNFTContractInformation.GameCharacterContractAddress,
-				WearableNFTContractInformation.GameCharacterABI
-			);
+			if (isActive)
+			{
+				_ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(NetworkName.Goerli);
+				_silentSigningSecretSaver = _ankrSDK.SilentSigningHandler.SessionHandler;
+				_gameCharacterContract = _ankrSDK.GetContract(
+					WearableNFTContractInformation.GameCharacterContractAddress,
+					WearableNFTContractInformation.GameCharacterABI
+				);
+			}
 
-			base.ActivateUseCase();
+			base.SetUseCaseBodyActive(isActive);
 		}
 
 		private void UpdateSessionInfoText()

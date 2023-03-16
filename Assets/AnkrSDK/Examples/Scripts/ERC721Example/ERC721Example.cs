@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace AnkrSDK.ERC721Example
 {
-	public class ERC721Example : UseCase
+	public class ERC721Example : UseCaseBodyUI
 	{
 		private const string MintMethodName = "mint";
 		private IContract _erc721Contract;

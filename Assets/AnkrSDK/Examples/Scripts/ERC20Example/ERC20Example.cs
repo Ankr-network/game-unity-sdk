@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace AnkrSDK.ERC20Example
 {
-	public class ERC20Example : UseCase
+	public class ERC20Example : UseCaseBodyUI
 	{
 		[SerializeField] private ContractInformationSO _contractInformationSO;
 		private const string MintMethodName = "mint";

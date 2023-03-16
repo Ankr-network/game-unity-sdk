@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 namespace AnkrSDK.UseCases.LoadNFTs
 {
-	public class LoadNFTExample : UseCase
+	public class LoadNFTExample : UseCaseBodyUI
 	{
 		[SerializeField] private TMP_Text _text;
 		[SerializeField] private Button _loadNFTDataButton;
@@ -49,9 +49,9 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			_activeSessionAccount = await ankrSDKWrapper.Eth.GetDefaultAccount();
 		}
 
-		public override void ActivateUseCase()
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.ActivateUseCase();
+			base.SetUseCaseBodyActive(isActive);
 			StartUseCaseExample();
 		}
 

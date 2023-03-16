@@ -35,7 +35,7 @@ namespace AnkrSDK.WalletConnectSharp.Unity
 		public event Action OnSend;
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
-		public bool CanSendRequests => _session?.CanSendRequests ?? true;
+		public bool CanSendRequests => _session?.CanSendRequests ?? false;
 
 		public WalletConnectStatus Status => _session?.Status ?? WalletConnectStatus.Uninitialized;
 

@@ -3,7 +3,6 @@ using System.Numerics;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
-using AnkrSDK.WalletConnect2;
 using AnkrSDK.WalletConnectSharp.Core;
 using AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum;
 using Cysharp.Threading.Tasks;
@@ -19,19 +18,19 @@ namespace AnkrSDK.Mobile
 	public class EthHandler : IEthHandler
 	{
 		private readonly IWeb3 _web3Provider;
-		private readonly AnkrSDK.WalletConnect2.WalletConnect2 _walletConnect;
+		private readonly WalletConnectSharp.Unity.WalletConnect _walletConnect;
 		private readonly ISilentSigningHandler _silentSigningHandler;
 
 		public EthHandler(IWeb3 web3Provider, ISilentSigningHandler silentSigningHandler)
 		{
 			_web3Provider = web3Provider;
 			_silentSigningHandler = silentSigningHandler;
-			_walletConnect = ConnectProvider<AnkrSDK.WalletConnect2.WalletConnect2>.GetConnect();
+			_walletConnect = ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		}
 
 		public UniTask<string> WalletAddEthChain(EthChainData chainData)
 		{
-			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -41,7 +40,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<string> WalletSwitchEthChain(EthChain chain)
 		{
-			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -51,7 +50,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)
 		{
-			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -61,7 +60,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<BigInteger> EthChainId()
 		{
-			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -71,7 +70,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<string> GetDefaultAccount()
 		{
-			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
@@ -81,7 +80,7 @@ namespace AnkrSDK.Mobile
 
 		public UniTask<BigInteger> GetChainId()
 		{
-			if (_walletConnect.Status == WalletConnect2Status.Uninitialized)
+			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
