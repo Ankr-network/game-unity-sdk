@@ -58,11 +58,11 @@ namespace AnkrSDK.UseCases.UpdateNFT
 			_updateNFTButton.onClick.RemoveListener(UpdateNFT);
 		}
 
-		public override void SetUseCaseBodyActive(bool active)
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.SetUseCaseBodyActive(active);
+			base.SetUseCaseBodyActive(isActive);
 
-			if (active)
+			if (isActive)
 			{
 				_ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(ProviderURL);
 				_contract = _ankrSDKWrapper.GetContract(ContractAddress, ABI);

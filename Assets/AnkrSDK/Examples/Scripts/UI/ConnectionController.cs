@@ -106,10 +106,6 @@ namespace AnkrSDK.UI
 				switch (status)
 				{
 					case WalletConnectStatus.DisconnectedNoSession:
-						{
-							_stateText.text = "Disconnected";
-							break;
-						}
 					case WalletConnectStatus.DisconnectedSessionCached:
 						{
 							_stateText.text = "Disconnected";

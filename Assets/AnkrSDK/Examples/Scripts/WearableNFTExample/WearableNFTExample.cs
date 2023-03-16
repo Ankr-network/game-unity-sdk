@@ -77,11 +77,11 @@ namespace AnkrSDK.WearableNFTExample
 			_getHatButton.onClick.RemoveListener(GetHatCall);
 		}
 
-		public override void SetUseCaseBodyActive(bool active)
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.SetUseCaseBodyActive(active);
+			base.SetUseCaseBodyActive(isActive);
 
-			if (active)
+			if (isActive)
 			{
 				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
 				var gameCharacterABI = _abiLoader.LoadAbi("GameCharacter");
@@ -230,7 +230,6 @@ namespace AnkrSDK.WearableNFTExample
 				UpdateUILogs("ERROR : CharacterID or HatID is null");
 				return -1;
 			}
-
 			var getHatMessage = new GetHatMessage
 			{
 				CharacterId = characterID

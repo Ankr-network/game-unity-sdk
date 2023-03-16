@@ -25,9 +25,9 @@ namespace AnkrSDK.UseCases.SilentSigning
 		
 		private readonly ABIStringLoader _abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
 
-		public override void SetUseCaseBodyActive(bool active)
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			if (active)
+			if (isActive)
 			{
 				_ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(NetworkName.Goerli);
 				_silentSigningSecretSaver = _ankrSDK.SilentSigningHandler.SessionHandler;
@@ -36,7 +36,7 @@ namespace AnkrSDK.UseCases.SilentSigning
 					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
 			}
 
-			base.SetUseCaseBodyActive(active);
+			base.SetUseCaseBodyActive(isActive);
 		}
 
 		private void UpdateSessionInfoText()

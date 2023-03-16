@@ -15,9 +15,9 @@ namespace AnkrSDK.Base
 			}
 		}
 
-		public void SetUseCaseButtonsActive(bool active)
+		public void SetUseCaseButtonsActive(bool isActive)
 		{
-			_useCaseUIs.ForEach(item => item.SelectButton.gameObject.SetActive(active));
+			_useCaseUIs.ForEach(item => item.SelectButton.gameObject.SetActive(isActive));
 		}
 	}
 }

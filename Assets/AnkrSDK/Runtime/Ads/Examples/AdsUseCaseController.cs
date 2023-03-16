@@ -26,9 +26,9 @@ namespace AnkrSDK.Ads.Examples
 			_adsCallbackListener.UnsubscribeToCallbackListenerEvents();
 		}
 
-		public override void SetUseCaseBodyActive(bool active)
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.SetUseCaseBodyActive(active);
+			base.SetUseCaseBodyActive(isActive);
 			_adsCallbackListener.ActivateBillboardAds(false);
 		}
 
