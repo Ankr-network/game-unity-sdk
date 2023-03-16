@@ -49,9 +49,9 @@ namespace AnkrSDK.UseCases.LoadNFTs
 			_activeSessionAccount = await ankrSDKWrapper.Eth.GetDefaultAccount();
 		}
 
-		public override void SetUseCaseBodyActive(bool active)
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.SetUseCaseBodyActive(active);
+			base.SetUseCaseBodyActive(isActive);
 			StartUseCaseExample();
 		}
 

@@ -58,11 +58,11 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 			_checkSignatureButton.onClick.RemoveListener(CheckSignature);
 		}
 
-		public override void SetUseCaseBodyActive(bool active)
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.SetUseCaseBodyActive(active);
+			base.SetUseCaseBodyActive(isActive);
 
-			if (active)
+			if (isActive)
 			{
 				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
 				_eth = ankrSDK.Eth;

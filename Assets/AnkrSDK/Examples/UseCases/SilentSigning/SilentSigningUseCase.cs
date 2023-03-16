@@ -23,9 +23,9 @@ namespace AnkrSDK.UseCases.SilentSigning
 		private IContract _gameCharacterContract;
 		private ISilentSigningSessionHandler _silentSigningSecretSaver;
 
-		public override void SetUseCaseBodyActive(bool active)
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			if (active)
+			if (isActive)
 			{
 				_ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(NetworkName.Goerli);
 				_silentSigningSecretSaver = _ankrSDK.SilentSigningHandler.SessionHandler;
@@ -35,7 +35,7 @@ namespace AnkrSDK.UseCases.SilentSigning
 				);
 			}
 
-			base.SetUseCaseBodyActive(active);
+			base.SetUseCaseBodyActive(isActive);
 		}
 
 		private void UpdateSessionInfoText()

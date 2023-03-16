@@ -2,6 +2,6 @@
 {
 	public interface IUseCaseUIController
 	{
-		void SetUseCaseButtonsActive(bool active);
+		void SetUseCaseButtonsActive(bool isActive);
 	}
 }
