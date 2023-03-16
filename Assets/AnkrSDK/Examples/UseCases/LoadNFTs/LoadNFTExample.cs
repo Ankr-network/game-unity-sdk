@@ -2,6 +2,7 @@ using System.Numerics;
 using AnkrSDK.Base;
 using AnkrSDK.CommonUtils;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Data;
 using AnkrSDK.Data.ContractMessages.ERC721;
 using AnkrSDK.GameCharacterContract;
 using AnkrSDK.Provider;
@@ -22,6 +23,8 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		private string _activeSessionAccount;
 
 		private IContract _gameCharacterContract;
+		
+		private readonly ABIStringLoader _abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
 
 		private void Awake()
 		{
@@ -38,9 +41,9 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		private void StartUseCaseExample()
 		{
 			var ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
+			var gameCharacterABI = _abiLoader.LoadAbi("GameCharacter");
 			_gameCharacterContract = ankrSDKWrapper.GetContract(
-				WearableNFTContractInformation.GameCharacterContractAddress,
-				WearableNFTContractInformation.GameCharacterABI);
+				WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
 			StartAsync(ankrSDKWrapper).Forget();
 		}
 

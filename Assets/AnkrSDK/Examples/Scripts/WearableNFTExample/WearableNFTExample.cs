@@ -2,6 +2,7 @@ using System.Numerics;
 using AnkrSDK.Base;
 using AnkrSDK.CommonUtils;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Data;
 using AnkrSDK.Data.ContractMessages.ERC1155;
 using AnkrSDK.GameCharacterContract;
 using AnkrSDK.Provider;
@@ -35,10 +36,12 @@ namespace AnkrSDK.WearableNFTExample
 		[SerializeField] private Button _changeHatRedButton;
 		[SerializeField] private Button _getHatButton;
 
-		private IContract _gameCharacterContract; //https://github.com/mirage-xyz/mirage-smart-contract-example/blob/cdf3d72668ea8de19b9ad410f96d7409c3b2f09e/composable-nft/contracts/GameCharacter.sol
-		private IContract _gameItemContract; //https://github.com/mirage-xyz/mirage-smart-contract-example/blob/cdf3d72668ea8de19b9ad410f96d7409c3b2f09e/composable-nft/contracts/GameItem.sol
+		private IContract _gameCharacterContract; //you can find the source in the mirage-smart-contract-example repo in contracts/GameCharacter.sol
+		private IContract _gameItemContract; //you can find the source in the mirage-smart-contract-example repo in contracts/GameItem.sol
 
 		private IEthHandler _ethHandler;
+
+		private readonly ABIStringLoader _abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
 
 		private void Awake()
 		{
@@ -81,11 +84,11 @@ namespace AnkrSDK.WearableNFTExample
 			if (active)
 			{
 				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
+				var gameCharacterABI = _abiLoader.LoadAbi("GameCharacter");
 				_gameCharacterContract = ankrSDK.GetContract(
-					WearableNFTContractInformation.GameCharacterContractAddress,
-					WearableNFTContractInformation.GameCharacterABI);
-				_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
-					WearableNFTContractInformation.GameItemABI);
+					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
+				var gameItemABI = _abiLoader.LoadAbi("GameItem");
+				_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,gameItemABI);
 				_ethHandler = ankrSDK.Eth;
 			}
 		}
