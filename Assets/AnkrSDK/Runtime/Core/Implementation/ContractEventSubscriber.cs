@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
-	internal class ContractEventSubscriber : IClientRequestHeaderSupport, IContractEventSubscriber
+	public class ContractEventSubscriber : IClientRequestHeaderSupport, IContractEventSubscriber
 	{
 		private readonly string _wsUrl;
 		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
@@ -26,9 +26,23 @@ namespace AnkrSDK.Core.Implementation
 		private bool _isCancellationRequested;
 		private IWebSocket _transport;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
+		private UniTaskCompletionSource _socketOpeningCompletionSource;
 
 		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
+		public UniTask SocketOpeningTask
+		{
+			get
+			{
+				if (_socketOpeningCompletionSource == null)
+				{
+					Debug.LogError("SOcket opening completion source not found");
+					return UniTask.CompletedTask;
+				}
+
+				return _socketOpeningCompletionSource.Task;
+			}
+		}
 		public event Action OnOpenHandler;
 		public event Action<string> OnErrorHandler;
 		public event Action<WebSocketCloseCode> OnCloseHandler;
@@ -43,6 +57,7 @@ namespace AnkrSDK.Core.Implementation
 
 		public async UniTask ListenForEvents()
 		{
+			_socketOpeningCompletionSource = new UniTaskCompletionSource();
 			_isCancellationRequested = false;
 			this.SetBasicAuthenticationHeaderFromUri(new Uri(_wsUrl));
 
@@ -140,6 +155,7 @@ namespace AnkrSDK.Core.Implementation
 
 		private void OnSocketOpen()
 		{
+			_socketOpeningCompletionSource?.TrySetResult();
 			OnOpenHandler?.Invoke();
 		}
 

@@ -4,11 +4,13 @@ using AnkrSDK.CommonUtils;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Data;
 using AnkrSDK.Data.ContractMessages.ERC1155;
+using AnkrSDK.DTO;
 using AnkrSDK.GameCharacterContract;
 using AnkrSDK.Provider;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexConvertors.Extensions;
+using Nethereum.Web3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +19,7 @@ namespace AnkrSDK.WearableNFTExample
 {
 	public class WearableNFTExample : UseCaseBodyUI
 	{
+		private const int LogsBlockOffset = -10;
 		private const string TransactionGasLimit = "1000000";
 		private static readonly BigInteger BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
 		private static readonly BigInteger RedHatAddress = "0x00010000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
@@ -42,10 +45,12 @@ namespace AnkrSDK.WearableNFTExample
 		private IEthHandler _ethHandler;
 
 		private ABIStringLoader _abiLoader;
+		private Web3 _web3;
 
 		private void Awake()
 		{
 			_abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
+			_web3 = new Web3(WearableNFTContractInformation.ProviderHttpURL);
 			SubscribeButtonLinks();
 		}
 
@@ -84,12 +89,15 @@ namespace AnkrSDK.WearableNFTExample
 
 			if (isActive)
 			{
-				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
+				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
 				var gameCharacterABI = _abiLoader.LoadAbi("GameCharacter");
 				_gameCharacterContract = ankrSDK.GetContract(
 					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
 				var gameItemABI = _abiLoader.LoadAbi("GameItem");
 				_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,gameItemABI);
+				
+				
+				
 				_ethHandler = ankrSDK.Eth;
 			}
 		}
@@ -111,6 +119,13 @@ namespace AnkrSDK.WearableNFTExample
 			};
 
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			
+			var eventAwaiter = new EventAwaiter<BatchMintedEventDTO>(WearableNFTContractInformation.GameItemContractAddress, WearableNFTContractInformation.ProviderWssURL);
+			var filterRequest = new EventFilterRequest<BatchMintedEventDTO>();
+			filterRequest.AddTopic("To", defaultAccount);
+			
+			await eventAwaiter.StartWaiting(filterRequest);
+			
 			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
 				new object[]
 				{
@@ -118,6 +133,16 @@ namespace AnkrSDK.WearableNFTExample
 				});
 
 			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
+
+			var eventDto = await eventAwaiter.Task;
+			
+			UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
+		}
+
+		private async UniTask<BigInteger> GetOffsetBlockNumber(int offset)
+		{
+			var blockNumber = await _web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
+			return blockNumber + new BigInteger(offset);
 		}
 
 		private async UniTask MintCharacter()

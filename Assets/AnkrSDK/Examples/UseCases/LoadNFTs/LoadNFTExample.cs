@@ -41,7 +41,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 
 		private void StartUseCaseExample()
 		{
-			var ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
+			var ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
 			var gameCharacterABI = _abiLoader.LoadAbi("GameCharacter");
 			_gameCharacterContract = ankrSDKWrapper.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
