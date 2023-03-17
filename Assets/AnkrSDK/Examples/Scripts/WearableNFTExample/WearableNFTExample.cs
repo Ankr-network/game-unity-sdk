@@ -134,7 +134,7 @@ namespace AnkrSDK.WearableNFTExample
 
 			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
 
-			var eventDto = await eventAwaiter.Task;
+			var eventDto = await eventAwaiter.ReceiveEventTask;
 			
 			UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
 		}
@@ -150,6 +150,13 @@ namespace AnkrSDK.WearableNFTExample
 			const string safeMintMethodName = "safeMint";
 
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			
+			var eventAwaiter = new EventAwaiter<SafeMintedEventDTO>(WearableNFTContractInformation.GameCharacterContractAddress, WearableNFTContractInformation.ProviderWssURL);
+			var filterRequest = new EventFilterRequest<SafeMintedEventDTO>();
+			filterRequest.AddTopic("To", defaultAccount);
+
+			await eventAwaiter.StartWaiting(filterRequest);
+			
 			var transactionHash =
 				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[]
 				{
@@ -157,16 +164,30 @@ namespace AnkrSDK.WearableNFTExample
 				});
 
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
+
+			var eventDto = await eventAwaiter.ReceiveEventTask;
+			UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
 		}
 
 		//Cant be called by the operator
 		private async UniTask GameItemSetApproval()
 		{
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			
+			var eventAwaiter = new EventAwaiter<ApprovalForAllEventDTO>(WearableNFTContractInformation.GameItemContractAddress, WearableNFTContractInformation.ProviderWssURL);
+			var filterRequest = new EventFilterRequest<ApprovalForAllEventDTO>();
+			filterRequest.AddTopic("Account", defaultAccount);
+
+			await eventAwaiter.StartWaiting(filterRequest);
+			
 			var transactionHash = await _gameItemContract.SetApprovalForAll(
-				WearableNFTContractInformation.GameCharacterContractAddress,
+				defaultAccount,
 				true);
 
 			UpdateUILogs($"Game Items approved. Hash : {transactionHash}");
+			
+			var eventDto = await eventAwaiter.ReceiveEventTask;
+			UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
 		}
 
 		private async UniTask<BigInteger> GetCharacterBalance()
@@ -238,12 +259,21 @@ namespace AnkrSDK.WearableNFTExample
 			}
 			else
 			{
+				var eventAwaiter = new EventAwaiter<HatChangedEventDTO>(WearableNFTContractInformation.GameCharacterContractAddress, WearableNFTContractInformation.ProviderWssURL);
+				var filterRequest = new EventFilterRequest<HatChangedEventDTO>();
+				filterRequest.AddTopic("CharacterId", characterId);
+			
+				await eventAwaiter.StartWaiting(filterRequest);
+				
 				var transactionHash = await _gameCharacterContract.CallMethod(changeHatMethodName, new object[]
 				{
 					characterId, BlueHatAddress
 				}, TransactionGasLimit);
 
 				UpdateUILogs($"Hat Changed. Hash : {transactionHash}");
+				
+				var eventDto = await eventAwaiter.ReceiveEventTask;
+				UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
 			}
 		}
 

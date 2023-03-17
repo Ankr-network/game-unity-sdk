@@ -11,11 +11,11 @@ namespace AnkrSDK.Utils
 		private readonly string _contractAddress;
 		private EventFilterRequest<T> _filter;
 		private readonly IContractEventSubscriber _eventSubscriber;
-		private UniTaskCompletionSource<T> _completionSource;
+		private UniTaskCompletionSource<T> _receiveEventCompletionSource;
 		private T _resultEventDto;
 		private IContractEventSubscription _subscription;
 		
-		public UniTask<T> Task
+		public UniTask<T> ReceiveEventTask
 		{
 			get
 			{
@@ -24,12 +24,12 @@ namespace AnkrSDK.Utils
 					return UniTask.FromResult(_resultEventDto);
 				}
 				
-				if (_completionSource == null)
+				if (_receiveEventCompletionSource == null)
 				{
 					throw new InvalidOperationException("Waiting for event was not started");
 				}
 
-				return _completionSource.Task;
+				return _receiveEventCompletionSource.Task;
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace AnkrSDK.Utils
 
 		public async UniTask StartWaiting(EventFilterRequest<T> filtersRequest)
 		{
-			_completionSource = new UniTaskCompletionSource<T>();
+			_receiveEventCompletionSource = new UniTaskCompletionSource<T>();
 			_eventSubscriber.ListenForEvents().Forget();
 			await _eventSubscriber.SocketOpeningTask;
 			
@@ -56,7 +56,7 @@ namespace AnkrSDK.Utils
 			}
 			catch (Exception e)
 			{
-				_completionSource.TrySetException(e);
+				_receiveEventCompletionSource.TrySetException(e);
 			}
 			
 		}
@@ -70,11 +70,11 @@ namespace AnkrSDK.Utils
 			}
 			catch (Exception e)
 			{
-				_completionSource.TrySetException(e);
+				_receiveEventCompletionSource.TrySetException(e);
 				return;
 			}
 			
-			_completionSource.TrySetResult(eventDto);
+			_receiveEventCompletionSource.TrySetResult(eventDto);
 		}
 	}
 }
