@@ -21,12 +21,12 @@ namespace AnkrSDK.WearableNFTExample
 	{
 		private const int LogsBlockOffset = -10;
 		private const string TransactionGasLimit = "1000000";
-		private static readonly BigInteger BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
-		private static readonly BigInteger RedHatAddress = "0x00010000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
-		private static readonly BigInteger BlueShoesAddress = "0x00020000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
-		private static readonly BigInteger WhiteShoesAddress = "0x00020000000000000000000000000000000000000000000000000000000003".HexToBigInteger(false);
-		private static readonly BigInteger RedGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
-		private static readonly BigInteger WhiteGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000003".HexToBigInteger(false);
+		private static readonly BigInteger BlueHatId = "0x00010000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
+		private static readonly BigInteger RedHatId = "0x00010000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
+		private static readonly BigInteger BlueShoesId = "0x00020000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
+		private static readonly BigInteger WhiteShoesId = "0x00020000000000000000000000000000000000000000000000000000000003".HexToBigInteger(false);
+		private static readonly BigInteger RedGlassesId = "0x00030000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
+		private static readonly BigInteger WhiteGlassesId = "0x00030000000000000000000000000000000000000000000000000000000003".HexToBigInteger(false);
 
 		[SerializeField] private TMP_Text _text;
 
@@ -107,7 +107,7 @@ namespace AnkrSDK.WearableNFTExample
 			const string mintBatchMethodName = "mintBatch";
 			var itemsToMint = new[]
 			{
-				BlueHatAddress, RedHatAddress, BlueShoesAddress, WhiteShoesAddress, RedGlassesAddress, WhiteGlassesAddress
+				BlueHatId, RedHatId, BlueShoesId, WhiteShoesId, RedGlassesId, WhiteGlassesId
 			};
 
 			var itemsAmounts = new BigInteger[]
@@ -246,12 +246,12 @@ namespace AnkrSDK.WearableNFTExample
 			return false;
 		}
 
-		private async UniTask ChangeHat(BigInteger hatAddress)
+		private async UniTask ChangeHat(BigInteger newHatId)
 		{
 			const string changeHatMethodName = "changeHat";
 			var characterId = await GetCharacterTokenId();
 
-			var hasHat = await GetHasHatToken(hatAddress);
+			var hasHat = await GetHasHatToken(newHatId);
 
 			if (!hasHat || characterId.Equals(-1))
 			{
@@ -267,7 +267,7 @@ namespace AnkrSDK.WearableNFTExample
 				
 				var transactionHash = await _gameCharacterContract.CallMethod(changeHatMethodName, new object[]
 				{
-					characterId, BlueHatAddress
+					characterId, newHatId
 				}, TransactionGasLimit);
 
 				UpdateUILogs($"Hat Changed. Hash : {transactionHash}");
@@ -333,12 +333,12 @@ namespace AnkrSDK.WearableNFTExample
 
 		private async void ChangeRedHatCall()
 		{
-			await ChangeHat(RedHatAddress);
+			await ChangeHat(RedHatId);
 		}
 
 		private async void ChangeBlueHatCall()
 		{
-			await ChangeHat(BlueHatAddress);
+			await ChangeHat(BlueHatId);
 		}
 
 		private async void GetHatCall()

@@ -74,29 +74,26 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		{
 			var tokenId = await GetFirstTokenId();
 
-			if (tokenId != 0)
+			UpdateUILogs("NFTCharacter id:" + tokenId);
+
+			var hatID = await GetHat(tokenId);
+			if (hatID > 0)
 			{
-				UpdateUILogs("NFTCharacter id:" + tokenId);
+				UpdateUILogs("Has Hat id:" + hatID);
+			}
+			else
+			{
+				UpdateUILogs("Doesnt Have Hat");
+			}
 
-				var hatID = await GetHat(tokenId);
-				if (hatID > 0)
-				{
-					UpdateUILogs("Has Hat id:" + hatID);
-				}
-				else
-				{
-					UpdateUILogs("Doesnt Have Hat");
-				}
-
-				var shoesID = await GetShoes(tokenId);
-				if (shoesID > 0)
-				{
-					UpdateUILogs("Has Shoes id:" + shoesID);
-				}
-				else
-				{
-					UpdateUILogs("Doesnt Have Shoes");
-				}
+			var shoesID = await GetShoes(tokenId);
+			if (shoesID > 0)
+			{
+				UpdateUILogs("Has Shoes id:" + shoesID);
+			}
+			else
+			{
+				UpdateUILogs("Doesnt Have Shoes");
 			}
 		}
 
