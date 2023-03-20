@@ -257,7 +257,7 @@ namespace AnkrSDK.CommonUtils
 		private static UniTask<string> CallContractMethod(this IContract contract, string methodName,
 			object[] arguments)
 		{
-			return contract.CallMethod(methodName, arguments);
+			return contract.CallMethod(methodName, arguments, gas:"30000");
 		}
 	}
 }

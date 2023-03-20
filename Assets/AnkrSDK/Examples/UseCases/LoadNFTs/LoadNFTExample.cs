@@ -24,11 +24,8 @@ namespace AnkrSDK.UseCases.LoadNFTs
 
 		private IContract _gameCharacterContract;
 
-		private ABIStringLoader _abiLoader;
-
 		private void Awake()
 		{
-			_abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
 			_loadNFTDataButton.onClick.AddListener(CallGetTokenData);
 			_loadNFTMetaDataButton.onClick.AddListener(CallGetTokenMetaData);
 		}
@@ -42,7 +39,7 @@ namespace AnkrSDK.UseCases.LoadNFTs
 		private void StartUseCaseExample()
 		{
 			var ankrSDKWrapper = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
-			var gameCharacterABI = _abiLoader.LoadAbi("GameCharacter");
+			var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
 			_gameCharacterContract = ankrSDKWrapper.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
 			StartAsync(ankrSDKWrapper).Forget();

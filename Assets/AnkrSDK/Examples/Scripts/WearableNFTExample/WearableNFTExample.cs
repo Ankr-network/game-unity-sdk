@@ -9,6 +9,7 @@ using AnkrSDK.GameCharacterContract;
 using AnkrSDK.Provider;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
+using Nethereum.Contracts;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.Web3;
 using TMPro;
@@ -43,13 +44,10 @@ namespace AnkrSDK.WearableNFTExample
 		private IContract _gameItemContract; //you can find the source in the mirage-smart-contract-example repo in contracts/GameItem.sol
 
 		private IEthHandler _ethHandler;
-
-		private ABIStringLoader _abiLoader;
 		private Web3 _web3;
 
 		private void Awake()
 		{
-			_abiLoader = new ABIStringLoader("AnkrSDK/Examples/ABIs");
 			_web3 = new Web3(WearableNFTContractInformation.ProviderHttpURL);
 			SubscribeButtonLinks();
 		}
@@ -90,10 +88,10 @@ namespace AnkrSDK.WearableNFTExample
 			if (isActive)
 			{
 				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
-				var gameCharacterABI = _abiLoader.LoadAbi("GameCharacter");
+				var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
 				_gameCharacterContract = ankrSDK.GetContract(
 					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
-				var gameItemABI = _abiLoader.LoadAbi("GameItem");
+				var gameItemABI = ABIStringLoader.LoadAbi("GameItem");
 				_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,gameItemABI);
 				
 				
@@ -119,30 +117,22 @@ namespace AnkrSDK.WearableNFTExample
 			};
 
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
-			
-			var eventAwaiter = new EventAwaiter<BatchMintedEventDTO>(WearableNFTContractInformation.GameItemContractAddress, WearableNFTContractInformation.ProviderWssURL);
-			var filterRequest = new EventFilterRequest<BatchMintedEventDTO>();
-			filterRequest.AddTopic("To", defaultAccount);
-			
-			await eventAwaiter.StartWaiting(filterRequest);
-			
-			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
+			var transactionHash = await _gameItemContract.CallMethod(mintBatchMethodName,
 				new object[]
 				{
 					defaultAccount, itemsToMint, itemsAmounts, data
 				});
 
-			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
-
-			var eventDto = await eventAwaiter.ReceiveEventTask;
+			UpdateUILogs($"Game Items Minted. Transaction hash : {transactionHash}");
 			
-			UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
-		}
-
-		private async UniTask<BigInteger> GetOffsetBlockNumber(int offset)
-		{
-			var blockNumber = await _web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
-			return blockNumber + new BigInteger(offset);
+			//example of decoding events from the transaction
+			var transactionReceipt = await _ethHandler.GetTransactionReceipt(transactionHash);
+			var eventLogs = transactionReceipt.DecodeAllEvents<BatchMintedEventDTO>();
+			foreach (var eventLog in eventLogs)
+			{
+				var eventDto = eventLog.Event;
+				UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
+			}
 		}
 
 		private async UniTask MintCharacter()
@@ -165,6 +155,7 @@ namespace AnkrSDK.WearableNFTExample
 
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
 
+			//example of awaiting particular filtered event
 			var eventDto = await eventAwaiter.ReceiveEventTask;
 			UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
 		}
@@ -174,20 +165,11 @@ namespace AnkrSDK.WearableNFTExample
 		{
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			
-			var eventAwaiter = new EventAwaiter<ApprovalForAllEventDTO>(WearableNFTContractInformation.GameItemContractAddress, WearableNFTContractInformation.ProviderWssURL);
-			var filterRequest = new EventFilterRequest<ApprovalForAllEventDTO>();
-			filterRequest.AddTopic("Account", defaultAccount);
-
-			await eventAwaiter.StartWaiting(filterRequest);
-			
 			var transactionHash = await _gameItemContract.SetApprovalForAll(
 				defaultAccount,
 				true);
-
-			UpdateUILogs($"Game Items approved. Hash : {transactionHash}");
 			
-			var eventDto = await eventAwaiter.ReceiveEventTask;
-			UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
+			UpdateUILogs($"Game Items approved. Hash : {transactionHash}");
 		}
 
 		private async UniTask<BigInteger> GetCharacterBalance()

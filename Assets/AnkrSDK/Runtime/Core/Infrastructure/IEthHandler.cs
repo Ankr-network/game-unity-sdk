@@ -10,7 +10,7 @@ namespace AnkrSDK.Core.Infrastructure
 	{
 		UniTask<string> GetDefaultAccount();
 		UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash);
-		UniTask<Transaction> GetTransaction(string transactionReceipt);
+		UniTask<Transaction> GetTransaction(string transactionHash);
 		UniTask<HexBigInteger> EstimateGas(TransactionInput transactionInput);
 
 		UniTask<HexBigInteger> EstimateGas(

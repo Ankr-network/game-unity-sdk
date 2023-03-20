@@ -28,11 +28,14 @@ namespace AnkrSDK.WalletConnect.VersionShared.Models
 
         public class JsonRpcError
         {
-            [JsonProperty]
+            [JsonProperty("code")]
             private int? code;
             
-            [JsonProperty]
+            [JsonProperty("message")]
             private string message;
+
+            [JsonProperty("data")] 
+            private string data;
 
             [JsonIgnore]
             public int? Code => code;
@@ -40,6 +43,9 @@ namespace AnkrSDK.WalletConnect.VersionShared.Models
             [JsonIgnore]
             public string Message => message;
 
+            [JsonIgnore] 
+            public string Data => data;
+            
             public JsonRpcError ()
             {
                 
