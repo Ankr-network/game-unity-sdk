@@ -38,6 +38,7 @@ namespace MirageSDK.UseCases.SilentSigning
 			{
 				_sdkInstance = MirageSDKFactory.GetMirageSDKInstance(NetworkName.Goerli);
 				_silentSigningSecretSaver = _sdkInstance.SilentSigningHandler.SessionHandler;
+
 				var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
 				_gameCharacterContract = _sdkInstance.GetContract(
 					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);

@@ -24,6 +24,7 @@ namespace MirageSDK.ERC20Example
 		private void Start()
 		{
 			var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+
 			_erc20Contract =
 				sdkInstance.GetContract(
 					_contractInformationSO.ContractAddress,

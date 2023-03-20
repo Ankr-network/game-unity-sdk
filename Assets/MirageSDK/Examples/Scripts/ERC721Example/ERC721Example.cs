@@ -22,6 +22,7 @@ namespace MirageSDK.ERC721Example
 		private void Start()
 		{
 			var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(ERC721ContractInformation.ProviderURL);
+
 			_erc721Contract =
 				sdkInstance.GetContract(
 					ERC721ContractInformation.ContractAddress,

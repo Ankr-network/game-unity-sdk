@@ -120,6 +120,7 @@ namespace MirageSDK.WearableNFTExample
 			if (isActive)
 			{
 				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
+
 				var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
 				_gameCharacterContract = sdkInstance.GetContract(
 					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
