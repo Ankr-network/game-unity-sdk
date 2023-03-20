@@ -1,4 +1,4 @@
-using AnkrSDK.WalletConnectSharp.Core.Models;
+using MirageSDK.WalletConnectSharp.Core.Models;
 
 namespace Tests.Editor
 {

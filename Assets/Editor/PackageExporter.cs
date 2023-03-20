@@ -1,8 +1,8 @@
 #if UNITY_EDITOR
 using System.IO;
-using AnkrSDKImporter.Data;
-using AnkrSDKImporter.Editor;
-using AnkrSDKImporter.Editor.Utils;
+using MirageSDKImporter.Data;
+using MirageSDKImporter.Editor;
+using MirageSDKImporter.Editor.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,10 +10,10 @@ namespace Editor
 {
 	public static class PackageExporter
 	{
-		private const string ImporterPackageName = "AnkrSDKImporter";
+		private const string ImporterPackageName = "MirageSDKImporter";
 
 		// The path to the package under the `Assets/` folder.
-		private const string ImporterPackagePath = "Assets/AnkrSDKImporter";
+		private const string ImporterPackagePath = "Assets/MirageSDKImporter";
 
 		// Path to export to.
 		private const string ExportPath = "Build";
@@ -23,7 +23,7 @@ namespace Editor
 			"com.unity.nuget.newtonsoft-json", "com.cysharp.unitask"
 		};
 
-		[MenuItem("AnkrSDK/Export Ankr Importer Package")]
+		[MenuItem("MirageSDK/Export Mirage Importer Package")]
 		public static void ExportImporter()
 		{
 			ExportPackage($"{ExportPath}/{ImporterPackageName}.unitypackage", ImporterPackagePath);
@@ -38,7 +38,7 @@ namespace Editor
 					return;
 				}
 
-				var settings = Resources.Load<AnkrSDKImporterSettings>("AnkrSDKImporterSettings");
+				var settings = Resources.Load<MirageSDKImporterSettings>("MirageSDKImporterSettings");
 				foreach (var packageName in PackagesToUpdateVersion)
 				{
 					var version = packagesCollection.FindVersionFor(packageName);

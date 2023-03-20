@@ -1,0 +1,12 @@
+{
+  "name": "MirageSDK.Core",
+  "references": [
+    "MirageSDK.Data",
+    "MirageSDK.Core.Infrastructure",
+    "endel.nativewebsocket",
+    "UniTask",
+    "WalletConnectSharp",
+    "WalletConnectSharp.Core",
+    "WalletConnectSharp.NEtherium"
+  ]
+}
