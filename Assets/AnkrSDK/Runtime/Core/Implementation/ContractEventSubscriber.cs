@@ -26,7 +26,7 @@ namespace AnkrSDK.Core.Implementation
 		private bool _isCancellationRequested;
 		private IWebSocket _transport;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
-		private UniTaskCompletionSource _socketOpeningCompletionSource;
+		private UniTaskCompletionSource _transportOpeningTaskCompletionSource;
 
 		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
@@ -34,13 +34,13 @@ namespace AnkrSDK.Core.Implementation
 		{
 			get
 			{
-				if (_socketOpeningCompletionSource == null)
+				if (_transportOpeningTaskCompletionSource == null)
 				{
-					Debug.LogError("SOcket opening completion source not found");
+					Debug.LogError("Listen for events not started");
 					return UniTask.CompletedTask;
 				}
 
-				return _socketOpeningCompletionSource.Task;
+				return _transportOpeningTaskCompletionSource.Task;
 			}
 		}
 		public event Action OnOpenHandler;
@@ -57,13 +57,13 @@ namespace AnkrSDK.Core.Implementation
 
 		public async UniTask ListenForEvents()
 		{
-			_socketOpeningCompletionSource = new UniTaskCompletionSource();
+			_transportOpeningTaskCompletionSource = new UniTaskCompletionSource();
 			_isCancellationRequested = false;
 			this.SetBasicAuthenticationHeaderFromUri(new Uri(_wsUrl));
 
 			_transport = WebSocketFactory.CreateInstance(_wsUrl);
 
-			_transport.OnOpen += OnSocketOpen;
+			_transport.OnOpen += OnTransportOpen;
 			_transport.OnMessage += OnEventMessageReceived;
 			_transport.OnClose += OnClose;
 			_transport.OnError += OnError;
@@ -153,9 +153,9 @@ namespace AnkrSDK.Core.Implementation
 			return EventSubscriberHelper.RpcRequestToString(request);
 		}
 
-		private void OnSocketOpen()
+		private void OnTransportOpen()
 		{
-			_socketOpeningCompletionSource?.TrySetResult();
+			_transportOpeningTaskCompletionSource?.TrySetResult();
 			OnOpenHandler?.Invoke();
 		}
 
@@ -185,7 +185,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			_isCancellationRequested = true;
 
-			_transport.OnOpen -= OnSocketOpen;
+			_transport.OnOpen -= OnTransportOpen;
 			_transport.OnMessage -= OnEventMessageReceived;
 			_transport.OnClose -= OnClose;
 			_transport.OnError -= OnError;
