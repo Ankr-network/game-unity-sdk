@@ -15,19 +15,19 @@ namespace MirageSDK.WalletConnectSharp.Core
 	{
 		public static readonly string[] SigningMethods =
 		{
-			"eth_sendTransaction", 
-			"eth_signTransaction", 
-			"eth_sign", 
-			"eth_signTypedData", 
-			"eth_signTypedData_v1", 
-			"eth_signTypedData_v2", 
-			"eth_signTypedData_v3", 
-			"eth_signTypedData_v4", 
-			"personal_sign", 
+			"eth_sendTransaction",
+			"eth_signTransaction",
+			"eth_sign",
+			"eth_signTypedData",
+			"eth_signTypedData_v1",
+			"eth_signTypedData_v2",
+			"eth_signTypedData_v3",
+			"eth_signTypedData_v4",
+			"personal_sign",
 			"wallet_silentSendTransaction",
-			"wallet_silentSignMessage", 
-			"wallet_addEthereumChain", 
-			"wallet_switchEthereumChain", 
+			"wallet_silentSignMessage",
+			"wallet_addEthereumChain",
+			"wallet_switchEthereumChain",
 			"wallet_updateEthereumChain"
 		};
 
@@ -52,13 +52,17 @@ namespace MirageSDK.WalletConnectSharp.Core
 				{
 					if (WalletConnected)
 					{
-						return  WalletConnectStatus.WalletConnected;
+						return WalletConnectStatus.WalletConnected;
 					}
 
-					return WaitingForSessionRequestResponse ? WalletConnectStatus.SessionRequestSent : WalletConnectStatus.TransportConnected;
+					return WaitingForSessionRequestResponse
+						? WalletConnectStatus.SessionRequestSent
+						: WalletConnectStatus.TransportConnected;
 				}
 
-				return WalletConnected ? WalletConnectStatus.DisconnectedSessionCached : WalletConnectStatus.DisconnectedNoSession;
+				return WalletConnected
+					? WalletConnectStatus.DisconnectedSessionCached
+					: WalletConnectStatus.DisconnectedNoSession;
 			}
 		}
 
@@ -282,9 +286,9 @@ namespace MirageSDK.WalletConnectSharp.Core
 
 			var message = new NetworkMessage
 			{
-				Payload = JsonConvert.SerializeObject(encrypted), 
+				Payload = JsonConvert.SerializeObject(encrypted),
 				Silent = silent,
-				Topic = sendingTopic, 
+				Topic = sendingTopic,
 				Type = "pub"
 			};
 
