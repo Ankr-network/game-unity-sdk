@@ -23,12 +23,12 @@ namespace MirageSDK.ERC20Example
 
 		private void Start()
 		{
-			var ankrSDK = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+			var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
 			_erc20Contract =
-				ankrSDK.GetContract(
+				sdkInstance.GetContract(
 					_contractInformationSO.ContractAddress,
 					_contractInformationSO.ABI);
-			_eth = ankrSDK.Eth;
+			_eth = sdkInstance.Eth;
 		}
 
 		public async void CallMint()

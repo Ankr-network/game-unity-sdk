@@ -72,10 +72,10 @@ namespace MirageSDK.EventListenerExample
 
 			if (isActive)
 			{
-				var ankrSDK = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
-				_eth = ankrSDK.Eth;
+				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+				_eth = sdkInstance.Eth;
 
-				_eventSubscriber = ankrSDK.CreateSubscriber(_contractInformationSO.WsProviderURL);
+				_eventSubscriber = sdkInstance.CreateSubscriber(_contractInformationSO.WsProviderURL);
 				_eventSubscriber.ListenForEvents().Forget();
 				_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithRequest);
 			}

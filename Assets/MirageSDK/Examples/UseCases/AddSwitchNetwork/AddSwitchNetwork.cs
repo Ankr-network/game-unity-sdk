@@ -20,13 +20,13 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 		[SerializeField] private Button _bscUpdateButton;
 		[SerializeField] private Button _bscTestUpdateButton;
 
-		private IMirageSDK _ankrSDKWrapper;
+		private IMirageSDK _sdkInstance;
 		private IEthHandler _ethHandler;
 
 		private void Awake()
 		{
-			_ankrSDKWrapper = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
-			_ethHandler = _ankrSDKWrapper.Eth;
+			_sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+			_ethHandler = _sdkInstance.Eth;
 
 			_bscButton.onClick.AddListener(OpenAddSwitchBsc);
 			_bscTestButton.onClick.AddListener(OpenAddSwitchBscTestnet);

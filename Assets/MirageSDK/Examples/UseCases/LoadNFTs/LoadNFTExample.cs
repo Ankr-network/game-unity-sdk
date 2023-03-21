@@ -43,16 +43,16 @@ namespace MirageSDK.UseCases.LoadNFTs
 
 		private void StartUseCaseExample()
 		{
-			var ankrSDKWrapper = MirageSDKFactory.GetMirageSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
+			var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
 			var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
-			_gameCharacterContract = ankrSDKWrapper.GetContract(
+			_gameCharacterContract = sdkInstance.GetContract(
 				WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
-			StartAsync(ankrSDKWrapper).Forget();
+			StartAsync(sdkInstance).Forget();
 		}
 
-		private async UniTaskVoid StartAsync(IMirageSDK ankrSDKWrapper)
+		private async UniTaskVoid StartAsync(IMirageSDK sdkInstance)
 		{
-			_activeSessionAccount = await ankrSDKWrapper.Eth.GetDefaultAccount();
+			_activeSessionAccount = await sdkInstance.Eth.GetDefaultAccount();
 		}
 
 		public override void SetUseCaseBodyActive(bool isActive)

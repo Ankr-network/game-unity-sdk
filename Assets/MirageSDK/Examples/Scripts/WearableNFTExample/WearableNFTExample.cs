@@ -119,16 +119,13 @@ namespace MirageSDK.WearableNFTExample
 
 			if (isActive)
 			{
-				var ankrSDK = MirageSDKFactory.GetMirageSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
+				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
 				var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
-				_gameCharacterContract = ankrSDK.GetContract(
+				_gameCharacterContract = sdkInstance.GetContract(
 					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
 				var gameItemABI = ABIStringLoader.LoadAbi("GameItem");
-				_gameItemContract =
-					ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress, gameItemABI);
-
-
-				_ethHandler = ankrSDK.Eth;
+				_gameItemContract = sdkInstance.GetContract(WearableNFTContractInformation.GameItemContractAddress, gameItemABI);
+				_ethHandler = sdkInstance.Eth;
 			}
 		}
 

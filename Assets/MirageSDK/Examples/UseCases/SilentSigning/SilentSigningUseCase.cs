@@ -28,7 +28,7 @@ namespace MirageSDK.UseCases.SilentSigning
 		[SerializeField]
 		private TMP_Text _sessionLogs;
 
-		private IMirageSDK _ankrSDK;
+		private IMirageSDK _sdkInstance;
 		private IContract _gameCharacterContract;
 		private ISilentSigningSessionHandler _silentSigningSecretSaver;
 
@@ -36,10 +36,10 @@ namespace MirageSDK.UseCases.SilentSigning
 		{
 			if (isActive)
 			{
-				_ankrSDK = MirageSDKFactory.GetMirageSDKInstance(NetworkName.Goerli);
-				_silentSigningSecretSaver = _ankrSDK.SilentSigningHandler.SessionHandler;
+				_sdkInstance = MirageSDKFactory.GetMirageSDKInstance(NetworkName.Goerli);
+				_silentSigningSecretSaver = _sdkInstance.SilentSigningHandler.SessionHandler;
 				var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
-				_gameCharacterContract = _ankrSDK.GetContract(
+				_gameCharacterContract = _sdkInstance.GetContract(
 					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
 			}
 
@@ -81,7 +81,7 @@ namespace MirageSDK.UseCases.SilentSigning
 			Debug.Log("[SS] OnRequestSilentSignClicked");
 			UniTask.Create(async () =>
 			{
-				var result = await _ankrSDK.SilentSigningHandler.RequestSilentSign(timeStamp);
+				var result = await _sdkInstance.SilentSigningHandler.RequestSilentSign(timeStamp);
 
 				Debug.Log(result);
 
@@ -91,7 +91,7 @@ namespace MirageSDK.UseCases.SilentSigning
 
 		private void OnDisconnectSilentSignClicked()
 		{
-			_ankrSDK.SilentSigningHandler.DisconnectSilentSign().Forget();
+			_sdkInstance.SilentSigningHandler.DisconnectSilentSign().Forget();
 		}
 
 		private void OnSendSilentSignTxButtonClicked()
@@ -101,7 +101,7 @@ namespace MirageSDK.UseCases.SilentSigning
 			Debug.Log("[SS] OnSendSilentSignTxButtonClicked");
 			UniTask.Create(async () =>
 			{
-				var defaultAccount = await _ankrSDK.Eth.GetDefaultAccount();
+				var defaultAccount = await _sdkInstance.Eth.GetDefaultAccount();
 				var transactionHash =
 					await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] { defaultAccount });
 

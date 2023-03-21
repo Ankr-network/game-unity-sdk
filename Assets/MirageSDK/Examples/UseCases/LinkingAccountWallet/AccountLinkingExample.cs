@@ -64,8 +64,8 @@ namespace MirageSDK.UseCases.LinkingAccountWallet
 
 			if (isActive)
 			{
-				var ankrSDK = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
-				_eth = ankrSDK.Eth;
+				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+				_eth = sdkInstance.Eth;
 			}
 		}
 

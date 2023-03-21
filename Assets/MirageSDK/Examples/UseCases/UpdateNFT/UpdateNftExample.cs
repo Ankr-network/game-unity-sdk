@@ -46,7 +46,7 @@ namespace MirageSDK.UseCases.UpdateNFT
 		[SerializeField] private Button _updateNFTButton;
 
 		private IContract _contract;
-		private IMirageSDK _ankrSDKWrapper;
+		private IMirageSDK _sdkInstance;
 
 		private void Awake()
 		{
@@ -64,8 +64,8 @@ namespace MirageSDK.UseCases.UpdateNFT
 
 			if (isActive)
 			{
-				_ankrSDKWrapper = MirageSDKFactory.GetMirageSDKInstance(ProviderURL);
-				_contract = _ankrSDKWrapper.GetContract(ContractAddress, ABI);
+				_sdkInstance = MirageSDKFactory.GetMirageSDKInstance(ProviderURL);
+				_contract = _sdkInstance.GetContract(ContractAddress, ABI);
 			}
 		}
 
