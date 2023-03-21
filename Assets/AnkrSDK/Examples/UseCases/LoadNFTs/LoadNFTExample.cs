@@ -6,7 +6,6 @@ using AnkrSDK.Data;
 using AnkrSDK.Data.ContractMessages.ERC721;
 using AnkrSDK.GameCharacterContract;
 using AnkrSDK.Provider;
-using AnkrSDK.Utils;
 using AnkrSDK.WearableNFTExample;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -17,9 +16,15 @@ namespace AnkrSDK.UseCases.LoadNFTs
 {
 	public class LoadNFTExample : UseCaseBodyUI
 	{
-		[SerializeField] private TMP_Text _text;
-		[SerializeField] private Button _loadNFTDataButton;
-		[SerializeField] private Button _loadNFTMetaDataButton;
+		[SerializeField]
+		private TMP_Text _text;
+
+		[SerializeField]
+		private Button _loadNFTDataButton;
+
+		[SerializeField]
+		private Button _loadNFTMetaDataButton;
+
 		private string _activeSessionAccount;
 
 		private IContract _gameCharacterContract;

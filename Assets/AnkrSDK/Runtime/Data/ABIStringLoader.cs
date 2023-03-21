@@ -6,7 +6,9 @@ namespace AnkrSDK.Data
 	public static class ABIStringLoader
 	{
 		private const string RelativeABIsFolderPath = "AnkrSDK/Examples/ABIs";
-		private static string AbsoluteABIsFolderPath = Path.Combine(Application.dataPath, RelativeABIsFolderPath);
+
+		private static readonly string AbsoluteABIsFolderPath =
+			Path.Combine(Application.dataPath, RelativeABIsFolderPath);
 
 		public static string LoadAbi(string abiName)
 		{
@@ -15,7 +17,7 @@ namespace AnkrSDK.Data
 			{
 				return File.ReadAllText(filePath);
 			}
-			
+
 			Debug.LogError($"File {filePath} not found");
 
 			return "";

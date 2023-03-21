@@ -3,56 +3,51 @@ using Newtonsoft.Json;
 
 namespace AnkrSDK.WalletConnect.VersionShared.Models
 {
-    public class JsonRpcResponse : IEventSource, IErrorHolder
-    {
-        [JsonProperty]
-        private long id;
-        
-        [JsonProperty]
-        private string jsonrpc = "2.0";
+	public class JsonRpcResponse : IEventSource, IErrorHolder
+	{
+		[JsonProperty]
+		private JsonRpcError error;
 
-        [JsonProperty]
-        private JsonRpcError error;
+		[JsonProperty]
+		private long id;
 
-        [JsonIgnore]
-        public JsonRpcError Error => error;
+		[JsonProperty]
+		private string jsonrpc = "2.0";
 
-        [JsonIgnore]
-        public bool IsError => error != null;
+		[JsonIgnore]
+		public long ID => id;
 
-        [JsonIgnore]
-        public long ID => id;
+		[JsonIgnore]
+		public string JsonRPC => jsonrpc;
 
-        [JsonIgnore]
-        public string JsonRPC => jsonrpc;
+		[JsonIgnore]
+		public JsonRpcError Error => error;
 
-        public class JsonRpcError
-        {
-            [JsonProperty("code")]
-            private int? code;
-            
-            [JsonProperty("message")]
-            private string message;
+		[JsonIgnore]
+		public bool IsError => error != null;
 
-            [JsonProperty("data")] 
-            private string data;
+		[JsonIgnore]
+		public string Event => "response:" + ID;
 
-            [JsonIgnore]
-            public int? Code => code;
+		public class JsonRpcError
+		{
+			[JsonProperty("code")]
+			private int? code;
 
-            [JsonIgnore]
-            public string Message => message;
+			[JsonProperty("data")]
+			private string data;
 
-            [JsonIgnore] 
-            public string Data => data;
-            
-            public JsonRpcError ()
-            {
-                
-            }
-        }
+			[JsonProperty("message")]
+			private string message;
 
-        [JsonIgnore]
-        public string Event => "response:" + ID;
-    }
+			[JsonIgnore]
+			public int? Code => code;
+
+			[JsonIgnore]
+			public string Message => message;
+
+			[JsonIgnore]
+			public string Data => data;
+		}
+	}
 }

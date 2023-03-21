@@ -1,34 +1,42 @@
+using System;
+using System.Collections.Generic;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.Data;
-using Cysharp.Threading.Tasks;
-using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.JsonRpc.Client.RpcMessages;
-using Nethereum.JsonRpc.Client;
-using Nethereum.RPC.Eth.DTOs;
-using Nethereum.RPC.Eth.Subscriptions;
-using System.Collections.Generic;
-using System;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
+using Cysharp.Threading.Tasks;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.JsonRpc.Client;
+using Nethereum.JsonRpc.Client.RpcMessages;
+using Nethereum.RPC.Eth.DTOs;
+using Nethereum.RPC.Eth.Subscriptions;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
 	public class ContractEventSubscriber : IClientRequestHeaderSupport, IContractEventSubscriber
 	{
-		private readonly string _wsUrl;
-		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
 		private readonly EthLogsSubscriptionRequestBuilder _requestBuilder;
+		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
 		private readonly EthUnsubscribeRequestBuilder _unsubscribeRequestBuilder;
+		private readonly string _wsUrl;
 
 		private bool _isCancellationRequested;
-		private IWebSocket _transport;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
+		private IWebSocket _transport;
 		private UniTaskCompletionSource _transportOpeningTaskCompletionSource;
 
-		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
+		public ContractEventSubscriber(string wsUrl)
+		{
+			_wsUrl = wsUrl;
+			_subscribers = new Dictionary<string, IContractEventSubscription>();
+			_requestBuilder = new EthLogsSubscriptionRequestBuilder();
+			_unsubscribeRequestBuilder = new EthUnsubscribeRequestBuilder();
+		}
+
+		public Dictionary<string, string> RequestHeaders { get; set; } = new();
 
 		public UniTask SocketOpeningTask
 		{
@@ -43,17 +51,10 @@ namespace AnkrSDK.Core.Implementation
 				return _transportOpeningTaskCompletionSource.Task;
 			}
 		}
+
 		public event Action OnOpenHandler;
 		public event Action<string> OnErrorHandler;
 		public event Action<WebSocketCloseCode> OnCloseHandler;
-
-		public ContractEventSubscriber(string wsUrl)
-		{
-			_wsUrl = wsUrl;
-			_subscribers = new Dictionary<string, IContractEventSubscription>();
-			_requestBuilder = new EthLogsSubscriptionRequestBuilder();
-			_unsubscribeRequestBuilder = new EthUnsubscribeRequestBuilder();
-		}
 
 		public async UniTask ListenForEvents()
 		{
@@ -79,16 +80,6 @@ namespace AnkrSDK.Core.Implementation
 			}
 
 			Debug.Log("Listen for events socket connected");
-		}
-
-		private async UniTaskVoid Update()
-		{
-			while (!_isCancellationRequested)
-			{
-				_transport.DispatchMessageQueue();
-
-				await UniTask.Yield(PlayerLoopTiming.Update);
-			}
 		}
 
 		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterData evFilter,
@@ -130,6 +121,16 @@ namespace AnkrSDK.Core.Implementation
 			CloseConnection();
 			_subscribers.Clear();
 			_transport.Close();
+		}
+
+		private async UniTaskVoid Update()
+		{
+			while (!_isCancellationRequested)
+			{
+				_transport.DispatchMessageQueue();
+
+				await UniTask.Yield(PlayerLoopTiming.Update);
+			}
 		}
 
 		private async UniTask<string> CreateSubscription(NewFilterInput filters)
