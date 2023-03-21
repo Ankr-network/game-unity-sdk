@@ -38,22 +38,22 @@ namespace MirageSDK.Ads.Examples
 			_adsCallbackListener.UnsubscribeToCallbackListenerEvents();
 			_adsCallbackListener.SubscribeToCallbackListenerEvents();
 
-			AnkrAdvertisements.Initialize(AdsBackendInformation.TestAppId, walletAddress);
+			MirageAdvertisements.Initialize(AdsBackendInformation.TestAppId, walletAddress);
 		}
 
 		private void OnLoadFullscreenAdButtonClick()
 		{
-			AnkrAdvertisements.LoadAd(AdsBackendInformation.FullscreenAdTestUnitId);
+			MirageAdvertisements.LoadAd(AdsBackendInformation.FullscreenAdTestUnitId);
 		}
 
 		private void OnLoadImageButtonClick()
 		{
-			AnkrAdvertisements.LoadAdTexture(AdsBackendInformation.BannerAdTestUnitId);
+			MirageAdvertisements.LoadAdTexture(AdsBackendInformation.BannerAdTestUnitId);
 		}
 
 		private void OnViewButtonClick()
 		{
-			AnkrAdvertisements.ShowAd(AdsBackendInformation.FullscreenAdTestUnitId);
+			MirageAdvertisements.ShowAd(AdsBackendInformation.FullscreenAdTestUnitId);
 		}
 	}
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MirageSDK.Ads
 {
-	public static class AnkrAdvertisements
+	public static class MirageAdvertisements
 	{
 		private static INativeAds _nativeAds;
 
@@ -21,12 +21,12 @@ namespace MirageSDK.Ads
 
 		public static void Initialize(string appId, string accountAddress)
 		{
-			_nativeAds = AnkrAdsHelper.GetNativeAdsByPlatform(Application.platform);
+			_nativeAds = MirageAdsHelper.GetNativeAdsByPlatform(Application.platform);
 			_nativeAds.InitializeService(
 				appId,
-				AnkrAdsHelper.DeviceId,
+				MirageAdsHelper.DeviceId,
 				accountAddress,
-				AnkrAdsHelper.AppLanguage
+				MirageAdsHelper.AppLanguage
 			);
 			SubscribeToCallbackEvents(_nativeAds.GetEventsListener());
 		}

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MirageSDK.Ads.UI
 {
-	public abstract class AnkrAdBase : MonoBehaviour
+	public abstract class MirageAdBase : MonoBehaviour
 	{
 		private bool _isReady;
 

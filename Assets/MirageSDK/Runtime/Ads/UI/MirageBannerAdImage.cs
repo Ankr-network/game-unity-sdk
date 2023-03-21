@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace MirageSDK.Ads.UI
 {
-	public class AnkrBannerAdImage : AnkrAdBase
+	public class MirageBannerAdImage : MirageAdBase
 	{
 		[SerializeField] private Image _image;
 		[SerializeField] private Button _button;

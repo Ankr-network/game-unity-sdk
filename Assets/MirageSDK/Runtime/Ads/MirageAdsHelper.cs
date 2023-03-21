@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MirageSDK.Ads
 {
-	public static class AnkrAdsHelper
+	public static class MirageAdsHelper
 	{
 		public static INativeAds GetNativeAdsByPlatform(RuntimePlatform runtimePlatform)
 		{

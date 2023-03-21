@@ -2,6 +2,7 @@ using MirageSDK.Ads.UI;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace MirageSDK.Ads.Examples
@@ -12,8 +13,10 @@ namespace MirageSDK.Ads.Examples
 		[SerializeField] private Button _loadFullscreenAdButton;
 		[SerializeField] private Button _loadBannerAdButton;
 		[SerializeField] private Button _viewButton;
-		[SerializeField] private AnkrBannerAdImage _ankrBannerAdImage;
-		[SerializeField] private AnkrBannerAdSprite _ankrBannerAdSprite;
+		[FormerlySerializedAs("_ankrBannerAdImage")]
+		[SerializeField] private MirageBannerAdImage _mirageBannerAdImage;
+		[FormerlySerializedAs("_ankrBannerAdSprite")]
+		[SerializeField] private MirageBannerAdSprite _mirageBannerAdSprite;
 		[SerializeField] private TMP_Text _logs;
 
 		private void OnEnable()
@@ -27,30 +30,30 @@ namespace MirageSDK.Ads.Examples
 
 		public void SubscribeToCallbackListenerEvents()
 		{
-			AnkrAdvertisements.AdInitialized += CallbackListenerOnAdInitialized;
-			AnkrAdvertisements.AdClicked += CallbackListenerOnAdClicked;
-			AnkrAdvertisements.AdClosed += CallbackListenerOnAdClosed;
-			AnkrAdvertisements.AdFinished += CallbackListenerOnAdFinished;
-			AnkrAdvertisements.AdLoaded += CallbackListenerOnAdLoaded;
-			AnkrAdvertisements.AdOpened += CallbackListenerOnAdOpened;
-			AnkrAdvertisements.AdRewarded += CallbackListenerOnAdRewarded;
-			AnkrAdvertisements.AdFailedToLoad += CallbackListenerOnAdFailedToLoad;
-			AnkrAdvertisements.AdTextureReceived += CallbackListenerOnAdTextureReceived;
-			AnkrAdvertisements.Error += CallbackListenerOnError;
+			MirageAdvertisements.AdInitialized += CallbackListenerOnAdInitialized;
+			MirageAdvertisements.AdClicked += CallbackListenerOnAdClicked;
+			MirageAdvertisements.AdClosed += CallbackListenerOnAdClosed;
+			MirageAdvertisements.AdFinished += CallbackListenerOnAdFinished;
+			MirageAdvertisements.AdLoaded += CallbackListenerOnAdLoaded;
+			MirageAdvertisements.AdOpened += CallbackListenerOnAdOpened;
+			MirageAdvertisements.AdRewarded += CallbackListenerOnAdRewarded;
+			MirageAdvertisements.AdFailedToLoad += CallbackListenerOnAdFailedToLoad;
+			MirageAdvertisements.AdTextureReceived += CallbackListenerOnAdTextureReceived;
+			MirageAdvertisements.Error += CallbackListenerOnError;
 		}
 
 		public void UnsubscribeToCallbackListenerEvents()
 		{
-			AnkrAdvertisements.AdInitialized -= CallbackListenerOnAdInitialized;
-			AnkrAdvertisements.AdClicked -= CallbackListenerOnAdClicked;
-			AnkrAdvertisements.AdClosed -= CallbackListenerOnAdClosed;
-			AnkrAdvertisements.AdFinished -= CallbackListenerOnAdFinished;
-			AnkrAdvertisements.AdLoaded -= CallbackListenerOnAdLoaded;
-			AnkrAdvertisements.AdOpened -= CallbackListenerOnAdOpened;
-			AnkrAdvertisements.AdRewarded -= CallbackListenerOnAdRewarded;
-			AnkrAdvertisements.AdFailedToLoad -= CallbackListenerOnAdFailedToLoad;
-			AnkrAdvertisements.AdTextureReceived -= CallbackListenerOnAdTextureReceived;
-			AnkrAdvertisements.Error -= CallbackListenerOnError;
+			MirageAdvertisements.AdInitialized -= CallbackListenerOnAdInitialized;
+			MirageAdvertisements.AdClicked -= CallbackListenerOnAdClicked;
+			MirageAdvertisements.AdClosed -= CallbackListenerOnAdClosed;
+			MirageAdvertisements.AdFinished -= CallbackListenerOnAdFinished;
+			MirageAdvertisements.AdLoaded -= CallbackListenerOnAdLoaded;
+			MirageAdvertisements.AdOpened -= CallbackListenerOnAdOpened;
+			MirageAdvertisements.AdRewarded -= CallbackListenerOnAdRewarded;
+			MirageAdvertisements.AdFailedToLoad -= CallbackListenerOnAdFailedToLoad;
+			MirageAdvertisements.AdTextureReceived -= CallbackListenerOnAdTextureReceived;
+			MirageAdvertisements.Error -= CallbackListenerOnError;
 		}
 
 		public Button GetInitializeButton()
@@ -75,8 +78,8 @@ namespace MirageSDK.Ads.Examples
 
 		public void ActivateBillboardAds(bool isActive)
 		{
-			_ankrBannerAdImage.gameObject.SetActive(isActive);
-			_ankrBannerAdSprite.gameObject.SetActive(isActive);
+			_mirageBannerAdImage.gameObject.SetActive(isActive);
+			_mirageBannerAdSprite.gameObject.SetActive(isActive);
 		}
 
 		private bool IsMobilePlatform()
@@ -154,11 +157,11 @@ namespace MirageSDK.Ads.Examples
 			var texture = new Texture2D(2, 2);
 			texture.LoadImage(adTextureData);
 
-			_ankrBannerAdImage.SetupAd(texture);
-			_ankrBannerAdSprite.SetupAd(texture);
+			_mirageBannerAdImage.SetupAd(texture);
+			_mirageBannerAdSprite.SetupAd(texture);
 
-			_ankrBannerAdImage.TryShow();
-			_ankrBannerAdSprite.TryShow();
+			_mirageBannerAdImage.TryShow();
+			_mirageBannerAdSprite.TryShow();
 
 			ActivateNextButton(1);
 		}

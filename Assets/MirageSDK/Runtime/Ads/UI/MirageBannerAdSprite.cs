@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace MirageSDK.Ads.UI
 {
-	public class AnkrBannerAdSprite : AnkrAdBase, IPointerClickHandler
+	public class MirageBannerAdSprite : MirageAdBase, IPointerClickHandler
 	{
 		[SerializeField] private SpriteRenderer _sprite;
 		[SerializeField] private Vector2 _spriteSize;
