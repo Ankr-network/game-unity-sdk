@@ -10,7 +10,6 @@ using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Web3;
-using UnityEngine;
 using EthSendTransaction = AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum.EthSendTransaction;
 
 namespace AnkrSDK.Mobile
@@ -95,10 +94,10 @@ namespace AnkrSDK.Mobile
 				.AsUniTask();
 		}
 
-		public UniTask<Transaction> GetTransaction(string transactionReceipt)
+		public UniTask<Transaction> GetTransaction(string transactionHash)
 		{
 			var transactionByHash = new EthGetTransactionByHash(_web3Provider.Client);
-			return transactionByHash.SendRequestAsync(transactionReceipt).AsUniTask();
+			return transactionByHash.SendRequestAsync(transactionHash).AsUniTask();
 		}
 
 		public UniTask<HexBigInteger> EstimateGas(

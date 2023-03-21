@@ -3,50 +3,51 @@ using Newtonsoft.Json;
 
 namespace AnkrSDK.WalletConnect.VersionShared.Models
 {
-    public class JsonRpcResponse : IEventSource, IErrorHolder
-    {
-        [JsonProperty]
-        private long id;
-        
-        [JsonProperty]
-        private string jsonrpc = "2.0";
+	public class JsonRpcResponse : IEventSource, IErrorHolder
+	{
+		[JsonProperty]
+		private JsonRpcError error;
 
-        [JsonProperty]
-        private JsonRpcError error;
+		[JsonProperty]
+		private long id;
 
-        [JsonIgnore]
-        public JsonRpcError Error => error;
+		[JsonProperty]
+		private string jsonrpc = "2.0";
 
-        [JsonIgnore]
-        public bool IsError => error != null;
+		[JsonIgnore]
+		public long ID => id;
 
-        [JsonIgnore]
-        public long ID => id;
+		[JsonIgnore]
+		public string JsonRPC => jsonrpc;
 
-        [JsonIgnore]
-        public string JsonRPC => jsonrpc;
+		[JsonIgnore]
+		public JsonRpcError Error => error;
 
-        public class JsonRpcError
-        {
-            [JsonProperty]
-            private int? code;
-            
-            [JsonProperty]
-            private string message;
+		[JsonIgnore]
+		public bool IsError => error != null;
 
-            [JsonIgnore]
-            public int? Code => code;
+		[JsonIgnore]
+		public string Event => "response:" + ID;
 
-            [JsonIgnore]
-            public string Message => message;
+		public class JsonRpcError
+		{
+			[JsonProperty("code")]
+			private int? code;
 
-            public JsonRpcError ()
-            {
-                
-            }
-        }
+			[JsonProperty("data")]
+			private string data;
 
-        [JsonIgnore]
-        public string Event => "response:" + ID;
-    }
+			[JsonProperty("message")]
+			private string message;
+
+			[JsonIgnore]
+			public int? Code => code;
+
+			[JsonIgnore]
+			public string Message => message;
+
+			[JsonIgnore]
+			public string Data => data;
+		}
+	}
 }

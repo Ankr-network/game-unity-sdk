@@ -2,12 +2,16 @@ using System.Numerics;
 using AnkrSDK.Base;
 using AnkrSDK.CommonUtils;
 using AnkrSDK.Core.Infrastructure;
+using AnkrSDK.Data;
 using AnkrSDK.Data.ContractMessages.ERC1155;
+using AnkrSDK.DTO;
 using AnkrSDK.GameCharacterContract;
 using AnkrSDK.Provider;
-using AnkrSDK.UseCases;
 using AnkrSDK.Utils;
 using Cysharp.Threading.Tasks;
+using Nethereum.Contracts;
+using Nethereum.Hex.HexConvertors.Extensions;
+using Nethereum.Web3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,32 +20,67 @@ namespace AnkrSDK.WearableNFTExample
 {
 	public class WearableNFTExample : UseCaseBodyUI
 	{
+		private const int LogsBlockOffset = -10;
 		private const string TransactionGasLimit = "1000000";
-		private const string BlueHatAddress = "0x00010000000000000000000000000000000000000000000000000000000001";
-		private const string RedHatAddress = "0x00010000000000000000000000000000000000000000000000000000000002";
-		private const string BlueShoesAddress = "0x00020000000000000000000000000000000000000000000000000000000001";
-		private const string WhiteShoesAddress = "0x00020000000000000000000000000000000000000000000000000000000003";
-		private const string RedGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000002";
-		private const string WhiteGlassesAddress = "0x00030000000000000000000000000000000000000000000000000000000003";
 
-		[SerializeField] private TMP_Text _text;
+		private static readonly BigInteger BlueHatId =
+			"0x00010000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
 
-		[SerializeField] private Button _mintItemsButton;
-		[SerializeField] private Button _mintCharacterButton;
-		[SerializeField] private Button _getItemSetApprovalButton;
-		[SerializeField] private Button _getCharacterBalanceButton;
-		[SerializeField] private Button _getCharacterIDButton;
-		[SerializeField] private Button _changeHatBlueButton;
-		[SerializeField] private Button _changeHatRedButton;
-		[SerializeField] private Button _getHatButton;
+		private static readonly BigInteger RedHatId =
+			"0x00010000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
 
-		private IContract _gameCharacterContract; //https://github.com/mirage-xyz/mirage-smart-contract-example/blob/cdf3d72668ea8de19b9ad410f96d7409c3b2f09e/composable-nft/contracts/GameCharacter.sol
-		private IContract _gameItemContract; //https://github.com/mirage-xyz/mirage-smart-contract-example/blob/cdf3d72668ea8de19b9ad410f96d7409c3b2f09e/composable-nft/contracts/GameItem.sol
+		private static readonly BigInteger BlueShoesId =
+			"0x00020000000000000000000000000000000000000000000000000000000001".HexToBigInteger(false);
+
+		private static readonly BigInteger WhiteShoesId =
+			"0x00020000000000000000000000000000000000000000000000000000000003".HexToBigInteger(false);
+
+		private static readonly BigInteger RedGlassesId =
+			"0x00030000000000000000000000000000000000000000000000000000000002".HexToBigInteger(false);
+
+		private static readonly BigInteger WhiteGlassesId =
+			"0x00030000000000000000000000000000000000000000000000000000000003".HexToBigInteger(false);
+
+		[SerializeField]
+		private TMP_Text _text;
+
+		[SerializeField]
+		private Button _mintItemsButton;
+
+		[SerializeField]
+		private Button _mintCharacterButton;
+
+		[SerializeField]
+		private Button _getItemSetApprovalButton;
+
+		[SerializeField]
+		private Button _getCharacterBalanceButton;
+
+		[SerializeField]
+		private Button _getCharacterIDButton;
+
+		[SerializeField]
+		private Button _changeHatBlueButton;
+
+		[SerializeField]
+		private Button _changeHatRedButton;
+
+		[SerializeField]
+		private Button _getHatButton;
 
 		private IEthHandler _ethHandler;
 
+		private IContract
+			_gameCharacterContract; //you can find the source in the mirage-smart-contract-example repo in contracts/GameCharacter.sol
+
+		private IContract
+			_gameItemContract; //you can find the source in the mirage-smart-contract-example repo in contracts/GameItem.sol
+
+		private Web3 _web3;
+
 		private void Awake()
 		{
+			_web3 = new Web3(WearableNFTContractInformation.ProviderHttpURL);
 			SubscribeButtonLinks();
 		}
 
@@ -80,15 +119,17 @@ namespace AnkrSDK.WearableNFTExample
 
 			if (isActive)
 			{
-				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderURL);
+				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
+				var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
 				_gameCharacterContract = ankrSDK.GetContract(
-					WearableNFTContractInformation.GameCharacterContractAddress,
-					WearableNFTContractInformation.GameCharacterABI);
-				_gameItemContract = ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress,
-					WearableNFTContractInformation.GameItemABI);
+					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
+				var gameItemABI = ABIStringLoader.LoadAbi("GameItem");
+				_gameItemContract =
+					ankrSDK.GetContract(WearableNFTContractInformation.GameItemContractAddress, gameItemABI);
+
+
 				_ethHandler = ankrSDK.Eth;
 			}
-
 		}
 
 		private async UniTask MintItems()
@@ -96,24 +137,34 @@ namespace AnkrSDK.WearableNFTExample
 			const string mintBatchMethodName = "mintBatch";
 			var itemsToMint = new[]
 			{
-				BlueHatAddress,
-				RedHatAddress,
-				BlueShoesAddress,
-				WhiteShoesAddress,
-				RedGlassesAddress,
-				WhiteGlassesAddress
+				BlueHatId, RedHatId, BlueShoesId, WhiteShoesId, RedGlassesId, WhiteGlassesId
 			};
-			var itemsAmounts = new[]
+
+			var itemsAmounts = new BigInteger[]
 			{
 				1, 2, 3, 4, 5, 6
 			};
-			var data = new byte[] { };
+			var data = new byte[]
+			{
+			};
 
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
-			var receipt = await _gameItemContract.CallMethod(mintBatchMethodName,
-				new object[] { defaultAccount, itemsToMint, itemsAmounts, data });
+			var transactionHash = await _gameItemContract.CallMethod(mintBatchMethodName,
+				new object[]
+				{
+					defaultAccount, itemsToMint, itemsAmounts, data
+				});
 
-			UpdateUILogs($"Game Items Minted. Receipts : {receipt}");
+			UpdateUILogs($"Game Items Minted. Transaction hash : {transactionHash}");
+
+			//example of decoding events from the transaction
+			var transactionReceipt = await _ethHandler.GetTransactionReceipt(transactionHash);
+			var eventLogs = transactionReceipt.DecodeAllEvents<BatchMintedEventDTO>();
+			foreach (var eventLog in eventLogs)
+			{
+				var eventDto = eventLog.Event;
+				UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
+			}
 		}
 
 		private async UniTask MintCharacter()
@@ -121,17 +172,35 @@ namespace AnkrSDK.WearableNFTExample
 			const string safeMintMethodName = "safeMint";
 
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
+
+			var eventAwaiter = new EventAwaiter<SafeMintedEventDTO>(
+				WearableNFTContractInformation.GameCharacterContractAddress,
+				WearableNFTContractInformation.ProviderWssURL);
+			var filterRequest = new EventFilterRequest<SafeMintedEventDTO>();
+			filterRequest.AddTopic("To", defaultAccount);
+
+			await eventAwaiter.StartWaiting(filterRequest);
+
 			var transactionHash =
-				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[] { defaultAccount });
+				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[]
+				{
+					defaultAccount
+				});
 
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
+
+			//example of awaiting particular filtered event
+			var eventDto = await eventAwaiter.ReceiveEventTask;
+			UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
 		}
 
 		//Cant be called by the operator
 		private async UniTask GameItemSetApproval()
 		{
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
+
 			var transactionHash = await _gameItemContract.SetApprovalForAll(
-				WearableNFTContractInformation.GameCharacterContractAddress,
+				defaultAccount,
 				true);
 
 			UpdateUILogs($"Game Items approved. Hash : {transactionHash}");
@@ -146,13 +215,12 @@ namespace AnkrSDK.WearableNFTExample
 			return balance;
 		}
 
-		private async UniTask<BigInteger> GetBalanceERC1155(IContract contract, string id)
+		private async UniTask<BigInteger> GetBalanceERC1155(IContract contract, BigInteger id)
 		{
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
 			var balanceOfMessage = new BalanceOfMessage
 			{
-				Account = defaultAccount,
-				Id = id
+				Account = defaultAccount, Id = id
 			};
 			var balance =
 				await contract.GetData<BalanceOfMessage, BigInteger>(balanceOfMessage);
@@ -180,7 +248,7 @@ namespace AnkrSDK.WearableNFTExample
 			return -1;
 		}
 
-		private async UniTask<bool> GetHasHatToken(string tokenAddress)
+		private async UniTask<bool> GetHasHatToken(BigInteger tokenAddress)
 		{
 			var tokenBalance = await GetBalanceERC1155(_gameItemContract, tokenAddress);
 
@@ -194,12 +262,12 @@ namespace AnkrSDK.WearableNFTExample
 			return false;
 		}
 
-		private async UniTask ChangeHat(string hatAddress)
+		private async UniTask ChangeHat(BigInteger newHatId)
 		{
 			const string changeHatMethodName = "changeHat";
 			var characterId = await GetCharacterTokenId();
 
-			var hasHat = await GetHasHatToken(hatAddress);
+			var hasHat = await GetHasHatToken(newHatId);
 
 			if (!hasHat || characterId.Equals(-1))
 			{
@@ -207,26 +275,36 @@ namespace AnkrSDK.WearableNFTExample
 			}
 			else
 			{
+				var eventAwaiter = new EventAwaiter<HatChangedEventDTO>(
+					WearableNFTContractInformation.GameCharacterContractAddress,
+					WearableNFTContractInformation.ProviderWssURL);
+				var filterRequest = new EventFilterRequest<HatChangedEventDTO>();
+				filterRequest.AddTopic("CharacterId", characterId);
+
+				await eventAwaiter.StartWaiting(filterRequest);
+
 				var transactionHash = await _gameCharacterContract.CallMethod(changeHatMethodName, new object[]
 				{
-					characterId,
-					BlueHatAddress
+					characterId, newHatId
 				}, TransactionGasLimit);
 
 				UpdateUILogs($"Hat Changed. Hash : {transactionHash}");
+
+				var eventDto = await eventAwaiter.ReceiveEventTask;
+				UpdateUILogs($"Event {eventDto.GetType()} received: {eventDto}");
 			}
 		}
 
 		private async UniTask<BigInteger> GetHat()
 		{
 			var characterID = await GetCharacterTokenId();
-			
+
 			if (characterID.Equals(-1))
 			{
 				UpdateUILogs("ERROR : CharacterID or HatID is null");
 				return -1;
 			}
-			
+
 			var getHatMessage = new GetHatMessage
 			{
 				CharacterId = characterID
@@ -274,12 +352,12 @@ namespace AnkrSDK.WearableNFTExample
 
 		private async void ChangeRedHatCall()
 		{
-			await ChangeHat(RedHatAddress);
+			await ChangeHat(RedHatId);
 		}
 
 		private async void ChangeBlueHatCall()
 		{
-			await ChangeHat(BlueHatAddress);
+			await ChangeHat(BlueHatId);
 		}
 
 		private async void GetHatCall()

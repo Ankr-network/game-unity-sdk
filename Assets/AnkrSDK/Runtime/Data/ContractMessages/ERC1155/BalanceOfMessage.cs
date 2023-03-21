@@ -1,3 +1,4 @@
+using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
@@ -10,6 +11,6 @@ namespace AnkrSDK.Data.ContractMessages.ERC1155
 		public string Account { get; set; }
 		
 		[Parameter("uint256", "_id", 2)]
-		public string Id { get; set; }
+		public BigInteger Id { get; set; }
 	}
 }

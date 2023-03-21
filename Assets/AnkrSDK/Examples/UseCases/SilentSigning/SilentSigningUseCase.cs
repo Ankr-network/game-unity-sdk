@@ -13,11 +13,20 @@ namespace AnkrSDK.UseCases.SilentSigning
 {
 	public class SilentSigningUseCase : UseCaseBodyUI
 	{
-		[SerializeField] private Button _requestSilentSignButton;
-		[SerializeField] private Button _sendSilentSignTxButton;
-		[SerializeField] private Button _disconnectSilentSignButton;
-		[SerializeField] private TMP_Text _sessionInfoText;
-		[SerializeField] private TMP_Text _sessionLogs;
+		[SerializeField]
+		private Button _requestSilentSignButton;
+
+		[SerializeField]
+		private Button _sendSilentSignTxButton;
+
+		[SerializeField]
+		private Button _disconnectSilentSignButton;
+
+		[SerializeField]
+		private TMP_Text _sessionInfoText;
+
+		[SerializeField]
+		private TMP_Text _sessionLogs;
 
 		private IAnkrSDK _ankrSDK;
 		private IContract _gameCharacterContract;
@@ -29,26 +38,13 @@ namespace AnkrSDK.UseCases.SilentSigning
 			{
 				_ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(NetworkName.Goerli);
 				_silentSigningSecretSaver = _ankrSDK.SilentSigningHandler.SessionHandler;
+				var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
 				_gameCharacterContract = _ankrSDK.GetContract(
-					WearableNFTContractInformation.GameCharacterContractAddress,
-					WearableNFTContractInformation.GameCharacterABI
-				);
+					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
 			}
 
 			base.SetUseCaseBodyActive(isActive);
 		}
-
-		private void UpdateSessionInfoText()
-		{
-			var isSessionSaved = _silentSigningSecretSaver.IsSessionSaved();
-			_disconnectSilentSignButton.interactable = isSessionSaved;
-			_sendSilentSignTxButton.interactable = isSessionSaved;
-			_requestSilentSignButton.interactable = !isSessionSaved;
-			_sessionInfoText.text = isSessionSaved
-				? _silentSigningSecretSaver.GetSavedSessionSecret()
-				: "No Active session";
-		}
-
 
 		private void OnEnable()
 		{
@@ -67,6 +63,18 @@ namespace AnkrSDK.UseCases.SilentSigning
 			_sendSilentSignTxButton.onClick.RemoveAllListeners();
 		}
 
+
+		private void UpdateSessionInfoText()
+		{
+			var isSessionSaved = _silentSigningSecretSaver.IsSessionSaved();
+			_disconnectSilentSignButton.interactable = isSessionSaved;
+			_sendSilentSignTxButton.interactable = isSessionSaved;
+			_requestSilentSignButton.interactable = !isSessionSaved;
+			_sessionInfoText.text = isSessionSaved
+				? _silentSigningSecretSaver.GetSavedSessionSecret()
+				: "No Active session";
+		}
+
 		private void OnRequestSilentSignClicked()
 		{
 			var timeStamp = new DateTimeOffset(DateTime.UtcNow).AddDays(1).ToUnixTimeSeconds();
@@ -76,7 +84,7 @@ namespace AnkrSDK.UseCases.SilentSigning
 				var result = await _ankrSDK.SilentSigningHandler.RequestSilentSign(timeStamp);
 
 				Debug.Log(result);
-				
+
 				_sessionLogs.text = result + "\n" + _sessionLogs.text;
 			}).Forget();
 		}

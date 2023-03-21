@@ -1,6 +1,8 @@
 {
   "name": "AnkrSDK.Utils",
   "references": [
+    "AnkrSDK.Core",
+    "AnkrSDK.Core.Infrastructure",
     "AnkrSDK.Data",
     "UniTask",
     "WalletConnectSharp.Unity",

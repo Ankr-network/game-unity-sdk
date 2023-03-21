@@ -36,9 +36,9 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.GetTransactionReceipt(transactionHash);
 		}
 
-		public UniTask<Transaction> GetTransaction(string transactionReceipt)
+		public UniTask<Transaction> GetTransaction(string transactionHash)
 		{
-			return _webGlWrapper.GetTransaction(transactionReceipt);
+			return _webGlWrapper.GetTransaction(transactionHash);
 		}
 
 		public UniTask<HexBigInteger> EstimateGas(TransactionInput transactionInput)

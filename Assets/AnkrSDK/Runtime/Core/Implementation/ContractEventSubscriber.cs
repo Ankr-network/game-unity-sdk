@@ -1,37 +1,32 @@
+using System;
+using System.Collections.Generic;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Core.Utils;
 using AnkrSDK.Data;
-using Cysharp.Threading.Tasks;
-using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.JsonRpc.Client.RpcMessages;
-using Nethereum.JsonRpc.Client;
-using Nethereum.RPC.Eth.DTOs;
-using Nethereum.RPC.Eth.Subscriptions;
-using System.Collections.Generic;
-using System;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using AnkrSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
+using Cysharp.Threading.Tasks;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.JsonRpc.Client;
+using Nethereum.JsonRpc.Client.RpcMessages;
+using Nethereum.RPC.Eth.DTOs;
+using Nethereum.RPC.Eth.Subscriptions;
 using UnityEngine;
 
 namespace AnkrSDK.Core.Implementation
 {
-	internal class ContractEventSubscriber : IClientRequestHeaderSupport, IContractEventSubscriber
+	public class ContractEventSubscriber : IClientRequestHeaderSupport, IContractEventSubscriber
 	{
-		private readonly string _wsUrl;
-		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
 		private readonly EthLogsSubscriptionRequestBuilder _requestBuilder;
+		private readonly Dictionary<string, IContractEventSubscription> _subscribers;
 		private readonly EthUnsubscribeRequestBuilder _unsubscribeRequestBuilder;
+		private readonly string _wsUrl;
 
 		private bool _isCancellationRequested;
-		private IWebSocket _transport;
 		private UniTaskCompletionSource<RpcStreamingResponseMessage> _taskCompletionSource;
-
-		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
-
-		public event Action OnOpenHandler;
-		public event Action<string> OnErrorHandler;
-		public event Action<WebSocketCloseCode> OnCloseHandler;
+		private IWebSocket _transport;
+		private UniTaskCompletionSource _transportOpeningTaskCompletionSource;
 
 		public ContractEventSubscriber(string wsUrl)
 		{
@@ -41,14 +36,35 @@ namespace AnkrSDK.Core.Implementation
 			_unsubscribeRequestBuilder = new EthUnsubscribeRequestBuilder();
 		}
 
+		public Dictionary<string, string> RequestHeaders { get; set; } = new();
+
+		public UniTask SocketOpeningTask
+		{
+			get
+			{
+				if (_transportOpeningTaskCompletionSource == null)
+				{
+					Debug.LogError("Listen for events not started");
+					return UniTask.CompletedTask;
+				}
+
+				return _transportOpeningTaskCompletionSource.Task;
+			}
+		}
+
+		public event Action OnOpenHandler;
+		public event Action<string> OnErrorHandler;
+		public event Action<WebSocketCloseCode> OnCloseHandler;
+
 		public async UniTask ListenForEvents()
 		{
+			_transportOpeningTaskCompletionSource = new UniTaskCompletionSource();
 			_isCancellationRequested = false;
 			this.SetBasicAuthenticationHeaderFromUri(new Uri(_wsUrl));
 
 			_transport = WebSocketFactory.CreateInstance(_wsUrl);
 
-			_transport.OnOpen += OnSocketOpen;
+			_transport.OnOpen += OnTransportOpen;
 			_transport.OnMessage += OnEventMessageReceived;
 			_transport.OnClose += OnClose;
 			_transport.OnError += OnError;
@@ -64,16 +80,6 @@ namespace AnkrSDK.Core.Implementation
 			}
 
 			Debug.Log("Listen for events socket connected");
-		}
-
-		private async UniTaskVoid Update()
-		{
-			while (!_isCancellationRequested)
-			{
-				_transport.DispatchMessageQueue();
-
-				await UniTask.Yield(PlayerLoopTiming.Update);
-			}
 		}
 
 		public async UniTask<IContractEventSubscription> Subscribe<TEventType>(EventFilterData evFilter,
@@ -117,6 +123,16 @@ namespace AnkrSDK.Core.Implementation
 			_transport.Close();
 		}
 
+		private async UniTaskVoid Update()
+		{
+			while (!_isCancellationRequested)
+			{
+				_transport.DispatchMessageQueue();
+
+				await UniTask.Yield(PlayerLoopTiming.Update);
+			}
+		}
+
 		private async UniTask<string> CreateSubscription(NewFilterInput filters)
 		{
 			var rpcRequestJson = CreateRequest(filters);
@@ -138,8 +154,9 @@ namespace AnkrSDK.Core.Implementation
 			return EventSubscriberHelper.RpcRequestToString(request);
 		}
 
-		private void OnSocketOpen()
+		private void OnTransportOpen()
 		{
+			_transportOpeningTaskCompletionSource?.TrySetResult();
 			OnOpenHandler?.Invoke();
 		}
 
@@ -169,7 +186,7 @@ namespace AnkrSDK.Core.Implementation
 		{
 			_isCancellationRequested = true;
 
-			_transport.OnOpen -= OnSocketOpen;
+			_transport.OnOpen -= OnTransportOpen;
 			_transport.OnMessage -= OnEventMessageReceived;
 			_transport.OnClose -= OnClose;
 			_transport.OnError -= OnError;
