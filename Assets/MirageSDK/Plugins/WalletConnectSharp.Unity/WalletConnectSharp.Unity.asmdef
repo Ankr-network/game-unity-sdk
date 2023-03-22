@@ -1,0 +1,21 @@
+{
+    "name": "WalletConnectSharp.Unity",
+    "rootNamespace": "",
+    "references": [
+        "MirageSDK.Metadata",
+        "UniTask",
+        "WalletConnectSharp.Core",
+        "Unity.TextMeshPro",
+        "endel.nativewebsocket",
+        "WalletConnectSharp.VersionShared"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

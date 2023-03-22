@@ -1,0 +1,13 @@
+{
+  "name": "MirageSDK.MirageAPI.Editor",
+  "references": [
+    "MirageSDK.Data",
+    "MirageSDK.MirageAPI.Data",
+    "MirageSDK.MirageAPI.SCM",
+    "MirageSDK.MirageAPI.MirageID",
+    "UniTask"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

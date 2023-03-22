@@ -1,0 +1,25 @@
+{
+  "name": "MirageSDK.SilentSigning",
+  "rootNamespace": "",
+  "references": [
+    "MirageSDK.Core.Infrastructure",
+    "MirageSDK.Utils",
+    "UniTask",
+    "WalletConnectSharp.Core",
+    "WalletConnectSharp.NEtherium",
+    "WalletConnectSharp.Unity",
+    "WalletConnectSharp.VersionShared",
+    "MirageSDK.Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [
+    "WebGL"
+  ],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

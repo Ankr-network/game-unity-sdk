@@ -1,0 +1,26 @@
+{
+    "name": "MirageSDK.Tests.Editor",
+    "rootNamespace": "",
+    "references": [
+        "UnityEditor.TestRunner",
+        "WalletConnectSharp",
+        "WalletConnectSharp.Core",
+        "WalletConnectSharp.Unity"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

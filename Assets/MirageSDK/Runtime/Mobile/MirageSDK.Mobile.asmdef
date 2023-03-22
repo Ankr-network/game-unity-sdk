@@ -1,0 +1,26 @@
+{
+    "name": "MirageSDK.Mobile",
+    "rootNamespace": "",
+    "references": [
+        "MirageSDK.Core.Infrastructure",
+        "MirageSDK.Data",
+        "MirageSDK.Utils",
+        "WalletConnectSharp.Core",
+        "WalletConnectSharp.NEtherium",
+        "UniTask",
+        "WalletConnectSharp.Unity",
+        "WalletConnectSharp.VersionShared",
+        "MirageSDK.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WebGL"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

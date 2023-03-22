@@ -1,0 +1,24 @@
+{
+    "name": "MirageSDK.WebGL",
+    "references": [
+        "MirageSDK.Core.Infrastructure",
+        "MirageSDK.Data",
+        "MirageSDK.Tools",
+        "MirageSDK.Utils",
+        "UniTask",
+        "WalletConnectSharp.Core",
+        "WalletConnectSharp.VersionShared"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WebGL"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
