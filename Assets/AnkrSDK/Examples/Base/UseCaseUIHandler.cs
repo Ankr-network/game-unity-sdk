@@ -3,42 +3,21 @@ using UnityEngine;
 
 namespace AnkrSDK.Base
 {
-	public class UseCaseUIHandler : MonoBehaviour
+	public class UseCaseUIHandler : MonoBehaviour, IUseCaseUIController
 	{
 		[SerializeField] private List<UseCaseUI> _useCaseUIs;
 
 		private void Awake()
 		{
-			SubscribeToEvents();
-		}
-
-		private void OnDestroy()
-		{
-			UnsubscribeToEvents();
-		}
-		
-		private void SubscribeToEvents()
-		{
-			foreach (var useCaseUI in _useCaseUIs)
+			foreach (var useCaseUi in _useCaseUIs)
 			{
-				useCaseUI.OnButtonClickedEvent += SetButtonsActive;
-			}
-		}
-		
-		private void UnsubscribeToEvents()
-		{
-			foreach (var useCaseUI in _useCaseUIs)
-			{
-				useCaseUI.OnButtonClickedEvent -= SetButtonsActive;
+				useCaseUi.Setup(this);
 			}
 		}
 
-		private void SetButtonsActive(bool isActive)
+		public void SetUseCaseButtonsActive(bool isActive)
 		{
-			foreach (var useCaseUI in _useCaseUIs)
-			{
-				useCaseUI.SelectButton.gameObject.SetActive(isActive);
-			}
+			_useCaseUIs.ForEach(item => item.SelectButton.gameObject.SetActive(isActive));
 		}
 	}
 }

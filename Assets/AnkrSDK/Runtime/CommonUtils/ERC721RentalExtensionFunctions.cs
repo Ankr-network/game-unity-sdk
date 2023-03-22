@@ -15,7 +15,7 @@ namespace AnkrSDK.CommonUtils
 		/// <summary>
 		///     Get the actual owner of the rented token "<paramref name="tokenId" />".
 		/// </summary>
-		public static UniTask<string> PrincipalOwner(this IContract contract, string tokenId)
+		public static UniTask<string> PrincipalOwner(this IContract contract, BigInteger tokenId)
 		{
 			var principalOwnerMessage = new PrincipalOwnerMessage
 			{
@@ -28,7 +28,7 @@ namespace AnkrSDK.CommonUtils
 		/// <summary>
 		///     Get whether or not the token "<paramref name="tokenId" />" is rented.
 		/// </summary>
-		public static UniTask<bool> IsRented(this IContract contract, string tokenId)
+		public static UniTask<bool> IsRented(this IContract contract, BigInteger tokenId)
 		{
 			var isRentedMessage = new IsRentedMessage
 			{

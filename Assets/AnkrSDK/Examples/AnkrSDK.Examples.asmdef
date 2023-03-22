@@ -10,9 +10,9 @@
     "AnkrSDK.Utils",
     "AnkrSDK.WebGL",
     "MirageSDK.BlockchainUtils",
-    "WalletConnectSharp",
     "WalletConnectSharp.Core",
-    "Unity.TextMeshPro",
-    "WalletConnectSharp.Unity"
+    "WalletConnectSharp.Unity",
+    "WalletConnectSharp.VersionShared",
+    "Unity.TextMeshPro"
   ]
 }

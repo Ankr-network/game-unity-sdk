@@ -2,21 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared.Models;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
 using AnkrSDK.WalletConnectSharp.Core.Events;
 using AnkrSDK.WalletConnectSharp.Core.Events.Model;
+using AnkrSDK.WalletConnectSharp.Core.Events.Model.Ethereum;
 using AnkrSDK.WalletConnectSharp.Core.Models;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum.Types;
 using AnkrSDK.WalletConnectSharp.Core.Network;
-using AnkrSDK.WalletConnectSharp.Core.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace AnkrSDK.WalletConnectSharp.Core
 {
-	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectCommunicator
+	public class WalletConnectSession : WalletConnectProtocol, IWalletConnectGenericRequester,
+		IWalletConnectCommunicator, IWalletConnectTransitionDataProvider
 	{
 		public event Action OnSessionConnect;
 		public event Action OnSessionCreated;
@@ -38,7 +43,6 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		private long _handshakeId;
 
 		private UniTaskCompletionSource<WCSessionData> _sessionCreationCompletionSource;
-
 
 		public string URI
 		{
@@ -144,6 +148,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		public async UniTask<WCSessionData> ConnectSession()
 		{
 			var prevStatus = Status;
+
+			Connecting = true;
 			try
 			{
 				if (!TransportConnected)
@@ -268,22 +274,15 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
+		public async UniTask<BigInteger> EthChainId()
+		{
+			return new BigInteger(ChainId);
+		}
+
 		public async UniTask<string> EthPersonalSign(string address, string message)
 		{
-			if (!message.IsHex())
+			if (!HexByteConvertorExtensions.IsHex(message))
 			{
-				/*var rawMessage = Encoding.UTF8.GetBytes(message);
-				
-				var byteList = new List<byte>();
-				var bytePrefix = "0x19".HexToByteArray();
-				var textBytePrefix = Encoding.UTF8.GetBytes("Ethereum Signed Message:\n" + rawMessage.Length);
-
-				byteList.AddRange(bytePrefix);
-				byteList.AddRange(textBytePrefix);
-				byteList.AddRange(rawMessage);
-				
-				var hash = new Sha3Keccack().CalculateHash(byteList.ToArray());*/
-
 				message = "0x" + Encoding.UTF8.GetBytes(message).ToHex();
 			}
 
@@ -322,7 +321,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSendRawTransaction(string data, Encoding messageEncoding = null)
 		{
-			if (!data.IsHex())
+			if (!HexByteConvertorExtensions.IsHex(data))
 			{
 				var encoding = messageEncoding;
 				if (encoding == null)
@@ -330,7 +329,7 @@ namespace AnkrSDK.WalletConnectSharp.Core
 					encoding = Encoding.UTF8;
 				}
 
-				data = "0x" + encoding.GetBytes(data).ToHex();
+				data = "0x" + HexByteConvertorExtensions.ToHex(encoding.GetBytes(data));
 			}
 
 			var request = new EthGenericRequest<string>("eth_sendRawTransaction", data);
@@ -341,8 +340,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		}
 
 		public async UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
-			where TRequest : JsonRpcRequest
-			where TResponse : JsonRpcResponse
+			where TRequest : IIdentifiable
+			where TResponse : IErrorHolder
 		{
 			var eventCompleted = new UniTaskCompletionSource<TResponse>();
 
@@ -366,6 +365,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			OnSend?.Invoke();
 
 			return await eventCompleted.Task;
+		}
+
+		public UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
+		{
+			return Send<GenericJsonRpcRequest, GenericJsonRpcResponse>(genericRequest);
 		}
 
 		/// <summary>
@@ -432,7 +436,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 		private void SubscribeForSessionResponse()
 		{
-			void HandleSessionRequestResponse(object sender, JsonRpcResponseEvent<WCSessionRequestResponse> jsonResponse)
+			void HandleSessionRequestResponse(object sender,
+				JsonRpcResponseEvent<WCSessionRequestResponse> jsonResponse)
 			{
 				var response = jsonResponse.Response.result;
 
@@ -456,7 +461,8 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				HandleSessionUpdate(wcSessionData);
 			}
 
-			EventDelegator.ListenForGeneric<WCSessionUpdate>(WCSessionUpdate.SessionUpdateMethod, HandleSessionUpdateResponse);
+			EventDelegator.ListenForGeneric<WCSessionUpdate>(WCSessionUpdate.SessionUpdateMethod,
+				HandleSessionUpdateResponse);
 		}
 
 		private void HandleSessionUpdate(WCSessionData data)
@@ -475,18 +481,18 @@ namespace AnkrSDK.WalletConnectSharp.Core
 			if (data.chainId != null)
 			{
 				var oldChainId = ChainId;
-				ChainId = (int)data.chainId;
+				ChainId = (int) data.chainId;
 
 				if (oldChainId != ChainId)
 				{
-					OnChainChanged?.Invoke((int)data.chainId);
-					Debug.Log("ChainID Changed, New ChainID: " + (int)data.chainId);
+					OnChainChanged?.Invoke((int) data.chainId);
+					Debug.Log("ChainID Changed, New ChainID: " + (int) data.chainId);
 				}
 			}
 
 			if (data.networkId != null)
 			{
-				NetworkId = (int)data.networkId;
+				NetworkId = (int) data.networkId;
 			}
 
 			var dataAccount = data.accounts?[0];
@@ -543,6 +549,21 @@ namespace AnkrSDK.WalletConnectSharp.Core
 
 			return new SavedSession(_clientId, _handshakeId, BridgeUrl, Key, KeyRaw, PeerId, NetworkId, Accounts,
 				ChainId, DappMetadata, WalletMetadata);
+		}
+		
+		//network argument is not used because WC1 
+		//only supports Ethereum network but still kept here to 
+		//support unified interface with WC2
+		public string GetDefaultAccount(string network = null)
+		{
+			var activeSessionAccount = Accounts[0];
+
+			if (string.IsNullOrEmpty(activeSessionAccount))
+			{
+				Debug.LogError("Account is null");
+			}
+
+			return activeSessionAccount;
 		}
 	}
 }

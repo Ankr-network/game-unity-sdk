@@ -10,6 +10,12 @@ namespace AnkrSDK.CommonUtils
 	/// </summary>
 	public static class ERC721ContractFunctions
 	{
+		private static UniTask<string> CallContractMethod(this IContract contract, string methodName,
+			object[] arguments)
+		{
+			return contract.CallMethod(methodName, arguments, "30000");
+		}
+
 		#region ERC721 Standard
 
 		#region Miningless
@@ -34,7 +40,7 @@ namespace AnkrSDK.CommonUtils
 		///     Requirement:<br />
 		///     -"<paramref name="tokenId" />" must exist
 		/// </summary>
-		public static UniTask<string> OwnerOf(this IContract contract, string tokenId)
+		public static UniTask<string> OwnerOf(this IContract contract, BigInteger tokenId)
 		{
 			var ownerOfMessage = new OwnerOfMessage
 			{
@@ -133,7 +139,7 @@ namespace AnkrSDK.CommonUtils
 		///     Requirement:<br />
 		///     -"<paramref name="tokenId" />" must exist
 		/// </summary>
-		public static UniTask<bool> GetApproved(this IContract contract, string tokenId)
+		public static UniTask<bool> GetApproved(this IContract contract, BigInteger tokenId)
 		{
 			var getApprovedMessage = new GetApprovedMessage
 			{
@@ -230,7 +236,7 @@ namespace AnkrSDK.CommonUtils
 				tokenId
 			});
 		}
-		
+
 		/// <summary>
 		///     Approve or remove "<paramref name="callOperator" />" as an operator for the caller.
 		///     Operators can call <see cref="TransferFrom" /> or <see cref="SafeTransferFrom" /> for any token owned by the
@@ -253,11 +259,5 @@ namespace AnkrSDK.CommonUtils
 		#endregion
 
 		#endregion
-
-		private static UniTask<string> CallContractMethod(this IContract contract, string methodName,
-			object[] arguments)
-		{
-			return contract.CallMethod(methodName, arguments);
-		}
 	}
 }

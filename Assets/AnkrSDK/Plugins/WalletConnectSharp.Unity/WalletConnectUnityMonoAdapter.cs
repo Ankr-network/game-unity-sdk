@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 

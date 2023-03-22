@@ -1,7 +1,7 @@
 using System;
 using AnkrSDK.Data;
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnectSharp.Core.Infrastructure;
+using AnkrSDK.WalletConnect.VersionShared;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -20,7 +20,6 @@ namespace AnkrSDK.WebGL
 		private bool _initialized;
 
 		public string SettingsFilename => SettingsFilenameStr;
-		public Type SettingsType => typeof(WebGLConnectSettingsSO);
 
 		public WebGLConnect()
 		{

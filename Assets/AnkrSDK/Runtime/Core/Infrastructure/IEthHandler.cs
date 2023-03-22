@@ -1,5 +1,5 @@
 using System.Numerics;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
@@ -10,7 +10,7 @@ namespace AnkrSDK.Core.Infrastructure
 	{
 		UniTask<string> GetDefaultAccount();
 		UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash);
-		UniTask<Transaction> GetTransaction(string transactionReceipt);
+		UniTask<Transaction> GetTransaction(string transactionHash);
 		UniTask<HexBigInteger> EstimateGas(TransactionInput transactionInput);
 
 		UniTask<HexBigInteger> EstimateGas(
@@ -47,5 +47,6 @@ namespace AnkrSDK.Core.Infrastructure
 		UniTask<string> WalletAddEthChain(EthChainData chainData);
 		UniTask<string> WalletSwitchEthChain(EthChain chain);
 		UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain);
+		UniTask<BigInteger> EthChainId();
 	}
 }

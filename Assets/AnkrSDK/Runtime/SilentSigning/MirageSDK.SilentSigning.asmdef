@@ -5,10 +5,11 @@
     "AnkrSDK.Core.Infrastructure",
     "AnkrSDK.Utils",
     "UniTask",
-    "WalletConnectSharp",
     "WalletConnectSharp.Core",
     "WalletConnectSharp.NEtherium",
-    "WalletConnectSharp.Unity"
+    "WalletConnectSharp.Unity",
+    "WalletConnectSharp.VersionShared",
+    "AnkrSDK.Core"
   ],
   "includePlatforms": [],
   "excludePlatforms": [

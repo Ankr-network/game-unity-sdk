@@ -14,7 +14,7 @@ using UnityEngine.UI;
 // This example is to demonstrate how to bind the wallet into user account. 
 namespace AnkrSDK.UseCases.LinkingAccountWallet
 {
-	public class AccountLinkingExample : UseCase
+	public class AccountLinkingExample : UseCaseBodyUI
 	{
 		[SerializeField] private ContractInformationSO _contractInformationSO;
 		[Serializable]
@@ -58,12 +58,15 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 			_checkSignatureButton.onClick.RemoveListener(CheckSignature);
 		}
 
-		public override void ActivateUseCase()
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.ActivateUseCase();
+			base.SetUseCaseBodyActive(isActive);
 
-			var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
-			_eth = ankrSDK.Eth;
+			if (isActive)
+			{
+				var ankrSDK = AnkrSDKFactory.GetAnkrSDKInstance(_contractInformationSO.HttpProviderURL);
+				_eth = ankrSDK.Eth;
+			}
 		}
 
 		// function to sign the message
@@ -101,6 +104,15 @@ namespace AnkrSDK.UseCases.LinkingAccountWallet
 
 		private void UpdateUILogs(string log)
 		{
+			if (log == null)
+			{
+				log = "null string";
+			}
+			else if(log.Length == 0)
+			{
+				log = "empty string";
+			}
+			
 			_text.text += "\n" + log;
 			Debug.Log(log);
 		}

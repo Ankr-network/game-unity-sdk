@@ -1,6 +1,5 @@
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -11,8 +10,9 @@ namespace AnkrSDK.UI
 	public class DisconnectButtonController : MonoBehaviour
 	{
 		[SerializeField] private Button _button;
-	#if !UNITY_WEBGL || UNITY_EDITOR
-		private WalletConnect WalletConnect => ConnectProvider<WalletConnect>.GetConnect();
+#if !UNITY_WEBGL || UNITY_EDITOR
+		private WalletConnectSharp.Unity.WalletConnect WalletConnect =>
+			ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 
 		private void OnEnable()
 		{
@@ -48,11 +48,11 @@ namespace AnkrSDK.UI
 		{
 			WalletConnect.CloseSession().Forget();
 		}
-	#else
+#else
 		private void Awake()
 		{
 			gameObject.SetActive(false);
 		}
-	#endif
+#endif
 	}
 }

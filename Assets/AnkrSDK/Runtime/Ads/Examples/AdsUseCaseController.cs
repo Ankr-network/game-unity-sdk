@@ -1,10 +1,9 @@
 using AnkrSDK.Base;
-using AnkrSDK.UseCases;
 using UnityEngine;
 
-namespace AnkrSDK.Ads
+namespace AnkrSDK.Ads.Examples
 {
-	public class AdsUseCaseController : UseCase
+	public class AdsUseCaseController : UseCaseBodyUI
 	{
 		[SerializeField] private AdsCallbackListener _adsCallbackListener;
 
@@ -27,9 +26,9 @@ namespace AnkrSDK.Ads
 			_adsCallbackListener.UnsubscribeToCallbackListenerEvents();
 		}
 
-		public override void DeActivateUseCase()
+		public override void SetUseCaseBodyActive(bool isActive)
 		{
-			base.DeActivateUseCase();
+			base.SetUseCaseBodyActive(isActive);
 			_adsCallbackListener.ActivateBillboardAds(false);
 		}
 

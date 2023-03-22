@@ -1,6 +1,6 @@
+using System;
 using AnkrSDK.Utils;
 using AnkrSDK.WalletConnectSharp.Core;
-using AnkrSDK.WalletConnectSharp.Unity;
 using AnkrSDK.WalletConnectSharp.Unity.Events;
 using TMPro;
 using UnityEngine.Events;
@@ -11,16 +11,12 @@ namespace AnkrSDK.UI
 {
 	public class ConnectionController : MonoBehaviour
 	{
-		private const string LoginText = "Login";
-		private const string ConnectingText = "Connecting...";
-		private const string DisconnectedText = "Disconnected";
-
-		[SerializeField] private TMP_Text _connectionText;
+		[SerializeField] private TMP_Text _stateText;
 		[SerializeField] private Button _loginButton;
 		[SerializeField] private GameObject _sceneChooser;
 		[SerializeField] private ChooseWalletScreen _chooseWalletScreen;
 		[SerializeField] private AnkrSDK.Utils.UI.QRCodeImage _qrCodeImage;
-		private WalletConnect WalletConnect => ConnectProvider<WalletConnect>.GetConnect();
+		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		private async void Start()
 		{
 			if (Application.isEditor || Application.platform != RuntimePlatform.WebGLPlayer)
@@ -37,10 +33,9 @@ namespace AnkrSDK.UI
 			}
 			else
 			{
-				_connectionText.text = LoginText;
 				_sceneChooser.SetActive(false);
 				_loginButton.onClick.AddListener(GetLoginAction());
-				_loginButton.gameObject.SetActive(true);
+				_loginButton.gameObject.SetActive(false);
 				SubscribeToWalletEvents();
 				UpdateLoginButtonState();
 			}
@@ -50,14 +45,12 @@ namespace AnkrSDK.UI
 		{
 			if (!Application.isEditor)
 			{
-				if (Application.platform == RuntimePlatform.IPhonePlayer)
+				switch (Application.platform)
 				{
-					return () => _chooseWalletScreen.Activate(WalletConnect.OpenDeepLink);
-				}
-
-				if (Application.platform == RuntimePlatform.Android)
-				{
-					return WalletConnect.OpenDeepLink;
+					case RuntimePlatform.IPhonePlayer:
+						return () => _chooseWalletScreen.Activate(WalletConnect.OpenDeepLink);
+					case RuntimePlatform.Android:
+						return WalletConnect.OpenDeepLink;
 				}
 			}
 			
@@ -91,6 +84,7 @@ namespace AnkrSDK.UI
 		private void UpdateLoginButtonState()
 		{
 			var status = WalletConnect.Status;
+			
 			if (status == WalletConnectStatus.Uninitialized)
 			{
 				return;
@@ -99,26 +93,35 @@ namespace AnkrSDK.UI
 			var walletConnected = status == WalletConnectStatus.WalletConnected;
 			_sceneChooser.SetActive(walletConnected);
 			_chooseWalletScreen.SetActive(!walletConnected);
-			_loginButton.gameObject.SetActive(!walletConnected);
+
+			bool waitingForLoginInput = status == WalletConnectStatus.SessionRequestSent;
+			
+			_loginButton.gameObject.SetActive(waitingForLoginInput);
+			_stateText.gameObject.SetActive(!waitingForLoginInput && !walletConnected);
+			
 			_qrCodeImage.SetImageActive(false);
 
-			if (!walletConnected)
+			if (!waitingForLoginInput)
 			{
-				var waitingForUserPrompt = status == WalletConnectStatus.SessionRequestSent;
-				if (waitingForUserPrompt)
+				switch (status)
 				{
-					_connectionText.text = LoginText;
+					case WalletConnectStatus.DisconnectedNoSession:
+					case WalletConnectStatus.DisconnectedSessionCached:
+						{
+							_stateText.text = "Disconnected";
+							break;
+						}
+					case WalletConnectStatus.TransportConnected:
+						{
+							_stateText.text = "Transport Connected";
+							break;
+						}
+					case WalletConnectStatus.WalletConnected:
+						{
+							_stateText.text = "Connected";
+							break;
+						}
 				}
-				else if(WalletConnect.Connecting)
-				{
-					_connectionText.text = ConnectingText;
-				}
-				else
-				{
-					_connectionText.text = DisconnectedText;
-				}
-
-				_loginButton.interactable = waitingForUserPrompt;
 			}
 		}
 	}

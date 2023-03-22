@@ -1,4 +1,4 @@
-namespace AnkrSDK.Ads
+namespace AnkrSDK.Ads.Examples
 {
 	public static class AdsBackendInformation
 	{

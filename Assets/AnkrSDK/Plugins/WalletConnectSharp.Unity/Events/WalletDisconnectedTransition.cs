@@ -1,11 +1,12 @@
+using AnkrSDK.WalletConnect.VersionShared.Infrastructure;
 using AnkrSDK.WalletConnectSharp.Core;
 
 namespace AnkrSDK.WalletConnectSharp.Unity.Events
 {
     public class WalletDisconnectedTransition : WalletConnectTransitionBase
     {
-        public WalletDisconnectedTransition(WalletConnectSession session, WalletConnectStatus previousStatus, WalletConnectStatus newStatus)
-            : base(session, previousStatus, newStatus)
+        public WalletDisconnectedTransition(IWalletConnectTransitionDataProvider transitionDataProvider, WalletConnectStatus previousStatus, WalletConnectStatus newStatus)
+            : base(transitionDataProvider, previousStatus, newStatus)
         {
             
         }

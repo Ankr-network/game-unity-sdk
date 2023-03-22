@@ -1,4 +1,7 @@
 using System;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
+using AnkrSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -10,11 +13,11 @@ namespace AnkrSDK.UI
 		[SerializeField] private GameObject _loadingText;
 		[SerializeField] private WalletButton _buttonPrefab;
 
-		private Action<AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.AppEntry> ClickAction { get; set; }
+		private Action<WalletEntry> ClickAction { get; set; }
 
 		private bool _isActivated;
 
-		public void Activate(Action<AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.AppEntry> action)
+		public void Activate(Action<WalletEntry> action)
 		{
 			ClickAction = action;
 			gameObject.SetActive(true);
@@ -25,7 +28,7 @@ namespace AnkrSDK.UI
 		private async UniTask BuildWalletButtons()
 		{
 			_loadingText.SetActive(true);
-			var fetchWalletList = await WalletConnectSharp.Unity.Utils.WalletDownloadHelper.FetchWalletList(true);
+			var fetchWalletList = await WalletDownloadHelper.FetchWalletList(true);
 
 			foreach (var kvp in fetchWalletList)
 			{

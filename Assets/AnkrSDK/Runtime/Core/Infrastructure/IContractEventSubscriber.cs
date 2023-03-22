@@ -11,6 +11,8 @@ namespace AnkrSDK.Core.Infrastructure
 		event Action OnOpenHandler;
 		event Action<string> OnErrorHandler;
 		event Action<WebSocketCloseCode> OnCloseHandler;
+		
+		UniTask SocketOpeningTask { get; }
 
 		UniTask ListenForEvents();
 		void StopListen();

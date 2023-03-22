@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using AnkrSDK.Core.Infrastructure;
 using AnkrSDK.Utils;
-using AnkrSDK.WalletConnectSharp.Core.Models.Ethereum;
+using AnkrSDK.WalletConnect.VersionShared.Models.Ethereum;
 using AnkrSDK.WebGL.DTO;
 using AnkrSDK.WebGL.Extensions;
 using Cysharp.Threading.Tasks;
@@ -36,9 +36,9 @@ namespace AnkrSDK.WebGL.Implementation
 			return _webGlWrapper.GetTransactionReceipt(transactionHash);
 		}
 
-		public UniTask<Transaction> GetTransaction(string transactionReceipt)
+		public UniTask<Transaction> GetTransaction(string transactionHash)
 		{
-			return _webGlWrapper.GetTransaction(transactionReceipt);
+			return _webGlWrapper.GetTransaction(transactionHash);
 		}
 
 		public UniTask<HexBigInteger> EstimateGas(TransactionInput transactionInput)
@@ -58,8 +58,10 @@ namespace AnkrSDK.WebGL.Implementation
 		{
 			var transactionData = new TransactionData
 			{
-				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
+				from = from, to = to, data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 
 			return _webGlWrapper.EstimateGas(transactionData);
@@ -81,8 +83,10 @@ namespace AnkrSDK.WebGL.Implementation
 		{
 			var transactionData = new TransactionData
 			{
-				from = from, to = to, data = data, value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
-				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null, gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
+				from = from, to = to, data = data,
+				value = value != null ? AnkrSDKHelper.StringToBigInteger(value) : null,
+				gas = gas != null ? AnkrSDKHelper.StringToBigInteger(gas) : null,
+				gasPrice = gasPrice != null ? AnkrSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 
 			return _webGlWrapper.SendTransaction(transactionData);
@@ -124,6 +128,11 @@ namespace AnkrSDK.WebGL.Implementation
 		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)
 		{
 			throw new NotImplementedException();
+		}
+
+		public UniTask<BigInteger> EthChainId()
+		{
+			return _webGlWrapper.GetChainId();
 		}
 
 		public UniTask<BigInteger> GetBlockNumber()

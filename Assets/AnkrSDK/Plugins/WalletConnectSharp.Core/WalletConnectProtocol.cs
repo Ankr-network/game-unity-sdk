@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AnkrSDK.WalletConnect.VersionShared.Models;
 using AnkrSDK.WalletConnectSharp.Core.Events;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
@@ -37,10 +38,11 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		protected string Key;
 		protected byte[] KeyRaw;
 		protected readonly List<string> ActiveTopics = new List<string>();
-
+		public bool CanSendRequests => Status == WalletConnectStatus.WalletConnected;
 		public event EventHandler<WalletConnectProtocol> OnTransportConnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportDisconnect;
 		public event EventHandler<WalletConnectProtocol> OnTransportOpen;
+		public bool ConnectionPending => Status != WalletConnectStatus.WalletConnected;
 
 		public WalletConnectStatus Status
 		{
@@ -50,13 +52,17 @@ namespace AnkrSDK.WalletConnectSharp.Core
 				{
 					if (WalletConnected)
 					{
-						return  WalletConnectStatus.WalletConnected;
+						return WalletConnectStatus.WalletConnected;
 					}
 
-					return WaitingForSessionRequestResponse ? WalletConnectStatus.SessionRequestSent : WalletConnectStatus.TransportConnected;
+					return WaitingForSessionRequestResponse
+						? WalletConnectStatus.SessionRequestSent
+						: WalletConnectStatus.TransportConnected;
 				}
 
-				return WalletConnected ? WalletConnectStatus.DisconnectedSessionCached : WalletConnectStatus.DisconnectedNoSession;
+				return WalletConnected
+					? WalletConnectStatus.DisconnectedSessionCached
+					: WalletConnectStatus.DisconnectedNoSession;
 			}
 		}
 
@@ -70,14 +76,20 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		protected bool WaitingForSessionRequestResponse { get; set; }
 		protected bool WalletConnected { get; set; }
 		private readonly ICipher _cipher;
-		
+
 		/// <summary>
-		/// Create a new WalletConnectProtocol object using a SavedSession as the session data. This will effectively resume
-		/// the session, as long as the session data is valid
+		///     Create a new WalletConnectProtocol object using a SavedSession as the session data. This will effectively resume
+		///     the session, as long as the session data is valid
 		/// </summary>
 		/// <param name="savedSession">The SavedSession data to use. Cannot be null</param>
-		/// <param name="transport">The transport interface to use for sending/receiving messages, null will result in the default transport being used</param>
-		/// <param name="cipher">The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being used</param>
+		/// <param name="transport">
+		///     The transport interface to use for sending/receiving messages, null will result in the default
+		///     transport being used
+		/// </param>
+		/// <param name="cipher">
+		///     The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being
+		///     used
+		/// </param>
 		/// <param name="eventDelegator">The EventDelegator class to use, null will result in the default being used</param>
 		/// <exception cref="ArgumentException">If a null SavedSession object was given</exception>
 		protected WalletConnectProtocol(SavedSession savedSession, ITransport transport = null,
@@ -123,11 +135,17 @@ namespace AnkrSDK.WalletConnectSharp.Core
 		}
 
 		/// <summary>
-		/// Create a new WalletConnectProtocol object and create a new dApp session.
+		///     Create a new WalletConnectProtocol object and create a new dApp session.
 		/// </summary>
 		/// <param name="clientMeta">The metadata to send to wallets</param>
-		/// <param name="transport">The transport interface to use for sending/receiving messages, null will result in the default transport being used</param>
-		/// <param name="cipher">The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being used</param>
+		/// <param name="transport">
+		///     The transport interface to use for sending/receiving messages, null will result in the default
+		///     transport being used
+		/// </param>
+		/// <param name="cipher">
+		///     The cipher to use for encrypting and decrypting payload data, null will result in AESCipher being
+		///     used
+		/// </param>
 		/// <param name="chainId">The chainId this dApp is using</param>
 		/// <param name="bridgeUrl">The bridgeURL to use to communicate with the wallet</param>
 		/// <param name="eventDelegator">The EventDelegator class to use, null will result in the default being used</param>

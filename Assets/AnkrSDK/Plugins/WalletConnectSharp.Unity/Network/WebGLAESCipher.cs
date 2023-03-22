@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using AnkrSDK.WalletConnectSharp.Core.Utils;
+using AnkrSDK.WalletConnect.VersionShared.Utils;
 using AnkrSDK.WalletConnectSharp.Core.Models;
 using AnkrSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;

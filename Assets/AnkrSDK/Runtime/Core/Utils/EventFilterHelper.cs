@@ -38,8 +38,12 @@ namespace AnkrSDK.Core.Utils
 
 			var eventABI = ABITypedRegistry.GetEvent<TEvDto>();
 
+			object[] firstTopicValue = values[0];
+			object secondTopicValue = values.Length > 1 ? values[1] : null;
+			object thirdTopicValue = values.Length > 2 ? values[2] : null;
+
 			ethFilterInput.Topics = eventABI.GetTopicBuilder()
-				.GetTopics(values[0], values[1], values[2]);
+				.GetTopics(firstTopicValue, secondTopicValue, thirdTopicValue);
 
 			return ethFilterInput;
 		}

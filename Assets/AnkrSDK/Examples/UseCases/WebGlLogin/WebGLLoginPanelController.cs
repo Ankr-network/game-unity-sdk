@@ -35,7 +35,7 @@ namespace AnkrSDK.Examples.UseCases.WebGlLogin
 			_networks = EthereumNetworks.AllAddedNetworks.Select(networkName => networkName.ToString()).ToList();
 			_dropdown.AddOptions(_networks);
 			_dropdown.onValueChanged.AddListener(OnChangeNetwork);
-			_dropdown.value = _networks.FindIndex(network => network == NetworkName.Rinkeby.ToString());
+			_dropdown.value = _networks.FindIndex(network => network == NetworkName.Goerli.ToString());
 		}
 		
 		private void SetUpButtons()

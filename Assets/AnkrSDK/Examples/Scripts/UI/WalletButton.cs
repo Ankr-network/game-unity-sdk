@@ -1,4 +1,5 @@
 using System;
+using AnkrSDK.WalletConnect.VersionShared.Models.DeepLink;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ namespace AnkrSDK.UI
 		[SerializeField] private Image _image;
 		[SerializeField] private TMP_Text _text;
 		[SerializeField] private Button _button;
-		public void Setup(AnkrSDK.WalletConnectSharp.Unity.Models.DeepLink.AppEntry walletData)
+		public void Setup(WalletEntry walletData)
 		{
 			_image.sprite = walletData.MediumIcon;
 			_text.text = walletData.name;

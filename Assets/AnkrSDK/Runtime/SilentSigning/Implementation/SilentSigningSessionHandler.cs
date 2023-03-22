@@ -2,7 +2,7 @@ using System;
 using AnkrSDK.Core.Infrastructure;
 using UnityEngine;
 
-namespace AnkrSDK.SilentSigning
+namespace AnkrSDK.SilentSigning.Implementation
 {
 	public class SilentSigningSessionHandler : ISilentSigningSessionHandler
 	{
