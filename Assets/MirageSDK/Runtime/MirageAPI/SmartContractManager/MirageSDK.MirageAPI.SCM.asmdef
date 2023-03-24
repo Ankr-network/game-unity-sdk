@@ -1,0 +1,7 @@
+{
+  "name": "MirageSDK.MirageAPI.SCM",
+  "references": [
+    "UniTask",
+    "MirageSDK.Utils"
+  ]
+}

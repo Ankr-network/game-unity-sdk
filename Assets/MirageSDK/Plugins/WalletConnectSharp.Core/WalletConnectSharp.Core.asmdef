@@ -1,0 +1,17 @@
+{
+    "name": "WalletConnectSharp.Core",
+    "rootNamespace": "",
+    "references": [
+        "UniTask",
+        "WalletConnectSharp.VersionShared"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

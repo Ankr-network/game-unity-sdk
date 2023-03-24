@@ -1,0 +1,12 @@
+{
+  "name": "MirageSDK.Utils",
+  "references": [
+    "MirageSDK.Core",
+    "MirageSDK.Core.Infrastructure",
+    "MirageSDK.Data",
+    "UniTask",
+    "WalletConnectSharp.Unity",
+    "WalletConnectSharp.Core",
+    "WalletConnectSharp.VersionShared"
+  ]
+}

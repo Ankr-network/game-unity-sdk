@@ -1,13 +1,16 @@
 #if UNITY_EDITOR
-using AnkrSDK.WalletConnectSharp.Unity.Utils;
+using MirageSDK.WalletConnectSharp.Unity.Utils;
 using UnityEditor;
 
-public static class SessionMenuEditor
+namespace Editor
 {
-	[MenuItem("AnkrSDK/Clear Session")]
-	public static void ClearSession()
+	public static class SessionMenuEditor
 	{
-		SessionSaveHandler.ClearSession();
+		[MenuItem("MirageSDK/Clear Session")]
+		public static void ClearSession()
+		{
+			SessionSaveHandler.ClearSession();
+		}
 	}
 }
 

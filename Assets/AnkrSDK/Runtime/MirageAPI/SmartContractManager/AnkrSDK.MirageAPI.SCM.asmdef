@@ -1,7 +1,0 @@
-{
-  "name": "AnkrSDK.MirageAPI.SCM",
-  "references": [
-    "UniTask",
-    "AnkrSDK.Utils"
-  ]
-}

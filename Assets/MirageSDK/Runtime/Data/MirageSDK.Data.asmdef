@@ -1,0 +1,7 @@
+{
+  "name": "MirageSDK.Data",
+  "references": [
+    "WalletConnectSharp.Core",
+    "WalletConnectSharp.VersionShared"
+  ]
+}
