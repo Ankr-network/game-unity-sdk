@@ -23,7 +23,10 @@ namespace MirageSDK.EventListenerExample
 	/// 	</summary>
 	public class EventListenerExample : UseCaseBodyUI
 	{
-		[SerializeField] private ContractInformationSO _contractInformationSO;
+		[SerializeField] 
+		private ContractInformationSO _contractInformationSO;
+		[SerializeField]
+		private ProviderInformationSO _providerInformationSO;
 		private IContractEventSubscriber _eventSubscriber;
 		private IContractEventSubscription _subscription;
 		private IEthHandler _eth;
@@ -72,10 +75,10 @@ namespace MirageSDK.EventListenerExample
 
 			if (isActive)
 			{
-				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_providerInformationSO.HttpProviderURL);
 				_eth = sdkInstance.Eth;
 
-				_eventSubscriber = sdkInstance.CreateSubscriber(_contractInformationSO.WsProviderURL);
+				_eventSubscriber = sdkInstance.CreateSubscriber(_providerInformationSO.WsProviderURL);
 				_eventSubscriber.ListenForEvents().Forget();
 				_eventSubscriber.OnOpenHandler += UniTask.Action(SubscribeWithRequest);
 			}

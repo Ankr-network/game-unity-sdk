@@ -10,7 +10,7 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 {
 	public class AddSwitchNetwork : UseCaseBodyUI
 	{
-		[SerializeField] private ContractInformationSO _contractInformationSO;
+		[SerializeField] private ProviderInformationSO _providerInformationSO;
 		
 		[SerializeField] private TMP_Text _logText;
 
@@ -25,7 +25,7 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 
 		private void Awake()
 		{
-			_sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+			_sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_providerInformationSO.HttpProviderURL);
 			_ethHandler = _sdkInstance.Eth;
 
 			_bscButton.onClick.AddListener(OpenAddSwitchBsc);

@@ -68,6 +68,15 @@ namespace MirageSDK.WearableNFTExample
 		[SerializeField]
 		private Button _getHatButton;
 
+		[SerializeField]
+		private ContractInformationSO _gameItemContractInfo;
+
+		[SerializeField]
+		private ContractInformationSO _gameCharacterContractInfo;
+
+		[SerializeField]
+		private ProviderInformationSO _providerInfo;
+
 		private IEthHandler _ethHandler;
 
 		private IContract
@@ -80,7 +89,7 @@ namespace MirageSDK.WearableNFTExample
 
 		private void Awake()
 		{
-			_web3 = new Web3(WearableNFTContractInformation.ProviderHttpURL);
+			_web3 = new Web3(_providerInfo.HttpProviderURL);
 			SubscribeButtonLinks();
 		}
 
@@ -119,13 +128,11 @@ namespace MirageSDK.WearableNFTExample
 
 			if (isActive)
 			{
-				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
+				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_providerInfo.HttpProviderURL);
 
-				var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
-				_gameCharacterContract = sdkInstance.GetContract(
-					WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
-				var gameItemABI = ABIStringLoader.LoadAbi("GameItem");
-				_gameItemContract = sdkInstance.GetContract(WearableNFTContractInformation.GameItemContractAddress, gameItemABI);
+				_gameCharacterContract = sdkInstance.GetContract(_gameCharacterContractInfo);
+				
+				_gameItemContract = sdkInstance.GetContract(_gameItemContractInfo);
 				_ethHandler = sdkInstance.Eth;
 			}
 		}
@@ -172,8 +179,8 @@ namespace MirageSDK.WearableNFTExample
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
 
 			var eventAwaiter = new EventAwaiter<SafeMintedEventDTO>(
-				WearableNFTContractInformation.GameCharacterContractAddress,
-				WearableNFTContractInformation.ProviderWssURL);
+				_gameCharacterContractInfo.ContractAddress,
+				_providerInfo.WsProviderURL);
 			var filterRequest = new EventFilterRequest<SafeMintedEventDTO>();
 			filterRequest.AddTopic("To", defaultAccount);
 
@@ -274,8 +281,8 @@ namespace MirageSDK.WearableNFTExample
 			else
 			{
 				var eventAwaiter = new EventAwaiter<HatChangedEventDTO>(
-					WearableNFTContractInformation.GameCharacterContractAddress,
-					WearableNFTContractInformation.ProviderWssURL);
+					_gameCharacterContractInfo.ContractAddress,
+					_providerInfo.WsProviderURL);
 				var filterRequest = new EventFilterRequest<HatChangedEventDTO>();
 				filterRequest.AddTopic("CharacterId", characterId);
 

@@ -16,19 +16,22 @@ namespace MirageSDK.ERC20Example
 {
 	public class ERC20Example : UseCaseBodyUI
 	{
-		[SerializeField] private ContractInformationSO _contractInformationSO;
+		[SerializeField] 
+		private ContractInformationSO _contractInformationSO;
+
+		[SerializeField]
+		private ProviderInformationSO _providerInfo;
+		
 		private const string MintMethodName = "mint";
 		private IContract _erc20Contract;
 		private IEthHandler _eth;
 
 		private void Start()
 		{
-			var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+			var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_providerInfo.HttpProviderURL);
 
 			_erc20Contract =
-				sdkInstance.GetContract(
-					_contractInformationSO.ContractAddress,
-					_contractInformationSO.ABI);
+				sdkInstance.GetContract(_contractInformationSO);
 			_eth = sdkInstance.Eth;
 		}
 
