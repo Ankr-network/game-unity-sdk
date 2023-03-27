@@ -7,7 +7,9 @@ using System.Linq;
 using System;
 using System.Numerics;
 using MirageSDK.Data;
+using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using Newtonsoft.Json;
+using TransactionData = MirageSDK.WebGL.DTO.TransactionData;
 
 namespace MirageSDK.WebGL
 {
@@ -146,7 +148,7 @@ namespace MirageSDK.WebGL
 		public async UniTask<BigInteger> GetChainId()
 		{
 			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetChainId(id);
+			WebGLInterlayer.RequestChainId(id);
 
 			var answer = await _protocol.WaitForAnswer(id);
 
@@ -175,7 +177,35 @@ namespace MirageSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async UniTask SwitchChain(EthereumNetwork networkData)
+		public async UniTask AddChain(EthChainData networkData)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(networkData);
+			WebGLInterlayer.AddChain(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Error)
+			{
+				throw new Exception(answer.payload);
+			}
+		}
+		
+		public async UniTask UpdateChain(EthUpdateChainData networkData)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(networkData);
+			WebGLInterlayer.AddChain(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Error)
+			{
+				throw new Exception(answer.payload);
+			}
+		}
+		
+		public async UniTask SwitchChain(EthChain networkData)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(networkData);

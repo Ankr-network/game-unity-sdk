@@ -5,7 +5,7 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 {
 	public static class ChainInfo
 	{
-		public static readonly EthChainData BscMainNet = new()
+		public static readonly EthChainData BscMainNet = new EthChainData()
 		{
 			chainId = "0x38", //56
 			blockExplorerUrls = new[] { "https://bscscan.com/" },
@@ -15,7 +15,7 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 			rpcUrls = new[] { "https://rpc.ankr.com/bsc" }
 		};
 
-		public static readonly EthChainData BscTestnet = new()
+		public static readonly EthChainData BscTestnet = new EthChainData()
 		{
 			chainId = "0x61", //97
 			blockExplorerUrls = new[] { "https://explorer.binance.org/smart-testnet" },
@@ -25,12 +25,12 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 			rpcUrls = new[] { "https://rpc.ankr.com/bsc_testnet_chapel" }
 		};
 
-		public static readonly EthChain BscMainNetChain = new()
+		public static readonly EthChain BscMainNetChain = new EthChainData()
 		{
 			chainId = "0x38" //56
 		};
 
-		public static readonly EthChain BscTestnetChain = new()
+		public static readonly EthChain BscTestnetChain = new EthChainData()
 		{
 			chainId = "0x61" //97
 		};

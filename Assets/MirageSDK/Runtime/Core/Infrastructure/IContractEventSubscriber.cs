@@ -1,7 +1,7 @@
 using System;
 using MirageSDK.Data;
-using MirageSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using Cysharp.Threading.Tasks;
+using MirageSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace MirageSDK.Core.Infrastructure

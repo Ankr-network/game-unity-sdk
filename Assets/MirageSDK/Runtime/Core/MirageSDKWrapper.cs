@@ -7,7 +7,6 @@ namespace MirageSDK.Core
 	{
 		private readonly IContractFunctions _contractFunctions;
 		public IWalletHandler WalletHandler { get; }
-		public INetworkHelper NetworkHelper { get; }
 		public IEthHandler Eth { get; }
 		public ISilentSigningHandler SilentSigningHandler { get; }
 
@@ -15,13 +14,11 @@ namespace MirageSDK.Core
 			IContractFunctions contractFunctions,
 			IEthHandler eth,
 			IWalletHandler disconnectHandler,
-			INetworkHelper networkHelper,
 			ISilentSigningHandler silentSigningHandler = null
 		)
 		{
 			_contractFunctions = contractFunctions;
 			WalletHandler = disconnectHandler;
-			NetworkHelper = networkHelper;
 			SilentSigningHandler = silentSigningHandler;
 			Eth = eth;
 		}
