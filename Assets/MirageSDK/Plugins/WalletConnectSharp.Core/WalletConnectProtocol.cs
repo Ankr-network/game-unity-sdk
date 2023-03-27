@@ -203,7 +203,8 @@ namespace MirageSDK.WalletConnectSharp.Core
 			Transport.MessageReceived -= TransportOnMessageReceived;
 			Transport.OpenReceived -= OnTransportOpenReceived;
 			Transport.Closed -= OnTransportClosed;
-
+			
+			Debug.Log("ANTON DEBUG: NativeWebSocket DisconnectTransport calling close");
 			await Transport.Close();
 
 			OnTransportDisconnect?.Invoke(this, this);

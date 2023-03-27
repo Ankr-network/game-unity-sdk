@@ -28,6 +28,8 @@ namespace MirageSDK.SilentSigning.Implementation
 			var data = new SilentSigningConnectionRequest(timestamp, chainId);
 			var requestSilentSign =
 				await WalletConnect.Send<SilentSigningConnectionRequest, SilentSigningResponse>(data);
+
+			Debug.Log($"ANTON DEBUG: RequestSilentSign error found: {requestSilentSign.IsError}");
 			if (!requestSilentSign.IsError)
 			{
 				SessionHandler.SaveSilentSession(requestSilentSign.Result);
@@ -62,6 +64,7 @@ namespace MirageSDK.SilentSigning.Implementation
 			var request = new SilentSigningTransactionRequest(transactionData);
 
 			Debug.Log("[SS] SendSilentTransaction");
+			Debug.Log("ANTON DEBUG: SendSilentTransaction");
 			SkipNextDeepLink();
 			var response = await SendAndHandle(request);
 
@@ -71,6 +74,7 @@ namespace MirageSDK.SilentSigning.Implementation
 		public async UniTask<string> SilentSignMessage(string address, string message)
 		{
 			var request = new SilentSigningSignMessageRequest(address, message);
+			Debug.Log("ANTON DEBUG: SilentSignMessage");
 			SkipNextDeepLink();
 			var response = await SendAndHandle(request);
 
@@ -84,6 +88,7 @@ namespace MirageSDK.SilentSigning.Implementation
 
 		private void SkipNextDeepLink()
 		{
+			Debug.Log("ANTON DEBUG: SilentSigningProtocol skip next deep link called");
 			_skipNextDeepLink = true;
 		}
 
@@ -106,17 +111,22 @@ namespace MirageSDK.SilentSigning.Implementation
 
 		private void SubscribeSession()
 		{
+			var stackTrace = StackTraceUtility.ExtractStackTrace();
+			Debug.Log("ANTON DEBUG: SilentSigningProtocol OnSessionSend unsubscribed " + stackTrace);
 			WalletConnect.OnSend -= OnSessionSend;
 			if (!IsSilentSigningActive())
 			{
+				Debug.Log("ANTON DEBUG: SilentSigningProtocol OnSessionSend subscribed " + stackTrace);
 				WalletConnect.OnSend += OnSessionSend;
 			}
 		}
 
 		private void OnSessionSend()
 		{
+			Debug.Log("ANTON DEBUG: SilentSigningProtocol OnSessionSend");
 			if (_skipNextDeepLink)
 			{
+				Debug.Log("ANTON DEBUG: SilentSigningProtocol deep link skipped");
 				_skipNextDeepLink = false;
 				return;
 			}

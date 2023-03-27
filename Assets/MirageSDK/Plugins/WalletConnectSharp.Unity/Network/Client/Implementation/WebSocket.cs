@@ -254,6 +254,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		private async UniTask HandleQueue(List<ArraySegment<byte>> queue, WebSocketMessageType messageType)
 		{
 			var buffer = new ArraySegment<byte>();
+			Debug.Log("ANTON DEBUG: WebSocket HandleQueue _lock");
 			lock (_lock)
 			{
 				// Check for an item in the queue.
@@ -264,10 +265,12 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 					queue.RemoveAt(0);
 				}
 			}
+			Debug.Log("ANTON DEBUG: WebSocket HandleQueue _lock exit");
 
 			// Send that message.
 			if (buffer.Count > 0)
 			{
+				Debug.Log("ANTON DEBUG: WebSocket HandleQueue SendMessage");
 				await SendMessage(queue, messageType, buffer);
 			}
 		}
@@ -276,16 +279,25 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		public void DispatchMessageQueue()
 		{
 			// lock mutex, copy queue content and clear the queue.
-			_messageListMutex.WaitOne();
-			var messageListCopy = new List<byte[]>();
-			messageListCopy.AddRange(_messageList);
-			_messageList.Clear();
-			// release mutex to allow the websocket to add new messages
-			_messageListMutex.ReleaseMutex();
-
-			foreach (var bytes in messageListCopy)
+			List<byte[]> messageListCopy = null;
+			if (_messageList.Count > 0)
 			{
-				OnMessage?.Invoke(bytes);
+				Debug.Log("ANTON DEBUG: WebSocket DispatchMessageQueue mutex wait");
+				_messageListMutex.WaitOne();
+				messageListCopy = new List<byte[]>();
+				messageListCopy.AddRange(_messageList);
+				_messageList.Clear();
+				// release mutex to allow the websocket to add new messages
+				_messageListMutex.ReleaseMutex();
+				Debug.Log("ANTON DEBUG: WebSocket DispatchMessageQueue mutex release");
+			}
+
+			if (messageListCopy != null)
+			{
+				foreach (var bytes in messageListCopy)
+				{
+					OnMessage?.Invoke(bytes);
+				}
 			}
 		}
 
@@ -312,9 +324,11 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 						if (result.MessageType == WebSocketMessageType.Text)
 						{
+							Debug.Log("ANTON DEBUG: WebSocket Text message queued mutex wait");
 							_messageListMutex.WaitOne();
 							_messageList.Add(ms.ToArray());
 							_messageListMutex.ReleaseMutex();
+							Debug.Log("ANTON DEBUG: WebSocket Text message queued mutex released");
 
 							//using (var reader = new StreamReader(ms, Encoding.UTF8))
 							//{
@@ -324,9 +338,11 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 						}
 						else if (result.MessageType == WebSocketMessageType.Binary)
 						{
+							Debug.Log("ANTON DEBUG: WebSocket Binary message queued mutex wait");
 							_messageListMutex.WaitOne();
 							_messageList.Add(ms.ToArray());
 							_messageListMutex.ReleaseMutex();
+							Debug.Log("ANTON DEBUG: WebSocket Binary message queued mutex released");
 						}
 						else if (result.MessageType == WebSocketMessageType.Close)
 						{
@@ -339,7 +355,8 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 			catch (Exception e)
 			{
-				Debug.LogException(e);
+				Debug.Log("ANTON DEBUG: WebSocket Receive exception: {e.Message} {e.StackTrace}");
+				Debug.LogError($"WebSocket Receive exception: {e.Message} {e.StackTrace}");
 				_tokenSource.Cancel();
 			}
 			finally
