@@ -63,8 +63,6 @@ namespace MirageSDK.MirageAPI.MirageID.Implementation
 				TokenID = tokenId
 			};
 			
-			Debug.Log(JsonConvert.SerializeObject(headers));
-
 			return WebHelper.SendPostRequest<TransferNFTRequestDTO, TransferNFTResponseDTO>(
 				MirageEnvironment.TransferNFTURL,
 				payload,
