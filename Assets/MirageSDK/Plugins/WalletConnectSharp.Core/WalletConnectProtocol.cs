@@ -203,7 +203,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 			Transport.MessageReceived -= TransportOnMessageReceived;
 			Transport.OpenReceived -= OnTransportOpenReceived;
 			Transport.Closed -= OnTransportClosed;
-			
+
 			await Transport.Close();
 
 			OnTransportDisconnect?.Invoke(this, this);
@@ -251,7 +251,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 			}
 
 			var request = JsonConvert.DeserializeObject<JsonRpcRequest>(json);
-			
+
 
 			if (request?.Method != null)
 			{

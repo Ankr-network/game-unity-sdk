@@ -32,12 +32,12 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		public void Update()
 		{
-		#if !UNITY_WEBGL || UNITY_EDITOR
+			#if !UNITY_WEBGL || UNITY_EDITOR
 			if (_client?.State == WebSocketState.Open)
 			{
 				_client.DispatchMessageQueue();
 			}
-		#endif
+			#endif
 		}
 
 		public async UniTask OnApplicationPause(bool pauseStatus)
@@ -87,7 +87,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 				{
 					_opened = false;
 					_client.OnClose -= ClientTryReconnect;
-					var stackTrace = StackTraceUtility.ExtractStackTrace();
 					await _client.Close();
 				}
 			}
@@ -146,7 +145,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		private async UniTask OpenSocket()
 		{
-			          $"nextClient state {_nextClient?.State.ToString() ?? "None"}");
 			Debug.Log("[WebSocket] Trying to open socket");
 			if (_nextClient != null)
 			{
@@ -260,7 +258,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 			if (closeCode == WebSocketCloseCode.Abnormal)
 			{
-				          "Abnormal close detected. Waiting for {reconnectDelay}s before reconnect");
 				const float reconnectDelay = 2f;
 
 				Debug.LogError($"Abnormal close detected. Waiting for {reconnectDelay}s before reconnect");
@@ -274,7 +271,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		private async void OnMessageReceived(byte[] bytes)
 		{
 			var json = System.Text.Encoding.UTF8.GetString(bytes);
-			
+
 			try
 			{
 				var msg = JsonConvert.DeserializeObject<NetworkMessage>(json);

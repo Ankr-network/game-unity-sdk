@@ -45,9 +45,9 @@ namespace MirageSDK.Utils
 		{
 			_receiveEventCompletionSource = new UniTaskCompletionSource<TEventDto>();
 			_eventSubscriber.ListenForEvents().Forget();
-			
+
 			await _eventSubscriber.SocketOpeningTask;
-			
+
 
 			try
 			{

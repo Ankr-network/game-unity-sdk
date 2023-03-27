@@ -180,7 +180,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 			// The state of the connection is contained in the context Items dictionary.
 			bool sending;
-			
+
 
 			lock (_lock)
 			{
@@ -192,7 +192,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 					_isSending = true;
 				}
 			}
-			
+
 
 			if (!sending)
 			{
@@ -213,6 +213,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				}
 				catch (Exception ex)
 				{
+					Debug.LogError("Socket SendAsync exception: " + ex.Message + " StackTrace: " + ex.StackTrace);
 				}
 				finally
 				{
@@ -220,14 +221,14 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				}
 
 				// Note that we've finished sending.
-				
+
 				lock (_lock)
 				{
 					_isSending = false;
 				}
 
 				// Handle any queued messages.
-				
+
 				await HandleQueue(queue, messageType);
 			}
 			else

@@ -86,8 +86,9 @@ namespace MirageSDK.WearableNFTExample
 			_gameItemContract; //you can find the source in the mirage-smart-contract-example repo in contracts/GameItem.sol
 
 		private Web3 _web3;
-		
-		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
+
+		private WalletConnectSharp.Unity.WalletConnect WalletConnect =>
+			ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 
 		private void Awake()
 		{
@@ -133,7 +134,7 @@ namespace MirageSDK.WearableNFTExample
 				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_providerInfo.HttpProviderURL);
 
 				_gameCharacterContract = sdkInstance.GetContract(_gameCharacterContractInfo);
-				
+
 				_gameItemContract = sdkInstance.GetContract(_gameItemContractInfo);
 				_ethHandler = sdkInstance.Eth;
 			}
@@ -193,7 +194,7 @@ namespace MirageSDK.WearableNFTExample
 				{
 					defaultAccount
 				});
-			
+
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
 
 			//example of awaiting particular filtered event
