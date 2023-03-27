@@ -87,6 +87,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 				{
 					_opened = false;
 					_client.OnClose -= ClientTryReconnect;
+					Debug.Log("ANTON DEBUG: close current client");
 					await _client.Close();
 				}
 			}
@@ -111,13 +112,15 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		{
 			if (!Connected)
 			{
+				Debug.Log("ANTON DEBUG: opening socket for message: " + message);
 				_queuedMessages.Enqueue(message);
 				await OpenSocket();
+				Debug.Log("ANTON DEBUG: socket opened ");
 			}
 			else
 			{
+				Debug.Log("ANTON DEBUG: sending message to current client: " + message);
 				var finalJson = JsonConvert.SerializeObject(message);
-
 				await _client.SendText(finalJson);
 			}
 		}
@@ -140,6 +143,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		public void ClearSubscriptions()
 		{
+			Debug.Log("ANTON DEBUG: transport clearing subscriptions");
 			_subscribedTopics.Clear();
 			_queuedMessages.Clear();
 		}
@@ -175,6 +179,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		private UniTaskCompletionSource<bool> ConfigureNextClient(string url, out WebSocket nextClient)
 		{
+			Debug.Log("ANTON DEBUG: configure next client on open: " + url);
 			nextClient = new WebSocket(url);
 
 			var eventCompleted = new UniTaskCompletionSource<bool>();
@@ -218,6 +223,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		{
 			Debug.Log("Closing OLD client");
 			await Close();
+			Debug.Log("ANTON DEBUG: swap next to current, next becomes null");
 			_client = _nextClient;
 			_nextClient = null;
 			QueueSubscriptions();
@@ -227,6 +233,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		private async void FlushQueue()
 		{
+			Debug.Log("ANTON DEBUG: Flushing Queue. Count: " + _queuedMessages.Count);
 			Debug.Log("[WebSocket] Flushing Queue. Count: " + _queuedMessages.Count);
 			while (_queuedMessages.Count > 0)
 			{
@@ -272,7 +279,8 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		private async void OnMessageReceived(byte[] bytes)
 		{
 			var json = System.Text.Encoding.UTF8.GetString(bytes);
-
+			Debug.Log("ANTON DEBUG: NativeWebSocketTransport: OnMessageReceived for " + json);
+			
 			try
 			{
 				var msg = JsonConvert.DeserializeObject<NetworkMessage>(json);

@@ -180,6 +180,8 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 			// The state of the connection is contained in the context Items dictionary.
 			bool sending;
+			
+			Debug.Log("ANTON DEBUG: WebSocket SendMessage before _lock");
 
 			lock (_lock)
 			{
@@ -191,12 +193,16 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 					_isSending = true;
 				}
 			}
+			
+			Debug.Log("ANTON DEBUG: WebSocket SendMessage before after _lock sending=" + sending);
 
 			if (!sending)
 			{
+				Debug.Log("ANTON DEBUG: WebSocket SendMessage TryEnter");
 				// Lock with a timeout, just in case.
 				if (!Monitor.TryEnter(_socket, 1000))
 				{
+					Debug.Log("ANTON DEBUG: WebSocket SendMessage _socket.CloseAsync");
 					// If we couldn't obtain exclusive access to the socket in one second, something is wrong.
 					await _socket.CloseAsync(WebSocketCloseStatus.InternalServerError, string.Empty,
 						_cancellationToken);
@@ -206,28 +212,40 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				try
 				{
 					// Send the message synchronously.
+					Debug.Log("ANTON DEBUG: WebSocket SendMessage _socket.SendAsync");
 					var t = _socket.SendAsync(buffer, messageType, true, _cancellationToken);
 					t.Wait(_cancellationToken);
 				}
+				catch (Exception ex)
+				{
+					Debug.Log("ANTON DEBUG: WebSocket SendMessage SendAsync exception " + ex.Message);
+				}
 				finally
 				{
+					Debug.Log("ANTON DEBUG: WebSocket SendMessage Monitor.Exit ");
 					Monitor.Exit(_socket);
 				}
 
 				// Note that we've finished sending.
+				
+				Debug.Log("ANTON DEBUG: WebSocket second pre _lock");
 				lock (_lock)
 				{
 					_isSending = false;
 				}
 
 				// Handle any queued messages.
+				
+				Debug.Log("ANTON DEBUG: WebSocket HandleQueue");
 				await HandleQueue(queue, messageType);
 			}
 			else
 			{
 				// Add the message to the queue.
+				Debug.Log("ANTON DEBUG: WebSocket third pre _lock");
 				lock (_lock)
 				{
+					Debug.Log("ANTON DEBUG: WebSocket adding to queue");
 					queue.Add(buffer);
 				}
 			}

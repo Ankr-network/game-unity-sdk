@@ -20,7 +20,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Infrastructure
 		UniTask<BigInteger> EthChainId();
 		string GetDefaultAccount(string network);
 
-		UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
+		UniTask<TResponse> Send<TRequest, TResponse>(TRequest request)
 			where TRequest : IIdentifiable
 			where TResponse : IErrorHolder;
 	}

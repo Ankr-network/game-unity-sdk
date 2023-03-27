@@ -227,33 +227,45 @@ namespace MirageSDK.WalletConnectSharp.Core
 		private async void TransportOnMessageReceived(object sender, MessageReceivedEventArgs e)
 		{
 			var networkMessage = e.Message;
+			
+			Debug.Log("ANTON DEBUG: TransportOnMessageReceived network message: " + networkMessage);
 
 			if (!ActiveTopics.Contains(networkMessage.Topic))
 			{
+				Debug.Log("ANTON DEBUG: TransportOnMessageReceived return cause of topic not active");
 				return;
 			}
 
 			var encryptedPayload = JsonConvert.DeserializeObject<EncryptedPayload>(networkMessage.Payload);
 
 			var json = await _cipher.DecryptWithKey(KeyRaw, encryptedPayload);
+			
+			Debug.Log("ANTON DEBUG: TransportOnMessageReceived decrypted json: " + json);
 
 			var response = JsonConvert.DeserializeObject<JsonRpcResponse>(json);
+			
+			Debug.Log("ANTON DEBUG: TransportOnMessageReceived deserialized response: " + response);
 
 			var wasResponse = false;
 			if (response?.Event != null)
 			{
+				Debug.Log("ANTON DEBUG: TransportOnMessageReceived triggering event " + response.Event);
 				wasResponse = EventDelegator.Trigger(response.Event, json);
 			}
 
 			if (wasResponse)
 			{
+				Debug.Log("ANTON DEBUG: TransportOnMessageReceived triggering event: was response");
 				return;
 			}
 
 			var request = JsonConvert.DeserializeObject<JsonRpcRequest>(json);
+			
+			Debug.Log("ANTON DEBUG: TransportOnMessageReceived deserialized request: " + request);
 
 			if (request?.Method != null)
 			{
+				Debug.Log("ANTON DEBUG: TransportOnMessageReceived triggering method " + request.Method);
 				EventDelegator.Trigger(request.Method, json);
 			}
 		}

@@ -3,6 +3,7 @@ using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Data;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace MirageSDK.Utils
 {
@@ -44,7 +45,11 @@ namespace MirageSDK.Utils
 		{
 			_receiveEventCompletionSource = new UniTaskCompletionSource<TEventDto>();
 			_eventSubscriber.ListenForEvents().Forget();
+			
+			Debug.Log("ANTON DEBUG: GameCharacter call: waiting for SocketOpeningTask");
 			await _eventSubscriber.SocketOpeningTask;
+			
+			Debug.Log("ANTON DEBUG: GameCharacter call: waiting for SocketOpeningTask finished");
 
 			try
 			{
@@ -56,6 +61,7 @@ namespace MirageSDK.Utils
 			}
 			catch (Exception e)
 			{
+				Debug.LogError("EventAwaiter exception: " + e.Message);
 				_receiveEventCompletionSource.TrySetException(e);
 			}
 		}
