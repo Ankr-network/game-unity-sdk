@@ -113,19 +113,19 @@ namespace MirageSDK.WebGL.Implementation
 			return _webGlWrapper.GetChainId();
 		}
 
-		public UniTask<string> WalletSwitchEthChain(EthChain chain)
+		public UniTask WalletSwitchEthChain(EthChain chain)
 		{
 			return _webGlWrapper.SwitchChain(chain);
 		}
 
-		public UniTask<string> WalletAddEthChain(EthChainData chain)
+		public UniTask WalletAddEthChain(EthChainData chain)
 		{
 			return _webGlWrapper.AddChain(chain);
 		}
 
-		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)
+		public UniTask WalletUpdateEthChain(EthUpdateChainData chain)
 		{
-			throw new NotImplementedException();
+			return _webGlWrapper.UpdateChain(chain);
 		}
 
 		public UniTask<BigInteger> EthChainId()

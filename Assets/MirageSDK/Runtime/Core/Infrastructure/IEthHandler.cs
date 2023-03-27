@@ -44,9 +44,9 @@ namespace MirageSDK.Core.Infrastructure
 		UniTask<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(string hash);
 		UniTask<BlockWithTransactionHashes> GetBlockWithTransactionsHashes(BlockParameter block);
 		UniTask<BigInteger> GetChainId();
-		UniTask<string> WalletAddEthChain(EthChainData chainData);
-		UniTask<string> WalletSwitchEthChain(EthChain chain);
-		UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain);
+		UniTask WalletAddEthChain(EthChainData chainData);
+		UniTask WalletSwitchEthChain(EthChain chain);
+		UniTask WalletUpdateEthChain(EthUpdateChainData chain);
 		UniTask<BigInteger> EthChainId();
 	}
 }

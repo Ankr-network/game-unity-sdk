@@ -27,34 +27,34 @@ namespace MirageSDK.Mobile
 			_walletConnect = ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		}
 
-		public UniTask<string> WalletAddEthChain(EthChainData chainData)
+		public async UniTask WalletAddEthChain(EthChainData chainData)
 		{
 			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			return _walletConnect.WalletAddEthChain(chainData);
+			await _walletConnect.WalletAddEthChain(chainData);
 		}
 
-		public UniTask<string> WalletSwitchEthChain(EthChain chain)
+		public async UniTask WalletSwitchEthChain(EthChain chain)
 		{
 			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			return _walletConnect.WalletSwitchEthChain(chain);
+			await _walletConnect.WalletSwitchEthChain(chain);
 		}
 
-		public UniTask<string> WalletUpdateEthChain(EthUpdateChainData chain)
+		public async UniTask WalletUpdateEthChain(EthUpdateChainData chain)
 		{
 			if (_walletConnect.Status == WalletConnectStatus.Uninitialized)
 			{
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			return _walletConnect.WalletUpdateEthChain(chain);
+			await  _walletConnect.WalletUpdateEthChain(chain);
 		}
 
 		public UniTask<BigInteger> EthChainId()

@@ -1,3 +1,4 @@
+using System;
 using MirageSDK.Base;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Data;
@@ -19,6 +20,10 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 
 		[SerializeField] private Button _bscUpdateButton;
 		[SerializeField] private Button _bscTestUpdateButton;
+
+		private const string ChainAddedMessage = @"Chain {0} successfully added.";
+		private const string ChainSwitchedMessage = @"Wallet successfully switched to {0} chain.";
+		private const string ChainUpdatedMessage = @"Chain {0} successfully updated.";
 
 		private IMirageSDK _sdkInstance;
 		private IEthHandler _ethHandler;
@@ -44,30 +49,30 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 
 		private async void OpenAddSwitchBsc()
 		{
-			var addLog = await _ethHandler.WalletAddEthChain(ChainInfo.BscMainNet);
-			var switchLog = await _ethHandler.WalletSwitchEthChain(ChainInfo.BscMainNetChain);
-			UpdateUILogs(addLog);
-			UpdateUILogs(switchLog);
+			await _ethHandler.WalletAddEthChain(ChainInfo.BscMainNet);
+			UpdateUILogs(String.Format(ChainAddedMessage, ChainInfo.BscMainNet.chainName));
+			await _ethHandler.WalletSwitchEthChain(ChainInfo.BscMainNetChain);
+			UpdateUILogs(String.Format(ChainSwitchedMessage, ChainInfo.BscMainNet.chainName));
 		}
 
 		private async void OpenAddSwitchBscTestnet()
 		{
-			var addLog = await _ethHandler.WalletAddEthChain(ChainInfo.BscTestnet);
-			var switchLog = await _ethHandler.WalletSwitchEthChain(ChainInfo.BscTestnetChain);
-			UpdateUILogs(addLog);
-			UpdateUILogs(switchLog);
+			await _ethHandler.WalletAddEthChain(ChainInfo.BscTestnet);
+			UpdateUILogs(String.Format(ChainAddedMessage, ChainInfo.BscTestnet.chainName));
+			await _ethHandler.WalletSwitchEthChain(ChainInfo.BscTestnetChain);
+			UpdateUILogs(String.Format(ChainSwitchedMessage, ChainInfo.BscTestnet.chainName));
 		}
 
 		private async void OpenUpdateBsc()
 		{
-			var log = await _ethHandler.WalletUpdateEthChain(ChainInfo.BscMainNet.ToEthUpdate());
-			UpdateUILogs(log);
+			await _ethHandler.WalletUpdateEthChain(ChainInfo.BscMainNet.ToEthUpdate());
+			UpdateUILogs(String.Format(ChainUpdatedMessage, ChainInfo.BscMainNet.chainName));
 		}
 
 		private async void OpenUpdateBscTestnet()
 		{
-			var log = await _ethHandler.WalletUpdateEthChain(ChainInfo.BscTestnet.ToEthUpdate());
-			UpdateUILogs(log);
+			_ethHandler.WalletUpdateEthChain(ChainInfo.BscTestnet.ToEthUpdate());
+			UpdateUILogs(String.Format(ChainUpdatedMessage, ChainInfo.BscTestnet.chainName));
 		}
 		
 		private void UpdateUILogs(string log)

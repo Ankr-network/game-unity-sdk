@@ -177,7 +177,7 @@ namespace MirageSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async UniTask<string> AddChain(EthChainData networkData)
+		public async UniTask AddChain(EthChainData networkData)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(networkData);
@@ -189,11 +189,23 @@ namespace MirageSDK.WebGL
 			{
 				throw new Exception(answer.payload);
 			}
-
-			return string.Empty;
 		}
 		
-		public async UniTask<string> SwitchChain(EthChain networkData)
+		public async UniTask UpdateChain(EthUpdateChainData networkData)
+		{
+			var id = _protocol.GenerateId();
+			var payload = JsonConvert.SerializeObject(networkData);
+			WebGLInterlayer.AddChain(id, payload);
+
+			var answer = await _protocol.WaitForAnswer(id);
+
+			if (answer.status == WebGLMessageStatus.Error)
+			{
+				throw new Exception(answer.payload);
+			}
+		}
+		
+		public async UniTask SwitchChain(EthChain networkData)
 		{
 			var id = _protocol.GenerateId();
 			var payload = JsonConvert.SerializeObject(networkData);
@@ -205,8 +217,6 @@ namespace MirageSDK.WebGL
 			{
 				throw new Exception(answer.payload);
 			}
-			
-			return string.Empty;
 		}
 
 		public async UniTask<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
