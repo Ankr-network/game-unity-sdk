@@ -169,7 +169,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		public async UniTask Connect()
 		{
-			TeardownEvents();
 			var savedSession = SessionSaveHandler.GetSavedSession();
 			Logger.AddLog(PackageInfo.Version);
 
@@ -465,6 +464,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 		private async UniTask<WCSessionData> CompleteConnect()
 		{
 			SetupDefaultWallet().Forget();
+			TeardownEvents();
 			SetupEvents();
 
 			var tries = 0;
