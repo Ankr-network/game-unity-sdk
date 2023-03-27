@@ -71,12 +71,10 @@ namespace MirageSDK.Core.Implementation
 
 			Update().Forget();
 
-			Debug.Log("ANTON DEBUG: ContractEventSubscriber Transport connecting");
 			
 			var connectTask = _transport.Connect().AsTask();
 			await connectTask;
 			
-			Debug.Log("ANTON DEBUG: ContractEventSubscriber Transport connected");
 
 			if (connectTask.IsFaulted)
 			{
@@ -122,7 +120,6 @@ namespace MirageSDK.Core.Implementation
 
 		public void StopListen()
 		{
-			Debug.Log("ANTON DEBUG: ContractEventSubscriber StopListen");
 			CloseConnection();
 			_subscribers.Clear();
 			_transport.Close();
@@ -189,7 +186,6 @@ namespace MirageSDK.Core.Implementation
 
 		private void CloseConnection()
 		{
-			Debug.Log("ANTON DEBUG: ContractEventSubscriber close connection");
 			
 			_isCancellationRequested = true;
 
@@ -207,7 +203,6 @@ namespace MirageSDK.Core.Implementation
 
 		private void OnClose(WebSocketCloseCode code)
 		{
-			Debug.Log("ANTON DEBUG: ContractEventSubscriber transport closed");
 			StopListen();
 			OnCloseHandler?.Invoke(code);
 		}

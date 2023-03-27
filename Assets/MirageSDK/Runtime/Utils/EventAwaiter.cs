@@ -46,10 +46,8 @@ namespace MirageSDK.Utils
 			_receiveEventCompletionSource = new UniTaskCompletionSource<TEventDto>();
 			_eventSubscriber.ListenForEvents().Forget();
 			
-			Debug.Log("ANTON DEBUG: GameCharacter call: waiting for SocketOpeningTask");
 			await _eventSubscriber.SocketOpeningTask;
 			
-			Debug.Log("ANTON DEBUG: GameCharacter call: waiting for SocketOpeningTask finished");
 
 			try
 			{

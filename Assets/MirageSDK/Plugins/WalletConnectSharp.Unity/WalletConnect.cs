@@ -185,7 +185,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 						}
 						else if (status == WalletConnectStatus.TransportConnected)
 						{
-							Debug.Log("ANTON DEBUG: NativeWebSocket Connect calling close");
 							await _session.Transport.Close();
 						}
 					}
@@ -208,7 +207,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 				else if (status == WalletConnectStatus.TransportConnected)
 				{
 					Debug.Log("We have transport connected, but no saved session. Closing Transport.");
-					Debug.Log("ANTON DEBUG: NativeWebSocket Connect calling close");
 					await _session.Transport.Close();
 				}
 				else if (_session.Connecting)
@@ -346,7 +344,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		public void OpenMobileWallet()
 		{
-			Debug.Log("ANTON DEBUG: OpenMobileWallet: " + StackTraceUtility.ExtractStackTrace());
 			#if UNITY_ANDROID
 			var signingURL = ConnectURL.Split('@')[0];
 
@@ -424,7 +421,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 			_session.OnSessionDisconnect += HandleSessionDisconnect;
 			_session.OnSessionCreated += HandleSessionCreated;
-			Debug.Log("ANTON DEBUG: WalletConnect subscribed to OnSend");
 			_session.OnSend += HandleOnSend;
 			_session.OnAccountChanged += HandleOnAccountChanged;
 			_session.OnChainChanged += HandleOnChainChanged;
@@ -439,7 +435,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 			_session.OnSessionDisconnect -= HandleSessionDisconnect;
 			_session.OnSessionCreated -= HandleSessionCreated;
-			Debug.Log("ANTON DEBUG: WalletConnect unsubscribed from OnSend");
 			_session.OnSend -= HandleOnSend;
 			_session.OnAccountChanged -= HandleOnAccountChanged;
 			_session.OnChainChanged -= HandleOnChainChanged;
@@ -546,7 +541,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 			var sessionToSave = _session.GetSavedSession();
 			SessionSaveHandler.SaveSession(sessionToSave);
 
-			Debug.Log("ANTON DEBUG: NativeWebSocket SaveOrDisconnect calling close");
 			return _session.Transport.Close();
 		}
 	}

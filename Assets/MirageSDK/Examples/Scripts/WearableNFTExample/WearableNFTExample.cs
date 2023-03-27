@@ -155,22 +155,17 @@ namespace MirageSDK.WearableNFTExample
 			{
 			};
 
-			Debug.Log("ANTON DEBUG: GameItem call: GetDefaultAccount");
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
-			Debug.Log("ANTON DEBUG: GameItem call: CallMethod");
 			var transactionHash = await _gameItemContract.CallMethod(mintBatchMethodName,
 				new object[]
 				{
 					defaultAccount, itemsToMint, itemsAmounts, data
 				});
 
-			Debug.Log("ANTON DEBUG: GameItem call: CallMethod finished with " + transactionHash);
 			UpdateUILogs($"Game Items Minted. Transaction hash : {transactionHash}");
 
 			//example of decoding events from the transaction
-			Debug.Log("ANTON DEBUG: GameItem call: getting receipt ");
 			var transactionReceipt = await _ethHandler.GetTransactionReceipt(transactionHash);
-			Debug.Log("ANTON DEBUG: GameItem call:  receipt received");
 			var eventLogs = transactionReceipt.DecodeAllEvents<BatchMintedEventDTO>();
 			foreach (var eventLog in eventLogs)
 			{
@@ -191,9 +186,7 @@ namespace MirageSDK.WearableNFTExample
 			var filterRequest = new EventFilterRequest<SafeMintedEventDTO>();
 			filterRequest.AddTopic("To", defaultAccount);
 
-			Debug.Log("ANTON DEBUG: GameCharacter call: StartWaiting");
 			await eventAwaiter.StartWaiting(filterRequest);
-			Debug.Log("ANTON DEBUG: GameCharacter call: CallMethod");
 
 			var transactionHash =
 				await _gameCharacterContract.CallMethod(safeMintMethodName, new object[]
@@ -201,9 +194,6 @@ namespace MirageSDK.WearableNFTExample
 					defaultAccount
 				});
 			
-			
-			Debug.Log("ANTON DEBUG: GameCharacter call: CallMethod finished with " + transactionHash);
-
 			UpdateUILogs($"Game Character Minted. Hash : {transactionHash}");
 
 			//example of awaiting particular filtered event

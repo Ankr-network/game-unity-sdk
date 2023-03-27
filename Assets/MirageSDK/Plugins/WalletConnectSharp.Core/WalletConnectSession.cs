@@ -350,24 +350,19 @@ namespace MirageSDK.WalletConnectSharp.Core
 			void HandleSendResponse(object sender, JsonRpcResponseEvent<TResponse> @event)
 			{
 				var response = @event.Response;
-				Debug.Log($"ANTON DEBUG: for request {requestClone} got response {response}");
 				if (response.IsError)
 				{
-					Debug.Log($"ANTON DEBUG: for request {requestClone} got error {response.Error.Message}");
 					eventCompleted.TrySetException(new IOException(response.Error.Message));
 				}
 				else
 				{
-					Debug.Log($"ANTON DEBUG: for request {requestClone} got success {response}");
 					eventCompleted.TrySetResult(@event.Response);
 				}
 			}
 
 			EventDelegator.ListenForResponse<TResponse>(request.ID, HandleSendResponse);
 			
-			Debug.Log("ANTON DEBUG: sending request " + request);
 			await SendRequest(request);
-			Debug.Log("ANTON DEBUG: sent request " + request);
 			OnSend?.Invoke();
 
 			return await eventCompleted.Task;

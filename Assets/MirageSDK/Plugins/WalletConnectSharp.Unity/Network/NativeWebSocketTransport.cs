@@ -46,7 +46,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 			{
 				Debug.Log("[WebSocket] Pausing");
 				_wasPaused = true;
-				Debug.Log("ANTON DEBUG: NativeWebSocket OnApplicationPause calling close");
 				await Close();
 			}
 			else if (_wasPaused)
@@ -89,7 +88,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 					_opened = false;
 					_client.OnClose -= ClientTryReconnect;
 					var stackTrace = StackTraceUtility.ExtractStackTrace();
-					Debug.Log("ANTON DEBUG: NativeWebSocket close current client: " + stackTrace);
 					await _client.Close();
 				}
 			}
@@ -114,14 +112,11 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		{
 			if (!Connected)
 			{
-				Debug.Log("ANTON DEBUG: opening socket for message: " + message);
 				_queuedMessages.Enqueue(message);
 				await OpenSocket();
-				Debug.Log("ANTON DEBUG: socket opened ");
 			}
 			else
 			{
-				Debug.Log("ANTON DEBUG: sending message to current client: " + message);
 				var finalJson = JsonConvert.SerializeObject(message);
 				await _client.SendText(finalJson);
 			}
@@ -145,14 +140,12 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		public void ClearSubscriptions()
 		{
-			Debug.Log("ANTON DEBUG: transport clearing subscriptions");
 			_subscribedTopics.Clear();
 			_queuedMessages.Clear();
 		}
 
 		private async UniTask OpenSocket()
 		{
-			Debug.Log($"ANTON DEBUG: NativeWebSocket OpenSocket nextClient exists {_nextClient != null}" +
 			          $"nextClient state {_nextClient?.State.ToString() ?? "None"}");
 			Debug.Log("[WebSocket] Trying to open socket");
 			if (_nextClient != null)
@@ -183,7 +176,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		private UniTaskCompletionSource<bool> ConfigureNextClient(string url, out WebSocket nextClient)
 		{
-			Debug.Log("ANTON DEBUG: NativeWebSocket configure next client on open: " + url);
 			nextClient = new WebSocket(url);
 
 			var eventCompleted = new UniTaskCompletionSource<bool>();
@@ -226,9 +218,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		private async void CompleteOpen()
 		{
 			Debug.Log("Closing OLD client");
-			Debug.Log("ANTON DEBUG: NativeWebSocket CompleteOpen calling close");
 			await Close();
-			Debug.Log("ANTON DEBUG: NativeWebSocket swap next to current, next becomes null");
 			_client = _nextClient;
 			_nextClient = null;
 			QueueSubscriptions();
@@ -238,7 +228,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		private async void FlushQueue()
 		{
-			Debug.Log("ANTON DEBUG: Flushing Queue. Count: " + _queuedMessages.Count);
 			Debug.Log("[WebSocket] Flushing Queue. Count: " + _queuedMessages.Count);
 			while (_queuedMessages.Count > 0)
 			{
@@ -263,17 +252,14 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		{
 			if (_wasPaused)
 			{
-				Debug.Log("ANTON DEBUG: NativeWebSocketTransport ClientTryReconnect failed because of pause");
 				Debug.Log("[WebSocket] Application paused, retry attempt aborted");
 				return;
 			}
 
-			Debug.Log("ANTON DEBUG: NativeWebSocketTransport ClientTryReconnect nextClient nullified");
 			_nextClient = null;
 
 			if (closeCode == WebSocketCloseCode.Abnormal)
 			{
-				Debug.Log("ANTON DEBUG: NativeWebSocketTransport ClientTryReconnect " +
 				          "Abnormal close detected. Waiting for {reconnectDelay}s before reconnect");
 				const float reconnectDelay = 2f;
 
@@ -282,14 +268,12 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 				await UniTask.Delay(TimeSpan.FromSeconds(reconnectDelay));
 			}
 
-			Debug.Log("ANTON DEBUG: NativeWebSocketTransport ClientTryReconnect OpenSocket called");
 			await OpenSocket();
 		}
 
 		private async void OnMessageReceived(byte[] bytes)
 		{
 			var json = System.Text.Encoding.UTF8.GetString(bytes);
-			Debug.Log("ANTON DEBUG: NativeWebSocketTransport: OnMessageReceived for " + json);
 			
 			try
 			{

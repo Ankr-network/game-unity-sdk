@@ -181,7 +181,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			// The state of the connection is contained in the context Items dictionary.
 			bool sending;
 			
-			Debug.Log("ANTON DEBUG: WebSocket SendMessage before _lock");
 
 			lock (_lock)
 			{
@@ -194,15 +193,12 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				}
 			}
 			
-			Debug.Log("ANTON DEBUG: WebSocket SendMessage before after _lock sending=" + sending);
 
 			if (!sending)
 			{
-				Debug.Log("ANTON DEBUG: WebSocket SendMessage TryEnter");
 				// Lock with a timeout, just in case.
 				if (!Monitor.TryEnter(_socket, 1000))
 				{
-					Debug.Log("ANTON DEBUG: WebSocket SendMessage _socket.CloseAsync");
 					// If we couldn't obtain exclusive access to the socket in one second, something is wrong.
 					await _socket.CloseAsync(WebSocketCloseStatus.InternalServerError, string.Empty,
 						_cancellationToken);
@@ -212,23 +208,19 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				try
 				{
 					// Send the message synchronously.
-					Debug.Log("ANTON DEBUG: WebSocket SendMessage _socket.SendAsync");
 					var t = _socket.SendAsync(buffer, messageType, true, _cancellationToken);
 					t.Wait(_cancellationToken);
 				}
 				catch (Exception ex)
 				{
-					Debug.Log("ANTON DEBUG: WebSocket SendMessage SendAsync exception " + ex.Message);
 				}
 				finally
 				{
-					Debug.Log("ANTON DEBUG: WebSocket SendMessage Monitor.Exit ");
 					Monitor.Exit(_socket);
 				}
 
 				// Note that we've finished sending.
 				
-				Debug.Log("ANTON DEBUG: WebSocket second pre _lock");
 				lock (_lock)
 				{
 					_isSending = false;
@@ -236,16 +228,13 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 				// Handle any queued messages.
 				
-				Debug.Log("ANTON DEBUG: WebSocket HandleQueue");
 				await HandleQueue(queue, messageType);
 			}
 			else
 			{
 				// Add the message to the queue.
-				Debug.Log("ANTON DEBUG: WebSocket third pre _lock");
 				lock (_lock)
 				{
-					Debug.Log("ANTON DEBUG: WebSocket adding to queue");
 					queue.Add(buffer);
 				}
 			}
@@ -254,7 +243,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		private async UniTask HandleQueue(List<ArraySegment<byte>> queue, WebSocketMessageType messageType)
 		{
 			var buffer = new ArraySegment<byte>();
-			Debug.Log("ANTON DEBUG: WebSocket HandleQueue _lock");
 			lock (_lock)
 			{
 				// Check for an item in the queue.
@@ -265,12 +253,10 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 					queue.RemoveAt(0);
 				}
 			}
-			Debug.Log("ANTON DEBUG: WebSocket HandleQueue _lock exit");
 
 			// Send that message.
 			if (buffer.Count > 0)
 			{
-				Debug.Log("ANTON DEBUG: WebSocket HandleQueue SendMessage");
 				await SendMessage(queue, messageType, buffer);
 			}
 		}
@@ -282,14 +268,12 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			List<byte[]> messageListCopy = null;
 			if (_messageList.Count > 0)
 			{
-				Debug.Log("ANTON DEBUG: WebSocket DispatchMessageQueue mutex wait");
 				_messageListMutex.WaitOne();
 				messageListCopy = new List<byte[]>();
 				messageListCopy.AddRange(_messageList);
 				_messageList.Clear();
 				// release mutex to allow the websocket to add new messages
 				_messageListMutex.ReleaseMutex();
-				Debug.Log("ANTON DEBUG: WebSocket DispatchMessageQueue mutex release");
 			}
 
 			if (messageListCopy != null)
@@ -324,11 +308,9 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 						if (result.MessageType == WebSocketMessageType.Text)
 						{
-							Debug.Log("ANTON DEBUG: WebSocket Text message queued mutex wait");
 							_messageListMutex.WaitOne();
 							_messageList.Add(ms.ToArray());
 							_messageListMutex.ReleaseMutex();
-							Debug.Log("ANTON DEBUG: WebSocket Text message queued mutex released");
 
 							//using (var reader = new StreamReader(ms, Encoding.UTF8))
 							//{
@@ -338,11 +320,9 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 						}
 						else if (result.MessageType == WebSocketMessageType.Binary)
 						{
-							Debug.Log("ANTON DEBUG: WebSocket Binary message queued mutex wait");
 							_messageListMutex.WaitOne();
 							_messageList.Add(ms.ToArray());
 							_messageListMutex.ReleaseMutex();
-							Debug.Log("ANTON DEBUG: WebSocket Binary message queued mutex released");
 						}
 						else if (result.MessageType == WebSocketMessageType.Close)
 						{
@@ -355,7 +335,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 			catch (Exception e)
 			{
-				Debug.Log("ANTON DEBUG: WebSocket Receive exception: {e.Message} {e.StackTrace}");
 				Debug.LogError($"WebSocket Receive exception: {e.Message} {e.StackTrace}");
 				_tokenSource.Cancel();
 			}
