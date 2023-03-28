@@ -71,12 +71,14 @@ namespace MirageSDK.Core.Implementation
 
 			Update().Forget();
 
+
 			var connectTask = _transport.Connect().AsTask();
 			await connectTask;
 
+
 			if (connectTask.IsFaulted)
 			{
-				Debug.LogError(connectTask.Exception);
+				Debug.LogError("ContractEventSubscribed " + connectTask.Exception);
 			}
 
 			Debug.Log("Listen for events socket connected");

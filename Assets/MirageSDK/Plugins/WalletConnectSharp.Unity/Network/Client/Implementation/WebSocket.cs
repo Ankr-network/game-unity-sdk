@@ -192,6 +192,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 				}
 			}
 
+
 			if (!sending)
 			{
 				// Lock with a timeout, just in case.
@@ -209,18 +210,24 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 					var t = _socket.SendAsync(buffer, messageType, true, _cancellationToken);
 					t.Wait(_cancellationToken);
 				}
+				catch (Exception ex)
+				{
+					Debug.LogError("Socket SendAsync exception: " + ex.Message + " StackTrace: " + ex.StackTrace);
+				}
 				finally
 				{
 					Monitor.Exit(_socket);
 				}
 
 				// Note that we've finished sending.
+
 				lock (_lock)
 				{
 					_isSending = false;
 				}
 
 				// Handle any queued messages.
+
 				await HandleQueue(queue, messageType);
 			}
 			else
@@ -258,16 +265,22 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		public void DispatchMessageQueue()
 		{
 			// lock mutex, copy queue content and clear the queue.
-			_messageListMutex.WaitOne();
-			var messageListCopy = new List<byte[]>();
-			messageListCopy.AddRange(_messageList);
-			_messageList.Clear();
-			// release mutex to allow the websocket to add new messages
-			_messageListMutex.ReleaseMutex();
-
-			foreach (var bytes in messageListCopy)
+			List<byte[]> messageListCopy = null;
+			if (_messageList.Count > 0)
 			{
-				OnMessage?.Invoke(bytes);
+				_messageListMutex.WaitOne();
+				messageListCopy = new List<byte[]>(_messageList);
+				_messageList.Clear();
+				// release mutex to allow the websocket to add new messages
+				_messageListMutex.ReleaseMutex();
+			}
+
+			if (messageListCopy != null)
+			{
+				foreach (var bytes in messageListCopy)
+				{
+					OnMessage?.Invoke(bytes);
+				}
 			}
 		}
 
@@ -321,7 +334,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			}
 			catch (Exception e)
 			{
-				Debug.LogException(e);
+				Debug.LogError($"WebSocket Receive exception: {e.Message} {e.StackTrace}");
 				_tokenSource.Cancel();
 			}
 			finally

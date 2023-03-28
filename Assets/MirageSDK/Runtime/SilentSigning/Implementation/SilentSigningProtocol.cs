@@ -13,7 +13,9 @@ namespace MirageSDK.SilentSigning.Implementation
 	public class SilentSigningProtocol : ISilentSigningHandler
 	{
 		public ISilentSigningSessionHandler SessionHandler { get; }
-		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
+
+		private WalletConnectSharp.Unity.WalletConnect WalletConnect =>
+			ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 
 		private bool _skipNextDeepLink;
 
@@ -28,6 +30,7 @@ namespace MirageSDK.SilentSigning.Implementation
 			var data = new SilentSigningConnectionRequest(timestamp, chainId);
 			var requestSilentSign =
 				await WalletConnect.Send<SilentSigningConnectionRequest, SilentSigningResponse>(data);
+
 			if (!requestSilentSign.IsError)
 			{
 				SessionHandler.SaveSilentSession(requestSilentSign.Result);
@@ -44,7 +47,8 @@ namespace MirageSDK.SilentSigning.Implementation
 			return WalletConnect.Send<SilentSigningDisconnectRequest, SilentSigningResponse>(data);
 		}
 
-		public async UniTask<string> SendSilentTransaction(string from, string to, string data = null, string value = null,
+		public async UniTask<string> SendSilentTransaction(string from, string to, string data = null,
+			string value = null,
 			string gas = null,
 			string gasPrice = null, string nonce = null)
 		{

@@ -169,7 +169,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		public async UniTask Connect()
 		{
-			TeardownEvents();
 			var savedSession = SessionSaveHandler.GetSavedSession();
 			Logger.AddLog(PackageInfo.Version);
 
@@ -291,12 +290,12 @@ namespace MirageSDK.WalletConnectSharp.Unity
 			return _session.GetDefaultAccount(network);
 		}
 
-		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
+		public UniTask<TResponse> Send<TRequest, TResponse>(TRequest request)
 			where TRequest : IIdentifiable
 			where TResponse : IErrorHolder
 		{
 			CheckIfSessionCreated();
-			return _session.Send<TRequest, TResponse>(data);
+			return _session.Send<TRequest, TResponse>(request);
 		}
 
 		public UniTask<GenericJsonRpcResponse> GenericRequest(GenericJsonRpcRequest genericRequest)
@@ -465,6 +464,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 		private async UniTask<WCSessionData> CompleteConnect()
 		{
 			SetupDefaultWallet().Forget();
+			TeardownEvents();
 			SetupEvents();
 
 			var tries = 0;

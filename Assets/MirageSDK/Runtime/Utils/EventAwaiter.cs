@@ -3,6 +3,7 @@ using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Data;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace MirageSDK.Utils
 {
@@ -44,6 +45,7 @@ namespace MirageSDK.Utils
 		{
 			_receiveEventCompletionSource = new UniTaskCompletionSource<TEventDto>();
 			_eventSubscriber.ListenForEvents().Forget();
+
 			await _eventSubscriber.SocketOpeningTask;
 
 			try
@@ -56,6 +58,7 @@ namespace MirageSDK.Utils
 			}
 			catch (Exception e)
 			{
+				Debug.LogError("EventAwaiter exception: " + e.Message);
 				_receiveEventCompletionSource.TrySetException(e);
 			}
 		}

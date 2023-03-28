@@ -85,11 +85,8 @@ namespace MirageSDK.WearableNFTExample
 		private IContract
 			_gameItemContract; //you can find the source in the mirage-smart-contract-example repo in contracts/GameItem.sol
 
-		private Web3 _web3;
-
 		private void Awake()
 		{
-			_web3 = new Web3(_providerInfo.HttpProviderURL);
 			SubscribeButtonLinks();
 		}
 
@@ -131,7 +128,7 @@ namespace MirageSDK.WearableNFTExample
 				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_providerInfo.HttpProviderURL);
 
 				_gameCharacterContract = sdkInstance.GetContract(_gameCharacterContractInfo);
-				
+
 				_gameItemContract = sdkInstance.GetContract(_gameItemContractInfo);
 				_ethHandler = sdkInstance.Eth;
 			}
