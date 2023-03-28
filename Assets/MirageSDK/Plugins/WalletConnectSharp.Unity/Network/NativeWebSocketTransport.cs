@@ -209,8 +209,9 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 			}
 		}
 
-		private static void HandleError(Exception e)
+		private void HandleError(Exception e)
 		{
+			Debug.LogError("NativbeWebSocketTransport failed to connect to " + URL);
 			Debug.LogException(e);
 		}
 
