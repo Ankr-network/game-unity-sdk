@@ -345,8 +345,6 @@ namespace MirageSDK.WalletConnectSharp.Core
 		{
 			var eventCompleted = new UniTaskCompletionSource<TResponse>();
 
-			var requestClone = request;
-
 			void HandleSendResponse(object sender, JsonRpcResponseEvent<TResponse> @event)
 			{
 				var response = @event.Response;

@@ -48,7 +48,6 @@ namespace MirageSDK.Utils
 
 			await _eventSubscriber.SocketOpeningTask;
 
-
 			try
 			{
 				_subscription = await _eventSubscriber.Subscribe(

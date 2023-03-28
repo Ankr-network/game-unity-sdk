@@ -85,14 +85,8 @@ namespace MirageSDK.WearableNFTExample
 		private IContract
 			_gameItemContract; //you can find the source in the mirage-smart-contract-example repo in contracts/GameItem.sol
 
-		private Web3 _web3;
-
-		private WalletConnectSharp.Unity.WalletConnect WalletConnect =>
-			ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
-
 		private void Awake()
 		{
-			_web3 = new Web3(_providerInfo.HttpProviderURL);
 			SubscribeButtonLinks();
 		}
 

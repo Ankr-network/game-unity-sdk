@@ -181,7 +181,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			// The state of the connection is contained in the context Items dictionary.
 			bool sending;
 
-
 			lock (_lock)
 			{
 				sending = _isSending;
@@ -270,8 +269,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			if (_messageList.Count > 0)
 			{
 				_messageListMutex.WaitOne();
-				messageListCopy = new List<byte[]>();
-				messageListCopy.AddRange(_messageList);
+				messageListCopy = new List<byte[]>(_messageList);
 				_messageList.Clear();
 				// release mutex to allow the websocket to add new messages
 				_messageListMutex.ReleaseMutex();

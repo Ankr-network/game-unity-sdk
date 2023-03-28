@@ -252,7 +252,6 @@ namespace MirageSDK.WalletConnectSharp.Core
 
 			var request = JsonConvert.DeserializeObject<JsonRpcRequest>(json);
 
-
 			if (request?.Method != null)
 			{
 				EventDelegator.Trigger(request.Method, json);
