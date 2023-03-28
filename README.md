@@ -2,7 +2,7 @@
 <h3 align="center">Unity SDK</h3>
 
   <p align="center">
-The Ankr Unity SDK provides an easy way to interact with Web3 and to work with contracts deployed on the blockchain. As a plugin it easily integrates with MetaMask on Android and iOS.
+The Mirage Unity SDK provides an easy way to interact with Web3 and to work with contracts deployed on the blockchain. As a plugin it easily integrates with MetaMask on Android and iOS.
     <br />
     <a href="https://github.com/Ankr-network/game-unity-demo">View Demo</a>
   </p>
@@ -114,13 +114,13 @@ Both of these methods will generate a linking url which will create a request in
 If you accept to connect a session key will be saved in PlayerPrefs for future use.
 
 
-1. Create an instance of a `AnkrSDKWrapper` class via `AnkrSDKWrapper.GetSDKInstance(...)` method after successful connection to your wallet
+1. Create an instance of a `MirageSDKWrapper` class via `MirageSDKWrapper.GetMirageSDKInstance(...)` method after successful connection to your wallet
 
 ```c#		
-var ankrSdk = AnkrSDKWrapper.GetSDKInstance("<ethereum node url>");
+var sdk = MirageSDKWrapper.GetMirageSDKInstance("<ethereum node url>");
 ```
 
-Inside (AnkrSDK/Examples/UseCases/LinkingAccountWallet) is an example script demonstrating how to link a crypto wallet (MetaMask) to a player account.
+Inside (MirageSDK/Examples/UseCases/LinkingAccountWallet) is an example script demonstrating how to link a crypto wallet (MetaMask) to a player account.
 
 ## 🚀 02 Perform Updates to NFTs
 
@@ -134,19 +134,19 @@ All updates are transactions that must be signed via a prompt from MetaMask.
 
 Login via WalletConnect is required to sign the message.
 
-- Call the `AnkrSignatureHelper.Sign` to trigger Signing via MetaMask. 
+- Call the `IEthHandler.Sign` to trigger Signing via MetaMask. 
 
 ```c#
 string message = "Hi I am a message !"
-string signature = await AnkrSignatureHelper.Sign(message);
+string address = "0x...";
+string signature = await sdk.Eth.Sign(message, address);
 ```
-
-- `AnkrSignatureHelper.Sign(string)` returns the signature.
+returns the signature of given message.
 
 #### Verify the user signed message
 
 ```c#
-AnkrSignatureHelper.CheckSignature(message, signature);
+MirageSignatureHelper.CheckSignature(message, signature);
 ```
 
 ### Sending Transactions
@@ -215,20 +215,20 @@ public class TransactionEventHanlder : ITransactionEventHandler
 ```
 
 ## SDK Detailed description
-### IAnkrSDK 
+### IMirageSDK 
 After you finished connecting your wallet via WalletConnect you can access SDK Functionallity. First of all you should get an sdk Instance:
 ```c#
-var ankrSDK = AnkrSDKWrapper.GetSDKInstance("<ethereum_node_url>");
+var sdk = MirageSDKWrapper.GetMirageSDKInstance("<ethereum_node_url>");
 ```
 #### EthHandler
 You can get EthHandler via get-only property from sdk instance.
 ```c#
-_eth = ankrSDK.Eth;
+_eth = sdk.Eth;
 ```
 #### IContract
 IContract is a contract handler which gives you an easier access to web3, by handling low-level transformations.
 ```c#
-_contract = ankrSDKWrapper.GetContract("<contractAddress>", "<contractABI>");
+_contract = sdk.GetContract("<contractAddress>", "<contractABI>");
 ```
 
 After you have IContract instance for your smart-contract you are now eligible to work with your contract deployed on blockchain
