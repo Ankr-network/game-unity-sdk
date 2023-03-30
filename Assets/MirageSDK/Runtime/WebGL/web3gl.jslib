@@ -61,6 +61,13 @@ mergeInto(LibraryManager.library, {
         );
     },
 
+    AddChain: function (id, networkData) {
+        window.WalletProvider.addChain(
+            Pointer_stringify(id),
+            Pointer_stringify(networkData)
+        );
+    },
+    
     SwitchChain: function (id, networkData) {
         window.WalletProvider.switchChain(
             Pointer_stringify(id),
@@ -75,7 +82,7 @@ mergeInto(LibraryManager.library, {
         );
     },
 
-    GetChainId: function (id) {
+    RequestChainId: function (id) {
         window.WalletProvider.getChainId(
             Pointer_stringify(id)
         );

@@ -46,21 +46,18 @@ namespace MirageSDK.Provider
 			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
 			var eth = new WebGL.Implementation.EthHandlerWebGL(webGlWrapper);
 			var walletHandler = (IWalletHandler)webGlWrapper;
-			var networkHandler = new WebGL.Implementation.MirageWebGLHelper(webGlWrapper);
 		#else
 			silentSigningHandler = new MirageSDK.SilentSigning.Implementation.SilentSigningProtocol();
 			var web3Provider = new Mobile.MobileWeb3Provider().CreateWeb3(providerURI);
 			var contractFunctions = new Mobile.ContractFunctions(web3Provider);
 			var eth = new Mobile.EthHandler(web3Provider, silentSigningHandler);
 			var walletHandler = new Mobile.MobileWalletHandler();
-			var networkHandler = new Mobile.MirageNetworkHelper();
 		#endif
 
 			return new MirageSDKWrapper(
 				contractFunctions,
 				eth,
 				walletHandler,
-				networkHandler,
 				silentSigningHandler
 			);
 		}

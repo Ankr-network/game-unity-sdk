@@ -26,13 +26,16 @@ namespace MirageSDK.WebGL
 		public static extern void GetAddresses(string id);
 		
 		[DllImport("__Internal")]
-		public static extern void GetChainId(string id);
+		public static extern void RequestChainId(string id);
 
 		[DllImport("__Internal")]
 		public static extern void GetTransaction(string id, string transactionHash);
 
 		[DllImport("__Internal")]
 		public static extern void GetTransactionReceipt(string id, string transactionHash);
+		
+		[DllImport("__Internal")]
+		public static extern void AddChain(string id, string networkData);
 		
 		[DllImport("__Internal")]
 		public static extern void SwitchChain(string id, string networkData);

@@ -36,7 +36,7 @@ namespace MirageSDK.Core.Implementation
 			_unsubscribeRequestBuilder = new EthUnsubscribeRequestBuilder();
 		}
 
-		public Dictionary<string, string> RequestHeaders { get; set; } = new();
+		public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
 		public UniTask SocketOpeningTask
 		{

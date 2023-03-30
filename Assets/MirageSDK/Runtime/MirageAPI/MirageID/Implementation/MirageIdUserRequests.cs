@@ -5,6 +5,8 @@ using MirageSDK.MirageAPI.MirageID.Helpers;
 using MirageSDK.MirageAPI.MirageID.Infrastructure;
 using MirageSDK.Utils;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
+using UnityEngine;
 
 namespace MirageSDK.MirageAPI.MirageID.Implementation
 {
@@ -60,7 +62,7 @@ namespace MirageSDK.MirageAPI.MirageID.Implementation
 				NFTId = nftId,
 				TokenID = tokenId
 			};
-
+			
 			return WebHelper.SendPostRequest<TransferNFTRequestDTO, TransferNFTResponseDTO>(
 				MirageEnvironment.TransferNFTURL,
 				payload,
