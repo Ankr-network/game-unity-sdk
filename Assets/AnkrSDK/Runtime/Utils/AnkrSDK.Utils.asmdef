@@ -1,9 +1,0 @@
-{
-  "name": "AnkrSDK.Utils",
-  "references": [
-    "AnkrSDK.Data",
-    "UniTask",
-    "WalletConnectSharp.Unity",
-    "WalletConnectSharp.Core"
-  ]
-}

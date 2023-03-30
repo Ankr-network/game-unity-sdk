@@ -1,0 +1,18 @@
+{
+  "name": "MirageSDK.Examples",
+  "references": [
+    "UniTask",
+    "MirageSDK.Provider",
+    "MirageSDK.Core.Infrastructure",
+    "MirageSDK.Data",
+    "MirageSDK.Examples.WebGlLogin",
+    "MirageSDK.OpenSea",
+    "MirageSDK.Utils",
+    "MirageSDK.WebGL",
+    "MirageSDK.BlockchainUtils",
+    "WalletConnectSharp.Core",
+    "WalletConnectSharp.Unity",
+    "WalletConnectSharp.VersionShared",
+    "Unity.TextMeshPro"
+  ]
+}
