@@ -2,7 +2,7 @@ import subprocess
 import json
 import sys
 
-package_file_path = 'Assets/AnkrSDK/package.json'
+package_file_path = 'Assets/MirageSDK/package.json'
 
 commit_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode().strip()
 
