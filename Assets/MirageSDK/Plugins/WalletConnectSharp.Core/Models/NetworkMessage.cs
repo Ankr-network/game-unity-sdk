@@ -15,5 +15,10 @@ namespace MirageSDK.WalletConnectSharp.Core.Models
 
         [JsonProperty("silent")]
         public bool Silent;
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

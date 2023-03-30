@@ -16,7 +16,8 @@ namespace MirageSDK.UseCases.LinkingAccountWallet
 {
 	public class AccountLinkingExample : UseCaseBodyUI
 	{
-		[SerializeField] private ContractInformationSO _contractInformationSO;
+		[SerializeField] 
+		private ProviderInformationSO _providerInfo;
 		[Serializable]
 		private class RequestPayload
 		{
@@ -64,7 +65,7 @@ namespace MirageSDK.UseCases.LinkingAccountWallet
 
 			if (isActive)
 			{
-				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_contractInformationSO.HttpProviderURL);
+				var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_providerInfo.HttpProviderURL);
 				_eth = sdkInstance.Eth;
 			}
 		}

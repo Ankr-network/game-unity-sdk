@@ -1,5 +1,7 @@
+using System.IO;
 using MirageSDK.Core.Implementation;
 using MirageSDK.Core.Infrastructure;
+using MirageSDK.Data;
 
 namespace MirageSDK.Core
 {
@@ -26,6 +28,16 @@ namespace MirageSDK.Core
 		public IContract GetContract(string contractAddress, string contractABI)
 		{
 			return new Contract(Eth, _contractFunctions, contractAddress, contractABI);
+		}
+
+		public IContract GetContract(ContractInformationSO contractInfo)
+		{
+			if (!contractInfo.IsValid)
+			{
+				throw new InvalidDataException($"Invalid contract data: {contractInfo}");
+			}
+			
+			return new Contract(Eth, _contractFunctions, contractInfo.ContractAddress, contractInfo.ABI);
 		}
 
 		public IContractEventSubscriber CreateSubscriber(string wsUrl)

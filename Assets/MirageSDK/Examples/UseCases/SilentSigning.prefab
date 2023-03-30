@@ -957,7 +957,8 @@ MonoBehaviour:
   _sendSilentSignTxButton: {fileID: 5713025063100113016}
   _disconnectSilentSignButton: {fileID: 1418160127865706531}
   _sessionInfoText: {fileID: 1250312466208992694}
-  _sessionLogs: {fileID: 0}
+  _sessionLogs: {fileID: 316357478049943722}
+  _gameCharacterContractInfo: {fileID: 11400000, guid: e52ebafa94cfad5449bb5127e995b192, type: 2}
 --- !u!1 &8112337383494604541
 GameObject:
   m_ObjectHideFlags: 0
@@ -1657,6 +1658,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
+--- !u!114 &316357478049943722 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3489325837278364600, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}
+  m_PrefabInstance: {fileID: 3751355757663441682}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4041255074902345634 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 872029526285735088, guid: 47db6e6d3f4b1284bb55205184480a52, type: 3}

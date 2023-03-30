@@ -30,5 +30,11 @@ namespace MirageSDK.WalletConnect.VersionShared.Models
 
         [JsonIgnore]
         public string Event => Method;
+        
+        public override string ToString()
+        {
+            var jsonStr = JsonConvert.SerializeObject(this);
+            return jsonStr;
+        }
     }
 }

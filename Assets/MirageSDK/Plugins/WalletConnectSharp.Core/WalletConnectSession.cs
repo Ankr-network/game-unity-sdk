@@ -339,7 +339,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async UniTask<TResponse> Send<TRequest, TResponse>(TRequest data)
+		public async UniTask<TResponse> Send<TRequest, TResponse>(TRequest request)
 			where TRequest : IIdentifiable
 			where TResponse : IErrorHolder
 		{
@@ -358,10 +358,9 @@ namespace MirageSDK.WalletConnectSharp.Core
 				}
 			}
 
-			EventDelegator.ListenForResponse<TResponse>(data.ID, HandleSendResponse);
-
-			await SendRequest(data);
-
+			EventDelegator.ListenForResponse<TResponse>(request.ID, HandleSendResponse);
+			
+			await SendRequest(request);
 			OnSend?.Invoke();
 
 			return await eventCompleted.Task;

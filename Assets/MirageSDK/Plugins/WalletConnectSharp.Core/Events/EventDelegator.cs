@@ -9,11 +9,6 @@ namespace MirageSDK.WalletConnectSharp.Core.Events
 	{
 		private readonly Dictionary<string, List<IEventProvider>> _listeners = new Dictionary<string, List<IEventProvider>>();
 
-		public void ListenForGenericResponse<T>(object id, EventHandler<GenericEvent<T>> callback)
-		{
-			ListenForGeneric("response:" + id, callback);
-		}
-
 		public void ListenForResponse<T>(object id, EventHandler<JsonRpcResponseEvent<T>> callback)
 		{
 			ListenFor("response:" + id, callback);
@@ -52,11 +47,6 @@ namespace MirageSDK.WalletConnectSharp.Core.Events
 			}
 
 			listProvider.Add(provider);
-		}
-
-		public bool Trigger<T>(string topic, T obj)
-		{
-			return Trigger(topic, JsonConvert.SerializeObject(obj));
 		}
 
 		public bool Trigger(string topic, string json)

@@ -962,6 +962,9 @@ MonoBehaviour:
   _changeHatBlueButton: {fileID: 8155013286671354433}
   _changeHatRedButton: {fileID: 8155013287890093291}
   _getHatButton: {fileID: 2018535735141843176}
+  _gameItemContractInfo: {fileID: 11400000, guid: dfd719fb29648ed4a942d6bac295025c, type: 2}
+  _gameCharacterContractInfo: {fileID: 11400000, guid: e52ebafa94cfad5449bb5127e995b192, type: 2}
+  _providerInfo: {fileID: 11400000, guid: 3ac92868c40c02349b9e63a4ed2712ce, type: 2}
 --- !u!1 &8155013286671354447
 GameObject:
   m_ObjectHideFlags: 0

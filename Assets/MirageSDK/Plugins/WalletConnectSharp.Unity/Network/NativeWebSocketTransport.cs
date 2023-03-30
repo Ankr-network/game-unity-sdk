@@ -32,12 +32,12 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 
 		public void Update()
 		{
-		#if !UNITY_WEBGL || UNITY_EDITOR
+			#if !UNITY_WEBGL || UNITY_EDITOR
 			if (_client?.State == WebSocketState.Open)
 			{
 				_client.DispatchMessageQueue();
 			}
-		#endif
+			#endif
 		}
 
 		public async UniTask OnApplicationPause(bool pauseStatus)
@@ -117,7 +117,6 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 			else
 			{
 				var finalJson = JsonConvert.SerializeObject(message);
-
 				await _client.SendText(finalJson);
 			}
 		}
@@ -209,8 +208,9 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 			}
 		}
 
-		private static void HandleError(Exception e)
+		private void HandleError(Exception e)
 		{
+			Debug.LogError("NativbeWebSocketTransport failed to connect to " + URL);
 			Debug.LogException(e);
 		}
 

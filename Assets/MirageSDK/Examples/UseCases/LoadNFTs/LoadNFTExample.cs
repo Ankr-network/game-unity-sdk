@@ -25,6 +25,12 @@ namespace MirageSDK.UseCases.LoadNFTs
 		[SerializeField]
 		private Button _loadNFTMetaDataButton;
 
+		[SerializeField]
+		private ProviderInformationSO _providerInfo;
+
+		[SerializeField]
+		private ContractInformationSO _gameCharacterContractInfo;
+
 		private string _activeSessionAccount;
 
 		private IContract _gameCharacterContract;
@@ -43,10 +49,8 @@ namespace MirageSDK.UseCases.LoadNFTs
 
 		private void StartUseCaseExample()
 		{
-			var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(WearableNFTContractInformation.ProviderHttpURL);
-			var gameCharacterABI = ABIStringLoader.LoadAbi("GameCharacter");
-			_gameCharacterContract = sdkInstance.GetContract(
-				WearableNFTContractInformation.GameCharacterContractAddress, gameCharacterABI);
+			var sdkInstance = MirageSDKFactory.GetMirageSDKInstance(_providerInfo.HttpProviderURL);
+			_gameCharacterContract = sdkInstance.GetContract(_gameCharacterContractInfo);
 			StartAsync(sdkInstance).Forget();
 		}
 
