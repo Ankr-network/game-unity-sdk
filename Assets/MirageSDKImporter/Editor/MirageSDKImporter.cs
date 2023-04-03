@@ -173,7 +173,6 @@ namespace MirageSDKImporter.Editor
 			foreach (var registryScope in settings.RegistryScopes)
 			{
 				scopesArray.Add(new JSONString(registryScope));
-				scopesArray.Add(new JSONString(registryScope));
 			}
 
 			openUpmJsonObj.Add("scopes", scopesArray);
