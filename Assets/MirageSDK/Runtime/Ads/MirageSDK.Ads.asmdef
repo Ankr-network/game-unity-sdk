@@ -1,7 +1,0 @@
-{
-  "name": "MirageSDK.Ads",
-  "references": [
-    "MirageSDK.Ads.IOS",
-    "UniTask"
-  ]
-}
