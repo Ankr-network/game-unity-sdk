@@ -25,12 +25,12 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 			rpcUrls = new[] { "https://rpc.ankr.com/bsc_testnet_chapel" }
 		};
 
-		public static readonly EthChain BscMainNetChain = new EthChainData()
+		public static readonly EthChain BscMainNetChain = new EthChain()
 		{
 			chainId = "0x38" //56
 		};
 
-		public static readonly EthChain BscTestnetChain = new EthChainData()
+		public static readonly EthChain BscTestnetChain = new EthChain()
 		{
 			chainId = "0x61" //97
 		};
