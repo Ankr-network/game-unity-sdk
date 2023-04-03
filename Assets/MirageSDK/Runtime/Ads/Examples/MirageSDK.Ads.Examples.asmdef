@@ -1,9 +1,0 @@
-{
-  "name": "MirageSDK.Ads.Examples",
-  "references": [
-    "MirageSDK.Ads",
-    "MirageSDK.Examples",
-    "UniTask",
-    "Unity.TextMeshPro"
-  ]
-}

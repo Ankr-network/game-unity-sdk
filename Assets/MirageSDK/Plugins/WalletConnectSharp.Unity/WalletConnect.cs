@@ -4,7 +4,6 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using MirageSDK.Metadata;
 using MirageSDK.WalletConnect.VersionShared;
 using MirageSDK.WalletConnect.VersionShared.Infrastructure;
 using MirageSDK.WalletConnect.VersionShared.Models;
@@ -21,7 +20,6 @@ using MirageSDK.WalletConnectSharp.Unity.Network;
 using MirageSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Logger = AnkrSDK.InternalUtils.Logger;
 
 [assembly: InternalsVisibleTo("MirageSDK.Tests.Runtime")]
 
@@ -170,7 +168,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 		public async UniTask Connect()
 		{
 			var savedSession = SessionSaveHandler.GetSavedSession();
-			Logger.AddLog(PackageInfo.Version);
 
 			if (_session != null)
 			{
