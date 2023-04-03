@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -20,6 +21,7 @@ using MirageSDK.WalletConnectSharp.Unity.Network;
 using MirageSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Logger = AnkrSDK.InternalUtils.Logger;
 
 [assembly: InternalsVisibleTo("MirageSDK.Tests.Runtime")]
 
@@ -102,6 +104,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		private WalletEntry _selectedWallet;
 		private WalletConnectSession _session;
+		private Dictionary<string, string> _ownVersionKnowledge;
 
 		public void Initialize(ScriptableObject settings)
 		{
@@ -167,6 +170,9 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		public async UniTask Connect()
 		{
+			TryLoadOwnVersionKnowledge();
+			LogVersion();
+			
 			var savedSession = SessionSaveHandler.GetSavedSession();
 
 			if (_session != null)
@@ -405,6 +411,26 @@ namespace MirageSDK.WalletConnectSharp.Unity
 			if (connectNewSession)
 			{
 				await Connect();
+			}
+		}
+
+		private void TryLoadOwnVersionKnowledge()
+		{
+			var ownVersionKnowledgeTextAsset = Resources.Load<TextAsset>("own-version-knowledge.json");
+			_ownVersionKnowledge = JsonUtility.FromJson<Dictionary<string, string>>(ownVersionKnowledgeTextAsset.text);
+		}
+
+		private void LogVersion()
+		{
+			const string versionKey = "version";
+			if (_ownVersionKnowledge != null && _ownVersionKnowledge.TryGetValue(versionKey, out var versionValue))
+			{
+				Logger.AddLog(versionValue);
+				Debug.Log($"WalletConnect logged version {versionValue} successfully");
+			}
+			else
+			{
+				Debug.LogError("Own version not found by WalletConnect");
 			}
 		}
 
