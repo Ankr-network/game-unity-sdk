@@ -1,4 +1,4 @@
-# AnkrSDK version 0.6.0 migration guide
+# AnkrSDK / MirageSDK version 0.6.0 migration guide
 
 In this release, we are adding a WalletConnect 2.0 protocol implementation based on [WalletConnectSharp](https://github.com/WalletConnect/WalletConnectSharp) implementation with some additions intended to support previously developed functionality. You can inspect the additional WalletConnectSharp changes in the [WalletConnectSharp-Fork](https://github.com/Ankr-network/WalletConnectSharp-Fork) repo main branch. In order to make sure WalletConnect 2.0 implementation can support a similar interface as WalletConnect 1.0 implementation we had to bring some breaking changes.
 
@@ -33,3 +33,7 @@ The rest of the methods of `IWalletConnectCommunicator` stay the same except the
 ### 5. `IWalletConnectCommunicator.Send` generic method properties are now restricted to `IIdentifiable` and `IErrorHolder` interfaces
 
 This is done to make both `WalletConnect` and `WalletConnect2` comply with the same `IWalletConnectCommunicator` interface.
+
+### 6. AnkrSDK renamed to MirageSDK
+
+Since the our web3 gaming platform name is Mirage we decided to rename this SDK to MirageSDK. Which leads to renaming of all of the namespaces and class names containing "Ankr" substring in them.
