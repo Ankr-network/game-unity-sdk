@@ -104,7 +104,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		private WalletEntry _selectedWallet;
 		private WalletConnectSession _session;
-		private Dictionary<string, string> _ownVersionKnowledge;
+		private VersionInfo _ownVersionKnowledge;
 
 		public void Initialize(ScriptableObject settings)
 		{
@@ -416,17 +416,17 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		private void TryLoadOwnVersionKnowledge()
 		{
-			var ownVersionKnowledgeTextAsset = Resources.Load<TextAsset>("own-version-knowledge.json");
-			_ownVersionKnowledge = JsonUtility.FromJson<Dictionary<string, string>>(ownVersionKnowledgeTextAsset.text);
+			var ownVersionKnowledgeTextAsset = Resources.Load<TextAsset>("own-version-knowledge");
+			_ownVersionKnowledge = JsonUtility.FromJson<VersionInfo>(ownVersionKnowledgeTextAsset.text.Trim());
 		}
 
 		private void LogVersion()
 		{
 			const string versionKey = "version";
-			if (_ownVersionKnowledge != null && _ownVersionKnowledge.TryGetValue(versionKey, out var versionValue))
+			if (_ownVersionKnowledge != null && !string.IsNullOrWhiteSpace(_ownVersionKnowledge.version))
 			{
-				Logger.AddLog(versionValue);
-				Debug.Log($"WalletConnect logged version {versionValue} successfully");
+				Logger.AddLog(_ownVersionKnowledge.version);
+				Debug.Log($"WalletConnect logged version {_ownVersionKnowledge.version} successfully");
 			}
 			else
 			{
