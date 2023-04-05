@@ -43,18 +43,18 @@ The Mirage Unity SDK provides an easy way to interact with Web3 and to work with
 We are using UniTask and Newtonsoft.Json as a dependency, so installing through Package Manager is a preferable way.
 
 ### Install via git URL
-Requires a version of unity that supports path query parameter for git packages (Unity >= 2019.3.4f1, Unity >= 2020.1a21). You can add https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK to Package Manager
+Requires a version of unity that supports path query parameter for git packages (Unity >= 2019.3.4f1, Unity >= 2020.1a21). You can add https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/MirageSDK to Package Manager
 ![image](https://user-images.githubusercontent.com/9112595/185632883-66555321-a6be-4a57-826b-9b28a10f580c.png)
 <img width="306" alt="image" src="https://user-images.githubusercontent.com/9112595/185633212-27fe4160-c4b4-4320-b0f8-f60d401f6002.png">
 
-or add "com.ankr.ankrsdk": "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/AnkrSDK" to Packages/manifest.json 
+or add "com.mirage.miragesdk": "https://github.com/Ankr-network/game-unity-sdk.git?path=Assets/MirageSDK" to Packages/manifest.json 
 
-To be able to use "com.ankr.ankrsdk" as a dependency remember to add [Scoped Registry](https://docs.unity3d.com/Manual/upm-scoped.html):
+To be able to use "com.mirage.miragesdk" as a dependency remember to add [Scoped Registry](https://docs.unity3d.com/Manual/upm-scoped.html):
 
 ```
 name: package.openupm.com
 URL: https://package.openupm.com
-Scope(s): com.ankr.ankrsdk com.cysharp.unitask
+Scope(s): com.mirage.miragesdk com.cysharp.unitask
 ```
 Our package depends
 ### Install via OpenUPM
@@ -62,7 +62,7 @@ Our package depends
 The package is available on the [openupm registry](https://openupm.com). It's recommended to install it via [openupm-cli](https://github.com/openupm/openupm-cli).
 
 ```
-openupm add com.ankr.ankrsdk
+openupm add com.mirage.miragesdk
 ```
 
 ## 👀 What's in the SDK
@@ -338,5 +338,5 @@ We have two ERC proposals.
 For full examples:
 
 View 
-[ERC20 token example](https://github.com/Ankr-network/game-unity-sdk/blob/master/Assets/AnkrSDK/Examples/Scripts/ERC20Example/ERC20Example.cs) and
-[ERC721 token example](https://github.com/Ankr-network/game-unity-sdk/blob/master/Assets/AnkrSDK/Examples/Scripts/ERC721Example/ERC721Example.cs)
+[ERC20 token example](https://github.com/Ankr-network/game-unity-sdk/blob/master/Assets/MirageSDK/Examples/Scripts/ERC20Example/ERC20Example.cs) and
+[ERC721 token example](https://github.com/Ankr-network/game-unity-sdk/blob/master/Assets/MirageSDK/Examples/Scripts/ERC721Example/ERC721Example.cs)
