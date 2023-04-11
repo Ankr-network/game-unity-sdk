@@ -71,7 +71,7 @@ namespace MirageSDK.UseCases.AddSwitchNetwork
 
 		private async void OpenUpdateBscTestnet()
 		{
-			_ethHandler.WalletUpdateEthChain(ChainInfo.BscTestnet.ToEthUpdate());
+			await _ethHandler.WalletUpdateEthChain(ChainInfo.BscTestnet.ToEthUpdate());
 			UpdateUILogs(String.Format(ChainUpdatedMessage, ChainInfo.BscTestnet.chainName));
 		}
 		
