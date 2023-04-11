@@ -53,7 +53,7 @@ namespace MirageSDK.Utils
 			{
 				if (headers != null)
 				{
-					webRequest.AddHeaders(headers);
+					webRequest.AddHeaders(headers: headers);
 				}
 
 				webRequest.timeout = 5;
