@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 4424874319438181734}
   - component: {fileID: 4732069687732793963}
   m_Layer: 5
-  m_Name: WalletButton
+  m_Name: WebGLWalletButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
