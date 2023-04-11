@@ -1,4 +1,0 @@
-framework module AdsBridge {
-  header "AdsBridge-Swift.h"
-  requires objc
-}
