@@ -422,7 +422,6 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		private void LogVersion()
 		{
-			const string versionKey = "version";
 			if (_ownVersionKnowledge != null && !string.IsNullOrWhiteSpace(_ownVersionKnowledge.version))
 			{
 				Logger.AddLog(_ownVersionKnowledge.version);

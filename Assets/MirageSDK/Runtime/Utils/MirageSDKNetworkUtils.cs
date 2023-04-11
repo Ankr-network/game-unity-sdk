@@ -77,7 +77,7 @@ namespace MirageSDK.Utils
 					rpcUrl
 				};
 			}
-			catch (NotSupportedException e)
+			catch (NotSupportedException)
 			{
 				return null;
 			}
