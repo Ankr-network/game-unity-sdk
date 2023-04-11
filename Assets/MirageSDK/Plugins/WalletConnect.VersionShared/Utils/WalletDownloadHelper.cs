@@ -13,10 +13,10 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 	public static class WalletDownloadHelper
 	{
 		private static Dictionary<string, WalletEntry> _walletEntriesCache = new Dictionary<string, WalletEntry>();
-
+		
 		public static async UniTask<WalletEntry> FindWalletEntryByName(string walletName, bool invalidateCache = false)
 		{
-			var supportedWallets = await FetchWalletList(downloadImages: false, invalidateCache: invalidateCache);
+			var supportedWallets = await FetchWalletList(downloadImages:false, invalidateCache:invalidateCache);
 			var walletEntry =
 				supportedWallets.Values.FirstOrDefault(predicate: a =>
 					string.Equals(a: a.name, b: walletName,
@@ -28,17 +28,16 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 		public static async UniTask<WalletEntry> FindWalletEntry(Wallets wallet, bool invalidateCache = false)
 		{
 			var walletName = wallet.GetWalletName();
-			return await FindWalletEntryByName(walletName: walletName, invalidateCache: invalidateCache);
+			return await FindWalletEntryByName(walletName, invalidateCache: invalidateCache);
 		}
 
-		public static async UniTask<Dictionary<string, WalletEntry>> FetchWalletList(bool downloadImages,
-			bool invalidateCache = false)
+		public static async UniTask<Dictionary<string, WalletEntry>> FetchWalletList(bool downloadImages, bool invalidateCache = false)
 		{
 			if (invalidateCache)
 			{
 				_walletEntriesCache = null;
 			}
-
+			
 			if (_walletEntriesCache != null)
 			{
 				//if wallet already cached but it does not have images loaded then load them before returning
@@ -52,7 +51,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 						}
 					}
 				}
-
+				
 				return _walletEntriesCache;
 			}
 
