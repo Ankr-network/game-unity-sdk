@@ -274,9 +274,9 @@ namespace MirageSDK.WalletConnectSharp.Core
 			return response.Result;
 		}
 
-		public async UniTask<BigInteger> EthChainId()
+		public UniTask<BigInteger> EthChainId()
 		{
-			return new BigInteger(ChainId);
+			return UniTask.FromResult(new BigInteger(ChainId));
 		}
 
 		public async UniTask<string> EthPersonalSign(string address, string message)
