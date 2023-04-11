@@ -12,12 +12,11 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 {
 	public static class WalletDownloadHelper
 	{
-		private static Dictionary<string, WalletEntry> _walletEntries = new Dictionary<string, WalletEntry>();
-
-		public static async UniTask<WalletEntry> FindWalletEntry(Wallets wallet, bool invalidateCache = false)
+		private static Dictionary<string, WalletEntry> _walletEntriesCache = new Dictionary<string, WalletEntry>();
+		
+		public static async UniTask<WalletEntry> FindWalletEntryByName(string walletName, bool invalidateCache = false)
 		{
 			var supportedWallets = await FetchWalletList(downloadImages:false, invalidateCache:invalidateCache);
-			var walletName = wallet.GetWalletName();
 			var walletEntry =
 				supportedWallets.Values.FirstOrDefault(a =>
 					string.Equals(a.name, walletName, StringComparison.InvariantCultureIgnoreCase));
@@ -25,19 +24,25 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 			return walletEntry;
 		}
 
+		public static async UniTask<WalletEntry> FindWalletEntry(Wallets wallet, bool invalidateCache = false)
+		{
+			var walletName = wallet.GetWalletName();
+			return await FindWalletEntryByName(walletName, invalidateCache: invalidateCache);
+		}
+
 		public static async UniTask<Dictionary<string, WalletEntry>> FetchWalletList(bool downloadImages, bool invalidateCache = false)
 		{
 			if (invalidateCache)
 			{
-				_walletEntries = null;
+				_walletEntriesCache = null;
 			}
 			
-			if (_walletEntries != null)
+			if (_walletEntriesCache != null)
 			{
 				//if wallet already cached but it does not have images loaded then load them before returning
 				if (downloadImages)
 				{
-					foreach (var entry in _walletEntries.Values)
+					foreach (var entry in _walletEntriesCache.Values)
 					{
 						if (!entry.AllImagesLoaded)
 						{
@@ -46,7 +51,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 					}
 				}
 				
-				return _walletEntries;
+				return _walletEntriesCache;
 			}
 			
 			using (var webRequest = UnityWebRequest.Get("https://registry.walletconnect.org/data/wallets.json"))
