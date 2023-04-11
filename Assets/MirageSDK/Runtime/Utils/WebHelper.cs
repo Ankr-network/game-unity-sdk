@@ -49,34 +49,36 @@ namespace MirageSDK.Utils
 			Dictionary<string, string> headers = null
 		)
 		{
-			using var webRequest = UnityWebRequest.Get(urlWithQuery);
-			if (headers != null)
+			using (var webRequest = UnityWebRequest.Get(urlWithQuery))
 			{
-				webRequest.AddHeaders(headers);
-			}
-
-			webRequest.timeout = 5;
-
-			var answer = await webRequest.SendWebRequest();
-
-			var requestResult = answer.result;
-			var json = webRequest.downloadHandler.text;
-			if (requestResult == UnityWebRequest.Result.Success)
-			{
-				try
+				if (headers != null)
 				{
-					var result = JsonConvert.DeserializeObject<TResultType>(json);
-					return result;
+					webRequest.AddHeaders(headers);
 				}
-				catch (Exception e)
-				{
-					Debug.LogError($"Error while deserializing response: {e.Message}");
-					throw;
-				}
-			}
 
-			Debug.LogError(webRequest.error);
-			throw new Exception(webRequest.error);
+				webRequest.timeout = 5;
+
+				var answer = await webRequest.SendWebRequest();
+
+				var requestResult = answer.result;
+				var json = webRequest.downloadHandler.text;
+				if (requestResult == UnityWebRequest.Result.Success)
+				{
+					try
+					{
+						var result = JsonConvert.DeserializeObject<TResultType>(json);
+						return result;
+					}
+					catch (Exception e)
+					{
+						Debug.LogError($"Error while deserializing response: {e.Message}");
+						throw;
+					}
+				}
+
+				Debug.LogError(webRequest.error);
+				throw new Exception(webRequest.error);
+			}
 		}
 
 		private static async UniTask<TResultType> SendChangeRequest<TResultType>(
@@ -114,16 +116,18 @@ namespace MirageSDK.Utils
 			Dictionary<string, string> headers = null
 		)
 		{
-			using var webRequest = UnityWebRequest.Post(url, payload);
-			if (headers != null)
+			using (var webRequest = UnityWebRequest.Post(url, payload))
 			{
-				webRequest.AddHeaders(headers);
+				if (headers != null)
+				{
+					webRequest.AddHeaders(headers);
+				}
+
+				var answer = await webRequest.SendWebRequest();
+				var json = webRequest.downloadHandler.text;
+
+				return ParseJsonResponse<TResultType>(json, answer);
 			}
-
-			var answer = await webRequest.SendWebRequest();
-			var json = webRequest.downloadHandler.text;
-
-			return ParseJsonResponse<TResultType>(json, answer);
 		}
 
 		public static async UniTask SendPostRequestURLEncoded(
@@ -132,13 +136,15 @@ namespace MirageSDK.Utils
 			Dictionary<string, string> headers = null
 		)
 		{
-			using var webRequest = UnityWebRequest.Post(url, payload);
-			if (headers != null)
+			using (var webRequest = UnityWebRequest.Post(url, payload))
 			{
-				webRequest.AddHeaders(headers);
-			}
+				if (headers != null)
+				{
+					webRequest.AddHeaders(headers);
+				}
 
-			await webRequest.SendWebRequest();
+				await webRequest.SendWebRequest();
+			}
 		}
 
 		private static TResultType ParseJsonResponse<TResultType>(string json,
