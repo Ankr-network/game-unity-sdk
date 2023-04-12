@@ -417,7 +417,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 		private void TryLoadOwnVersionKnowledge()
 		{
 			var ownVersionKnowledgeTextAsset = Resources.Load<TextAsset>("own-version-knowledge");
-			_ownVersionKnowledge = JsonUtility.FromJson<VersionInfo>(ownVersionKnowledgeTextAsset.text.Trim());
+			_ownVersionKnowledge = Newtonsoft.Json.JsonConvert.DeserializeObject<VersionInfo>(ownVersionKnowledgeTextAsset.text.Trim());
 		}
 
 		private void LogVersion()
