@@ -40,7 +40,11 @@ def remove_assets_and_folders(project_path):
     # Remove Resources folder if it is empty
     resources_dir = os.path.join(assets_dir, "MirageSDK", "Resources")
     if os.path.exists(resources_dir) and not os.listdir(resources_dir):
+        print("removing dir " + resources_dir)
         remove_dir(resources_dir)
+        remove_file(resources_dir + ".meta")
+    else:
+        print("failed to remove " + resources_dir)
         
 def remove_packages(project_path):
     remove_packages = ["com.unity.mobile.android-logcat", "com.unity.test-framework", "com.unity.ide.rider"]
