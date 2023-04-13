@@ -12,7 +12,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 {
 	public static class WalletDownloadHelper
 	{
-		private static Dictionary<string, WalletEntry> _walletEntriesCache = new();
+		private static Dictionary<string, WalletEntry> _walletEntriesCache = new Dictionary<string, WalletEntry>();
 
 		public static async UniTask<WalletEntry> FindWalletEntryByName(string walletName, bool invalidateCache = false)
 		{
