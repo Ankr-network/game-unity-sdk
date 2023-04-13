@@ -1,9 +1,12 @@
 ﻿using MirageSDK.Data;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
-[Event("SafeMinted")]
-public class SafeMintedEventDTO : EventDTOBase
+namespace MirageSDK.DTO
 {
-	[Parameter("address", "to", 1, true)]
-	public string To { get; set; }
+	[Event("SafeMinted")]
+	public class SafeMintedEventDTO : EventDTOBase
+	{
+		[Parameter("address", "to", 1, true)] 
+		public string To { get; set; }
+	}
 }
