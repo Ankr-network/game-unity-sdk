@@ -17,7 +17,6 @@ namespace MirageSDK.WebGL
 		private UniTaskCompletionSource<Wallet> _walletCompletionSource;
 		private WebGLConnectSettingsSO _settings;
 		private NetworkName _network;
-		private bool _initialized;
 
 		public string SettingsFilename => SettingsFilenameStr;
 
@@ -32,7 +31,6 @@ namespace MirageSDK.WebGL
 			_settings = settings as WebGLConnectSettingsSO;
 			if (_settings != null)
 			{
-				_initialized = true;
 				_network = _settings.DefaultNetwork;
 			}
 			else
