@@ -32,7 +32,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Models
 
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError)
+            if (www.result == UnityWebRequest.Result.ConnectionError)
             {
                 throw new IOException(www.error);
             }

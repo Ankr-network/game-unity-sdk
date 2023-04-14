@@ -2,15 +2,18 @@
 using MirageSDK.Data;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
-[Event("HatChanged")]
-public class HatChangedEventDTO : EventDTOBase
+namespace MirageSDK.DTO
 {
-	[Parameter("uint256", "characterId", 1, true)]
-	public BigInteger CharacterId { get; set; }
+	[Event("HatChanged")]
+	public class HatChangedEventDTO : EventDTOBase
+	{
+		[Parameter("uint256", "characterId", 1, true)]
+		public BigInteger CharacterId { get; set; }
 
-	[Parameter("uint256", "oldHatId", 2, false)]
-	public BigInteger OldHatId { get; set; }
+		[Parameter("uint256", "oldHatId", 2, false)]
+		public BigInteger OldHatId { get; set; }
 
-	[Parameter("uint256", "newHatId", 3, false)]
-	public BigInteger NewHatId { get; set; }
+		[Parameter("uint256", "newHatId", 3, false)]
+		public BigInteger NewHatId { get; set; }
+	}
 }

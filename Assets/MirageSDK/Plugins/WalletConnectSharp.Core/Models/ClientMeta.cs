@@ -34,5 +34,26 @@ namespace MirageSDK.WalletConnectSharp.Core.Models
 
 			return base.Equals(obj);
 		}
+
+		public override int GetHashCode()
+		{
+			const int prime1 = 17;
+			const int prime2 = 31;
+			
+			int hash = prime1;
+			hash = hash * prime2 + Description?.GetHashCode() ?? 0;
+			hash = hash * prime2 + Url?.GetHashCode() ?? 0;
+			hash = hash * prime2 + Name?.GetHashCode() ?? 0;
+
+			if (Icons != null)
+			{
+				foreach (var icon in Icons)
+				{
+					hash = hash * prime2 + icon?.GetHashCode() ?? 0;
+				}
+			}
+
+			return hash;
+		}
 	}
 }

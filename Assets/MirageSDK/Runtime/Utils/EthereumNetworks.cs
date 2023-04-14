@@ -7,8 +7,6 @@ namespace MirageSDK.Utils
 {
 	public static class EthereumNetworks
 	{
-		private static readonly string _ethereumMainnetName = "Mainnet";
-
 		private static readonly Dictionary<NetworkName, EthereumNetwork> Dictionary =
 			new Dictionary<NetworkName, EthereumNetwork>();
 

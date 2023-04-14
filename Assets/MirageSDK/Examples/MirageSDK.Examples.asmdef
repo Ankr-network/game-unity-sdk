@@ -6,7 +6,6 @@
     "MirageSDK.Core.Infrastructure",
     "MirageSDK.Data",
     "MirageSDK.Examples.WebGlLogin",
-    "MirageSDK.OpenSea",
     "MirageSDK.Utils",
     "MirageSDK.WebGL",
     "MirageSDK.BlockchainUtils",
