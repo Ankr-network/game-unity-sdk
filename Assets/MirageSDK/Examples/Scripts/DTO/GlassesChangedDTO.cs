@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using MirageSDK.Data;
+using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace MirageSDK.DTO
 {
