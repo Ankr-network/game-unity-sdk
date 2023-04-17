@@ -12,7 +12,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 {
 	public static class WalletDownloadHelper
 	{
-		private static Dictionary<string, WalletEntry> _walletEntriesCache = new Dictionary<string, WalletEntry>();
+		private static Dictionary<string, WalletEntry> _walletEntriesCache;
 
 		public static async UniTask<WalletEntry> FindWalletEntryByName(string walletName, bool invalidateCache = false)
 		{
@@ -84,21 +84,32 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 					return supportedWallets;
 				}
 
-				var filteredSupportedWallets = GetAllSupportedWallets(walletconnectSupportedWallets: supportedWallets);
-				foreach (var wallet in filteredSupportedWallets.Values)
+				var filteredSupportedWallets = GetAllSupportedWallets(walletConnectSupportedWallets: supportedWallets);
+
+				if (filteredSupportedWallets != null)
 				{
-					await wallet.DownloadImages();
+					foreach (var wallet in filteredSupportedWallets.Values)
+					{
+						await wallet.DownloadImages();
+					}
 				}
+
+				_walletEntriesCache = filteredSupportedWallets;
 
 				return filteredSupportedWallets;
 			}
 		}
 
 		private static Dictionary<string, WalletEntry> GetAllSupportedWallets(
-			Dictionary<string, WalletEntry> walletconnectSupportedWallets)
+			Dictionary<string, WalletEntry> walletConnectSupportedWallets)
 		{
+			if (walletConnectSupportedWallets == null)
+			{
+				return null;
+			}
+			
 			var walletsSupportedBySDK = WalletNameHelper.GetSupportedWalletNames();
-			return walletconnectSupportedWallets
+			return walletConnectSupportedWallets
 				.Where(predicate: w => walletsSupportedBySDK.Contains(value: w.Value.name))
 				.ToDictionary(keySelector: i => i.Key, elementSelector: i => i.Value);
 		}
