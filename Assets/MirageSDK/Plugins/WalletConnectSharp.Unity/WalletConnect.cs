@@ -130,8 +130,8 @@ namespace MirageSDK.WalletConnectSharp.Unity
 				if (_previousStatus != newStatus)
 				{
 					var transition = TransitionDataFactory.CreateTransitionObj(_previousStatus, newStatus, _session);
-					_previousStatus = newStatus;
 					SessionStatusUpdated?.Invoke(transition);
+					_previousStatus = _session.Status;
 				}
 			}
 		}
