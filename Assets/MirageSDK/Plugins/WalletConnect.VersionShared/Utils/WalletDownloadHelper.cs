@@ -88,10 +88,14 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 
 				if (filteredSupportedWallets != null)
 				{
+					var listOfTasks = new List<UniTask>();
 					foreach (var wallet in filteredSupportedWallets.Values)
 					{
-						await wallet.DownloadImages();
+						var downloadTask = wallet.DownloadImages();
+						listOfTasks.Add(downloadTask);
 					}
+
+					await UniTask.WhenAll(listOfTasks);
 				}
 
 				_walletEntriesCache = filteredSupportedWallets;
