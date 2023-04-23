@@ -7,6 +7,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink
         Trust,
         Argent,
         Rainbow,
-        Pillar
+        Pillar,
+        MrgWallet
     }
 }

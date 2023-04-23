@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bfc642ad1d44b63955dc8374d3e661e, type: 3}
+  m_Name: LocalWalletEntriesCollection
+  m_EditorClassIdentifier: 
+  _localWalletEntries:
+  - WalletName: Clover Wallet
+    WalletEntryJson: '{"id":"c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96","name":"Clover
+      Wallet","description":"Whether you are an experienced user or brand new to
+      blockchain, MRG Wallet helps you connect to the decentralized web: a new internet.","homepage":"https://mirage.xyz/","chains":["eip155:1"],"versions":["1"],"sdks":["sign_v1"],"app_type":"wallet","image_id":"5195e9db-94d8-4579-6f11-ef553be95100","image_url":{"sm":"https://registry.walletconnect.org/v2/logo/sm/5195e9db-94d8-4579-6f11-ef553be95100","md":"https://registry.walletconnect.org/v2/logo/md/5195e9db-94d8-4579-6f11-ef553be95100","lg":"https://registry.walletconnect.org/v2/logo/lg/5195e9db-94d8-4579-6f11-ef553be95100"},"app":{"browser":null,"ios":"https://apps.apple.com/us/app/mrgwallet/id1438144202","android":"https://play.google.com/store/apps/details?id=com.mirage.wallet","mac":null,"windows":null,"linux":null},"injected":[{"namespace":"eip155","injected_id":"isMrgWallet"}],"mobile":{"native":"","universal":"https://metamask.app.link"},"desktop":{"native":"","universal":null},"supported_standards":[],"metadata":{"shortName":"MrgWallet","colors":{"primary":"#ffffff","secondary":null}},"updatedAt":"2023-04-23T17:48:12.565532+00:00"}'

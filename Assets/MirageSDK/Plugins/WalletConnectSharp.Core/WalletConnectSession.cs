@@ -447,7 +447,8 @@ namespace MirageSDK.WalletConnectSharp.Core
 				else
 				{
 					var msg = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Message : "Not Approved";
-					HandleConnectionFailureMessage(jsonResponse.Response.result.peerId, msg);
+					var peerId = jsonResponse.Response.result != null ? jsonResponse.Response.result.peerId : "Unknown peerId";
+					HandleConnectionFailureMessage(peerId, msg);
 					HandleSessionDisconnect();
 				}
 			}
