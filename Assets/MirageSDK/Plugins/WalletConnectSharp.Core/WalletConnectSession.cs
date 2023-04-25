@@ -414,7 +414,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 			}
 		}
 
-		private void HandleConnectionFailureMessage(string peerId, string message)
+		private void HandleConnectionFailureMessage(string peerId, string message, int code)
 		{
 			if (_sessionCreationCompletionSource != null)
 			{
@@ -428,8 +428,8 @@ namespace MirageSDK.WalletConnectSharp.Core
 						new IOException("WalletConnect: Session Failed: " + message));
 				}
 
-				Debug.LogError("Session failed with message: " + message);
-
+				Debug.LogError("Session failed with message: " + message + " ; error code: " + code);
+ 
 				_sessionCreationCompletionSource = null;
 			}
 		}
@@ -450,8 +450,9 @@ namespace MirageSDK.WalletConnectSharp.Core
 					var responseString = response == null ? "null" : JsonConvert.SerializeObject(response);
 					var msg = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Message : "Not Approved";
 					msg += "; Response: " + responseString;
+					var code = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Code : 0;
 					var peerId = jsonResponse.Response.result != null ? jsonResponse.Response.result.peerId : "Unknown peerId";
-					HandleConnectionFailureMessage(peerId, msg);
+					HandleConnectionFailureMessage(peerId, msg, code);
 					HandleSessionDisconnect();
 				}
 			}
