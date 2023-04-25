@@ -450,7 +450,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 					var responseString = response == null ? "null" : JsonConvert.SerializeObject(response);
 					var msg = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Message : "Not Approved";
 					msg += "; Response: " + responseString;
-					var code = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Code : 0;
+					var code = jsonResponse.Response.IsError && jsonResponse.Response.Error.Code.HasValue ? jsonResponse.Response.Error.Code.Value : 0;
 					var peerId = jsonResponse.Response.result != null ? jsonResponse.Response.result.peerId : "Unknown peerId";
 					HandleConnectionFailureMessage(peerId, msg, code);
 					HandleSessionDisconnect();
