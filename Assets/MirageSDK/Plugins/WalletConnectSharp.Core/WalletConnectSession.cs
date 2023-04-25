@@ -16,6 +16,7 @@ using MirageSDK.WalletConnectSharp.Core.Events.Model.Ethereum;
 using MirageSDK.WalletConnectSharp.Core.Models;
 using MirageSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace MirageSDK.WalletConnectSharp.Core
@@ -446,7 +447,9 @@ namespace MirageSDK.WalletConnectSharp.Core
 				}
 				else
 				{
+					var responseString = response == null ? "null" : JsonConvert.SerializeObject(response);
 					var msg = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Message : "Not Approved";
+					msg += "; Response: " + responseString;
 					var peerId = jsonResponse.Response.result != null ? jsonResponse.Response.result.peerId : "Unknown peerId";
 					HandleConnectionFailureMessage(peerId, msg);
 					HandleSessionDisconnect();
