@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -27,7 +28,16 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink
 
             foreach (var size in sizes)
             {
-                var url = "https://registry.walletconnect.org/logo/" + size + "/" + id + ".jpeg";
+                var urlOverride = WalletDataHelper.GetOverrideUrl(name);
+                string url = null;
+                if (urlOverride != null)
+                {
+                    url = urlOverride;
+                }
+                else
+                {
+                    url = "https://registry.walletconnect.org/logo/" + size + "/" + id + ".jpeg";
+                }
 
                 using (var imageRequest = UnityWebRequestTexture.GetTexture(url))
                 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using MirageSDK.WalletConnect.VersionShared.Data;
 using MirageSDK.WalletConnect.VersionShared.Models.DeepLink;
 using MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using Newtonsoft.Json;
@@ -13,6 +14,8 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 	public static class WalletDownloadHelper
 	{
 		private static Dictionary<string, WalletEntry> _walletEntriesCache;
+
+		private static LocalWalletEntriesCollectionSO _localWalletEntries;
 
 		public static async UniTask<WalletEntry> FindWalletEntryByName(string walletName, bool invalidateCache = false)
 		{
@@ -79,13 +82,14 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 
 				var supportedWallets = JsonConvert.DeserializeObject<Dictionary<string, WalletEntry>>(value: json);
 
+				var filteredSupportedWallets = GetAllSupportedWallets(walletConnectSupportedWallets: supportedWallets);
+				filteredSupportedWallets = ExtendSupportedWallets(filteredSupportedWallets);
+				
 				if (!downloadImages)
 				{
-					return supportedWallets;
+					return filteredSupportedWallets;
 				}
-
-				var filteredSupportedWallets = GetAllSupportedWallets(walletConnectSupportedWallets: supportedWallets);
-
+				
 				if (filteredSupportedWallets != null)
 				{
 					var listOfTasks = new List<UniTask>();
@@ -112,10 +116,26 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
 				return null;
 			}
 			
-			var walletsSupportedBySDK = WalletNameHelper.GetSupportedWalletNames();
+			var walletsSupportedBySDK = WalletDataHelper.GetSupportedWalletNames();
 			return walletConnectSupportedWallets
 				.Where(predicate: w => walletsSupportedBySDK.Contains(value: w.Value.name))
 				.ToDictionary(keySelector: i => i.Key, elementSelector: i => i.Value);
+		}
+
+		private static Dictionary<string, WalletEntry> ExtendSupportedWallets(Dictionary<string, WalletEntry> wallets)
+		{
+			if (_localWalletEntries == null)
+			{
+				_localWalletEntries = Resources.Load<LocalWalletEntriesCollectionSO>("LocalWalletEntriesCollection");
+			}
+			
+			var walletNames = _localWalletEntries.LocallyConfiguredWalletNames;
+			foreach(var additionalWalletName in walletNames)
+			{
+				wallets[additionalWalletName] = _localWalletEntries.GetWalletEntryByName(additionalWalletName);
+			}
+
+			return wallets;
 		}
 	}
 }
