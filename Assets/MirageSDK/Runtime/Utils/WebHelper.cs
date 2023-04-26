@@ -46,7 +46,8 @@ namespace MirageSDK.Utils
 
 		public static async UniTask<TResultType> SendGetRequest<TResultType>(
 			string urlWithQuery,
-			Dictionary<string, string> headers = null
+			Dictionary<string, string> headers = null,
+			int timeout = 60
 		)
 		{
 			using (var webRequest = UnityWebRequest.Get(urlWithQuery))
@@ -56,7 +57,7 @@ namespace MirageSDK.Utils
 					webRequest.AddHeaders(headers: headers);
 				}
 
-				webRequest.timeout = 5;
+				webRequest.timeout = timeout;
 
 				var answer = await webRequest.SendWebRequest();
 
@@ -84,7 +85,8 @@ namespace MirageSDK.Utils
 		private static async UniTask<TResultType> SendChangeRequest<TResultType>(
 			UnityWebRequest request,
 			string payloadJson = null,
-			Dictionary<string, string> headers = null
+			Dictionary<string, string> headers = null,
+			int timeout = 60
 		)
 		{
 			using (request)
@@ -95,7 +97,7 @@ namespace MirageSDK.Utils
 					request.AddHeaders(headers);
 				}
 
-				request.timeout = 5;
+				request.timeout = timeout;
 
 				if (payloadJson != null)
 				{
