@@ -11,7 +11,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers
 		private static readonly Dictionary<Wallets, string> WalletNames = new Dictionary<Wallets, string>
 		{
 			{ Wallets.Trust, "Trust Wallet" },
-			{ Wallets.MrgWallet, "Clover Wallet" }
+			{ Wallets.MrgWallet, "MRG Wallet" }
 		};
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers
 		{
 			switch (walletName)
 			{
-				case "Clover Wallet":
+				case "MRG Wallet":
 				{
 					return
 						"https://play-lh.googleusercontent.com/VxEmZKRr4z44UfWdx8LkjMHPfBDgUQ4k_GKvsRvrIPe377TKpBJsRzXwRvAhDrb0BEw=w240-h480-rw";
