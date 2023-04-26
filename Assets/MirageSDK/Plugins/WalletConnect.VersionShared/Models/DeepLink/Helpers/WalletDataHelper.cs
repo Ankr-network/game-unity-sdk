@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
-using UnityEngine;
 
 namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers
 {
@@ -11,7 +9,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers
 		private static readonly Dictionary<Wallets, string> WalletNames = new Dictionary<Wallets, string>
 		{
 			{ Wallets.Trust, "Trust Wallet" },
-			{ Wallets.MrgWallet, "Clover Wallet" }
+			{ Wallets.MrgWallet, "MRG Wallet" }
 		};
 
 		/// <summary>
@@ -32,14 +30,13 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers
 		/// </summary>
 		/// <param name="walletName"></param>
 		/// <returns></returns>
-		public static string GetOverrideUrl(string walletName)
+		public static string GetOverrideImageUrl(string walletName)
 		{
 			switch (walletName)
 			{
-				case "Clover Wallet":
+				case "MRG Wallet":
 				{
-					return
-						"https://play-lh.googleusercontent.com/VxEmZKRr4z44UfWdx8LkjMHPfBDgUQ4k_GKvsRvrIPe377TKpBJsRzXwRvAhDrb0BEw=w240-h480-rw";
+					return "resources:icon-mrg-wallet";
 				}
 			}
 
