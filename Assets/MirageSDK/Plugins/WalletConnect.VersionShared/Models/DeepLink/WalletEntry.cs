@@ -1,8 +1,6 @@
-using System;
 using Cysharp.Threading.Tasks;
 using MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink
 {
@@ -29,62 +27,39 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink
 
             foreach (var size in sizes)
             {
-                var urlOverride = WalletDataHelper.GetOverrideUrl(name);
-                string url = null;
+                var urlOverride = WalletDataHelper.GetOverrideImageUrl(name);
+                string uri = null;
                 if (urlOverride != null)
                 {
-                    url = urlOverride;
+                    uri = urlOverride;
                 }
                 else
                 {
-                    url = "https://registry.walletconnect.org/logo/" + size + "/" + id + ".jpeg";
+                    uri = "https://registry.walletconnect.org/logo/" + size + "/" + id + ".jpeg";
                 }
 
-                using (var imageRequest = UnityWebRequestTexture.GetTexture(url))
+                var texture = await WebHelper.GetTextureFromGenericUri(uri);
+
+                if (texture == null)
                 {
-                    try
-                    {
-                        await imageRequest.SendWebRequest();
-                    }
-                    catch (UnityWebRequestException e)
-                    {
-                        var downloadHandler = ((DownloadHandlerTexture)imageRequest.downloadHandler);
-                        Debug.LogError($"Exception while loading texture {e.Message} download handler error: {downloadHandler.error}");
-                        return;
-                    }
+                    return;
+                }
+                
+                var sprite = Sprite.Create(texture,
+                    new Rect(0.0f, 0.0f, texture.width, texture.height),
+                    new Vector2(0.5f, 0.5f), 100.0f);
 
-#if UNITY_2020_2_OR_NEWER
-                    if (imageRequest.result != UnityWebRequest.Result.Success)
-                    {
-                        Debug.Log("Error Getting Wallet Icon: " + imageRequest.error);
-                    }
-#else
-                        if (imageRequest.isHttpError || imageRequest.isNetworkError)
-                        {
-                            Debug.Log("Error Getting Wallet Icon: " + imageRequest.error);
-                        }
-#endif
-                    else
-                    {
-                        var downloadHandler = ((DownloadHandlerTexture)imageRequest.downloadHandler);
-                        var texture = downloadHandler.texture;
-                        var sprite = Sprite.Create(texture,
-                            new Rect(0.0f, 0.0f, texture.width, texture.height),
-                            new Vector2(0.5f, 0.5f), 100.0f);
-
-                        switch (size)
-                        {
-                            case "sm":
-                                SmallIcon = sprite;
-                                break;
-                            case "md":
-                                MediumIcon = sprite;
-                                break;
-                            case "lg":
-                                LargeIcon = sprite;
-                                break;
-                        }
-                    }
+                switch (size)
+                {
+                    case "sm":
+                        SmallIcon = sprite;
+                        break;
+                    case "md":
+                        MediumIcon = sprite;
+                        break;
+                    case "lg":
+                        LargeIcon = sprite;
+                        break;
                 }
             }
         }
