@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using UnityEngine;
@@ -41,7 +42,16 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink
 
                 using (var imageRequest = UnityWebRequestTexture.GetTexture(url))
                 {
-                    await imageRequest.SendWebRequest();
+                    try
+                    {
+                        await imageRequest.SendWebRequest();
+                    }
+                    catch (UnityWebRequestException e)
+                    {
+                        var downloadHandler = ((DownloadHandlerTexture)imageRequest.downloadHandler);
+                        Debug.LogError($"Exception while loading texture {e.Message} download handler error: {downloadHandler.error}");
+                        return;
+                    }
 
 #if UNITY_2020_2_OR_NEWER
                     if (imageRequest.result != UnityWebRequest.Result.Success)
@@ -56,7 +66,8 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.DeepLink
 #endif
                     else
                     {
-                        var texture = ((DownloadHandlerTexture)imageRequest.downloadHandler).texture;
+                        var downloadHandler = ((DownloadHandlerTexture)imageRequest.downloadHandler);
+                        var texture = downloadHandler.texture;
                         var sprite = Sprite.Create(texture,
                             new Rect(0.0f, 0.0f, texture.width, texture.height),
                             new Vector2(0.5f, 0.5f), 100.0f);
