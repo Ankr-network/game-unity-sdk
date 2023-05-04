@@ -17,6 +17,7 @@ using MirageSDK.WalletConnectSharp.Core.Models;
 using MirageSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 namespace MirageSDK.WalletConnectSharp.Core
@@ -406,7 +407,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 			}
 		}
 
-		private void HandleConnectionFailureMessage(string peerId, string message, int code)
+		private void HandleConnectionFailureMessage(string message, string log, int code)
 		{
 			if (_sessionCreationCompletionSource != null)
 			{
@@ -416,14 +417,12 @@ namespace MirageSDK.WalletConnectSharp.Core
 				}
 				else
 				{
-					_sessionCreationCompletionSource.TrySetException(
-						new IOException("WalletConnect: Session Failed: " + message));
+					_sessionCreationCompletionSource.TrySetException(new IOException("WalletConnect: Session Failed: " + message));
 				}
 
-				Debug.LogError("Session failed with message: " + message + " ; error code: " + code);
+				Debug.LogError("Session failed with log: " + log + " ; error code: " + code);
 
 				_sessionCreationCompletionSource = null;
-				_handshakeTopic = null;
 			}
 		}
 
@@ -442,10 +441,10 @@ namespace MirageSDK.WalletConnectSharp.Core
 				{
 					var responseString = response == null ? "null" : JsonConvert.SerializeObject(response);
 					var msg = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Message : "Not Approved";
-					msg += "; Response: " + responseString;
+					var log = "; Response: " + responseString;
 					var code = jsonResponse.Response.IsError && jsonResponse.Response.Error.Code.HasValue ? jsonResponse.Response.Error.Code.Value : 0;
 					var peerId = jsonResponse.Response.result != null ? jsonResponse.Response.result.peerId : "Unknown peerId";
-					HandleConnectionFailureMessage(peerId, msg, code);
+					HandleConnectionFailureMessage(msg, log, code);
 					HandleSessionDisconnect();
 				}
 			}
