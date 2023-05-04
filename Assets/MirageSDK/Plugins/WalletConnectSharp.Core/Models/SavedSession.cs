@@ -10,7 +10,6 @@ namespace MirageSDK.WalletConnectSharp.Core.Models
 		public string Key { get; }
 		public byte[] KeyRaw { get; }
 		public string PeerID { get; }
-		public long HandshakeID { get; }
 		public int NetworkID { get; }
 		public string[] Accounts { get; }
 		public int ChainID { get; }
@@ -18,7 +17,7 @@ namespace MirageSDK.WalletConnectSharp.Core.Models
 
 		public ClientMeta WalletMeta { get; }
 
-		public SavedSession(string clientID, long handshakeID, string bridgeURL, string key, byte[] keyRaw,
+		public SavedSession(string clientID, string bridgeURL, string key, byte[] keyRaw,
 			string peerID, int networkID, string[] accounts, int chainID, ClientMeta dappMeta, ClientMeta walletMeta)
 		{
 			ClientID = clientID;
@@ -31,44 +30,7 @@ namespace MirageSDK.WalletConnectSharp.Core.Models
 			ChainID = chainID;
 			DappMeta = dappMeta;
 			WalletMeta = walletMeta;
-			HandshakeID = handshakeID;
 		}
-
-		private sealed class SavedSessionEqualityComparer : IEqualityComparer<SavedSession>
-		{
-			public bool Equals(SavedSession x, SavedSession y)
-			{
-				if (ReferenceEquals(x, y)) return true;
-				if (ReferenceEquals(x, null)) return false;
-				if (ReferenceEquals(y, null)) return false;
-				if (x.GetType() != y.GetType()) return false;
-				return x.ClientID == y.ClientID && x.BridgeURL == y.BridgeURL && x.Key == y.Key &&
-				       Equals(x.KeyRaw, y.KeyRaw) && x.PeerID == y.PeerID && x.NetworkID == y.NetworkID &&
-				       Equals(x.Accounts, y.Accounts) && x.ChainID == y.ChainID && Equals(x.DappMeta, y.DappMeta) &&
-				       Equals(x.WalletMeta, y.WalletMeta);
-			}
-
-			public int GetHashCode(SavedSession obj)
-			{
-				unchecked
-				{
-					var hashCode = (obj.ClientID != null ? obj.ClientID.GetHashCode() : 0);
-					hashCode = (hashCode * 397) ^ (obj.BridgeURL != null ? obj.BridgeURL.GetHashCode() : 0);
-					hashCode = (hashCode * 397) ^ (obj.Key != null ? obj.Key.GetHashCode() : 0);
-					hashCode = (hashCode * 397) ^ (obj.KeyRaw != null ? obj.KeyRaw.GetHashCode() : 0);
-					hashCode = (hashCode * 397) ^ (obj.PeerID != null ? obj.PeerID.GetHashCode() : 0);
-					hashCode = (hashCode * 397) ^ obj.NetworkID;
-					hashCode = (hashCode * 397) ^ (obj.Accounts != null ? obj.Accounts.GetHashCode() : 0);
-					hashCode = (hashCode * 397) ^ obj.ChainID;
-					hashCode = (hashCode * 397) ^ (obj.DappMeta != null ? obj.DappMeta.GetHashCode() : 0);
-					hashCode = (hashCode * 397) ^ (obj.WalletMeta != null ? obj.WalletMeta.GetHashCode() : 0);
-					return hashCode;
-				}
-			}
-		}
-
-		public static IEqualityComparer<SavedSession> SavedSessionComparer { get; } =
-			new SavedSessionEqualityComparer();
 
 		public bool Equals(SavedSession other)
 		{

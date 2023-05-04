@@ -8,8 +8,9 @@ namespace MirageSDK.WalletConnectSharp.Core.Models
         [JsonProperty("params")]
         public WcSessionRequestRequestParams[] parameters;
 
-        public WcSessionRequest(ClientMeta clientMeta, string clientId, int chainId = 1)
+        public WcSessionRequest(ClientMeta clientMeta, string clientId, int chainId = 1) : base()
         {
+            id = clientId.GetHashCode();
             Method = "wc_sessionRequest";
             this.parameters = new[]
             {
