@@ -167,6 +167,15 @@ namespace MirageSDK.WalletConnectSharp.Unity
 				await Connect();
 			}
 		}
+		
+		public async UniTask<string> ReconnectSession()
+		{
+			SessionSaveHandler.ClearSession();
+			_session = null;
+			Connect().Forget();
+			await UniTask.WaitUntil(() => _session != null && _session.Status == WalletConnectStatus.SessionRequestSent);
+			return _session?.URI;
+		}
 
 		public async UniTask Connect()
 		{

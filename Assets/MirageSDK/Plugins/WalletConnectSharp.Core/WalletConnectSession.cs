@@ -17,6 +17,7 @@ using MirageSDK.WalletConnectSharp.Core.Models;
 using MirageSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 namespace MirageSDK.WalletConnectSharp.Core
@@ -37,11 +38,9 @@ namespace MirageSDK.WalletConnectSharp.Core
 		public string[] Accounts { get; private set; }
 		public int ChainId { get; private set; }
 
-		private readonly string _clientId = "";
+		private readonly string _sessionId = "";
 
-		private readonly string _handshakeTopic;
-
-		private long _handshakeId;
+		private string _handshakeTopic;
 
 		private UniTaskCompletionSource<WCSessionData> _sessionCreationCompletionSource;
 
@@ -65,14 +64,11 @@ namespace MirageSDK.WalletConnectSharp.Core
 			WalletMetadata = savedSession.WalletMeta;
 			ChainId = savedSession.ChainID;
 
-			_clientId = savedSession.ClientID;
+			_sessionId = savedSession.ClientID;
 
 			Accounts = savedSession.Accounts;
 
 			NetworkId = savedSession.NetworkID;
-
-			_handshakeId = savedSession.HandshakeID;
-			SubscribeForSessionResponse();
 			WalletConnected = true;
 		}
 
@@ -120,12 +116,8 @@ namespace MirageSDK.WalletConnectSharp.Core
 			BridgeUrl = bridgeUrl;
 
 			BridgeUrl = DefaultBridge.GetBridgeUrl(BridgeUrl);
-
-			var topicGuid = Guid.NewGuid();
-
-			_handshakeTopic = topicGuid.ToString();
-
-			_clientId = Guid.NewGuid().ToString();
+			
+			_sessionId = Guid.NewGuid().ToString();
 
 			GenerateKey();
 
@@ -162,14 +154,17 @@ namespace MirageSDK.WalletConnectSharp.Core
 					Debug.Log("Transport already connected. No need to setup");
 				}
 
-				await SubscribeAndListenToTopic(_clientId);
-
-				ListenToTopic(_handshakeTopic);
-
+				await SubscribeAndListenToTopic(_sessionId);
+				
 				WCSessionData result;
+
+				_handshakeTopic = Guid.NewGuid().ToString();
+				ListenToTopic(_handshakeTopic);
+				SubscribeForSessionResponse();
+				
 				if (prevStatus == WalletConnectStatus.DisconnectedNoSession)
 				{
-					result = await CreateSession();
+					result = await CreateSession(_handshakeTopic);
 					Connecting = false;
 					OnSessionCreated?.Invoke();
 				}
@@ -219,7 +214,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 				approved = false, chainId = 0, accounts = null, networkId = 0
 			});
 
-			await SendRequest(request);
+			await SendRequest(request, PeerId, false);
 
 			await DisconnectTransport();
 
@@ -361,7 +356,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 
 			EventDelegator.ListenForResponse<TResponse>(request.ID, HandleSendResponse);
 			
-			await SendRequest(request);
+			await SendRequest(request, PeerId, IsSilent(request));
 			OnSend?.Invoke();
 
 			return await eventCompleted.Task;
@@ -375,16 +370,14 @@ namespace MirageSDK.WalletConnectSharp.Core
 		/// <summary>
 		///     Create a new WalletConnect session with a Wallet.
 		/// </summary>
+		/// <param name="handshakeTopic"></param>
 		/// <returns></returns>
-		private async UniTask<WCSessionData> CreateSession()
+		private async UniTask<WCSessionData> CreateSession(string handshakeTopic)
 		{
-			var data = new WcSessionRequest(DappMetadata, _clientId, ChainId);
-
-			_handshakeId = data.ID;
-			SubscribeForSessionResponse();
+			var data = new WcSessionRequest(DappMetadata, _sessionId, ChainId);
 
 			//sending session request
-			await SendRequest(data, _handshakeTopic);
+			await SendRequest(data, handshakeTopic, false);
 
 			if (_sessionCreationCompletionSource != null)
 			{
@@ -414,7 +407,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 			}
 		}
 
-		private void HandleConnectionFailureMessage(string peerId, string message, int code)
+		private void HandleConnectionFailureMessage(string message, string log, int code)
 		{
 			if (_sessionCreationCompletionSource != null)
 			{
@@ -424,12 +417,11 @@ namespace MirageSDK.WalletConnectSharp.Core
 				}
 				else
 				{
-					_sessionCreationCompletionSource.TrySetException(
-						new IOException("WalletConnect: Session Failed: " + message));
+					_sessionCreationCompletionSource.TrySetException(new IOException("WalletConnect: Session Failed: " + message));
 				}
 
-				Debug.LogError("Session failed with message: " + message + " ; error code: " + code);
- 
+				Debug.LogError("Session failed with log: " + log + " ; error code: " + code);
+
 				_sessionCreationCompletionSource = null;
 			}
 		}
@@ -449,15 +441,15 @@ namespace MirageSDK.WalletConnectSharp.Core
 				{
 					var responseString = response == null ? "null" : JsonConvert.SerializeObject(response);
 					var msg = jsonResponse.Response.IsError ? jsonResponse.Response.Error.Message : "Not Approved";
-					msg += "; Response: " + responseString;
+					var log = "; Response: " + responseString;
 					var code = jsonResponse.Response.IsError && jsonResponse.Response.Error.Code.HasValue ? jsonResponse.Response.Error.Code.Value : 0;
 					var peerId = jsonResponse.Response.result != null ? jsonResponse.Response.result.peerId : "Unknown peerId";
-					HandleConnectionFailureMessage(peerId, msg, code);
+					HandleConnectionFailureMessage(msg, log, code);
 					HandleSessionDisconnect();
 				}
 			}
 
-			EventDelegator.ListenForResponse<WCSessionRequestResponse>(_handshakeId, HandleSessionRequestResponse);
+			EventDelegator.ListenForResponse<WCSessionRequestResponse>(_sessionId.GetHashCode(), HandleSessionRequestResponse);
 
 			void HandleSessionUpdateResponse(object _, GenericEvent<WCSessionUpdate> @event)
 			{
@@ -551,7 +543,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 				return null;
 			}
 
-			return new SavedSession(_clientId, _handshakeId, BridgeUrl, Key, KeyRaw, PeerId, NetworkId, Accounts,
+			return new SavedSession(_sessionId, BridgeUrl, Key, KeyRaw, PeerId, NetworkId, Accounts,
 				ChainId, DappMetadata, WalletMetadata);
 		}
 		
