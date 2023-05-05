@@ -15,7 +15,6 @@ namespace Tests.Editor
 			};
 			var testSession = new SavedSession(
 				string.Empty,
-				long.MinValue,
 				string.Empty,
 				string.Empty,
 				new[] { byte.MinValue },

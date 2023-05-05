@@ -107,9 +107,6 @@ namespace MirageSDK.WalletConnectSharp.Core
 
 			EventDelegator = eventDelegator;
 
-			//TODO Do we need this for resuming?
-			//_handshakeTopic = topicGuid.ToString();
-
 			transport = transport ?? TransportFactory.Instance.BuildDefaultTransport(eventDelegator);
 
 			BridgeUrl = savedSession.BridgeURL;
@@ -258,41 +255,27 @@ namespace MirageSDK.WalletConnectSharp.Core
 			}
 		}
 
-		protected async UniTask SendRequest<T>(T requestObject, string sendingTopic = null,
-			bool? forcePushNotification = null)
+		protected async UniTask SendRequest(object requestObject, string topic, bool silent)
 		{
-			bool silent;
-			if (forcePushNotification != null)
-			{
-				silent = (bool)!forcePushNotification;
-			}
-			else if (requestObject is JsonRpcRequest request)
-			{
-				silent = request.Method.StartsWith("wc_") || !SigningMethods.Contains(request.Method);
-			}
-			else
-			{
-				silent = false;
-			}
-
 			var json = JsonConvert.SerializeObject(requestObject);
 
 			var encrypted = await _cipher.EncryptWithKey(KeyRaw, json);
-
-			if (sendingTopic == null)
-			{
-				sendingTopic = PeerId;
-			}
 
 			var message = new NetworkMessage
 			{
 				Payload = JsonConvert.SerializeObject(encrypted),
 				Silent = silent,
-				Topic = sendingTopic,
+				Topic = topic,
 				Type = "pub"
 			};
 
 			await Transport.SendMessage(message);
+		}
+
+		protected static bool IsSilent(object requestObj)
+		{
+			return requestObj is JsonRpcRequest request 
+			       && (request.Method.StartsWith("wc_") || !SigningMethods.Contains(request.Method));
 		}
 
 		public void Dispose()

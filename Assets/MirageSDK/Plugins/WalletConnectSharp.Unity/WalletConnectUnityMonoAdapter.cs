@@ -11,7 +11,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 		private readonly List<IPausable> _pausables = new List<IPausable>();
 		private readonly List<IQuittable> _quittables = new List<IQuittable>();
 
-		private WalletConnectUnityMonoAdapter _existingInstance;
+		private static WalletConnectUnityMonoAdapter _existingInstance;
 
 		public void Clear()
 		{
