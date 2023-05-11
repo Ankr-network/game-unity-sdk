@@ -1,7 +1,7 @@
 ﻿
 namespace MirageSDK.UseCases.MirageNFT
 {
-	public class MirageNftDataExample : MirageNftBase
+	public class MirageNftExample : MirageNftBase
 	{
 		[SerializableNftProperty("hp")]
 		public int Hp { get; private set; }

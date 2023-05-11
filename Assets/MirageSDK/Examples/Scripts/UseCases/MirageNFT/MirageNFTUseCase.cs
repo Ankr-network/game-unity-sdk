@@ -16,7 +16,7 @@ namespace MirageSDK.UseCases.MirageNFT
 		[SerializeField] private ContractInformationSO _mirageNftManagerContract;
 		[SerializeField] private NetworkName _networkToUse;
 
-		private MirageNftReader<MirageNftDataExample> _nftReader;
+		private MirageNftReader<MirageNftExample> _nftReader;
 		private IEthHandler _ethHandler;
 
 		public override void SetUseCaseBodyActive(bool isActive)
@@ -27,7 +27,7 @@ namespace MirageSDK.UseCases.MirageNFT
 				var ethHandler = sdkInstance.Eth;
 				var mirageEpochErc721Contract = sdkInstance.GetContract(_mirageNftManagerContract);
 				var contractReader = new MirageNftContractReader(mirageEpochErc721Contract, ethHandler);
-				_nftReader = new MirageNftReader<MirageNftDataExample>(contractReader);
+				_nftReader = new MirageNftReader<MirageNftExample>(contractReader);
 				_ethHandler = ethHandler;
 			}
 			
