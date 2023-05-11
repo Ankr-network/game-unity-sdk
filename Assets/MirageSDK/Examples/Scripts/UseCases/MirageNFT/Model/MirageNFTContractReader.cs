@@ -21,12 +21,6 @@ namespace MirageSDK.UseCases.MirageNFT
 			_ethHandler = ethHandler;
 		}
 
-		public UniTask<TReturnType> GetContractData<TFieldData, TReturnType>(TFieldData requestData = null)
-			where TFieldData : FunctionMessage, new()
-		{
-			return _contract.GetData<TFieldData, TReturnType>(requestData);
-		}
-
 		public async UniTask<IReadOnlyList<BigInteger>> GetOwnedNftIds()
 		{
 			var defaultAccount = await _ethHandler.GetDefaultAccount();
