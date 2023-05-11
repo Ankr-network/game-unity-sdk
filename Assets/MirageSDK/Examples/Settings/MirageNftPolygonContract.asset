@@ -1,0 +1,207 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 248f43ee0e674eb58a98195bce41d46b, type: 3}
+  m_Name: MirageNftPolygonContract
+  m_EditorClassIdentifier: 
+  _abi: "[ \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"string\", \t\t\t\t\"name\":
+    \"name_\", \t\t\t\t\"type\": \"string\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"string\", \t\t\t\t\"name\": \"symbol_\", \t\t\t\t\"type\": \"string\" \t\t\t}
+    \t\t], \t\t\"stateMutability\": \"nonpayable\", \t\t\"type\": \"constructor\"
+    \t}, \t{ \t\t\"anonymous\": false, \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"indexed\":
+    true, \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\": \"owner\", \t\t\t\t\"type\":
+    \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"indexed\": true, \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"approved\", \t\t\t\t\"type\": \"address\" \t\t\t},
+    \t\t\t{ \t\t\t\t\"indexed\": true, \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\":
+    \"tokenId\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t], \t\t\"name\": \"Approval\",
+    \t\t\"type\": \"event\" \t}, \t{ \t\t\"anonymous\": false, \t\t\"inputs\": [
+    \t\t\t{ \t\t\t\t\"indexed\": true, \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"owner\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"indexed\":
+    true, \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\": \"operator\",
+    \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"indexed\": false, \t\t\t\t\"internalType\":
+    \"bool\", \t\t\t\t\"name\": \"approved\", \t\t\t\t\"type\": \"bool\" \t\t\t}
+    \t\t], \t\t\"name\": \"ApprovalForAll\", \t\t\"type\": \"event\" \t}, \t{ \t\t\"anonymous\":
+    false, \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"indexed\": false, \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"_fromTokenId\", \t\t\t\t\"type\": \"uint256\"
+    \t\t\t}, \t\t\t{ \t\t\t\t\"indexed\": false, \t\t\t\t\"internalType\": \"uint256\",
+    \t\t\t\t\"name\": \"_toTokenId\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t],
+    \t\t\"name\": \"BatchMetadataUpdate\", \t\t\"type\": \"event\" \t}, \t{ \t\t\"anonymous\":
+    false, \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"indexed\": false, \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"_tokenId\", \t\t\t\t\"type\": \"uint256\" \t\t\t}
+    \t\t], \t\t\"name\": \"MetadataUpdate\", \t\t\"type\": \"event\" \t}, \t{ \t\t\"anonymous\":
+    false, \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"indexed\": true, \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"previousOwner\", \t\t\t\t\"type\": \"address\"
+    \t\t\t}, \t\t\t{ \t\t\t\t\"indexed\": true, \t\t\t\t\"internalType\": \"address\",
+    \t\t\t\t\"name\": \"newOwner\", \t\t\t\t\"type\": \"address\" \t\t\t} \t\t],
+    \t\t\"name\": \"OwnershipTransferred\", \t\t\"type\": \"event\" \t}, \t{ \t\t\"anonymous\":
+    false, \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"indexed\": true, \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"from\", \t\t\t\t\"type\": \"address\" \t\t\t},
+    \t\t\t{ \t\t\t\t\"indexed\": true, \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"to\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"indexed\": true,
+    \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"tokenId\", \t\t\t\t\"type\":
+    \"uint256\" \t\t\t} \t\t], \t\t\"name\": \"Transfer\", \t\t\"type\": \"event\"
+    \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"to\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"tokenId\", \t\t\t\t\"type\": \"uint256\" \t\t\t}
+    \t\t], \t\t\"name\": \"approve\", \t\t\"outputs\": [], \t\t\"stateMutability\":
+    \"nonpayable\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{
+    \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\": \"owner\", \t\t\t\t\"type\":
+    \"address\" \t\t\t} \t\t], \t\t\"name\": \"balanceOf\", \t\t\"outputs\": [ \t\t\t{
+    \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\":
+    \"uint256\" \t\t\t} \t\t], \t\t\"stateMutability\": \"view\", \t\t\"type\": \"function\"
+    \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"string[]\", \t\t\t\t\"name\":
+    \"words\", \t\t\t\t\"type\": \"string[]\" \t\t\t} \t\t], \t\t\"name\": \"concat\",
+    \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"string\", \t\t\t\t\"name\":
+    \"\", \t\t\t\t\"type\": \"string\" \t\t\t} \t\t], \t\t\"stateMutability\": \"pure\",
+    \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"tokenId\", \t\t\t\t\"type\": \"uint256\" \t\t\t}
+    \t\t], \t\t\"name\": \"getApproved\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"address\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"view\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"bytes32\", \t\t\t\t\"name\": \"_messageHash\",
+    \t\t\t\t\"type\": \"bytes32\" \t\t\t} \t\t], \t\t\"name\": \"getEthSignedMessageHash\",
+    \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"bytes32\", \t\t\t\t\"name\":
+    \"\", \t\t\t\t\"type\": \"bytes32\" \t\t\t} \t\t], \t\t\"stateMutability\": \"pure\",
+    \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"string\", \t\t\t\t\"name\": \"_message\", \t\t\t\t\"type\": \"string\" \t\t\t}
+    \t\t], \t\t\"name\": \"getMessageHash\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"bytes32\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"bytes32\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"pure\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"string\", \t\t\t\t\"name\": \"message\",
+    \t\t\t\t\"type\": \"string\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"bytes\",
+    \t\t\t\t\"name\": \"_signature\", \t\t\t\t\"type\": \"bytes\" \t\t\t} \t\t],
+    \t\t\"name\": \"getSigner\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"address\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"pure\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\": \"owner\",
+    \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"address\",
+    \t\t\t\t\"name\": \"operator\", \t\t\t\t\"type\": \"address\" \t\t\t} \t\t],
+    \t\t\"name\": \"isApprovedForAll\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"bool\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"bool\" \t\t\t} \t\t], \t\t\"stateMutability\":
+    \"view\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [], \t\t\"name\":
+    \"name\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"string\", \t\t\t\t\"name\":
+    \"\", \t\t\t\t\"type\": \"string\" \t\t\t} \t\t], \t\t\"stateMutability\": \"view\",
+    \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [], \t\t\"name\": \"owner\",
+    \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"\", \t\t\t\t\"type\": \"address\" \t\t\t} \t\t], \t\t\"stateMutability\": \"view\",
+    \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"tokenId\", \t\t\t\t\"type\": \"uint256\" \t\t\t}
+    \t\t], \t\t\"name\": \"ownerOf\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"address\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"view\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\":
+    [], \t\t\"name\": \"renounceOwnership\", \t\t\"outputs\": [], \t\t\"stateMutability\":
+    \"nonpayable\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{
+    \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"tokenId\", \t\t\t\t\"type\":
+    \"uint256\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\":
+    \"salePrice\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t], \t\t\"name\": \"royaltyInfo\",
+    \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"view\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"string\", \t\t\t\t\"name\": \"uri\", \t\t\t\t\"type\":
+    \"string\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"bytes\", \t\t\t\t\"name\":
+    \"signature\", \t\t\t\t\"type\": \"bytes\" \t\t\t} \t\t], \t\t\"name\": \"safeMint\",
+    \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\":
+    \"\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t], \t\t\"stateMutability\": \"nonpayable\",
+    \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"string\", \t\t\t\t\"name\": \"uri\", \t\t\t\t\"type\": \"string\" \t\t\t},
+    \t\t\t{ \t\t\t\t\"internalType\": \"uint96\", \t\t\t\t\"name\": \"feeNumerator\",
+    \t\t\t\t\"type\": \"uint96\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"bytes\",
+    \t\t\t\t\"name\": \"signature\", \t\t\t\t\"type\": \"bytes\" \t\t\t} \t\t], \t\t\"name\":
+    \"safeMintWithRoyalty\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"nonpayable\", \t\t\"type\": \"function\" \t}, \t{
+    \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"from\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"to\", \t\t\t\t\"type\": \"address\" \t\t\t},
+    \t\t\t{ \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"tokenId\",
+    \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t], \t\t\"name\": \"safeTransferFrom\",
+    \t\t\"outputs\": [], \t\t\"stateMutability\": \"nonpayable\", \t\t\"type\": \"function\"
+    \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"from\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"to\", \t\t\t\t\"type\": \"address\" \t\t\t},
+    \t\t\t{ \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"tokenId\",
+    \t\t\t\t\"type\": \"uint256\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"bytes\",
+    \t\t\t\t\"name\": \"data\", \t\t\t\t\"type\": \"bytes\" \t\t\t} \t\t], \t\t\"name\":
+    \"safeTransferFrom\", \t\t\"outputs\": [], \t\t\"stateMutability\": \"nonpayable\",
+    \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"operator\", \t\t\t\t\"type\": \"address\" \t\t\t},
+    \t\t\t{ \t\t\t\t\"internalType\": \"bool\", \t\t\t\t\"name\": \"approved\", \t\t\t\t\"type\":
+    \"bool\" \t\t\t} \t\t], \t\t\"name\": \"setApprovalForAll\", \t\t\"outputs\":
+    [], \t\t\"stateMutability\": \"nonpayable\", \t\t\"type\": \"function\" \t},
+    \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"receiver\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint96\", \t\t\t\t\"name\": \"feeNumerator\", \t\t\t\t\"type\": \"uint96\"
+    \t\t\t} \t\t], \t\t\"name\": \"setDefaultRoyalty\", \t\t\"outputs\": [], \t\t\"stateMutability\":
+    \"nonpayable\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{
+    \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"tokenId\", \t\t\t\t\"type\":
+    \"uint256\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"receiver\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint96\", \t\t\t\t\"name\": \"feeNumerator\", \t\t\t\t\"type\": \"uint96\"
+    \t\t\t} \t\t], \t\t\"name\": \"setTokenRoyalty\", \t\t\"outputs\": [], \t\t\"stateMutability\":
+    \"nonpayable\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{
+    \t\t\t\t\"internalType\": \"bytes\", \t\t\t\t\"name\": \"sig\", \t\t\t\t\"type\":
+    \"bytes\" \t\t\t} \t\t], \t\t\"name\": \"splitSignature\", \t\t\"outputs\": [
+    \t\t\t{ \t\t\t\t\"internalType\": \"bytes32\", \t\t\t\t\"name\": \"r\", \t\t\t\t\"type\":
+    \"bytes32\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"bytes32\", \t\t\t\t\"name\":
+    \"s\", \t\t\t\t\"type\": \"bytes32\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint8\", \t\t\t\t\"name\": \"v\", \t\t\t\t\"type\": \"uint8\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"pure\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"bytes4\", \t\t\t\t\"name\": \"interfaceId\",
+    \t\t\t\t\"type\": \"bytes4\" \t\t\t} \t\t], \t\t\"name\": \"supportsInterface\",
+    \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"bool\", \t\t\t\t\"name\":
+    \"\", \t\t\t\t\"type\": \"bool\" \t\t\t} \t\t], \t\t\"stateMutability\": \"view\",
+    \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [], \t\t\"name\": \"symbol\",
+    \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"string\", \t\t\t\t\"name\":
+    \"\", \t\t\t\t\"type\": \"string\" \t\t\t} \t\t], \t\t\"stateMutability\": \"view\",
+    \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"index\", \t\t\t\t\"type\": \"uint256\" \t\t\t}
+    \t\t], \t\t\"name\": \"tokenByIndex\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"view\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\": \"owner\",
+    \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"uint256\",
+    \t\t\t\t\"name\": \"index\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t], \t\t\"name\":
+    \"tokenOfOwnerByIndex\", \t\t\"outputs\": [ \t\t\t{ \t\t\t\t\"internalType\":
+    \"uint256\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t],
+    \t\t\"stateMutability\": \"view\", \t\t\"type\": \"function\" \t}, \t{ \t\t\"inputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"tokenId\",
+    \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t], \t\t\"name\": \"tokenURI\", \t\t\"outputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"string\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\":
+    \"string\" \t\t\t} \t\t], \t\t\"stateMutability\": \"view\", \t\t\"type\": \"function\"
+    \t}, \t{ \t\t\"inputs\": [], \t\t\"name\": \"totalSupply\", \t\t\"outputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\":
+    \"uint256\" \t\t\t} \t\t], \t\t\"stateMutability\": \"view\", \t\t\"type\": \"function\"
+    \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"from\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"address\", \t\t\t\t\"name\": \"to\", \t\t\t\t\"type\": \"address\" \t\t\t},
+    \t\t\t{ \t\t\t\t\"internalType\": \"uint256\", \t\t\t\t\"name\": \"tokenId\",
+    \t\t\t\t\"type\": \"uint256\" \t\t\t} \t\t], \t\t\"name\": \"transferFrom\",
+    \t\t\"outputs\": [], \t\t\"stateMutability\": \"nonpayable\", \t\t\"type\": \"function\"
+    \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"newOwner\", \t\t\t\t\"type\": \"address\" \t\t\t} \t\t], \t\t\"name\": \"transferOwnership\",
+    \t\t\"outputs\": [], \t\t\"stateMutability\": \"nonpayable\", \t\t\"type\": \"function\"
+    \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"signer\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"string\", \t\t\t\t\"name\": \"message\", \t\t\t\t\"type\": \"string\" \t\t\t},
+    \t\t\t{ \t\t\t\t\"internalType\": \"bytes\", \t\t\t\t\"name\": \"signature\",
+    \t\t\t\t\"type\": \"bytes\" \t\t\t} \t\t], \t\t\"name\": \"verify\", \t\t\"outputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"bool\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\":
+    \"bool\" \t\t\t} \t\t], \t\t\"stateMutability\": \"pure\", \t\t\"type\": \"function\"
+    \t}, \t{ \t\t\"inputs\": [ \t\t\t{ \t\t\t\t\"internalType\": \"address\", \t\t\t\t\"name\":
+    \"signer\", \t\t\t\t\"type\": \"address\" \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\":
+    \"string[]\", \t\t\t\t\"name\": \"messages\", \t\t\t\t\"type\": \"string[]\"
+    \t\t\t}, \t\t\t{ \t\t\t\t\"internalType\": \"bytes\", \t\t\t\t\"name\": \"signature\",
+    \t\t\t\t\"type\": \"bytes\" \t\t\t} \t\t], \t\t\"name\": \"verifyBatch\", \t\t\"outputs\":
+    [ \t\t\t{ \t\t\t\t\"internalType\": \"bool\", \t\t\t\t\"name\": \"\", \t\t\t\t\"type\":
+    \"bool\" \t\t\t} \t\t], \t\t\"stateMutability\": \"pure\", \t\t\"type\": \"function\"
+    \t} ]"
+  _contractAddress: 0xbbf2bc6f91ef5b91b0fdd7e490ef9306e79c484c
