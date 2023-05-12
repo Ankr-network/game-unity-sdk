@@ -1,3 +1,4 @@
+using System;
 using MirageSDK.Data;
 using MirageSDK.WebGL;
 using UnityEngine;
@@ -12,16 +13,19 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 		[SerializeField]
 		private GameObject _sceneChooser;
 
-		
 		private WebGLConnect WebGLConnect
 		{
 			get
 			{
-#if (UNITY_WEBGL && !UNITY_EDITOR)
-				return MirageSDK.Utils.ConnectProvider<WebGLConnect>.GetConnect();
-#else
-				return null;
-#endif
+				try
+				{
+					return Utils.ConnectProvider<WebGLConnect>.GetConnect();
+				}
+				catch (EntryPointNotFoundException e)
+				{
+					Debug.LogError($"EntryPointNotFoundException: {e.Message} \n WebGL scene does not work in the Unity Editor");
+					return null;
+				}
 			}
 		}
 
@@ -29,8 +33,8 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 		{
 			if (WebGLConnect != null)
 			{
-				WebGLConnect.OnNeedPanel += ActivatePanel;
-				WebGLConnect.OnConnect += ChangeLoginPanel;
+				WebGLConnect.OnLoginPanelRequested += ActivatePanel;
+				WebGLConnect.OnConnect += HandleConnect;
 				_webGlLoginManager.NetworkChosen += OnNetworkChosen;
 				_webGlLoginManager.WalletChosen += OnWalletChosen;
 			}
@@ -54,11 +58,15 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 			var webGlConnect = WebGLConnect;
 			if (webGlConnect != null)
 			{
-				webGlConnect.OnNeedPanel -= ActivatePanel;
-				webGlConnect.OnConnect -= ChangeLoginPanel;
+				webGlConnect.OnLoginPanelRequested -= ActivatePanel;
+				webGlConnect.OnConnect -= HandleConnect;
 			}
-			_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
-			_webGlLoginManager.WalletChosen -= OnWalletChosen;
+
+			if (_webGlLoginManager != null)
+			{
+				_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
+				_webGlLoginManager.WalletChosen -= OnWalletChosen;
+			}
 		}
 
 		private void ActivatePanel()
@@ -66,7 +74,7 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 			_webGlLoginManager.ShowPanel();
 		}
 
-		private void ChangeLoginPanel(WebGLWrapper provider)
+		private void HandleConnect(WebGLWrapper provider)
 		{
 			_webGlLoginManager.HidePanel();
 			_sceneChooser.SetActive(true);
