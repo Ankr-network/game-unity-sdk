@@ -820,7 +820,7 @@ GameObject:
   - component: {fileID: 4726548280209165768}
   - component: {fileID: 4726548280209165769}
   m_Layer: 5
-  m_Name: Portrait Canvas - ScreenSpace
+  m_Name: Examples_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1042,26 +1042,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4726548279135507697}
     m_Modifications:
-    - target: {fileID: 2431859750314470069, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
-      propertyPath: m_text
-      value: Log Mirage NFT
-      objectReference: {fileID: 0}
-    - target: {fileID: 4320560844865253304, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
-      propertyPath: _useCase
-      value: 
-      objectReference: {fileID: 6004100624460875195}
-    - target: {fileID: 6478293189189768898, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
-      propertyPath: m_Name
-      value: Mirage UseCase
-      objectReference: {fileID: 0}
-    - target: {fileID: 6478293190283716397, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8576856350983937366, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
-      propertyPath: m_text
-      value: Mirage NFT
-      objectReference: {fileID: 0}
     - target: {fileID: 9046295653076216128, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1150,16 +1130,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: UseCase-MirageNFT
       objectReference: {fileID: 0}
-    - target: {fileID: 9046295654577545323, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
-      propertyPath: m_Name
-      value: MirageNFT_SelectButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 9046295654577545332, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 371
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4108789493098426695, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
 --- !u!114 &4588084428869550767 stripped
 MonoBehaviour:
@@ -1170,17 +1141,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58d64b258e8e155438bfe875624182f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6004100624460875195 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6272187154123974828, guid: a9c7f23c47b106d4ba1473aec728b1c5, type: 3}
-  m_PrefabInstance: {fileID: 313441390772284695}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3de6b08129b14d6c812832f510b56810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &8778488463774598231 stripped
