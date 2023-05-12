@@ -23,7 +23,7 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 				}
 				catch (EntryPointNotFoundException e)
 				{
-					Debug.LogError($"EntryPointNotFoundException: {e.Message} \n WebGL scene does not work in the Unity Editor");
+					Debug.LogError($"Examples_WebGL scene does not support Unity Editor, for Unity Editor tests open Examples scene");
 					return null;
 				}
 			}

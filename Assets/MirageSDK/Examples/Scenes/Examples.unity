@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 333705140}
   - component: {fileID: 333705141}
   m_Layer: 0
-  m_Name: WalletConnect
+  m_Name: WalletConnectAdapter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
