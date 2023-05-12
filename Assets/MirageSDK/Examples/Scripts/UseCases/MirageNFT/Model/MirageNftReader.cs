@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Cysharp.Threading.Tasks;
 using MirageSDK.Utils;
@@ -19,12 +20,7 @@ namespace MirageSDK.UseCases.MirageNFT
 		public async UniTask<IReadOnlyList<T>> GetNftsList()
 		{
 			var ownedNftIds = await _contractReader.GetOwnedNftIds();
-			var tasksList = new List<UniTask<T>>();
-			foreach (var tokenId in ownedNftIds)
-			{
-				tasksList.Add(GetNfts(tokenId));
-			}
-			
+			var tasksList = Enumerable.Select(ownedNftIds, GetNfts).ToList();
 			var dtosArray = await UniTask.WhenAll(tasksList);
 			return dtosArray;
 		}
@@ -40,7 +36,7 @@ namespace MirageSDK.UseCases.MirageNFT
 				return null;
 			}
 			
-			MirageNftDto dto = null;
+			MirageNftDto dto;
 			try
 			{
 				dto = await WebHelper.SendGetRequest<MirageNftDto>(uri);
