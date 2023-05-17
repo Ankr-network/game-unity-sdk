@@ -1,3 +1,4 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -353,3 +354,4 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		}
 	}
 }
+#endif
