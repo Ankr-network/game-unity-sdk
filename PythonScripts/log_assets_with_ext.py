@@ -13,7 +13,7 @@ def log_assets_with_ext(project_path, extension):
 if __name__ == "__main__":
 
     if len(sys.argv) < 2:
-        print("Usage: python script.py <extension>")
+        print("Usage: python log_assets_with_ext.py <extension>")
         sys.exit(1)
 
     extension = sys.argv[1]
