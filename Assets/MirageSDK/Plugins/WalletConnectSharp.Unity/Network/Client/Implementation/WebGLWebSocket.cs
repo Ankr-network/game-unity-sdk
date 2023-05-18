@@ -22,10 +22,10 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 		[DllImport("__Internal")]
 		public static extern int WebSocketSend(int instanceId, byte[] dataPtr, int dataLength);
-		
+
 		[DllImport("__Internal")]
 		public static extern int WebSocketSendText(int instanceId, string message);
-		
+
 		[DllImport("__Internal")]
 		public static extern int WebSocketGetState(int instanceId);
 
@@ -42,7 +42,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			 {
 			 	WebGLWebSocketNativeBridge.Initialize();
 			 }
-			
+
 			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
 			 WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
 
@@ -55,10 +55,10 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			 {
 			 	WebGLWebSocketNativeBridge.Initialize();
 			 }
-			
+
 			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
 			 WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
-			
+
 			 WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(allocatedSocketId, subprotocol);
 
 			_instanceId = allocatedSocketId;
@@ -70,10 +70,10 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			 {
 			 	WebGLWebSocketNativeBridge.Initialize();
 			 }
-			
+
 			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
 			 WebGLWebSocketNativeBridge.Instances.Add(_instanceId, this);
-			
+
 			 foreach (var subprotocol in subprotocols)
 			 {
 			 	WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(_instanceId, subprotocol);
@@ -95,12 +95,12 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		public UniTask Connect()
 		{
 			var ret = WebSocketConnect(_instanceId);
-			
+
 			if (ret < 0)
 			{
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
-			
+
 			return UniTask.CompletedTask;
 		}
 
@@ -119,31 +119,31 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		public UniTask Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
 		{
 			var ret = WebSocketClose(_instanceId, (int)code, reason);
-			
+
 			if (ret < 0)
 			{
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
-			
+
 			return UniTask.CompletedTask;
 		}
 
 		public UniTask Send(byte[] data)
 		{
 			var ret = WebSocketSend(_instanceId, data, data.Length);
-			
+
 			if (ret < 0)
 			{
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
-			
+
 			return UniTask.CompletedTask;
 		}
 
 		public UniTask SendText(string message)
 		{
 			var ret = WebSocketSendText(_instanceId, message);
-			
+
 			if (ret < 0)
 			{
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
