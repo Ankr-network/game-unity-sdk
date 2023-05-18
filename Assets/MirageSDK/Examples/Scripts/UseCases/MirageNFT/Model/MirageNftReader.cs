@@ -27,6 +27,11 @@ namespace MirageSDK.UseCases.MirageNFT
 
 		private async UniTask<T> GetNfts(BigInteger tokenId)
 		{
+			if (tokenId < 0)
+			{
+				return null;
+			}
+			
 			var imageUriTask = _contractReader.GetUriFromNftId(tokenId);
 			var uri = await imageUriTask;
 			

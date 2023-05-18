@@ -30,10 +30,10 @@ namespace MirageSDK.UseCases.MirageNFT
 				_nftReader = new MirageNftReader<MirageNftExample>(contractReader);
 				_ethHandler = ethHandler;
 			}
-			
+
 			base.SetUseCaseBodyActive(isActive);
 		}
-		
+
 		private void Awake()
 		{
 			_logMirageNftsButton.onClick.AddListener(LogMirageNft);
@@ -48,13 +48,27 @@ namespace MirageSDK.UseCases.MirageNFT
 		{
 			var nftsList = await _nftReader.GetNftsList();
 			var sb = new StringBuilder();
-			sb.AppendLine($"NFTs owned by {await _ethHandler.GetDefaultAccount()}:");
+			var defaultAccount = await _ethHandler.GetDefaultAccount();
+			sb.AppendLine($"NFTs owned by {defaultAccount}:");
 			sb.AppendLine("");
+
+			int nftsFound = 0;
 			for (int i = 0; i < nftsList.Count; i++)
 			{
+				if (nftsList[i] == null)
+				{
+					continue;
+				}
+
 				sb.Append($"NFT {i}: " + nftsList[i] + "; ");
+				nftsFound++;
 			}
-			
+
+			if (nftsFound == 0)
+			{
+				sb.AppendLine(" none");
+			}
+
 			UpdateUILogs(sb.ToString());
 		}
 
