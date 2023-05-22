@@ -11,7 +11,7 @@ namespace MirageSDK.WebGL
 	{
 		private const string SettingsFilenameStr = "WebGLConnectSettings";
 		
-		public Action OnNeedPanel;
+		public Action OnLoginPanelRequested;
 		public Action<WebGLWrapper> OnConnect;
 		public WebGLWrapper SessionWrapper { get; private set; }
 		private UniTaskCompletionSource<Wallet> _walletCompletionSource;
@@ -45,7 +45,7 @@ namespace MirageSDK.WebGL
 			var wallet = _settings.DefaultWallet;
 			if (wallet == Wallet.None)
 			{
-				OnNeedPanel?.Invoke();
+				OnLoginPanelRequested?.Invoke();
 				_walletCompletionSource = new UniTaskCompletionSource<Wallet>();
 				wallet = await _walletCompletionSource.Task;
 			}
