@@ -38,46 +38,46 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 		public WebGLWebSocket(string url)
 		{
-			if (!WebGLWebSocketNativeBridge.isInitialized)
-			{
-				WebGLWebSocketNativeBridge.Initialize();
-			}
+			 if (!WebGLWebSocketNativeBridge.isInitialized)
+			 {
+			 	WebGLWebSocketNativeBridge.Initialize();
+			 }
 
-			int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
-			WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
+			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
+			 WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
 
 			_instanceId = allocatedSocketId;
 		}
 
 		public WebGLWebSocket(string url, string subprotocol)
 		{
-			if (!WebGLWebSocketNativeBridge.isInitialized)
-			{
-				WebGLWebSocketNativeBridge.Initialize();
-			}
+			 if (!WebGLWebSocketNativeBridge.isInitialized)
+			 {
+			 	WebGLWebSocketNativeBridge.Initialize();
+			 }
 
-			int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
-			WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
+			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
+			 WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
 
-			WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(allocatedSocketId, subprotocol);
+			 WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(allocatedSocketId, subprotocol);
 
 			_instanceId = allocatedSocketId;
 		}
 
 		public WebGLWebSocket(string url, List<string> subprotocols)
 		{
-			if (!WebGLWebSocketNativeBridge.isInitialized)
-			{
-				WebGLWebSocketNativeBridge.Initialize();
-			}
+			 if (!WebGLWebSocketNativeBridge.isInitialized)
+			 {
+			 	WebGLWebSocketNativeBridge.Initialize();
+			 }
 
-			int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
-			WebGLWebSocketNativeBridge.Instances.Add(_instanceId, this);
+			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
+			 WebGLWebSocketNativeBridge.Instances.Add(_instanceId, this);
 
-			foreach (var subprotocol in subprotocols)
-			{
-				WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(_instanceId, subprotocol);
-			}
+			 foreach (var subprotocol in subprotocols)
+			 {
+			 	WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(_instanceId, subprotocol);
+			 }
 
 			_instanceId = allocatedSocketId;
 		}
@@ -113,6 +113,8 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 			return UniTask.CompletedTask;
 		}
+
+		public void CancelConnection() {}
 
 		public UniTask Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
 		{
