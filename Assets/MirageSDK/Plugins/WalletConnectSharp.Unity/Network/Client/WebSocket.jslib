@@ -183,7 +183,7 @@ var LibraryWebSocket = {
 				var buffer = _malloc(dataBuffer.length);
 				HEAPU8.set(dataBuffer, buffer);
 				try {
-					dynCall("viii", webSocketState.onMessage, [ instanceId, buffer, dataBuffer.length ]);
+					dynCall('viii', webSocketState.onMessage, [ instanceId, buffer, dataBuffer.length ]);
 				} finally {
 				_free(buffer);
 			}
