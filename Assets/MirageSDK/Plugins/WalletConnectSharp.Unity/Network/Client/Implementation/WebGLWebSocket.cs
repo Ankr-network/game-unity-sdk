@@ -108,7 +108,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		{
 			if (State == WebSocketState.Open)
 			{
-				return Close(WebSocketCloseCode.Abnormal);
+				return CloseSocket();
 			}
 
 			return UniTask.CompletedTask;
@@ -116,7 +116,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 		public void CancelConnection() {}
 
-		public UniTask Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
+		private UniTask CloseSocket(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
 		{
 			var ret = WebSocketClose(_instanceId, (int)code, reason);
 
