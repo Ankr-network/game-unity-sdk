@@ -1,7 +1,7 @@
 using MirageSDK.Utils;
 using MirageSDK.WalletConnectSharp.Core;
-using MirageSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
+using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using UnityEngine;
 using UnityEngine.UI;
 

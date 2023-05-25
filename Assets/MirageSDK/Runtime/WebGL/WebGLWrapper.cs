@@ -7,13 +7,14 @@ using System.Linq;
 using System;
 using System.Numerics;
 using MirageSDK.Data;
+using MirageSDK.WalletConnect.VersionShared.Infrastructure;
 using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using Newtonsoft.Json;
 using TransactionData = MirageSDK.WebGL.DTO.TransactionData;
 
 namespace MirageSDK.WebGL
 {
-	public class WebGLWrapper : IWalletHandler
+	public class WebGLWrapper : IWalletHandler, IWalletConnectTransitionDataProvider
 	{
 		private readonly WebGLCommunicationProtocol _protocol;
 
@@ -42,7 +43,7 @@ namespace MirageSDK.WebGL
 				throw new Exception(answer.payload);
 			}
 		}
-		
+
 		public async UniTask<WalletsStatus> GetWalletsStatus()
 		{
 			var id = _protocol.GenerateId();
@@ -190,7 +191,7 @@ namespace MirageSDK.WebGL
 				throw new Exception(answer.payload);
 			}
 		}
-		
+
 		public async UniTask UpdateChain(EthUpdateChainData networkData)
 		{
 			var id = _protocol.GenerateId();
@@ -204,7 +205,7 @@ namespace MirageSDK.WebGL
 				throw new Exception(answer.payload);
 			}
 		}
-		
+
 		public async UniTask SwitchChain(EthChain networkData)
 		{
 			var id = _protocol.GenerateId();

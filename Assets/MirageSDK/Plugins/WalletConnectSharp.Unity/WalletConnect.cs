@@ -16,10 +16,10 @@ using MirageSDK.WalletConnect.VersionShared.Utils;
 using MirageSDK.WalletConnectSharp.Core;
 using MirageSDK.WalletConnectSharp.Core.Models;
 using MirageSDK.WalletConnectSharp.Core.Network;
-using MirageSDK.WalletConnectSharp.Unity.Events;
 using MirageSDK.WalletConnectSharp.Unity.Network;
 using MirageSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
+using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using UnityEngine;
 using Logger = AnkrSDK.InternalUtils.Logger;
 
@@ -27,7 +27,8 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace MirageSDK.WalletConnectSharp.Unity
 {
-	public class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator,
+	public class WalletConnect : IWalletConnectable, IWalletConnectStatusHolder,
+		IWalletConnectGenericRequester, IWalletConnectCommunicator,
 		IQuittable, IPausable, IUpdatable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";

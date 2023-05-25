@@ -1,7 +1,7 @@
 using System;
 using MirageSDK.Utils;
 using MirageSDK.WalletConnectSharp.Core;
-using MirageSDK.WalletConnectSharp.Unity.Events;
+using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
