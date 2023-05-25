@@ -19,31 +19,31 @@ namespace MirageSDK.WebGL.Implementation
 		private const string GetBlockNumberMethodName = "eth.getBlockNumber";
 		private const string GetBlockTransactionCountMethodName = "eth.getBlockTransactionCount";
 		private const bool ReturnTransactionObjects = true;
-		private readonly WebGLWrapper _webGlWrapper;
+		private readonly WebGLConnect _webGLConnect;
 
-		public EthHandlerWebGL(WebGLWrapper webGlWrapper)
+		public EthHandlerWebGL(WebGLConnect webGLConnect)
 		{
-			_webGlWrapper = webGlWrapper;
+			_webGLConnect = webGLConnect;
 		}
 
 		public UniTask<string> GetDefaultAccount()
 		{
-			return _webGlWrapper.GetDefaultAccount();
+			return _webGLConnect.GetDefaultAccount();
 		}
 
 		public UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
-			return _webGlWrapper.GetTransactionReceipt(transactionHash);
+			return _webGLConnect.GetTransactionReceipt(transactionHash);
 		}
 
 		public UniTask<Transaction> GetTransaction(string transactionHash)
 		{
-			return _webGlWrapper.GetTransaction(transactionHash);
+			return _webGLConnect.GetTransaction(transactionHash);
 		}
 
 		public UniTask<HexBigInteger> EstimateGas(TransactionInput transactionInput)
 		{
-			return _webGlWrapper.EstimateGas(transactionInput.ToTransactionData());
+			return _webGLConnect.EstimateGas(transactionInput.ToTransactionData());
 		}
 
 		public UniTask<HexBigInteger> EstimateGas(
@@ -64,7 +64,7 @@ namespace MirageSDK.WebGL.Implementation
 				gasPrice = gasPrice != null ? MirageSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 
-			return _webGlWrapper.EstimateGas(transactionData);
+			return _webGLConnect.EstimateGas(transactionData);
 		}
 
 		public UniTask<string> Sign(string messageToSign, string address)
@@ -74,7 +74,7 @@ namespace MirageSDK.WebGL.Implementation
 				address = address, message = messageToSign
 			};
 
-			return _webGlWrapper.Sign(props);
+			return _webGLConnect.Sign(props);
 		}
 
 		public UniTask<string> SendTransaction(string from, string to, string data = null, string value = null,
@@ -89,7 +89,7 @@ namespace MirageSDK.WebGL.Implementation
 				gasPrice = gasPrice != null ? MirageSDKHelper.StringToBigInteger(gasPrice) : null, nonce = nonce
 			};
 
-			return _webGlWrapper.SendTransaction(transactionData);
+			return _webGLConnect.SendTransaction(transactionData);
 		}
 
 		public async UniTask<BigInteger> GetBalance(string address = null)
@@ -104,33 +104,33 @@ namespace MirageSDK.WebGL.Implementation
 					}
 					: null
 			};
-			var balance = await _webGlWrapper.CallMethod<BigInteger>(callObject);
+			var balance = await _webGLConnect.CallMethod<BigInteger>(callObject);
 			return balance;
 		}
 
 		public UniTask<BigInteger> GetChainId()
 		{
-			return _webGlWrapper.GetChainId();
+			return _webGLConnect.GetChainId();
 		}
 
 		public UniTask WalletSwitchEthChain(EthChain chain)
 		{
-			return _webGlWrapper.SwitchChain(chain);
+			return _webGLConnect.SwitchChain(chain);
 		}
 
 		public UniTask WalletAddEthChain(EthChainData chain)
 		{
-			return _webGlWrapper.AddChain(chain);
+			return _webGLConnect.AddChain(chain);
 		}
 
 		public UniTask WalletUpdateEthChain(EthUpdateChainData chain)
 		{
-			return _webGlWrapper.UpdateChain(chain);
+			return _webGLConnect.UpdateChain(chain);
 		}
 
 		public UniTask<BigInteger> EthChainId()
 		{
-			return _webGlWrapper.GetChainId();
+			return _webGLConnect.GetChainId();
 		}
 
 		public UniTask<BigInteger> GetBlockNumber()
@@ -139,7 +139,7 @@ namespace MirageSDK.WebGL.Implementation
 			{
 				Path = GetBlockNumberMethodName
 			};
-			return _webGlWrapper.CallMethod<BigInteger>(callObject);
+			return _webGLConnect.CallMethod<BigInteger>(callObject);
 		}
 
 		public UniTask<BigInteger> GetTransactionCount(string hash)
@@ -181,7 +181,7 @@ namespace MirageSDK.WebGL.Implementation
 					blockId
 				}
 			};
-			return _webGlWrapper.CallMethod<BigInteger>(callObject);
+			return _webGLConnect.CallMethod<BigInteger>(callObject);
 		}
 
 		private UniTask<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects = false)
@@ -193,7 +193,7 @@ namespace MirageSDK.WebGL.Implementation
 					blockId, returnTransactionObjects
 				}
 			};
-			return _webGlWrapper.CallMethod<TResultType>(callObject);
+			return _webGLConnect.CallMethod<TResultType>(callObject);
 		}
 	}
 }

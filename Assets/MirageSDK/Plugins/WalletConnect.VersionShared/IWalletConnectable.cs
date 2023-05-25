@@ -8,5 +8,6 @@ namespace MirageSDK.WalletConnect.VersionShared
 		string SettingsFilename { get; }
 		void Initialize(ScriptableObject settings);
 		UniTask Connect();
+		UniTask CloseSession(bool connectNewSession = true);
 	}
 }
