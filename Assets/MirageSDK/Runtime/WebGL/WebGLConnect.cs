@@ -22,6 +22,7 @@ namespace MirageSDK.WebGL
 	{
 		private const string SettingsFilenameStr = "WebGLConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
+		public event Action<string[]> OnAccountChanged;
 		public WalletConnectStatus Status => _status;
 
 		private WalletConnectStatus _status = WalletConnectStatus.Uninitialized;
@@ -29,9 +30,11 @@ namespace MirageSDK.WebGL
 		private UniTaskCompletionSource<Wallet> _walletCompletionSource;
 		private WebGLConnectSettingsSO _settings;
 		private NetworkName _network;
+		private Wallet? _selectedWallet;
 		private readonly WebGLCommunicationProtocol _protocol;
 
 		public string SettingsFilename => SettingsFilenameStr;
+		public string WalletName => _selectedWallet.HasValue ? _selectedWallet.Value.ToString() : "";
 
 		public WebGLConnect()
 		{
@@ -66,13 +69,24 @@ namespace MirageSDK.WebGL
 
 			UpdateStatus(WalletConnectStatus.SessionRequestSent);
 			await ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_network));
+
+			var account = await GetDefaultAccount();
+			OnAccountChanged?.Invoke(new [] {account});
 			UpdateStatus(WalletConnectStatus.WalletConnected);
 		}
 
 		public UniTask CloseSession(bool connectNewSession = true)
 		{
 			_protocol.Disconnect();
+			UpdateStatus(WalletConnectStatus.DisconnectedNoSession);
 			return UniTask.CompletedTask;
+		}
+
+		public async UniTask<string> ReconnectSession()
+		{
+			await CloseSession();
+			await Connect();
+			return "";
 		}
 
 		public async UniTask<WalletsStatus> GetWalletsStatus()
@@ -165,7 +179,7 @@ namespace MirageSDK.WebGL
 			throw new Exception(answer.payload);
 		}
 
-		public async UniTask<string> GetDefaultAccount()
+		public async UniTask<string> GetDefaultAccount(string network = null)
 		{
 			var id = _protocol.GenerateId();
 			WebGLInterlayer.GetAddresses(id);

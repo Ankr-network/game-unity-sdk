@@ -74,10 +74,10 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
 			 WebGLWebSocketNativeBridge.Instances.Add(_instanceId, this);
 
-			 foreach (var subprotocol in subprotocols)
-			 {
-			 	WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(_instanceId, subprotocol);
-			 }
+			foreach (var subprotocol in subprotocols)
+			{
+			    WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(_instanceId, subprotocol);
+			}
 
 			_instanceId = allocatedSocketId;
 		}
@@ -92,16 +92,24 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			return _instanceId;
 		}
 
-		public UniTask Connect()
+		public async UniTask Connect()
 		{
+			UnityEngine.Debug.Log($"Calling WebSocket connect for {_instanceId}");
 			var ret = WebSocketConnect(_instanceId);
+			UnityEngine.Debug.Log($"WebSocketConnect returned {ret}");
 
 			if (ret < 0)
 			{
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
 
-			return UniTask.CompletedTask;
+			while(State != WebSocketState.Open)
+			{
+				await UniTask.Delay(50);
+			}
+
+			UnityEngine.Debug.Log($"WebSocketConnect await finished");
+			OnOpen?.Invoke();
 		}
 
 		public UniTask Close()
@@ -189,7 +197,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 		public void DelegateOnOpenEvent()
 		{
-			OnOpen?.Invoke();
+
 		}
 
 		public void DelegateOnMessageEvent(byte[] data)

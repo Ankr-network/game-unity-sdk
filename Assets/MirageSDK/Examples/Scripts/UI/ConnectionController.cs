@@ -30,7 +30,7 @@ namespace MirageSDK.UI
 			SubscribeToWalletEvents();
 			UpdateLoginButtonState();
 		}
-		
+
 		private UnityAction GetLoginAction()
 		{
 			if (!Application.isEditor)
@@ -43,7 +43,7 @@ namespace MirageSDK.UI
 						return WalletConnect.OpenDeepLink;
 				}
 			}
-			
+
 			return () =>
 			{
 				_qrCodeImage.UpdateQRCode(WalletConnect.ConnectURL);
@@ -74,21 +74,21 @@ namespace MirageSDK.UI
 		private void UpdateLoginButtonState()
 		{
 			var status = WalletConnect.Status;
-			
+
 			if (status == WalletConnectStatus.Uninitialized)
 			{
 				return;
 			}
-			
+
 			var walletConnected = status == WalletConnectStatus.WalletConnected;
 			_sceneChooser.SetActive(walletConnected);
 			_chooseWalletScreen.SetActive(!walletConnected);
 
 			bool waitingForLoginInput = status == WalletConnectStatus.SessionRequestSent;
-			
+
 			_loginButton.gameObject.SetActive(waitingForLoginInput);
 			_stateText.gameObject.SetActive(!waitingForLoginInput && !walletConnected);
-			
+
 			_qrCodeImage.SetImageActive(false);
 
 			if (!waitingForLoginInput)

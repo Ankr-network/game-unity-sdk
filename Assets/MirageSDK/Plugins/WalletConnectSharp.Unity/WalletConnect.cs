@@ -9,7 +9,6 @@ using MirageSDK.WalletConnect.VersionShared;
 using MirageSDK.WalletConnect.VersionShared.Infrastructure;
 using MirageSDK.WalletConnect.VersionShared.Models;
 using MirageSDK.WalletConnect.VersionShared.Models.DeepLink;
-using MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using MirageSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using MirageSDK.WalletConnect.VersionShared.Utils;
@@ -34,6 +33,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
 		public event Action OnSend;
+
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
 		public bool CanSendRequests => _session?.CanSendRequests ?? false;
@@ -64,6 +64,15 @@ namespace MirageSDK.WalletConnectSharp.Unity
 			{
 				CheckIfSessionCreated();
 				return _session?.WalletMetadata;
+			}
+		}
+
+		public string WalletName
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session?.WalletMetadata?.Name;
 			}
 		}
 
@@ -303,7 +312,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 		//network argument is not used because WC1
 		//only supports Ethereum network but still kept here to
 		//support unified interface with WC2
-		public string GetDefaultAccount(string network = null)
+		public UniTask<string> GetDefaultAccount(string network = null)
 		{
 			CheckIfSessionCreated();
 			return _session.GetDefaultAccount(network);
