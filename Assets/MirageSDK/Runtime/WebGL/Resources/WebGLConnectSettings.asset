@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96087e05f12f4c2a8e8c763840868625, type: 3}
   m_Name: WebGLConnectSettings
   m_EditorClassIdentifier: 
-  _defaultWallet: 2
+  _defaultWallet: 1
   _defaultNetwork: 5
