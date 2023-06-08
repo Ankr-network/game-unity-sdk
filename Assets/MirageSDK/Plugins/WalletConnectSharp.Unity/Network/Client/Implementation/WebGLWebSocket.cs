@@ -1,4 +1,5 @@
 #if UNITY_WEBGL && !UNITY_EDITOR
+using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using MirageSDK.WalletConnectSharp.Unity.Network.Client.Data;
@@ -28,6 +29,8 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 		[DllImport("__Internal")]
 		public static extern int WebSocketGetState(int instanceId);
+
+		private readonly TimeSpan SocketOpenCheckTimeDelay = TimeSpan.FromMilliseconds(50);
 
 		private readonly int _instanceId;
 
@@ -105,7 +108,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 			while(State != WebSocketState.Open)
 			{
-				await UniTask.Delay(50);
+				await UniTask.Delay(SocketOpenCheckTimeDelay);
 			}
 
 			UnityEngine.Debug.Log($"WebSocketConnect await finished");
