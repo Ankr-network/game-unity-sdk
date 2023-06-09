@@ -17,6 +17,5 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure
 		void DispatchMessageQueue();
 		UniTask SendText(string requestMessage);
 		UniTask Close();
-		void CancelConnection();
 	}
 }

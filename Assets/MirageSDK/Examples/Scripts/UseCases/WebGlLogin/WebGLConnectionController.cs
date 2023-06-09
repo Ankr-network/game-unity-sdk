@@ -1,4 +1,3 @@
-using System;
 using MirageSDK.Data;
 using MirageSDK.WebGL;
 using UnityEngine;
@@ -13,19 +12,16 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 		[SerializeField]
 		private GameObject _sceneChooser;
 
+		
 		private WebGLConnect WebGLConnect
 		{
 			get
 			{
-				try
-				{
-					return Utils.ConnectProvider<WebGLConnect>.GetConnect();
-				}
-				catch (EntryPointNotFoundException e)
-				{
-					Debug.LogError($"Examples_WebGL scene does not support Unity Editor, for Unity Editor tests open Examples scene");
-					return null;
-				}
+#if (UNITY_WEBGL && !UNITY_EDITOR)
+				return MirageSDK.Utils.ConnectProvider<WebGLConnect>.GetConnect();
+#else
+				return null;
+#endif
 			}
 		}
 
@@ -33,8 +29,8 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 		{
 			if (WebGLConnect != null)
 			{
-				WebGLConnect.OnLoginPanelRequested += ActivatePanel;
-				WebGLConnect.OnConnect += HandleConnect;
+				WebGLConnect.OnNeedPanel += ActivatePanel;
+				WebGLConnect.OnConnect += ChangeLoginPanel;
 				_webGlLoginManager.NetworkChosen += OnNetworkChosen;
 				_webGlLoginManager.WalletChosen += OnWalletChosen;
 			}
@@ -58,15 +54,11 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 			var webGlConnect = WebGLConnect;
 			if (webGlConnect != null)
 			{
-				webGlConnect.OnLoginPanelRequested -= ActivatePanel;
-				webGlConnect.OnConnect -= HandleConnect;
+				webGlConnect.OnNeedPanel -= ActivatePanel;
+				webGlConnect.OnConnect -= ChangeLoginPanel;
 			}
-
-			if (_webGlLoginManager != null)
-			{
-				_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
-				_webGlLoginManager.WalletChosen -= OnWalletChosen;
-			}
+			_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
+			_webGlLoginManager.WalletChosen -= OnWalletChosen;
 		}
 
 		private void ActivatePanel()
@@ -74,7 +66,7 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 			_webGlLoginManager.ShowPanel();
 		}
 
-		private void HandleConnect(WebGLWrapper provider)
+		private void ChangeLoginPanel(WebGLWrapper provider)
 		{
 			_webGlLoginManager.HidePanel();
 			_sceneChooser.SetActive(true);

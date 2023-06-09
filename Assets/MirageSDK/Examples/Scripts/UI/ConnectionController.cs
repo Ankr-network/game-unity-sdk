@@ -19,16 +19,26 @@ namespace MirageSDK.UI
 		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		private async void Start()
 		{
-			await WalletConnect.Connect();
+			if (Application.isEditor || Application.platform != RuntimePlatform.WebGLPlayer)
+			{
+				await WalletConnect.Connect();
+			}
 		}
 
 		private void OnEnable()
 		{
-			_sceneChooser.SetActive(false);
-			_loginButton.onClick.AddListener(GetLoginAction());
-			_loginButton.gameObject.SetActive(false);
-			SubscribeToWalletEvents();
-			UpdateLoginButtonState();
+			if (Application.platform == RuntimePlatform.WebGLPlayer)
+			{
+				_loginButton.gameObject.SetActive(false);
+			}
+			else
+			{
+				_sceneChooser.SetActive(false);
+				_loginButton.onClick.AddListener(GetLoginAction());
+				_loginButton.gameObject.SetActive(false);
+				SubscribeToWalletEvents();
+				UpdateLoginButtonState();
+			}
 		}
 		
 		private UnityAction GetLoginAction()
