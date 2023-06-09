@@ -1,7 +1,7 @@
 using System;
 using MirageSDK.Utils;
 using MirageSDK.WalletConnectSharp.Core;
-using MirageSDK.WalletConnectSharp.Unity.Events;
+using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -19,28 +19,18 @@ namespace MirageSDK.UI
 		private WalletConnectSharp.Unity.WalletConnect WalletConnect => ConnectProvider<WalletConnectSharp.Unity.WalletConnect>.GetConnect();
 		private async void Start()
 		{
-			if (Application.isEditor || Application.platform != RuntimePlatform.WebGLPlayer)
-			{
-				await WalletConnect.Connect();
-			}
+			await WalletConnect.Connect();
 		}
 
 		private void OnEnable()
 		{
-			if (Application.platform == RuntimePlatform.WebGLPlayer)
-			{
-				_loginButton.gameObject.SetActive(false);
-			}
-			else
-			{
-				_sceneChooser.SetActive(false);
-				_loginButton.onClick.AddListener(GetLoginAction());
-				_loginButton.gameObject.SetActive(false);
-				SubscribeToWalletEvents();
-				UpdateLoginButtonState();
-			}
+			_sceneChooser.SetActive(false);
+			_loginButton.onClick.AddListener(GetLoginAction());
+			_loginButton.gameObject.SetActive(false);
+			SubscribeToWalletEvents();
+			UpdateLoginButtonState();
 		}
-		
+
 		private UnityAction GetLoginAction()
 		{
 			if (!Application.isEditor)
@@ -53,7 +43,7 @@ namespace MirageSDK.UI
 						return WalletConnect.OpenDeepLink;
 				}
 			}
-			
+
 			return () =>
 			{
 				_qrCodeImage.UpdateQRCode(WalletConnect.ConnectURL);
@@ -84,21 +74,21 @@ namespace MirageSDK.UI
 		private void UpdateLoginButtonState()
 		{
 			var status = WalletConnect.Status;
-			
+
 			if (status == WalletConnectStatus.Uninitialized)
 			{
 				return;
 			}
-			
+
 			var walletConnected = status == WalletConnectStatus.WalletConnected;
 			_sceneChooser.SetActive(walletConnected);
 			_chooseWalletScreen.SetActive(!walletConnected);
 
 			bool waitingForLoginInput = status == WalletConnectStatus.SessionRequestSent;
-			
+
 			_loginButton.gameObject.SetActive(waitingForLoginInput);
 			_stateText.gameObject.SetActive(!waitingForLoginInput && !walletConnected);
-			
+
 			_qrCodeImage.SetImageActive(false);
 
 			if (!waitingForLoginInput)

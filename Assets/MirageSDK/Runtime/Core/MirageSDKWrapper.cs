@@ -8,19 +8,16 @@ namespace MirageSDK.Core
 	public class MirageSDKWrapper : IMirageSDK
 	{
 		private readonly IContractFunctions _contractFunctions;
-		public IWalletHandler WalletHandler { get; }
 		public IEthHandler Eth { get; }
 		public ISilentSigningHandler SilentSigningHandler { get; }
 
 		public MirageSDKWrapper(
 			IContractFunctions contractFunctions,
 			IEthHandler eth,
-			IWalletHandler disconnectHandler,
 			ISilentSigningHandler silentSigningHandler = null
 		)
 		{
 			_contractFunctions = contractFunctions;
-			WalletHandler = disconnectHandler;
 			SilentSigningHandler = silentSigningHandler;
 			Eth = eth;
 		}
@@ -36,7 +33,7 @@ namespace MirageSDK.Core
 			{
 				throw new InvalidDataException($"Invalid contract data: {contractInfo}");
 			}
-			
+
 			return new Contract(Eth, _contractFunctions, contractInfo.ContractAddress, contractInfo.ABI);
 		}
 

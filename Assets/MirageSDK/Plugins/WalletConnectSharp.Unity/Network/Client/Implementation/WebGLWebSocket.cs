@@ -1,4 +1,5 @@
 #if UNITY_WEBGL && !UNITY_EDITOR
+using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using MirageSDK.WalletConnectSharp.Unity.Network.Client.Data;
@@ -29,6 +30,8 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 		[DllImport("__Internal")]
 		public static extern int WebSocketGetState(int instanceId);
 
+		private readonly TimeSpan SocketOpenCheckTimeDelay = TimeSpan.FromMilliseconds(50);
+
 		private readonly int _instanceId;
 
 		public event WebSocketOpenEventHandler OnOpen;
@@ -38,45 +41,45 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 		public WebGLWebSocket(string url)
 		{
-			if (!WebGLWebSocketNativeBridge.isInitialized)
-			{
-				WebGLWebSocketNativeBridge.Initialize();
-			}
+			 if (!WebGLWebSocketNativeBridge.isInitialized)
+			 {
+			 	WebGLWebSocketNativeBridge.Initialize();
+			 }
 
-			int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
-			WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
+			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
+			 WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
 
 			_instanceId = allocatedSocketId;
 		}
 
 		public WebGLWebSocket(string url, string subprotocol)
 		{
-			if (!WebGLWebSocketNativeBridge.isInitialized)
-			{
-				WebGLWebSocketNativeBridge.Initialize();
-			}
+			 if (!WebGLWebSocketNativeBridge.isInitialized)
+			 {
+			 	WebGLWebSocketNativeBridge.Initialize();
+			 }
 
-			int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
-			WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
+			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
+			 WebGLWebSocketNativeBridge.Instances.Add(allocatedSocketId, this);
 
-			WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(allocatedSocketId, subprotocol);
+			 WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(allocatedSocketId, subprotocol);
 
 			_instanceId = allocatedSocketId;
 		}
 
 		public WebGLWebSocket(string url, List<string> subprotocols)
 		{
-			if (!WebGLWebSocketNativeBridge.isInitialized)
-			{
-				WebGLWebSocketNativeBridge.Initialize();
-			}
+			 if (!WebGLWebSocketNativeBridge.isInitialized)
+			 {
+			 	WebGLWebSocketNativeBridge.Initialize();
+			 }
 
-			int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
-			WebGLWebSocketNativeBridge.Instances.Add(_instanceId, this);
+			 int allocatedSocketId = WebGLWebSocketNativeBridge.WebSocketAllocate(url);
+			 WebGLWebSocketNativeBridge.Instances.Add(_instanceId, this);
 
 			foreach (var subprotocol in subprotocols)
 			{
-				WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(_instanceId, subprotocol);
+			    WebGLWebSocketNativeBridge.WebSocketAddSubProtocol(_instanceId, subprotocol);
 			}
 
 			_instanceId = allocatedSocketId;
@@ -92,29 +95,39 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 			return _instanceId;
 		}
 
-		public UniTask Connect()
+		public async UniTask Connect()
 		{
+			UnityEngine.Debug.Log($"Calling WebSocket connect for {_instanceId}");
 			var ret = WebSocketConnect(_instanceId);
+			UnityEngine.Debug.Log($"WebSocketConnect returned {ret}");
 
 			if (ret < 0)
 			{
 				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
 
-			return UniTask.CompletedTask;
+			while(State != WebSocketState.Open)
+			{
+				await UniTask.Delay(SocketOpenCheckTimeDelay);
+			}
+
+			UnityEngine.Debug.Log($"WebSocketConnect await finished");
+			OnOpen?.Invoke();
 		}
 
 		public UniTask Close()
 		{
 			if (State == WebSocketState.Open)
 			{
-				return Close(WebSocketCloseCode.Abnormal);
+				return CloseSocket();
 			}
 
 			return UniTask.CompletedTask;
 		}
 
-		public UniTask Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
+		public void CancelConnection() {}
+
+		private UniTask CloseSocket(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
 		{
 			var ret = WebSocketClose(_instanceId, (int)code, reason);
 
@@ -187,7 +200,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation
 
 		public void DelegateOnOpenEvent()
 		{
-			OnOpen?.Invoke();
+
 		}
 
 		public void DelegateOnMessageEvent(byte[] data)

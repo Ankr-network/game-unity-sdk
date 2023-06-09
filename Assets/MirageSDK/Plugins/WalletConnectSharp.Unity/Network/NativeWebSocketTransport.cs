@@ -5,8 +5,9 @@ using MirageSDK.WalletConnectSharp.Core.Models;
 using MirageSDK.WalletConnectSharp.Core.Network;
 using MirageSDK.WalletConnectSharp.Unity.Network.Client.Data;
 using MirageSDK.WalletConnectSharp.Unity.Network.Client.Exceptions;
-using MirageSDK.WalletConnectSharp.Unity.Network.Client.Implementation;
 using Cysharp.Threading.Tasks;
+using MirageSDK.WalletConnectSharp.Unity.Network.Client;
+using MirageSDK.WalletConnectSharp.Unity.Network.Client.Infrastructure;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -20,8 +21,8 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		private bool _opened;
 		private bool _wasPaused;
 
-		private WebSocket _nextClient;
-		private WebSocket _client;
+		private IWebSocket _nextClient;
+		private IWebSocket _client;
 
 		public bool Connected => _client?.State == WebSocketState.Open && _opened;
 		public string URL { get; private set; }
@@ -111,13 +112,16 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		{
 			if (!Connected)
 			{
+				Debug.Log($"Enqueuing message: {message} and opening socket");
 				_queuedMessages.Enqueue(message);
 				await OpenSocket();
 			}
 			else
 			{
 				var finalJson = JsonConvert.SerializeObject(message);
+				Debug.Log($"SendText called for: {finalJson}");
 				await _client.SendText(finalJson);
+				Debug.Log($"SendText finished for: {finalJson}");
 			}
 		}
 
@@ -172,9 +176,9 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 			Debug.Log("[WebSocket] Open Completed");
 		}
 
-		private UniTaskCompletionSource<bool> ConfigureNextClient(string url, out WebSocket nextClient)
+		private UniTaskCompletionSource<bool> ConfigureNextClient(string url, out IWebSocket nextClient)
 		{
-			nextClient = new WebSocket(url);
+			nextClient = WebSocketFactory.CreateInstance(url);
 
 			var eventCompleted = new UniTaskCompletionSource<bool>();
 

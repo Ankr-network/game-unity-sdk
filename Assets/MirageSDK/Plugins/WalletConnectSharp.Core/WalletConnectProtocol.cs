@@ -112,13 +112,16 @@ namespace MirageSDK.WalletConnectSharp.Core
 			BridgeUrl = savedSession.BridgeURL;
 			SetTransport(transport);
 
-			cipher = cipher ?? new AESCipher();
+			if (cipher == null)
+			{
+				cipher = CreateCipher();
+			}
 
 			_cipher = cipher;
 
 			KeyRaw = savedSession.KeyRaw;
 
-			//Convert hex 
+			//Convert hex
 			Key = savedSession.Key;
 
 			PeerId = savedSession.PeerID;
@@ -160,9 +163,21 @@ namespace MirageSDK.WalletConnectSharp.Core
 
 			SetTransport(transport);
 
-			cipher = cipher ?? new AESCipher();
+			if (cipher == null)
+			{
+				cipher = CreateCipher();
+			}
 
 			_cipher = cipher;
+		}
+
+		public static ICipher CreateCipher()
+		{
+			#if UNITY_WEBGL && !UNITY_EDITOR
+			return new WebGlAESCipher();
+			#else
+			return new AESCipher();
+			#endif
 		}
 
 		protected async UniTask OpenTransport()
@@ -274,7 +289,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 
 		protected static bool IsSilent(object requestObj)
 		{
-			return requestObj is JsonRpcRequest request 
+			return requestObj is JsonRpcRequest request
 			       && (request.Method.StartsWith("wc_") || !SigningMethods.Contains(request.Method));
 		}
 

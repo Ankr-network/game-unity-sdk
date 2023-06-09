@@ -2,6 +2,7 @@ using System.Numerics;
 using MirageSDK.Data.ContractMessages.ERC721;
 using MirageSDK.Data.ContractMessages.ERC721.RentableExtension;
 using JetBrains.Annotations;
+using MirageSDK.Utils;
 using Nethereum.Web3;
 
 namespace MirageSDK.Provider
@@ -14,8 +15,8 @@ namespace MirageSDK.Provider
 			var web3 = new Web3();
 
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
-			var webGlWrapper = new WebGL.WebGLWrapper();
-			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
+			var webGlConnect = ConnectProvider<MirageSDK.WebGL.WebGLConnect>.GetConnect();
+			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlConnect);
 		#else
 			var contractFunctions = new Mobile.ContractFunctions(web3);
 		#endif

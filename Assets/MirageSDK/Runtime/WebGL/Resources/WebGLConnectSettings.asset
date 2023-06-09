@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: WebGLConnectSettings
   m_EditorClassIdentifier: 
   _defaultWallet: 1
-  _defaultNetwork: 2
-  _connectOnAwake: 1
-  _connectOnStart: 0
+  _defaultNetwork: 5

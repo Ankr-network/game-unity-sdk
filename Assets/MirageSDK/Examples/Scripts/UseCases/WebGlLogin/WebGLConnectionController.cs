@@ -1,4 +1,6 @@
+using System;
 using MirageSDK.Data;
+using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using MirageSDK.WebGL;
 using UnityEngine;
 
@@ -12,16 +14,19 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 		[SerializeField]
 		private GameObject _sceneChooser;
 
-		
 		private WebGLConnect WebGLConnect
 		{
 			get
 			{
-#if (UNITY_WEBGL && !UNITY_EDITOR)
-				return MirageSDK.Utils.ConnectProvider<WebGLConnect>.GetConnect();
-#else
-				return null;
-#endif
+				try
+				{
+					return Utils.ConnectProvider<WebGLConnect>.GetConnect();
+				}
+				catch (EntryPointNotFoundException e)
+				{
+					Debug.LogError($"Examples_WebGL scene does not support Unity Editor, for Unity Editor tests open Examples scene");
+					return null;
+				}
 			}
 		}
 
@@ -29,8 +34,7 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 		{
 			if (WebGLConnect != null)
 			{
-				WebGLConnect.OnNeedPanel += ActivatePanel;
-				WebGLConnect.OnConnect += ChangeLoginPanel;
+				WebGLConnect.SessionStatusUpdated += OnSessionStatusUpdated;
 				_webGlLoginManager.NetworkChosen += OnNetworkChosen;
 				_webGlLoginManager.WalletChosen += OnWalletChosen;
 			}
@@ -54,22 +58,32 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 			var webGlConnect = WebGLConnect;
 			if (webGlConnect != null)
 			{
-				webGlConnect.OnNeedPanel -= ActivatePanel;
-				webGlConnect.OnConnect -= ChangeLoginPanel;
+				WebGLConnect.SessionStatusUpdated -= OnSessionStatusUpdated;
 			}
-			_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
-			_webGlLoginManager.WalletChosen -= OnWalletChosen;
+
+			if (_webGlLoginManager != null)
+			{
+				_webGlLoginManager.NetworkChosen -= OnNetworkChosen;
+				_webGlLoginManager.WalletChosen -= OnWalletChosen;
+			}
 		}
 
-		private void ActivatePanel()
+		private void OnSessionStatusUpdated(WalletConnectTransitionBase obj)
 		{
-			_webGlLoginManager.ShowPanel();
-		}
-
-		private void ChangeLoginPanel(WebGLWrapper provider)
-		{
-			_webGlLoginManager.HidePanel();
-			_sceneChooser.SetActive(true);
+			switch (obj)
+			{
+				case TransportConnectedTransition transition:
+				{
+					_webGlLoginManager.ShowPanel();
+					break;
+				}
+				case WalletConnectedTransition transition:
+				{
+					_webGlLoginManager.HidePanel();
+					_sceneChooser.SetActive(true);
+					break;
+				}
+			}
 		}
 
 		private void OnNetworkChosen(NetworkName network)

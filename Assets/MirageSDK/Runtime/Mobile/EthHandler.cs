@@ -74,7 +74,7 @@ namespace MirageSDK.Mobile
 				throw new Exception("Application is not linked to wallet");
 			}
 
-			return UniTask.FromResult(_walletConnect.GetDefaultAccount());
+			return _walletConnect.GetDefaultAccount();
 		}
 
 		public UniTask<BigInteger> GetChainId()
