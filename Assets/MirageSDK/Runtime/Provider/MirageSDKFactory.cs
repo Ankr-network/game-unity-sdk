@@ -42,22 +42,20 @@ namespace MirageSDK.Provider
 
 			ISilentSigningHandler silentSigningHandler = null;
 		#if (UNITY_WEBGL && !UNITY_EDITOR)
-			var webGlWrapper = Utils.ConnectProvider<MirageSDK.WebGL.WebGLConnect>.GetConnect().SessionWrapper;
-			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlWrapper);
-			var eth = new WebGL.Implementation.EthHandlerWebGL(webGlWrapper);
-			var walletHandler = (IWalletHandler)webGlWrapper;
+			var webGlConnect = Utils.ConnectProvider<MirageSDK.WebGL.WebGLConnect>.GetConnect();
+			var webGlWrapper = new WebGL.WebGLWrapper(webGlConnect);
+			var contractFunctions = new WebGL.Implementation.ContractFunctionsWebGL(webGlConnect);
+			var eth = new WebGL.Implementation.EthHandlerWebGL(webGlConnect);
 		#else
 			silentSigningHandler = new MirageSDK.SilentSigning.Implementation.SilentSigningProtocol();
 			var web3Provider = new Mobile.MobileWeb3Provider().CreateWeb3(providerURI);
 			var contractFunctions = new Mobile.ContractFunctions(web3Provider);
 			var eth = new Mobile.EthHandler(web3Provider, silentSigningHandler);
-			var walletHandler = new Mobile.MobileWalletHandler();
 		#endif
 
 			return new MirageSDKWrapper(
 				contractFunctions,
 				eth,
-				walletHandler,
 				silentSigningHandler
 			);
 		}

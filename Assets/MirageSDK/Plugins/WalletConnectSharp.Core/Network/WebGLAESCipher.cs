@@ -8,7 +8,7 @@ using MirageSDK.WalletConnectSharp.Core.Models;
 using MirageSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
 
-namespace MirageSDK.WalletConnectSharp.Unity.Network
+namespace MirageSDK.WalletConnectSharp.Core.Network
 {
     public class WebGlAESCipher : ICipher
     {
@@ -29,7 +29,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
                     cipher.Mode = CipherMode.CBC;
                     cipher.Padding = PaddingMode.PKCS7;
                     cipher.KeySize = 256;
-                    
+
                     var iv = cipher.IV;
 
                     using (var cs = new CryptoStream(ms, cipher.CreateEncryptor(key, iv),
@@ -43,7 +43,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
                     using (var hmac = new HMACSHA256(key))
                     {
                         hmac.Initialize();
-                        
+
                         var toSign = new byte[iv.Length + encryptedContent.Length];
 
                         //copy our 2 array into one
@@ -51,7 +51,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
                         Buffer.BlockCopy(iv, 0, toSign, encryptedContent.Length, iv.Length);
 
                         var signature = hmac.ComputeHash(toSign);
-                        
+
                         var ivHex = iv.ToHex();
                         var dataHex = encryptedContent.ToHex();
                         var hmacHex = signature.ToHex();
@@ -83,11 +83,11 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
                 hmac.Initialize();
 
                 var toSign = new byte[iv.Length + rawData.Length];
-                        
+
                 //copy our 2 array into one
                 Buffer.BlockCopy(rawData, 0, toSign, 0,rawData.Length);
                 Buffer.BlockCopy(iv, 0, toSign, rawData.Length, iv.Length);
-                
+
                 var signature = hmac.ComputeHash(toSign);
 
                 if (!signature.SequenceEqual(hmacReceived))
@@ -118,7 +118,7 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
                             do
                             {
                                 read = cs.Read(buffer, 0, buffer.Length);
-                                
+
                                 if (read > 0)
                                 {
                                     sink.Write(buffer, 0, read);

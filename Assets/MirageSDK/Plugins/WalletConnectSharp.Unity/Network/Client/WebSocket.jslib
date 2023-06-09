@@ -134,10 +134,17 @@ var LibraryWebSocket = {
     WebSocketConnect: function (instanceId) {
 
         var instance = webSocketState.instances[instanceId];
-        if (!instance) return -1;
+        if (!instance)
+        {
+            console.error("WebSocketConnect: instance not found");
+            return -1;
+        }
 
         if (instance.ws !== null)
+        {
+            console.error("WebSocketConnect: ws already created");
             return -2;
+        }
 
         instance.ws = new WebSocket(instance.url);
 
@@ -296,15 +303,28 @@ var LibraryWebSocket = {
     WebSocketSendText: function (instanceId, message) {
 
         var instance = webSocketState.instances[instanceId];
-        if (!instance) return -1;
+        if (!instance)
+        {
+            console.error(`Instance not found for instanceId: ${instanceId}`);
+            return -1;
+        }
 
         if (!instance.ws)
+        {
+            console.error(`WebSocket not initialized for instanceId: ${instanceId}`);
             return -3;
+        }
 
         if (instance.ws.readyState !== 1)
+        {
+            console.log(`WebSocket readyState not equal to 1 for instanceId: ${instanceId}. Current readyState: ${instance.ws.readyState}`);
             return -6;
+        }
 
-        instance.ws.send(UTF8ToString(message));
+        var utf8Message = UTF8ToString(message);
+        console.log(`Sending message : ${utf8Message} for instanceId: ${instanceId}`);
+        instance.ws.send(utf8Message);
+        console.log(`Message sent successfully for instanceId: ${instanceId}`);
 
         return 0;
 

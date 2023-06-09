@@ -1,7 +1,6 @@
 using MirageSDK.WalletConnect.VersionShared.Infrastructure;
-using MirageSDK.WalletConnectSharp.Core;
 
-namespace MirageSDK.WalletConnectSharp.Unity.Events
+namespace MirageSDK.WalletConnectSharp.Core.StatusEvents
 {
     public class WalletConnectTransitionBase
     {

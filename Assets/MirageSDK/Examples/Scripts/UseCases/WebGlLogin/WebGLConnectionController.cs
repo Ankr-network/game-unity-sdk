@@ -1,5 +1,6 @@
 using System;
 using MirageSDK.Data;
+using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using MirageSDK.WebGL;
 using UnityEngine;
 
@@ -33,8 +34,7 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 		{
 			if (WebGLConnect != null)
 			{
-				WebGLConnect.OnLoginPanelRequested += ActivatePanel;
-				WebGLConnect.OnConnect += HandleConnect;
+				WebGLConnect.SessionStatusUpdated += OnSessionStatusUpdated;
 				_webGlLoginManager.NetworkChosen += OnNetworkChosen;
 				_webGlLoginManager.WalletChosen += OnWalletChosen;
 			}
@@ -58,8 +58,7 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 			var webGlConnect = WebGLConnect;
 			if (webGlConnect != null)
 			{
-				webGlConnect.OnLoginPanelRequested -= ActivatePanel;
-				webGlConnect.OnConnect -= HandleConnect;
+				WebGLConnect.SessionStatusUpdated -= OnSessionStatusUpdated;
 			}
 
 			if (_webGlLoginManager != null)
@@ -69,15 +68,22 @@ namespace MirageSDK.Examples.UseCases.WebGlLogin
 			}
 		}
 
-		private void ActivatePanel()
+		private void OnSessionStatusUpdated(WalletConnectTransitionBase obj)
 		{
-			_webGlLoginManager.ShowPanel();
-		}
-
-		private void HandleConnect(WebGLWrapper provider)
-		{
-			_webGlLoginManager.HidePanel();
-			_sceneChooser.SetActive(true);
+			switch (obj)
+			{
+				case TransportConnectedTransition transition:
+				{
+					_webGlLoginManager.ShowPanel();
+					break;
+				}
+				case WalletConnectedTransition transition:
+				{
+					_webGlLoginManager.HidePanel();
+					_sceneChooser.SetActive(true);
+					break;
+				}
+			}
 		}
 
 		private void OnNetworkChosen(NetworkName network)

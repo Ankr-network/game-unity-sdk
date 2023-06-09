@@ -11,11 +11,11 @@ namespace MirageSDK.WebGL.Implementation
 {
 	public class ContractFunctionsWebGL : IContractFunctions
 	{
-		private readonly WebGLWrapper _webGlWrapper;
+		private readonly WebGLConnect _webGlConnect;
 
-		public ContractFunctionsWebGL(WebGLWrapper webGlWrapper)
+		public ContractFunctionsWebGL(WebGLConnect webGlConnect)
 		{
-			_webGlWrapper = webGlWrapper;
+			_webGlConnect = webGlConnect;
 		}
 
 		public async UniTask<TReturnType> GetContractData<TFieldData, TReturnType>(string contractAddress,
@@ -23,14 +23,14 @@ namespace MirageSDK.WebGL.Implementation
 		{
 			var methodEncoder = new FunctionMessageEncodingService<TFieldData>(contractAddress);
 			var txData = methodEncoder.CreateCallInput(requestData);
-			var response = await _webGlWrapper.GetContractData(txData.ToTransactionData());
+			var response = await _webGlConnect.GetContractData(txData.ToTransactionData());
 			return methodEncoder.DecodeSimpleTypeOutput<TReturnType>(response);
 		}
-		
+
 		public async UniTask<List<EventLog<TEvDto>>> GetEvents<TEvDto>(NewFilterInput filters, string contractAddress = null)
 			where TEvDto : IEventDTO, new()
 		{
-			var logs = await _webGlWrapper.GetEvents(filters);
+			var logs = await _webGlConnect.GetEvents(filters);
 			var events = logs.DecodeAllEvents<TEvDto>();
 			return events;
 		}
