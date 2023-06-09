@@ -116,7 +116,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 			BridgeUrl = bridgeUrl;
 
 			BridgeUrl = DefaultBridge.GetBridgeUrl(BridgeUrl);
-			
+
 			_sessionId = Guid.NewGuid().ToString();
 
 			GenerateKey();
@@ -134,7 +134,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 
 			KeyRaw = secret;
 
-			//Convert hex 
+			//Convert hex
 			Key = KeyRaw.ToHex().ToLower();
 		}
 
@@ -143,10 +143,12 @@ namespace MirageSDK.WalletConnectSharp.Core
 			var prevStatus = Status;
 
 			Connecting = true;
+			Debug.Log("Connecting session");
 			try
 			{
 				if (!TransportConnected)
 				{
+					Debug.Log("Opening transport");
 					await OpenTransport();
 				}
 				else
@@ -154,16 +156,19 @@ namespace MirageSDK.WalletConnectSharp.Core
 					Debug.Log("Transport already connected. No need to setup");
 				}
 
+				Debug.Log("SubscribeAndListenToTopic started");
 				await SubscribeAndListenToTopic(_sessionId);
-				
+				Debug.Log("SubscribeAndListenToTopic finished");
+
 				WCSessionData result;
 
 				_handshakeTopic = Guid.NewGuid().ToString();
 				ListenToTopic(_handshakeTopic);
 				SubscribeForSessionResponse();
-				
+
 				if (prevStatus == WalletConnectStatus.DisconnectedNoSession)
 				{
+					Debug.Log("CreateSession started");
 					result = await CreateSession(_handshakeTopic);
 					Connecting = false;
 					OnSessionCreated?.Invoke();
@@ -355,7 +360,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 			}
 
 			EventDelegator.ListenForResponse<TResponse>(request.ID, HandleSendResponse);
-			
+
 			await SendRequest(request, PeerId, IsSilent(request));
 			OnSend?.Invoke();
 
@@ -546,11 +551,11 @@ namespace MirageSDK.WalletConnectSharp.Core
 			return new SavedSession(_sessionId, BridgeUrl, Key, KeyRaw, PeerId, NetworkId, Accounts,
 				ChainId, DappMetadata, WalletMetadata);
 		}
-		
-		//network argument is not used because WC1 
-		//only supports Ethereum network but still kept here to 
+
+		//network argument is not used because WC1
+		//only supports Ethereum network but still kept here to
 		//support unified interface with WC2
-		public string GetDefaultAccount(string network = null)
+		public UniTask<string> GetDefaultAccount(string network = null)
 		{
 			var activeSessionAccount = Accounts[0];
 
@@ -559,7 +564,7 @@ namespace MirageSDK.WalletConnectSharp.Core
 				Debug.LogError("Account is null");
 			}
 
-			return activeSessionAccount;
+			return UniTask.FromResult(activeSessionAccount);
 		}
 	}
 }

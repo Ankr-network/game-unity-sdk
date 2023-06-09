@@ -9,17 +9,16 @@ using MirageSDK.WalletConnect.VersionShared;
 using MirageSDK.WalletConnect.VersionShared.Infrastructure;
 using MirageSDK.WalletConnect.VersionShared.Models;
 using MirageSDK.WalletConnect.VersionShared.Models.DeepLink;
-using MirageSDK.WalletConnect.VersionShared.Models.DeepLink.Helpers;
 using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using MirageSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using MirageSDK.WalletConnect.VersionShared.Utils;
 using MirageSDK.WalletConnectSharp.Core;
 using MirageSDK.WalletConnectSharp.Core.Models;
 using MirageSDK.WalletConnectSharp.Core.Network;
-using MirageSDK.WalletConnectSharp.Unity.Events;
 using MirageSDK.WalletConnectSharp.Unity.Network;
 using MirageSDK.WalletConnectSharp.Unity.Utils;
 using Cysharp.Threading.Tasks;
+using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using UnityEngine;
 using Logger = AnkrSDK.InternalUtils.Logger;
 
@@ -27,12 +26,14 @@ using Logger = AnkrSDK.InternalUtils.Logger;
 
 namespace MirageSDK.WalletConnectSharp.Unity
 {
-	public class WalletConnect : IWalletConnectable, IWalletConnectGenericRequester, IWalletConnectCommunicator,
+	public class WalletConnect : IWalletConnectable, IWalletConnectStatusHolder,
+		IWalletConnectGenericRequester, IWalletConnectCommunicator,
 		IQuittable, IPausable, IUpdatable
 	{
 		private const string SettingsFilenameString = "WalletConnectSettings";
 		public event Action<WalletConnectTransitionBase> SessionStatusUpdated;
 		public event Action OnSend;
+
 		public event Action<string[]> OnAccountChanged;
 		public event Action<int> OnChainChanged;
 		public bool CanSendRequests => _session?.CanSendRequests ?? false;
@@ -63,6 +64,15 @@ namespace MirageSDK.WalletConnectSharp.Unity
 			{
 				CheckIfSessionCreated();
 				return _session?.WalletMetadata;
+			}
+		}
+
+		public string WalletName
+		{
+			get
+			{
+				CheckIfSessionCreated();
+				return _session?.WalletMetadata?.Name;
 			}
 		}
 
@@ -167,7 +177,7 @@ namespace MirageSDK.WalletConnectSharp.Unity
 				await Connect();
 			}
 		}
-		
+
 		public async UniTask<string> ReconnectSession()
 		{
 			SessionSaveHandler.ClearSession();
@@ -179,9 +189,15 @@ namespace MirageSDK.WalletConnectSharp.Unity
 
 		public async UniTask Connect()
 		{
+			//disabled for now because of CORS policy limitation
+			//we need to change the CORS policy in
+			//'https://usage-stats.game.ankr.com/collect
+			//endpoint to make it work in WebGL
+			#if !UNITY_WEBGL
 			TryLoadOwnVersionKnowledge();
 			LogVersion();
-			
+			#endif
+
 			var savedSession = SessionSaveHandler.GetSavedSession();
 
 			if (_session != null)
@@ -293,10 +309,10 @@ namespace MirageSDK.WalletConnectSharp.Unity
 			return _session.EthChainId();
 		}
 
-		//network argument is not used because WC1 
-		//only supports Ethereum network but still kept here to 
+		//network argument is not used because WC1
+		//only supports Ethereum network but still kept here to
 		//support unified interface with WC2
-		public string GetDefaultAccount(string network = null)
+		public UniTask<string> GetDefaultAccount(string network = null)
 		{
 			CheckIfSessionCreated();
 			return _session.GetDefaultAccount(network);

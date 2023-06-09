@@ -4,8 +4,8 @@ using MirageSDK.SilentSigning.Data.Requests;
 using MirageSDK.SilentSigning.Data.Responses;
 using MirageSDK.Utils;
 using MirageSDK.WalletConnect.VersionShared.Models;
-using MirageSDK.WalletConnectSharp.Unity.Events;
 using Cysharp.Threading.Tasks;
+using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using UnityEngine;
 
 namespace MirageSDK.SilentSigning.Implementation

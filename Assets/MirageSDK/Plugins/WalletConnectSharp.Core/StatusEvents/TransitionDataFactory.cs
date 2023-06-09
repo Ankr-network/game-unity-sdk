@@ -1,23 +1,23 @@
 using System;
-using MirageSDK.WalletConnectSharp.Core;
+using MirageSDK.WalletConnect.VersionShared.Infrastructure;
 
-namespace MirageSDK.WalletConnectSharp.Unity.Events
+namespace MirageSDK.WalletConnectSharp.Core.StatusEvents
 {
     public static class TransitionDataFactory
     {
         public static WalletConnectTransitionBase CreateTransitionObj(WalletConnectStatus previousStatus,
-            WalletConnectStatus newStatus, WalletConnectSession session)
+            WalletConnectStatus newStatus, IWalletConnectTransitionDataProvider session)
         {
             if (previousStatus == WalletConnectStatus.Uninitialized)
             {
                 return new SessionCreatedTransition(session, previousStatus, newStatus);
             }
-            
+
             switch (newStatus)
             {
                 case WalletConnectStatus.DisconnectedSessionCached:
                 case WalletConnectStatus.DisconnectedNoSession:
-                {   
+                {
                     return new WalletDisconnectedTransition(session, previousStatus, newStatus);
                 }
                 case WalletConnectStatus.TransportConnected:

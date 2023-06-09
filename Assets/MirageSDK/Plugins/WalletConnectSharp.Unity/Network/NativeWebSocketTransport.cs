@@ -112,13 +112,16 @@ namespace MirageSDK.WalletConnectSharp.Unity.Network
 		{
 			if (!Connected)
 			{
+				Debug.Log($"Enqueuing message: {message} and opening socket");
 				_queuedMessages.Enqueue(message);
 				await OpenSocket();
 			}
 			else
 			{
 				var finalJson = JsonConvert.SerializeObject(message);
+				Debug.Log($"SendText called for: {finalJson}");
 				await _client.SendText(finalJson);
+				Debug.Log($"SendText finished for: {finalJson}");
 			}
 		}
 

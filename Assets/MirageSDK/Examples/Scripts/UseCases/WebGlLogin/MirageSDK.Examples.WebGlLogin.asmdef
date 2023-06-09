@@ -12,7 +12,8 @@
         "WalletConnectSharp",
         "WalletConnectSharp.Core",
         "WalletConnectSharp.VersionShared",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "WalletConnectSharp.Unity"
     ],
     "includePlatforms": [
         "Editor",

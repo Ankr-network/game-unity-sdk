@@ -2,96 +2,96 @@ mergeInto(LibraryManager.library, {
 
     CreateProvider: function (id, payload) {
         window.ProviderFabric.createProvider(
-            Pointer_stringify(id),
-            Pointer_stringify(payload)
+            UTF8ToString(id),
+            UTF8ToString(payload)
         );
     },
 
     GetWalletsStatus: function (id) {
         window.ProviderFabric.getWalletsStatus(
-            Pointer_stringify(id)
+            UTF8ToString(id)
         );
     },
     
     SignMessage: function (id, payload) {
         window.WalletProvider.signMessage(
-            Pointer_stringify(id),
-            Pointer_stringify(payload)
+            UTF8ToString(id),
+            UTF8ToString(payload)
         );
     },
 
     SendTransaction: function (id, payload) {
         window.WalletProvider.sendTransaction(
-            Pointer_stringify(id),
-            Pointer_stringify(payload)
+            UTF8ToString(id),
+            UTF8ToString(payload)
         );
     },
 
     GetContractData: function (id, payload) {
         window.WalletProvider.getContractData(
-            Pointer_stringify(id),
-            Pointer_stringify(payload)
+            UTF8ToString(id),
+            UTF8ToString(payload)
         );
     },
 
     EstimateGas: function (id, payload) {
         window.WalletProvider.estimateGas(
-            Pointer_stringify(id),
-            Pointer_stringify(payload)
+            UTF8ToString(id),
+            UTF8ToString(payload)
         );
     },
 
     GetAddresses: function (id) {
         window.WalletProvider.getAccounts(
-            Pointer_stringify(id)
+            UTF8ToString(id)
         );
     },
 
     GetTransaction: function (id, transactionHash) {
         window.WalletProvider.getTransaction(
-            Pointer_stringify(id),
-            Pointer_stringify(transactionHash)
+            UTF8ToString(id),
+            UTF8ToString(transactionHash)
         );
     },
 
     GetTransactionReceipt: function (id, transactionHash) {
         window.WalletProvider.getTransactionReceipt(
-            Pointer_stringify(id),
-            Pointer_stringify(transactionHash)
+            UTF8ToString(id),
+            UTF8ToString(transactionHash)
         );
     },
 
     AddChain: function (id, networkData) {
         window.WalletProvider.addChain(
-            Pointer_stringify(id),
-            Pointer_stringify(networkData)
+            UTF8ToString(id),
+            UTF8ToString(networkData)
         );
     },
     
     SwitchChain: function (id, networkData) {
         window.WalletProvider.switchChain(
-            Pointer_stringify(id),
-            Pointer_stringify(networkData)
+            UTF8ToString(id),
+            UTF8ToString(networkData)
         );
     },
 
     GetEvents: function (id, filters) {
         window.WalletProvider.getEvents(
-            Pointer_stringify(id),
-            Pointer_stringify(filters)
+            UTF8ToString(id),
+            UTF8ToString(filters)
         );
     },
 
     RequestChainId: function (id) {
         window.WalletProvider.getChainId(
-            Pointer_stringify(id)
+            UTF8ToString(id)
         );
     },
 
     CallMethod: function (id, callObject) {
         window.WalletProvider.callMethod(
-            Pointer_stringify(id),
-            Pointer_stringify(callObject)
+            UTF8ToString(id),
+            UTF8ToString(callObject)
         );
     },
 
