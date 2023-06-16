@@ -1,3 +1,4 @@
+
 namespace MirageSDK.WebGL.DTO
 {
 	public class TransactionData

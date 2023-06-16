@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
 using Cysharp.Threading.Tasks;
 using MirageSDK.Data;
 using MirageSDK.Utils;
-using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using MirageSDK.WebGL.DTO;
+using MirageSDK.WebGL.DTO.JsonRpc;
 using MirageSDK.WebGL.Infrastructure;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Unity.Metamask;
 using Nethereum.Unity.Rpc;
+using Newtonsoft.Json;
 using UnityEngine;
 using TransactionData = MirageSDK.WebGL.DTO.TransactionData;
 
@@ -101,19 +101,21 @@ namespace MirageSDK.WebGL
 			return result;
 		}
 
-		public UniTask<string> SendTransaction(TransactionData transaction)
+		public async UniTask<string> SendTransaction(TransactionData transactionData)
 		{
-			throw new System.NotImplementedException();
+			var response = await Request(new EthSendTransaction(transactionData));
+			return response.Result;
 		}
 
-		public UniTask<string> GetContractData(TransactionData transaction)
+		public async UniTask<string> GetContractData(TransactionData transactionData)
 		{
-			throw new System.NotImplementedException();
+			var response = await Request(new EthCallRequest(transactionData));
+			return response.Result;
 		}
 
 		public UniTask<HexBigInteger> EstimateGas(TransactionData transaction)
 		{
-			throw new System.NotImplementedException();
+
 		}
 
 		public UniTask<string> Sign(DataSignaturePropsDTO signProps)
@@ -173,11 +175,18 @@ namespace MirageSDK.WebGL
 			{
 				if (!_isConnected)
 				{
-					var names = _webglNethereumMessageBridge.EthereumInitCallbackNames;
 					//callbacks: NewAccountSelected, ChainChanged
-					MetamaskWebglInterop.EthereumInit(MessageBridgeGoName, names.CallbackName, names.FallbackName);
+					MetamaskWebglInterop.EthereumInitRpcClientCallback(
+						accountAddress =>
+						{
+							_selectedAccountAddress = accountAddress;
+						},
+						chainId =>
+						{
+							ChainChanged(chainId);
+						});
 
-					names = _webglNethereumMessageBridge.GetChainIdCallbackNames;
+					var names = _webglNethereumMessageBridge.GetChainIdCallbackNames;
 					//callbacks: ChainChanged, DisplayError
 					MetamaskWebglInterop.GetChainId(MessageBridgeGoName, names.CallbackName, names.FallbackName);
 					_isConnected = true;
@@ -201,6 +210,11 @@ namespace MirageSDK.WebGL
 		}
 
 		void IWebGLNethereumCallbacksReceiver.ChainChanged(string chainId)
+		{
+			ChainChanged(chainId);
+		}
+
+		private void ChainChanged(string chainId)
 		{
 			Debug.Log($"WebGL Nethereum: chain changed to {chainId}");
 			_currentChainId = new HexBigInteger(chainId).Value;
@@ -232,14 +246,63 @@ namespace MirageSDK.WebGL
 			return null;
 		}
 
+		void IWebGLNethereumCallbacksReceiver.DisplayError(string errorMessage)
+		{
+			PrintError(errorMessage);
+		}
+
 		private void PrintError(string errorMessage)
 		{
 			Debug.LogError($"WebGL Nethereum error: {errorMessage}");
 		}
 
-		void IWebGLNethereumCallbacksReceiver.DisplayError(string errorMessage)
+		private string GenerateOperationId()
 		{
-			PrintError(errorMessage);
+			var id = Guid.NewGuid().ToString();
+			return id;
+		}
+
+		private async UniTask<EthResponse> Request<TRequest>(TRequest request)
+			where TRequest: JsonRpcRequest
+		{
+			var operationId = GenerateOperationId();
+			var completionSource = _completionSourceMap.CreateCompletionSource<EthResponse>(operationId);
+			try
+			{
+				var jsonRequest = JsonConvert.SerializeObject(request);
+				MetamaskWebglInterop.RequestRpcClientCallback(responseJson =>
+				{
+					//response is the json of the JSON-RPC 2.0 response
+					try
+					{
+						var responseObj = JsonConvert.DeserializeObject<EthResponse>(responseJson);
+						if (responseObj.IsError)
+						{
+							Debug.LogError($"JSON-RPC error: {responseObj.Error}");
+							_completionSourceMap.TrySetCanceled<EthResponse>(operationId);
+						}
+						else
+						{
+							_completionSourceMap.TrySetResult(operationId, responseObj);
+						}
+					}
+					catch (Exception e)
+					{
+						PrintError($"WebGL Nethereum SendTransaction error {e}");
+						_completionSourceMap.TrySetCanceled<EthResponse>(operationId);
+					}
+
+				}, jsonRequest);
+
+				var result = await completionSource.Task;
+				return result;
+			}
+			catch (Exception e)
+			{
+				PrintError($"WebGL Nethereum SendTransaction error {e}");
+				_completionSourceMap.TrySetCanceled<EthResponse>(operationId);
+				return null;
+			}
 		}
 	}
 }

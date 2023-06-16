@@ -13,12 +13,6 @@ namespace MirageSDK.WebGL
 			FallbackName = nameof(DisplayError)
 		};
 
-		public CallbackFallbackPair EthereumInitCallbackNames => new CallbackFallbackPair
-		{
-			CallbackName = nameof(NewAccountSelected),
-			FallbackName = nameof(ChainChanged)
-		};
-
 		public CallbackFallbackPair GetChainIdCallbackNames => new CallbackFallbackPair
 		{
 			CallbackName = nameof(ChainChanged),
