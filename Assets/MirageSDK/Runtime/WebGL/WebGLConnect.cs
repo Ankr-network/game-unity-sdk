@@ -13,7 +13,6 @@ using MirageSDK.WebGL.Infrastructure;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
-using TransactionData = MirageSDK.WebGL.DTO.TransactionData;
 
 namespace MirageSDK.WebGL
 {
@@ -153,9 +152,24 @@ namespace MirageSDK.WebGL
 			return _protocol.SwitchChain(networkData);
 		}
 
-		public UniTask<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
+		public UniTask<BigInteger> GetBalance()
 		{
-			return _protocol.CallMethod<TReturnType>(callObject);
+			return _protocol.GetBalance();
+		}
+
+		public UniTask<BigInteger> GetBlockNumber()
+		{
+			return _protocol.GetBlockNumber();
+		}
+
+		public UniTask<BigInteger> GetBlockTransactionCount(string blockNumber)
+		{
+			return _protocol.GetBlockTransactionCount(blockNumber);
+		}
+
+		public UniTask<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects)
+		{
+			return _protocol.GetBlock<TResultType>(blockId, returnTransactionObjects);
 		}
 
 		public UniTask<FilterLog[]> GetEvents(NewFilterInput filters)

@@ -1,11 +1,10 @@
-using MirageSDK.WalletConnect.VersionShared.Models;
 using Newtonsoft.Json;
 
-namespace MirageSDK.WalletConnectSharp.Core.Events.Model.Ethereum
+namespace MirageSDK.WalletConnect.VersionShared.Models.Ethereum
 {
     public sealed class EthGenericRequest<T> : JsonRpcRequest
     {
-        [JsonProperty("params")] 
+        [JsonProperty("params")]
         private T[] _parameters;
 
         [JsonIgnore]

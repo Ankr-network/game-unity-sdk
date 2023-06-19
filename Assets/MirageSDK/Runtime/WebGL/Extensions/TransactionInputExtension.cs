@@ -1,3 +1,4 @@
+using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using MirageSDK.WebGL.DTO;
 using Nethereum.RPC.Eth.DTOs;
 

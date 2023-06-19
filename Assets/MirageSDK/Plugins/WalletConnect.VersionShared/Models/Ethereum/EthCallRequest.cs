@@ -1,7 +1,6 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace MirageSDK.WebGL.DTO.JsonRpc
+namespace MirageSDK.WalletConnect.VersionShared.Models.Ethereum
 {
 	public class EthCallRequest : JsonRpcRequest
 	{
@@ -13,7 +12,7 @@ namespace MirageSDK.WebGL.DTO.JsonRpc
 
 		public EthCallRequest(TransactionData transactionData) : base()
 		{
-			this.Method = "eth_sendTransaction";
+			this.Method = "eth_call";
 			this._parameters = new object[]
 			{
 				transactionData,

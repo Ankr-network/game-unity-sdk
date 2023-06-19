@@ -11,12 +11,16 @@ using MirageSDK.WebGL.Infrastructure;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
-using TransactionData = MirageSDK.WebGL.DTO.TransactionData;
 
 namespace MirageSDK.WebGL
 {
 	internal class WebGLCustomCommunicationProtocol : IWebGLCommunicationProtocol
 	{
+		private const string GetBalanceMethodName = "eth.getBalance";
+		private const string GetBlockMethodName = "eth.getBlock";
+		private const string GetBlockNumberMethodName = "eth.getBlockNumber";
+		private const string GetBlockTransactionCountMethodName = "eth.getBlockTransactionCount";
+
 		private readonly Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>> _completionSources =
 			new Dictionary<string, UniTaskCompletionSource<WebGLMessageDTO>>();
 
@@ -273,7 +277,58 @@ namespace MirageSDK.WebGL
 			}
 		}
 
-		public async UniTask<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
+		public async UniTask<BigInteger> GetBalance()
+		{
+			var address = await GetDefaultAccount();
+			var callObject = new WebGLCallObject
+			{
+				Path = GetBalanceMethodName, Args = address != null
+					? new[]
+					{
+						address
+					}
+					: null
+			};
+
+			return await CallMethod<BigInteger>(callObject);
+		}
+
+		public UniTask<BigInteger> GetBlockNumber()
+		{
+			var callObject = new WebGLCallObject
+			{
+				Path = GetBlockNumberMethodName
+			};
+
+			return CallMethod<BigInteger>(callObject);
+		}
+
+		public UniTask<BigInteger> GetBlockTransactionCount(string blockId)
+		{
+			var callObject = new WebGLCallObject
+			{
+				Path = GetBlockTransactionCountMethodName, Args = new[]
+				{
+					blockId
+				}
+			};
+
+			return CallMethod<BigInteger>(callObject);
+		}
+
+		public UniTask<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects)
+		{
+			var callObject = new WebGLCallObject
+			{
+				Path = GetBlockMethodName, Args = new object[]
+				{
+					blockId, returnTransactionObjects
+				}
+			};
+			return CallMethod<TResultType>(callObject);
+		}
+
+		private async UniTask<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
 		{
 			var id = GenerateId();
 			var payload = JsonConvert.SerializeObject(callObject);

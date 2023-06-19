@@ -1,21 +1,20 @@
-using MirageSDK.WalletConnect.VersionShared.Models;
 using MirageSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using Newtonsoft.Json;
 
-namespace MirageSDK.WalletConnectSharp.Core.Events.Model.Ethereum
+namespace MirageSDK.WalletConnect.VersionShared.Models.Ethereum
 {
     public sealed class EthSignTypedData<T> : JsonRpcRequest
     {
-        [JsonProperty("params")] 
+        [JsonProperty("params")]
         private string[] _parameters;
-        
+
         public EthSignTypedData(string address, T data, EIP712Domain domain)
         {
             this.Method = "eth_signTypedData";
 
             var typeData = new EvmTypedData<T>(data, domain);
             var encodedTypeData = JsonConvert.SerializeObject(typeData);
-            
+
             this._parameters = new string[] {address, encodedTypeData};
         }
     }

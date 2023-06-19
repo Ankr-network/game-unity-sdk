@@ -1,7 +1,6 @@
-using MirageSDK.WalletConnect.VersionShared.Models;
 using Newtonsoft.Json;
 
-namespace MirageSDK.WalletConnectSharp.Core.Events.Model.Ethereum
+namespace MirageSDK.WalletConnect.VersionShared.Models.Ethereum
 {
     public class EthResponse : JsonRpcResponse
     {

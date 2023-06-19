@@ -5,7 +5,6 @@ using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using MirageSDK.WebGL.DTO;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using TransactionData = MirageSDK.WebGL.DTO.TransactionData;
 
 namespace MirageSDK.WebGL.Infrastructure
 {
@@ -25,7 +24,10 @@ namespace MirageSDK.WebGL.Infrastructure
 		UniTask AddChain(EthChainData networkData);
 		UniTask UpdateChain(EthUpdateChainData networkData);
 		UniTask SwitchChain(EthChain networkData);
-		UniTask<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject);
+		UniTask<BigInteger> GetBalance();
+		UniTask<BigInteger> GetBlockNumber();
+		UniTask<BigInteger> GetBlockTransactionCount(string blockId);
+		UniTask<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects);
 		UniTask<FilterLog[]> GetEvents(NewFilterInput filters);
 		UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash);
 	}
