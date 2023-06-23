@@ -6,5 +6,6 @@
 		void NewAccountSelected(string accountAddress);
 		void ChainChanged(string chainId);
 		void DisplayError(string errorMessage);
+		void HandleRpcResponse(string rpcResponse);
 	}
 }

@@ -9,14 +9,26 @@ namespace MirageSDK.WebGL
 		private IWebGLNethereumCallbacksReceiver _callbackReceiver;
 		public CallbackFallbackPair EnableEthereumCallbackNames => new CallbackFallbackPair
 		{
-			CallbackName = nameof(EthereumEnabled),
-			FallbackName = nameof(DisplayError)
+			FirstCallbackName = nameof(EthereumEnabled),
+			SecondCallbackName = nameof(DisplayError)
+		};
+
+		public CallbackFallbackPair EthereumInitCallbackNames => new CallbackFallbackPair
+		{
+			FirstCallbackName = nameof(NewAccountSelected),
+			SecondCallbackName = nameof(ChainChanged)
 		};
 
 		public CallbackFallbackPair GetChainIdCallbackNames => new CallbackFallbackPair
 		{
-			CallbackName = nameof(ChainChanged),
-			FallbackName = nameof(DisplayError)
+			FirstCallbackName = nameof(ChainChanged),
+			SecondCallbackName = nameof(DisplayError)
+		};
+
+		public CallbackFallbackPair RequestCallbackNames => new CallbackFallbackPair
+		{
+			FirstCallbackName = nameof(HandleRpcResponse),
+			SecondCallbackName = nameof(DisplayError)
 		};
 
 		public void SetProtocol(IWebGLNethereumCallbacksReceiver protocol)
@@ -36,6 +48,11 @@ namespace MirageSDK.WebGL
 		public void ChainChanged(string chainId)
 		{
 			_callbackReceiver.ChainChanged(chainId);
+		}
+
+		public void HandleRpcResponse(string rpcResponse)
+		{
+			_callbackReceiver.HandleRpcResponse(rpcResponse);
 		}
 
 		public void DisplayError(string errorMessage)

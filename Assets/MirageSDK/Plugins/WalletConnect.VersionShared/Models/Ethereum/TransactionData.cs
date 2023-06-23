@@ -9,6 +9,5 @@ namespace MirageSDK.WalletConnect.VersionShared.Models.Ethereum
         public string gasPrice;
         public string value;
         public string nonce;
-        public int chainId;
     }
 }
