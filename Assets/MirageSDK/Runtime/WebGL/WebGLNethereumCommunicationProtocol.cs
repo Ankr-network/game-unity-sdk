@@ -14,7 +14,6 @@ using MirageSDK.WebGL.DTO;
 using MirageSDK.WebGL.Infrastructure;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using Nethereum.Unity.Metamask;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -50,10 +49,10 @@ namespace MirageSDK.WebGL
 			var completionSource = _completionSourceMap.CreateCompletionSource(operationName);
 			try
 			{
-				if (MetamaskWebglInterop.IsMetamaskAvailable())
+				if (WebGLNethereumInteropBridge.IsMetamaskAvailable())
 				{
 					//EthereumEnabled, DisplayError
-					MetamaskWebglInteropExtension.EnableEthereumRpcClientCallback(EthereumEnabledInteropCallback, DisplayErrorInteropCallback);
+					WebGLNethereumInteropBridge.EnableEthereumRpcClientCallback(EthereumEnabledInteropCallback, DisplayErrorInteropCallback);
 					await completionSource.Task;
 				}
 				else
@@ -84,7 +83,7 @@ namespace MirageSDK.WebGL
 
 		public void Disconnect()
 		{
-			MetamaskWebglInterop.EthereumInitRpcClientCallback(DisconnectDummyCallback, DisconnectDummyCallback);
+			WebGLNethereumInteropBridge.EthereumInitRpcClientCallback(DisconnectDummyCallback, DisconnectDummyCallback);
 
 			_currentChainId = default;
 			_selectedAccountAddress = default;
@@ -139,7 +138,7 @@ namespace MirageSDK.WebGL
 
 		public UniTask<string> GetDefaultAccount()
 		{
-			var address = MetamaskWebglInterop.GetSelectedAddress();
+			var address = WebGLNethereumInteropBridge.GetSelectedAddress();
 			return UniTask.FromResult(address);
 		}
 
@@ -328,10 +327,10 @@ namespace MirageSDK.WebGL
 				if (!_isConnected)
 				{
 					//callbacks: NewAccountSelected, ChainChanged
-					MetamaskWebglInterop.EthereumInitRpcClientCallback(NewAccountSelectedInteropCallback, ChainChangedInteropCallback);
+					WebGLNethereumInteropBridge.EthereumInitRpcClientCallback(NewAccountSelectedInteropCallback, ChainChangedInteropCallback);
 
 					//callbacks: ChainChanged, DisplayError
-					MetamaskWebglInteropExtension.GetChainIdRpcClientCallback(ChainChangedInteropCallback, DisplayErrorInteropCallback);
+					WebGLNethereumInteropBridge.GetChainIdRpcClientCallback(ChainChangedInteropCallback, DisplayErrorInteropCallback);
 					_isConnected = true;
 				}
 
@@ -407,7 +406,7 @@ namespace MirageSDK.WebGL
 			try
 			{
 				var jsonRequest = request != null ? JsonConvert.SerializeObject(request) : "{}";
-				MetamaskWebglInterop.RequestRpcClientCallback(RpcResponseInteropCallback, jsonRequest);
+				WebGLNethereumInteropBridge.RequestRpcClientCallback(RpcResponseInteropCallback, jsonRequest);
 
 				operationIdEnqueued = true;
 				_requestOperationIdQueue.Enqueue(operationId);
