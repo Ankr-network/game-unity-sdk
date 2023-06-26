@@ -7,6 +7,7 @@ using AOT;
 using Cysharp.Threading.Tasks;
 using MirageSDK.Data;
 using MirageSDK.Utils;
+using MirageSDK.Utils.CompletionSourceMap;
 using MirageSDK.WalletConnect.VersionShared.Models;
 using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using MirageSDK.WalletConnect.VersionShared.Utils;
@@ -24,7 +25,7 @@ namespace MirageSDK.WebGL
 		private static WebGLNethereumCommunicationProtocol _monoStateInstance;
 		public delegate void GenericCallbackDelegate(string str);
 
-		private readonly NamedCompletionSourceMap _completionSourceMap = new NamedCompletionSourceMap();
+		private readonly CompletionSourceMap _completionSourceMap = new CompletionSourceMap();
 
 		private readonly Queue<string> _requestOperationIdQueue = new Queue<string>();
 		private bool _isConnected;
