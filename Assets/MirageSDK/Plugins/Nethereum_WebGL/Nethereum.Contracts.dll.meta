@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MirageSDK/Plugins/Nethereum_WebGL/Nethereum.Contracts.dll.meta
 guid: 5a24985728bf94742b27761c0d212d3b
+========
+guid: 05d6f9042eaf725419c16ee2ea621f1b
+>>>>>>>> master:Assets/MirageSDK/Plugins/Nethereum_WebGL/Nethereum.Hex.dll.meta
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2

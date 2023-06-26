@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MirageSDK/Plugins/Nethereum_WebGL/Nethereum.Accounts.dll.meta
 guid: 473088b8215e25d4bbb908e91c7cee8b
+========
+guid: 5a24985728bf94742b27761c0d212d3b
+>>>>>>>> master:Assets/MirageSDK/Plugins/Nethereum_WebGL/Nethereum.Contracts.dll.meta
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
