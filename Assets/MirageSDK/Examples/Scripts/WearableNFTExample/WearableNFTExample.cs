@@ -165,10 +165,14 @@ namespace MirageSDK.WearableNFTExample
 			if (transactionReceipt == null)
 			{
 				UpdateUILogs($"transactionReceipt is null");
+				Debug.LogError($"For transaction {transactionHash} receipt is null");
+				return;
 			}
 			else if (transactionReceipt.Logs == null)
 			{
 				UpdateUILogs($"transactionReceipt.Logs is null");
+				Debug.LogError($"For transaction {transactionHash} receipt logs are null");
+				return;
 			}
 
 			var eventLogs = transactionReceipt.DecodeAllEvents<BatchMintedEventDTO>();
