@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MirageSDK.WalletConnect.VersionShared.Utils
 {
@@ -8,6 +10,28 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
         //From article http://blogs.msdn.com/b/heikkiri/archive/2012/07/17/hex-string-to-corresponding-byte-array.aspx
 
         private static readonly byte[] Empty = new byte[0];
+
+        public static string ToEthSignableHex(this string message)
+        {
+            if (!message.IsHex())
+            {
+                var rawMessage = Encoding.UTF8.GetBytes(message);
+
+                var byteList = new List<byte>();
+                var bytePrefix = "0x19".HexToByteArray();
+                var textBytePrefix = Encoding.UTF8.GetBytes("Ethereum Signed Message:\n" + rawMessage.Length);
+
+                byteList.AddRange(bytePrefix);
+                byteList.AddRange(textBytePrefix);
+                byteList.AddRange(rawMessage);
+
+                var hash = new Sha3Keccack().CalculateHash(byteList.ToArray());
+
+                message = "0x" + hash.ToHex();
+            }
+
+            return message;
+        }
 
         public static string ToHex(this byte[] value, bool prefix = false)
         {
@@ -78,7 +102,7 @@ namespace MirageSDK.WalletConnect.VersionShared.Utils
             {
                 var string_length = value.Length;
                 var character_index = value.StartsWith("0x", StringComparison.Ordinal) ? 2 : 0;
-                // Does the string define leading HEX indicator '0x'. Adjust starting index accordingly.               
+                // Does the string define leading HEX indicator '0x'. Adjust starting index accordingly.
                 var number_of_characters = string_length - character_index;
 
                 var add_leading_zero = false;

@@ -161,6 +161,20 @@ namespace MirageSDK.WearableNFTExample
 
 			//example of decoding events from the transaction
 			var transactionReceipt = await _ethHandler.GetTransactionReceipt(transactionHash);
+
+			if (transactionReceipt == null)
+			{
+				UpdateUILogs($"transactionReceipt is null");
+				Debug.LogError($"For transaction {transactionHash} receipt is null");
+				return;
+			}
+			else if (transactionReceipt.Logs == null)
+			{
+				UpdateUILogs($"transactionReceipt.Logs is null");
+				Debug.LogError($"For transaction {transactionHash} receipt logs are null");
+				return;
+			}
+
 			var eventLogs = transactionReceipt.DecodeAllEvents<BatchMintedEventDTO>();
 			foreach (var eventLog in eventLogs)
 			{

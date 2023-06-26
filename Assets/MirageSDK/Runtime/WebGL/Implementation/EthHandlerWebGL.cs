@@ -8,16 +8,11 @@ using MirageSDK.WebGL.Extensions;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using TransactionData = MirageSDK.WebGL.DTO.TransactionData;
 
 namespace MirageSDK.WebGL.Implementation
 {
 	public class EthHandlerWebGL : IEthHandler
 	{
-		private const string GetBalanceMethodName = "eth.getBalance";
-		private const string GetBlockMethodName = "eth.getBlock";
-		private const string GetBlockNumberMethodName = "eth.getBlockNumber";
-		private const string GetBlockTransactionCountMethodName = "eth.getBlockTransactionCount";
 		private const bool ReturnTransactionObjects = true;
 		private readonly WebGLConnect _webGLConnect;
 
@@ -92,20 +87,9 @@ namespace MirageSDK.WebGL.Implementation
 			return _webGLConnect.SendTransaction(transactionData);
 		}
 
-		public async UniTask<BigInteger> GetBalance(string address = null)
+		public UniTask<BigInteger> GetBalance(string address = null)
 		{
-			address = await GetDefaultAccount();
-			var callObject = new WebGLCallObject
-			{
-				Path = GetBalanceMethodName, Args = address != null
-					? new[]
-					{
-						address
-					}
-					: null
-			};
-			var balance = await _webGLConnect.CallMethod<BigInteger>(callObject);
-			return balance;
+			return _webGLConnect.GetBalance();
 		}
 
 		public UniTask<BigInteger> GetChainId()
@@ -135,11 +119,7 @@ namespace MirageSDK.WebGL.Implementation
 
 		public UniTask<BigInteger> GetBlockNumber()
 		{
-			var callObject = new WebGLCallObject
-			{
-				Path = GetBlockNumberMethodName
-			};
-			return _webGLConnect.CallMethod<BigInteger>(callObject);
+			return _webGLConnect.GetBlockNumber();
 		}
 
 		public UniTask<BigInteger> GetTransactionCount(string hash)
@@ -172,28 +152,14 @@ namespace MirageSDK.WebGL.Implementation
 			return GetBlock<BlockWithTransactionHashes>(block.GetRPCParam());
 		}
 
-		private UniTask<BigInteger> GetTransactionCountCommon(string blockId)
+		private UniTask<BigInteger> GetTransactionCountCommon(string blockNumber)
 		{
-			var callObject = new WebGLCallObject
-			{
-				Path = GetBlockTransactionCountMethodName, Args = new[]
-				{
-					blockId
-				}
-			};
-			return _webGLConnect.CallMethod<BigInteger>(callObject);
+			return _webGLConnect.GetBlockTransactionCount(blockNumber);
 		}
 
 		private UniTask<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects = false)
 		{
-			var callObject = new WebGLCallObject
-			{
-				Path = GetBlockMethodName, Args = new object[]
-				{
-					blockId, returnTransactionObjects
-				}
-			};
-			return _webGLConnect.CallMethod<TResultType>(callObject);
+			return _webGLConnect.GetBlock<TResultType>(blockId, returnTransactionObjects);
 		}
 	}
 }
