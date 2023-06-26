@@ -137,10 +137,9 @@
                 id: parsedMessage.id,
                 error: null
             }
-            //console.log(rpcResponse);
 
             var json = JSON.stringify(rpcResponse);
-            console.log(`RequestRpcClientCallback request: ${parsedMessageStr} response: ${json}`);
+            //console.log(`RequestRpcClientCallback request: ${parsedMessageStr} response: ${json}`);
 
             var len = lengthBytesUTF8(json) + 1;
             var strPtr = _malloc(len);
@@ -148,7 +147,7 @@
             Module.dynCall_vi(callback, strPtr);
 
         } catch (e) {
-            console.log(e);
+            //console.log(e);
             let rpcResonseError = {
                 jsonrpc: "2.0",
                 id: parsedMessage.id,
