@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/MirageSDK/Plugins/Nethereum_WebGL/Nethereum.Contracts.dll.meta
 guid: 5a24985728bf94742b27761c0d212d3b
-========
-guid: 05d6f9042eaf725419c16ee2ea621f1b
->>>>>>>> master:Assets/MirageSDK/Plugins/Nethereum_WebGL/Nethereum.Hex.dll.meta
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -29,6 +25,12 @@ PluginImporter:
         Exclude Win64: 1
         Exclude iOS: 1
   - first:
+      Android: Android
+    second:
+      enabled: 0
+      settings:
+        CPU: ARMv7
+  - first:
       Any: 
     second:
       enabled: 0
@@ -38,7 +40,33 @@ PluginImporter:
     second:
       enabled: 0
       settings:
+        CPU: AnyCPU
         DefaultValueInitialized: true
+        OS: AnyOS
+  - first:
+      Standalone: Linux64
+    second:
+      enabled: 0
+      settings:
+        CPU: None
+  - first:
+      Standalone: OSXUniversal
+    second:
+      enabled: 0
+      settings:
+        CPU: None
+  - first:
+      Standalone: Win
+    second:
+      enabled: 0
+      settings:
+        CPU: None
+  - first:
+      Standalone: Win64
+    second:
+      enabled: 0
+      settings:
+        CPU: None
   - first:
       WebGL: WebGL
     second:
@@ -50,6 +78,15 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
+  - first:
+      iPhone: iOS
+    second:
+      enabled: 0
+      settings:
+        AddToEmbeddedBinaries: false
+        CPU: AnyCPU
+        CompileFlags: 
+        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 
