@@ -3,9 +3,9 @@
         const parsedObjectName = UTF8ToString(gameObjectName);
         const parsedCallback = UTF8ToString(callback);
         const parsedFallback = UTF8ToString(fallback);
-        
+
         try {
-            
+
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
             ethereum.autoRefreshOnNetworkChange = false;
 
@@ -24,7 +24,7 @@
         const parsedCallbackAccountChange = UTF8ToString(callBackAccountChange);
         const parsedCallbackChainChange = UTF8ToString(callBackChainChange);
         // console.log("EthereumInit");
-            
+
         ethereum.on("accountsChanged",
                 function (accounts) {
                     //console.log(accounts[0]);
@@ -45,7 +45,7 @@
            const parsedCallback = UTF8ToString(callback);
            const parsedFallback = UTF8ToString(fallback);
           try {
-           
+
             const chainId = await ethereum.request({ method: 'eth_chainId' });
             nethereumUnityInstance.SendMessage(parsedObjectName, parsedCallback, chainId.toString());
 
@@ -101,7 +101,7 @@
             return json;
         }
     },
-     EthereumInitRpcClientCallback: function(callBackAccountChange, callBackChainChange) {   
+     EthereumInitRpcClientCallback: function(callBackAccountChange, callBackChainChange) {
         ethereum.on("accountsChanged",
                 function (accounts) {
                     let account = "";
@@ -124,11 +124,11 @@
     RequestRpcClientCallback: async function (callback, message) {
         const parsedMessageStr = UTF8ToString(message);
         const parsedCallback = UTF8ToString(callback);
-      
+
         //console.log(parsedCallback);
         let parsedMessage = JSON.parse(parsedMessageStr);
         try {
-            
+
             //console.log(parsedMessage);
             const response = await ethereum.request(parsedMessage);
             let rpcResponse = {
@@ -140,15 +140,15 @@
             //console.log(rpcResponse);
 
             var json = JSON.stringify(rpcResponse);
-            //console.log(json);
-           
+            console.log(`RequestRpcClientCallback request: ${parsedMessageStr} response: ${json}`);
+
             var len = lengthBytesUTF8(json) + 1;
             var strPtr = _malloc(len);
             stringToUTF8(json, strPtr, len);
             Module.dynCall_vi(callback, strPtr);
 
         } catch (e) {
-            //console.log(e);
+            console.log(e);
             let rpcResonseError = {
                 jsonrpc: "2.0",
                 id: parsedMessage.id,

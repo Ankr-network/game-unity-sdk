@@ -1,8 +1,6 @@
 ﻿mergeInto(LibraryManager.library, {
     EnableEthereumRpcClientCallback: async function (callback, fallback) {
-
         try {
-
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
             ethereum.autoRefreshOnNetworkChange = false;
 

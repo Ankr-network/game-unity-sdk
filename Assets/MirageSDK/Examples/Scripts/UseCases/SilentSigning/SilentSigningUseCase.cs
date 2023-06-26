@@ -5,6 +5,7 @@ using MirageSDK.Data;
 using MirageSDK.Provider;
 using MirageSDK.WearableNFTExample;
 using Cysharp.Threading.Tasks;
+using MirageSDK.WebGL.Implementation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +28,7 @@ namespace MirageSDK.UseCases.SilentSigning
 
 		[SerializeField]
 		private TMP_Text _sessionLogs;
-		
+
 		[SerializeField]
 		private ContractInformationSO _gameCharacterContractInfo;
 
@@ -40,6 +41,12 @@ namespace MirageSDK.UseCases.SilentSigning
 			if (isActive)
 			{
 				_sdkInstance = MirageSDKFactory.GetMirageSDKInstance(NetworkName.Goerli);
+
+				if (_sdkInstance.Eth is EthHandlerWebGL)
+				{
+					throw new InvalidOperationException("Silient signing is not implemented for WebGL");
+				}
+
 				_silentSigningSecretSaver = _sdkInstance.SilentSigningHandler.SessionHandler;
 
 				_gameCharacterContract = _sdkInstance.GetContract(_gameCharacterContractInfo);

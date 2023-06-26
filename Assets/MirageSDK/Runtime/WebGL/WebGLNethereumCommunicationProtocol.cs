@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
+using AOT;
 using Cysharp.Threading.Tasks;
 using MirageSDK.Data;
 using MirageSDK.Utils;
@@ -20,11 +20,11 @@ using UnityEngine;
 
 namespace MirageSDK.WebGL
 {
-	public class WebGLNethereumCommunicationProtocol : IWebGLCommunicationProtocol, IWebGLNethereumCallbacksReceiver
+	public class WebGLNethereumCommunicationProtocol : IWebGLCommunicationProtocol
 	{
-		private const string CommunicatorGoName = "WebGLNethereumCommunicator";
-		private static string GoUid = null;
-		private WebGLNethereumMessageBridge _webglNethereumMessageBridge;
+		private static WebGLNethereumCommunicationProtocol _monoStateInstance;
+		public delegate void GenericCallbackDelegate(string str);
+
 		private readonly NamedCompletionSourceMap _completionSourceMap = new NamedCompletionSourceMap();
 
 		private readonly Queue<string> _requestOperationIdQueue = new Queue<string>();
@@ -33,30 +33,9 @@ namespace MirageSDK.WebGL
 		private string _selectedAccountAddress;
 		private string _lastCalledRequest;
 
-		private string MessageBridgeGoName => _webglNethereumMessageBridge.gameObject.name;
-
 		public void Init()
 		{
-			if (_webglNethereumMessageBridge == null)
-			{
-				WebGLNethereumMessageBridge messageBridge = null;
-
-				var communicatorGo = GoUid != null ? GameObject.Find(CommunicatorGoName + "_" + GoUid) : null;
-				if (communicatorGo == null)
-				{
-					GoUid = Guid.NewGuid().ToString().Substring(0, 4);
-					communicatorGo = new GameObject(CommunicatorGoName + "_" + GoUid);
-					messageBridge = communicatorGo.AddComponent<WebGLNethereumMessageBridge>();
-				}
-				else
-				{
-					messageBridge = communicatorGo.GetComponent<WebGLNethereumMessageBridge>();
-				}
-
-				_webglNethereumMessageBridge = messageBridge;
-			}
-
-			_webglNethereumMessageBridge.SetProtocol(this);
+			_monoStateInstance = this;
 		}
 
 		public async UniTask ConnectTo(Wallet wallet, EthereumNetwork chain)
@@ -73,33 +52,48 @@ namespace MirageSDK.WebGL
 			{
 				if (MetamaskWebglInterop.IsMetamaskAvailable())
 				{
-					var names = _webglNethereumMessageBridge.EnableEthereumCallbackNames;
 					//EthereumEnabled, DisplayError
-					MetamaskWebglInterop.EnableEthereum(MessageBridgeGoName, names.FirstCallbackName, names.SecondCallbackName);
+					MetamaskWebglInteropExtension.EnableEthereumRpcClientCallback(EthereumEnabledInteropCallback, DisplayErrorInteropCallback);
 					await completionSource.Task;
 				}
 				else
 				{
-					PrintError("Metamask is not available, please install it");
+					LogError("Metamask is not available, please install it");
 					completionSource.TrySetCanceled();
 				}
 			}
 			catch (Exception e)
 			{
 				_completionSourceMap.TrySetCanceled(operationName);
-				PrintError($"Metamask initialization error {e}");
+				LogError($"Metamask initialization error {e}");
 			}
 
 		}
 
+		[MonoPInvokeCallback(typeof(GenericCallbackDelegate))]
+		private static void EthereumEnabledInteropCallback(string addressSelected)
+		{
+			_monoStateInstance.EthereumEnabled(addressSelected);
+		}
+
+		[MonoPInvokeCallback(typeof(GenericCallbackDelegate))]
+		private static void DisplayErrorInteropCallback(string errorMessage)
+		{
+			_monoStateInstance.LogError(errorMessage);
+		}
+
 		public void Disconnect()
 		{
-			const string DisconnectedCallback = "DisconnetedDummy";
-			MetamaskWebglInterop.EthereumInit(MessageBridgeGoName, DisconnectedCallback, DisconnectedCallback);
+			MetamaskWebglInterop.EthereumInitRpcClientCallback(DisconnectDummyCallback, DisconnectDummyCallback);
 
 			_currentChainId = default;
 			_selectedAccountAddress = default;
 			_isConnected = false;
+		}
+
+		private static void DisconnectDummyCallback(string _)
+		{
+
 		}
 
 		public async UniTask<WalletsStatus> GetWalletsStatus()
@@ -114,7 +108,7 @@ namespace MirageSDK.WebGL
 
 		public async UniTask<string> SendTransaction(TransactionData transactionData)
 		{
-			var response = await Request(new EthSendTransaction(transactionData));
+			var response = await Request<EthSendTransaction, EthResponse>(new EthSendTransaction(transactionData));
 			var transactionHash = response.Result;
 			if (!IsHexStringWith32Bytes(transactionHash))
 			{
@@ -125,13 +119,13 @@ namespace MirageSDK.WebGL
 
 		public async UniTask<string> GetContractData(TransactionData transactionData)
 		{
-			var response = await Request(new EthCallRequest(transactionData));
+			var response = await Request<EthCallRequest, EthResponse>(new EthCallRequest(transactionData));
 			return response.Result;
 		}
 
 		public async UniTask<HexBigInteger> EstimateGas(TransactionData transactionData)
 		{
-			var response = await Request(new EthEstimateGas(transactionData));
+			var response = await Request<EthEstimateGas, EthResponse>(new EthEstimateGas(transactionData));
 			return new HexBigInteger(response.Result);
 		}
 
@@ -139,7 +133,7 @@ namespace MirageSDK.WebGL
 		{
 			var address = signProps.address;
 			var message = signProps.message.ToEthSignableHex();
-			var response = await Request(new EthSign(address, message));
+			var response = await Request<EthSign, EthResponse>(new EthSign(address, message));
 			return response.Result;
 		}
 
@@ -162,17 +156,27 @@ namespace MirageSDK.WebGL
 
 			try
 			{
-				var names = _webglNethereumMessageBridge.GetChainIdCallbackNames;
-				//callbacks: ChainChanged, DisplayError
-				MetamaskWebglInterop.GetChainId(MessageBridgeGoName, names.FirstCallbackName, names.SecondCallbackName);
+				MetamaskWebglInteropExtension.GetChainIdRpcClientCallback(ChainChangedInteropCallback, DisplayErrorInteropCallback);
 				var result = await completionSource.Task;
 				return new HexBigInteger(result).Value;
 			}
 			catch (Exception e)
 			{
-				_completionSourceMap.TrySetCanceled<string>(operationName);
-				PrintError($"Error in GetChain: {e}");
+				_completionSourceMap.TrySetCanceled(operationName);
+				LogError($"Error in GetChain: {e}");
 				return 0;
+			}
+		}
+
+		[MonoPInvokeCallback(typeof(GenericCallbackDelegate))]
+		private static void ChainChangedInteropCallback(string chainId)
+		{
+			_monoStateInstance.ChainChanged(chainId);
+
+			const string operationName = "GetChainId";
+			if (_monoStateInstance._completionSourceMap.HasCompletionSourceFor(operationName))
+			{
+				_monoStateInstance._completionSourceMap.TrySetResult(operationName, chainId);
 			}
 		}
 
@@ -183,14 +187,23 @@ namespace MirageSDK.WebGL
 				Debug.LogError($"GetTransaction: transactionHash wrong format {transactionHash}");
 			}
 
-			var response = await Request(new EthGetTransactionByHash(transactionHash));
+			var response = await Request<EthGetTransactionByHash, EthResponse>(new EthGetTransactionByHash(transactionHash));
 			var transactionJson = response.Result;
-			return JsonConvert.DeserializeObject<Transaction>(transactionJson);
+
+			try
+			{
+				return JsonConvert.DeserializeObject<Transaction>(transactionJson);
+			}
+			catch (JsonReaderException jsonReaderException)
+			{
+				Debug.LogError($"GetTransaction: json {transactionJson} deserialization exception {jsonReaderException}");
+				return null;
+			}
 		}
 
 		public async UniTask AddChain(EthChainData networkData)
 		{
-			await Request(new WalletAddEthChain(networkData));
+			await Request<WalletAddEthChain, EthResponse>(new WalletAddEthChain(networkData));
 		}
 
 		public UniTask UpdateChain(EthUpdateChainData networkData)
@@ -200,14 +213,14 @@ namespace MirageSDK.WebGL
 
 		public async UniTask SwitchChain(EthChain networkData)
 		{
-			await Request(new WalletSwitchEthChain(networkData));
+			await Request<WalletSwitchEthChain, EthResponse>(new WalletSwitchEthChain(networkData));
 		}
 
 		//measured in wei
 		public async UniTask<BigInteger> GetBalance()
 		{
 			var address = await GetDefaultAccount();
-			var response = await Request(new EthGetBalance(address));
+			var response = await Request<EthGetBalance, EthResponse>(new EthGetBalance(address));
 			bool noResult = response == null || string.IsNullOrWhiteSpace(response.Result);
 			if (noResult)
 			{
@@ -218,7 +231,7 @@ namespace MirageSDK.WebGL
 
 		public async UniTask<BigInteger> GetBlockNumber()
 		{
-			var response = await Request<EthBlockNumber>(new EthBlockNumber());
+			var response = await Request<EthBlockNumber, EthResponse>(new EthBlockNumber());
 			bool noResult = response == null || string.IsNullOrWhiteSpace(response.Result);
 			if (noResult)
 			{
@@ -229,7 +242,7 @@ namespace MirageSDK.WebGL
 
 		public async UniTask<BigInteger> GetBlockTransactionCount(string blockNumber)
 		{
-			var response = await Request(new EthGetBlockTransactionCount(blockNumber));
+			var response = await Request<EthGetBlockTransactionCount, EthResponse>(new EthGetBlockTransactionCount(blockNumber));
 			bool noResult = response == null || string.IsNullOrWhiteSpace(response.Result);
 			if (noResult)
 			{
@@ -240,16 +253,15 @@ namespace MirageSDK.WebGL
 
 		public async UniTask<TResultType> GetBlock<TResultType>(string blockNumber, bool returnTransactionObjects)
 		{
-			var response = await Request(new EthGetBlockByNumber(blockNumber, returnTransactionObjects));
-			return ExtractResult<TResultType>(response);
+			var response = await Request<EthGetBlockByNumber, EthResponse>(new EthGetBlockByNumber(blockNumber, returnTransactionObjects));
+			return ExtractResultFromEthResponse<TResultType>(response);
 		}
 
 		public async UniTask<FilterLog[]> GetEvents(NewFilterInput filters)
 		{
-			var response = await Request(new EthGetLogs(filters));
-			return ExtractResult<FilterLog[]>(response);
+			var response = await Request<EthGetLogs, EthResponse>(new EthGetLogs(filters));
+			return ExtractResultFromEthResponse<FilterLog[]>(response);
 		}
-
 		public async UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
 		{
 			if (!IsHexStringWith32Bytes(transactionHash))
@@ -257,11 +269,27 @@ namespace MirageSDK.WebGL
 				Debug.LogError($"GetTransactionReceipt: transactionHash wrong format {transactionHash}");
 			}
 
-			var response = await Request(new EthGetTransactionReceipt(transactionHash));
-			var receipt = ExtractResult<TransactionReceipt>(response);
-			string jsonString = JsonConvert.SerializeObject(receipt, Formatting.Indented);
-			Debug.Log($"TransactionReceipt received: {jsonString}");
-			return receipt;
+			TransactionReceipt resultReceipt = null;
+			EthGetTransactionReceiptResponse resultResponse = null;
+			while (resultReceipt == null)
+			{
+				var response = await Request<EthGetTransactionReceipt, EthGetTransactionReceiptResponse>(new EthGetTransactionReceipt(transactionHash));
+				resultReceipt = response.Result;
+
+				if (resultReceipt != null)
+				{
+					resultResponse = response;
+				}
+				else
+				{
+					const int millisecondsRequestDelay = 500;
+					await UniTask.Delay(TimeSpan.FromMilliseconds(millisecondsRequestDelay));
+				}
+			}
+
+			string jsonString = JsonConvert.SerializeObject(resultReceipt, Formatting.Indented);
+			Debug.Log($"TransactionReceipt received: {jsonString} response: {resultResponse}");
+			return resultReceipt;
 		}
 
 		private static bool IsHexStringWith32Bytes(string input)
@@ -273,7 +301,7 @@ namespace MirageSDK.WebGL
 			return Regex.IsMatch(input, pattern);
 		}
 
-		private T ExtractResult<T>(EthResponse response)
+		private T ExtractResultFromEthResponse<T>(EthResponse response)
 		{
 			bool noResult = response == null || string.IsNullOrWhiteSpace(response.Result);
 			if (noResult)
@@ -281,10 +309,18 @@ namespace MirageSDK.WebGL
 				return default;
 			}
 
-			return JsonConvert.DeserializeObject<T>(response.Result);
+			try
+			{
+				return JsonConvert.DeserializeObject<T>(response.Result);
+			}
+			catch (JsonReaderException e)
+			{
+				Debug.LogError($"JsonReaderException while trying to deserialize {response.Result} StackTrace: {e.StackTrace}");
+				return default;
+			}
 		}
 
-		void IWebGLNethereumCallbacksReceiver.EthereumEnabled(string addressSelected)
+		private void EthereumEnabled(string addressSelected)
 		{
 			const string operationName = "ConnectTo";
 			try
@@ -292,41 +328,34 @@ namespace MirageSDK.WebGL
 				if (!_isConnected)
 				{
 					//callbacks: NewAccountSelected, ChainChanged
-					var names = _webglNethereumMessageBridge.EthereumInitCallbackNames;
-					MetamaskWebglInterop.EthereumInit(MessageBridgeGoName, names.FirstCallbackName, names.SecondCallbackName);
+					MetamaskWebglInterop.EthereumInitRpcClientCallback(NewAccountSelectedInteropCallback, ChainChangedInteropCallback);
 
-					names = _webglNethereumMessageBridge.GetChainIdCallbackNames;
 					//callbacks: ChainChanged, DisplayError
-					MetamaskWebglInterop.GetChainId(MessageBridgeGoName, names.FirstCallbackName, names.SecondCallbackName);
+					MetamaskWebglInteropExtension.GetChainIdRpcClientCallback(ChainChangedInteropCallback, DisplayErrorInteropCallback);
 					_isConnected = true;
 				}
 
 				_selectedAccountAddress = addressSelected;
 
-				_completionSourceMap.TrySetResult(operationName);
+				_completionSourceMap.TrySetResult(operationName, null);
 
 			}
 			catch (Exception e)
 			{
-				PrintError($"Metamask initialization error {e}");
+				LogError($"Metamask initialization error {e}");
 				_completionSourceMap.TrySetCanceled(operationName);
 			}
 		}
 
-		void IWebGLNethereumCallbacksReceiver.NewAccountSelected(string accountAddress)
+		[MonoPInvokeCallback(typeof(GenericCallbackDelegate))]
+		private static void NewAccountSelectedInteropCallback(string accountAddress)
 		{
-			_selectedAccountAddress = accountAddress;
+			_monoStateInstance.NewAccountSelected(accountAddress);
 		}
 
-		void IWebGLNethereumCallbacksReceiver.ChainChanged(string chainId)
+		private void NewAccountSelected(string accountAddress)
 		{
-			ChainChanged(chainId);
-
-			const string operationName = "GetChainId";
-			if (_completionSourceMap.HasCompletionSourceFor(operationName))
-			{
-				_completionSourceMap.TrySetResult<string>(operationName, chainId);
-			}
+			_selectedAccountAddress = accountAddress;
 		}
 
 		private void ChainChanged(string chainId)
@@ -339,16 +368,11 @@ namespace MirageSDK.WebGL
 			}
 			catch(Exception ex)
 			{
-				PrintError(ex.Message);
+				LogError(ex.Message);
 			}
 		}
 
-		void IWebGLNethereumCallbacksReceiver.DisplayError(string errorMessage)
-		{
-			PrintError(errorMessage);
-		}
-
-		private void PrintError(string errorMessage)
+		private void LogError(string errorMessage)
 		{
 			Debug.LogError($"WebGL Nethereum error: {errorMessage} last called request: " + _lastCalledRequest);
 		}
@@ -359,8 +383,8 @@ namespace MirageSDK.WebGL
 			return id;
 		}
 
-		private async UniTask<EthResponse> Request<TRequest>(TRequest request)
-			where TRequest: JsonRpcRequest
+		private async UniTask<TResponse> Request<TRequest, TResponse>(TRequest request)
+			where TRequest: JsonRpcRequest where TResponse: JsonRpcResponse
 		{
 			if (request == null)
 			{
@@ -377,26 +401,23 @@ namespace MirageSDK.WebGL
 			_lastCalledRequest = JsonConvert.SerializeObject(request);
 
 			var operationId = GenerateOperationId();
-			var completionSource = _completionSourceMap.CreateCompletionSource<EthResponse>(operationId);
+			var completionSource = _completionSourceMap.CreateCompletionSource<TResponse>(operationId);
 
 			bool operationIdEnqueued = false;
 			try
 			{
 				var jsonRequest = request != null ? JsonConvert.SerializeObject(request) : "{}";
-
-				var names = _webglNethereumMessageBridge.RequestCallbackNames;
+				MetamaskWebglInterop.RequestRpcClientCallback(RpcResponseInteropCallback, jsonRequest);
 
 				operationIdEnqueued = true;
-				MetamaskWebglInterop.Request(jsonRequest, MessageBridgeGoName, names.FirstCallbackName,
-					names.SecondCallbackName);
 				_requestOperationIdQueue.Enqueue(operationId);
 
 				return await completionSource.Task;
 			}
 			catch (Exception e)
 			{
-				PrintError($"WebGL Nethereum Request error {e}");
-				_completionSourceMap.TrySetCanceled<EthResponse>(operationId);
+				LogError($"WebGL Nethereum Request error {e}");
+				_completionSourceMap.TrySetCanceled(operationId);
 				if (operationIdEnqueued)
 				{
 					_requestOperationIdQueue.Dequeue();
@@ -405,7 +426,13 @@ namespace MirageSDK.WebGL
 			}
 		}
 
-		void IWebGLNethereumCallbacksReceiver.HandleRpcResponse(string jsonResponse)
+		[MonoPInvokeCallback(typeof(GenericCallbackDelegate))]
+		private static void RpcResponseInteropCallback(string jsonResponse)
+		{
+			_monoStateInstance.HandleRpcResponse(jsonResponse);
+		}
+
+		private void HandleRpcResponse(string jsonResponse)
 		{
 			if (_requestOperationIdQueue.Count == 0)
 			{
@@ -416,11 +443,17 @@ namespace MirageSDK.WebGL
 			//response is the json of the JSON-RPC 2.0 response
 			try
 			{
-				var responseObj = JsonConvert.DeserializeObject<EthResponse>(jsonResponse);
-				if (responseObj.IsError)
+				var resultType = _completionSourceMap.GetOperationResultType(operationId);
+				var responseObj = JsonConvert.DeserializeObject(jsonResponse, resultType) as JsonRpcResponse;
+
+				if (responseObj == null)
+				{
+					Debug.LogError($"JSON-RPC deserialization error for: {jsonResponse}");
+				}
+				else if (responseObj.IsError)
 				{
 					Debug.LogError($"JSON-RPC error: {responseObj.Error?.Message}");
-					_completionSourceMap.TrySetCanceled<EthResponse>(operationId);
+					_completionSourceMap.TrySetCanceled(operationId);
 				}
 				else
 				{
@@ -429,10 +462,16 @@ namespace MirageSDK.WebGL
 
 				_requestOperationIdQueue.Dequeue();
 			}
+			catch (JsonReaderException jsonReaderException)
+			{
+				LogError($"WebGL Nethereum Request json {jsonResponse} deserialization error {jsonReaderException}");
+				_completionSourceMap.TrySetCanceled(operationId);
+				_requestOperationIdQueue.Dequeue();
+			}
 			catch (Exception e)
 			{
-				PrintError($"WebGL Nethereum Request error {e}");
-				_completionSourceMap.TrySetCanceled<EthResponse>(operationId);
+				LogError($"WebGL Nethereum Request error {e}");
+				_completionSourceMap.TrySetCanceled(operationId);
 				_requestOperationIdQueue.Dequeue();
 			}
 		}

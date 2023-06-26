@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace MirageSDK.Utils
 {
@@ -9,84 +10,67 @@ namespace MirageSDK.Utils
 		private readonly Dictionary<string, IUniTaskSource> _completionSourcesDict =
 			new Dictionary<string, IUniTaskSource>();
 
-		public bool HasCompletionSourceFor(string name)
+		private readonly Dictionary<string, Type> _operationResultTypeDict = new Dictionary<string, Type>();
+
+		public Type GetOperationResultType(string operationId)
 		{
-			return _completionSourcesDict.ContainsKey(name);
+			if (_operationResultTypeDict.TryGetValue(operationId, out var type))
+			{
+				return type;
+			}
+
+			return null;
 		}
 
-		public UniTaskCompletionSource<T> CreateCompletionSource<T>(string name)
+		public bool HasCompletionSourceFor(string operationId)
 		{
-			if (_completionSourcesDict.ContainsKey(name))
+			return _completionSourcesDict.ContainsKey(operationId);
+		}
+
+		public UniTaskCompletionSource<T> CreateCompletionSource<T>(string operationId)
+		{
+			if (_completionSourcesDict.ContainsKey(operationId))
 			{
-				throw new InvalidOperationException($"Completion source for {name} already exists");
+				throw new InvalidOperationException($"Completion source for {operationId} already exists");
 			}
 
 			var newCompletionSource = new UniTaskCompletionSource<T>();
-			_completionSourcesDict.Add(name, newCompletionSource);
+			_completionSourcesDict.Add(operationId, newCompletionSource);
+			_operationResultTypeDict.Add(operationId, typeof(T));
 			return newCompletionSource;
 		}
 
-		public UniTaskCompletionSource CreateCompletionSource(string name)
+		public UniTaskCompletionSource CreateCompletionSource(string operationId)
 		{
-			if (_completionSourcesDict.ContainsKey(name))
+			if (_completionSourcesDict.ContainsKey(operationId))
 			{
-				throw new InvalidOperationException($"Completion source for {name} already exists");
+				throw new InvalidOperationException($"Completion source for {operationId} already exists");
 			}
 
 			var newCompletionSource = new UniTaskCompletionSource();
-			_completionSourcesDict.Add(name, newCompletionSource);
+			_completionSourcesDict.Add(operationId, newCompletionSource);
 			return newCompletionSource;
 		}
 
-		public void TrySetResult<T>(string name, T result)
+		public void TrySetResult(string name, object result)
 		{
 			if (_completionSourcesDict.TryGetValue(name, out var completionSource))
 			{
-				if (completionSource is UniTaskCompletionSource<T> typedCompletionSource)
+				const string typeSetResultMethodName = "TrySetResult";
+				var completionSourceType = completionSource.GetType();
+				var trySetResultMethod = completionSourceType.GetMethod(typeSetResultMethodName);
+				if (trySetResultMethod == null)
 				{
-					typedCompletionSource.TrySetResult(result);
-					_completionSourcesDict.Remove(name);
+					Debug.LogError($"TrySetResult method not found in {completionSourceType.Name}");
 				}
 				else
 				{
-					throw new InvalidCastException($"Completion source {name} does not hold type {typeof(T).Name}");
+					var parameters = result == null ? null : new [] { result };
+					trySetResultMethod.Invoke(completionSource, parameters);
 				}
-			}
-			else
-			{
-				throw new KeyNotFoundException($"Completion source {name} was not found");
-			}
-		}
 
-		public void TrySetResult(string name)
-		{
-			if (_completionSourcesDict.TryGetValue(name, out var completionSource))
-			{
-				if (completionSource is UniTaskCompletionSource typedCompletionSource)
-				{
-					typedCompletionSource.TrySetResult();
-					_completionSourcesDict.Remove(name);
-				}
-				else
-				{
-					throw new InvalidCastException($"Completion source {name} is not typeless");
-				}
-			}
-			else
-			{
-				throw new KeyNotFoundException($"Completion source {name} was not found");
-			}
-		}
-
-		public void TrySetCanceled<T>(string name)
-		{
-			if (_completionSourcesDict.TryGetValue(name, out var completionSource))
-			{
-				if (completionSource is UniTaskCompletionSource<T> typedCompletionSource)
-				{
-					typedCompletionSource.TrySetCanceled();
-					_completionSourcesDict.Remove(name);
-				}
+				_completionSourcesDict.Remove(name);
+				_operationResultTypeDict.Remove(name);
 			}
 			else
 			{
@@ -98,10 +82,11 @@ namespace MirageSDK.Utils
 		{
 			if (_completionSourcesDict.TryGetValue(name, out var completionSource))
 			{
-				if (completionSource is UniTaskCompletionSource typedCompletionSource)
+				if (completionSource is ICancelPromise typedCompletionSource)
 				{
 					typedCompletionSource.TrySetCanceled();
 					_completionSourcesDict.Remove(name);
+					_operationResultTypeDict.Remove(name);
 				}
 			}
 			else
