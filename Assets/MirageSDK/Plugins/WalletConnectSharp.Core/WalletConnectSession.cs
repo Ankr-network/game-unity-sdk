@@ -12,7 +12,6 @@ using MirageSDK.WalletConnect.VersionShared.Models.Ethereum.Types;
 using MirageSDK.WalletConnect.VersionShared.Utils;
 using MirageSDK.WalletConnectSharp.Core.Events;
 using MirageSDK.WalletConnectSharp.Core.Events.Model;
-using MirageSDK.WalletConnectSharp.Core.Events.Model.Ethereum;
 using MirageSDK.WalletConnectSharp.Core.Models;
 using MirageSDK.WalletConnectSharp.Core.Network;
 using Cysharp.Threading.Tasks;
@@ -249,29 +248,10 @@ namespace MirageSDK.WalletConnectSharp.Core
 
 		public async UniTask<string> EthSign(string address, string message)
 		{
-			if (!message.IsHex())
-			{
-				var rawMessage = Encoding.UTF8.GetBytes(message);
-
-				var byteList = new List<byte>();
-				var bytePrefix = "0x19".HexToByteArray();
-				var textBytePrefix = Encoding.UTF8.GetBytes("Ethereum Signed Message:\n" + rawMessage.Length);
-
-				byteList.AddRange(bytePrefix);
-				byteList.AddRange(textBytePrefix);
-				byteList.AddRange(rawMessage);
-
-				var hash = new Sha3Keccack().CalculateHash(byteList.ToArray());
-
-				message = "0x" + hash.ToHex();
-			}
-
+			message = message.ToEthSignableHex();
 			Debug.Log(message);
-
 			var request = new EthSign(address, message);
-
 			var response = await Send<EthSign, EthResponse>(request);
-
 			return response.Result;
 		}
 

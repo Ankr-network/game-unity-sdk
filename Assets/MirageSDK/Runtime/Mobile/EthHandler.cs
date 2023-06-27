@@ -4,13 +4,12 @@ using MirageSDK.Core.Infrastructure;
 using MirageSDK.Utils;
 using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using MirageSDK.WalletConnectSharp.Core;
-using MirageSDK.WalletConnectSharp.Core.Events.Model.Ethereum;
 using Cysharp.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using Nethereum.RPC.Eth.Transactions;
 using Nethereum.Web3;
-using EthSendTransaction = MirageSDK.WalletConnectSharp.Core.Events.Model.Ethereum.EthSendTransaction;
+using EthSendTransaction = MirageSDK.WalletConnect.VersionShared.Models.Ethereum.EthSendTransaction;
+using EthGetTransactionByHash = Nethereum.RPC.Eth.Transactions.EthGetTransactionByHash;
 
 namespace MirageSDK.Mobile
 {

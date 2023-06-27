@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Numerics;
 using MirageSDK.Data;
 using MirageSDK.Utils;
@@ -10,11 +9,10 @@ using MirageSDK.WalletConnect.VersionShared.Models.Ethereum;
 using MirageSDK.WalletConnectSharp.Core;
 using MirageSDK.WalletConnectSharp.Core.StatusEvents;
 using MirageSDK.WebGL.DTO;
+using MirageSDK.WebGL.Infrastructure;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using Newtonsoft.Json;
 using UnityEngine;
-using TransactionData = MirageSDK.WebGL.DTO.TransactionData;
 
 namespace MirageSDK.WebGL
 {
@@ -31,22 +29,22 @@ namespace MirageSDK.WebGL
 		private WebGLConnectSettingsSO _settings;
 		private NetworkName _network;
 		private Wallet? _selectedWallet;
-		private readonly WebGLCommunicationProtocol _protocol;
+		private readonly IWebGLCommunicationProtocol _protocol;
 
 		public string SettingsFilename => SettingsFilenameStr;
 		public string WalletName => _selectedWallet.HasValue ? _selectedWallet.Value.ToString() : "";
 
 		public WebGLConnect()
 		{
-			_protocol = new WebGLCommunicationProtocol();
+			_protocol = new WebGLNethereumCommunicationProtocol();
 		}
 
 		public void Initialize(ScriptableObject settings)
 		{
-			_protocol.StartReceiveCycle().Forget();
 			_settings = settings as WebGLConnectSettingsSO;
 			if (_settings != null)
 			{
+				_protocol.Init();
 				_network = _settings.DefaultNetwork;
 				_status = WalletConnectStatus.DisconnectedNoSession;
 			}
@@ -68,7 +66,7 @@ namespace MirageSDK.WebGL
 			}
 
 			UpdateStatus(WalletConnectStatus.SessionRequestSent);
-			await ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_network));
+			await _protocol.ConnectTo(wallet, EthereumNetworks.GetNetworkByName(_network));
 
 			var account = await GetDefaultAccount();
 			OnAccountChanged?.Invoke(new [] {account});
@@ -89,20 +87,9 @@ namespace MirageSDK.WebGL
 			return "";
 		}
 
-		public async UniTask<WalletsStatus> GetWalletsStatus()
+		public UniTask<WalletsStatus> GetWalletsStatus()
 		{
-			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetWalletsStatus(id);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				var payload = JsonConvert.DeserializeObject<WalletsStatus>(answer.payload);
-				return payload;
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.GetWalletsStatus();
 		}
 
 		public void SetWallet(Wallet wallet)
@@ -115,228 +102,84 @@ namespace MirageSDK.WebGL
 			_network = network;
 		}
 
-		public async UniTask<string> SendTransaction(TransactionData transaction)
+		public UniTask<string> SendTransaction(TransactionData transaction)
 		{
-			var id = _protocol.GenerateId();
-			var payload = JsonConvert.SerializeObject(transaction);
-			WebGLInterlayer.SendTransaction(id, payload);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				return answer.payload;
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.SendTransaction(transaction);
 		}
 
-		public async UniTask<string> GetContractData(TransactionData transaction)
+		public UniTask<string> GetContractData(TransactionData transaction)
 		{
-			var id = _protocol.GenerateId();
-			var payload = JsonConvert.SerializeObject(transaction);
-			WebGLInterlayer.GetContractData(id, payload);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				return answer.payload;
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.GetContractData(transaction);
 		}
 
-		public async UniTask<HexBigInteger> EstimateGas(TransactionData transaction)
+		public UniTask<HexBigInteger> EstimateGas(TransactionData transaction)
 		{
-			var id = _protocol.GenerateId();
-			var payload = JsonConvert.SerializeObject(transaction);
-			WebGLInterlayer.EstimateGas(id, payload);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				return new HexBigInteger(answer.payload);
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.EstimateGas(transaction);
 		}
 
-		public async UniTask<string> Sign(DataSignaturePropsDTO signProps)
+		public UniTask<string> Sign(DataSignaturePropsDTO signProps)
 		{
-			var id = _protocol.GenerateId();
-
-			WebGLInterlayer.SignMessage(id, JsonConvert.SerializeObject(signProps));
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				return answer.payload;
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.Sign(signProps);
 		}
 
-		public async UniTask<string> GetDefaultAccount(string network = null)
+		public UniTask<string> GetDefaultAccount(string network = null)
 		{
-			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetAddresses(id);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				var addresses = JsonConvert.DeserializeObject<string[]>(answer.payload);
-				return addresses.First();
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.GetDefaultAccount();
 		}
 
-		public async UniTask<BigInteger> GetChainId()
+		public UniTask<BigInteger> GetChainId()
 		{
-			var id = _protocol.GenerateId();
-			WebGLInterlayer.RequestChainId(id);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				var payload = JsonConvert.DeserializeObject<WebGLCallAnswer<HexBigInteger>>(answer.payload);
-				return payload.Result.Value;
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.GetChainId();
 		}
 
-		public async UniTask<Transaction> GetTransaction(string transactionHash)
+		public UniTask<Transaction> GetTransaction(string transactionHash)
 		{
-			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetTransaction(id, transactionHash);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				var transactionData = JsonConvert.DeserializeObject<Transaction>(answer.payload);
-				return transactionData;
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.GetTransaction(transactionHash);
 		}
 
-		public async UniTask AddChain(EthChainData networkData)
+		public UniTask AddChain(EthChainData networkData)
 		{
-			var id = _protocol.GenerateId();
-			var payload = JsonConvert.SerializeObject(networkData);
-			WebGLInterlayer.AddChain(id, payload);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Error)
-			{
-				throw new Exception(answer.payload);
-			}
+			return _protocol.AddChain(networkData);
 		}
 
-		public async UniTask UpdateChain(EthUpdateChainData networkData)
+		public UniTask UpdateChain(EthUpdateChainData networkData)
 		{
-			var id = _protocol.GenerateId();
-			var payload = JsonConvert.SerializeObject(networkData);
-			WebGLInterlayer.AddChain(id, payload);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Error)
-			{
-				throw new Exception(answer.payload);
-			}
+			return _protocol.UpdateChain(networkData);
 		}
 
-		public async UniTask SwitchChain(EthChain networkData)
+		public UniTask SwitchChain(EthChain networkData)
 		{
-			var id = _protocol.GenerateId();
-			var payload = JsonConvert.SerializeObject(networkData);
-			WebGLInterlayer.SwitchChain(id, payload);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Error)
-			{
-				throw new Exception(answer.payload);
-			}
+			return _protocol.SwitchChain(networkData);
 		}
 
-		public async UniTask<TReturnType> CallMethod<TReturnType>(WebGLCallObject callObject)
+		public UniTask<BigInteger> GetBalance()
 		{
-			var id = _protocol.GenerateId();
-			var payload = JsonConvert.SerializeObject(callObject);
-			WebGLInterlayer.CallMethod(id, payload);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				var callAnswer = JsonConvert.DeserializeObject<WebGLCallAnswer<TReturnType>>(answer.payload);
-
-				return callAnswer.Result;
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.GetBalance();
 		}
 
-		public async UniTask<FilterLog[]> GetEvents(NewFilterInput filters)
+		public UniTask<BigInteger> GetBlockNumber()
 		{
-			var id = _protocol.GenerateId();
-			var payload = JsonConvert.SerializeObject(filters);
-			WebGLInterlayer.GetEvents(id, payload);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				var logs = JsonConvert.DeserializeObject<FilterLog[]>(answer.payload);
-				return logs;
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.GetBlockNumber();
 		}
 
-		public async UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+		public UniTask<BigInteger> GetBlockTransactionCount(string blockNumber)
 		{
-			var id = _protocol.GenerateId();
-			WebGLInterlayer.GetTransactionReceipt(id, transactionHash);
-
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Success)
-			{
-				return JsonConvert.DeserializeObject<TransactionReceipt>(answer.payload);
-			}
-
-			throw new Exception(answer.payload);
+			return _protocol.GetBlockTransactionCount(blockNumber);
 		}
 
-		private async UniTask ConnectTo(Wallet wallet, EthereumNetwork chain)
+		public UniTask<TResultType> GetBlock<TResultType>(string blockId, bool returnTransactionObjects)
 		{
-			var id = _protocol.GenerateId();
-			var connectionProps = new ConnectionProps
-			{
-				wallet = wallet.ToString(),
-				chain = chain
-			};
+			return _protocol.GetBlock<TResultType>(blockId, returnTransactionObjects);
+		}
 
-			var payload = JsonConvert.SerializeObject(connectionProps);
-			WebGLInterlayer.CreateProvider(id, payload);
+		public UniTask<FilterLog[]> GetEvents(NewFilterInput filters)
+		{
+			return _protocol.GetEvents(filters);
+		}
 
-			var answer = await _protocol.WaitForAnswer(id);
-
-			if (answer.status == WebGLMessageStatus.Error)
-			{
-				throw new Exception(answer.payload);
-			}
+		public UniTask<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+		{
+			return _protocol.GetTransactionReceipt(transactionHash);
 		}
 
 		private void UpdateStatus(WalletConnectStatus newStatus)

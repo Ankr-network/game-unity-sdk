@@ -388,6 +388,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1177579283625400382, guid: fd242ad67f3aafb4b973fc821f9e5978, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3260559544067716493, guid: fd242ad67f3aafb4b973fc821f9e5978, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8389203649831428626, guid: fd242ad67f3aafb4b973fc821f9e5978, type: 3}
       propertyPath: m_Name
       value: Examples_WebGL_Canvas
