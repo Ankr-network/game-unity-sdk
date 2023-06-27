@@ -3,9 +3,7 @@ using MirageSDK.Base;
 using MirageSDK.Core.Infrastructure;
 using MirageSDK.Data;
 using MirageSDK.Provider;
-using MirageSDK.WearableNFTExample;
 using Cysharp.Threading.Tasks;
-using MirageSDK.WebGL.Implementation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,7 +40,7 @@ namespace MirageSDK.UseCases.SilentSigning
 			{
 				_sdkInstance = MirageSDKFactory.GetMirageSDKInstance(NetworkName.Goerli);
 
-				if (_sdkInstance.Eth is EthHandlerWebGL)
+				if (Application.platform == RuntimePlatform.WebGLPlayer)
 				{
 					throw new InvalidOperationException("Silient signing is not implemented for WebGL");
 				}
